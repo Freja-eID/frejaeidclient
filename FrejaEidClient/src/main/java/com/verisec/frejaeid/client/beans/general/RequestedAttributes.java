@@ -1,0 +1,119 @@
+package com.verisec.frejaeid.client.beans.general;
+
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Objects;
+
+/**
+ * When retrieving results, additional information about the user can be
+ * returned based on the type of attributes required through request. If
+ * attribute is not required it will be {@code null}.
+ *
+ */
+public class RequestedAttributes {
+
+    private final BasicUserInfo basicUserInfo;
+    private final String customIdentifier;
+    private final SsnUserInfo ssn;
+    private final String integratorSpecificUserId;
+    private final String dateOfBirth;
+    private final String relyingPartyUserId;
+    private final String emailAddress;
+    private final String organisationIdIdentifier;
+
+    @JsonCreator
+    public RequestedAttributes(@JsonProperty(value = "basicUserInfo") BasicUserInfo basicUserInfo, @JsonProperty(value = "customIdentifier") String customIdentifier,
+            @JsonProperty(value = "ssn") SsnUserInfo ssn, @JsonProperty(value = "integratorSpecificUserId") String integratorSpecificUserId,
+            @JsonProperty(value = "dateOfBirth") String dateOfBirth, @JsonProperty(value = "relyingPartyUserId") String relyingPartyUserId, @JsonProperty(value = "emailAddress") String emailAddress,
+            @JsonProperty(value = "organisationIdIdentifier") String organisationIdIdentifier) {
+        this.basicUserInfo = basicUserInfo;
+        this.customIdentifier = customIdentifier;
+        this.ssn = ssn;
+        this.integratorSpecificUserId = integratorSpecificUserId;
+        this.dateOfBirth = dateOfBirth;
+        this.relyingPartyUserId = relyingPartyUserId;
+        this.emailAddress = emailAddress;
+        this.organisationIdIdentifier = organisationIdIdentifier;
+    }
+
+    public BasicUserInfo getBasicUserInfo() {
+        return basicUserInfo;
+    }
+
+    public String getCustomIdentifier() {
+        return customIdentifier;
+    }
+
+    public SsnUserInfo getSsn() {
+        return ssn;
+    }
+
+    public String getIntegratorSpecificUserId() {
+        return integratorSpecificUserId;
+    }
+
+    public String getDateOfBirth() {
+        return dateOfBirth;
+    }
+
+    public String getRelyingPartyUserId() {
+        return relyingPartyUserId;
+    }
+
+    public String getEmailAddress() {
+        return emailAddress;
+    }
+
+    public String getOrganisationIdIdentifier() {
+        return organisationIdIdentifier;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(basicUserInfo, customIdentifier, ssn, integratorSpecificUserId, dateOfBirth, relyingPartyUserId, emailAddress, organisationIdIdentifier);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final RequestedAttributes other = (RequestedAttributes) obj;
+        if (!Objects.equals(this.customIdentifier, other.customIdentifier)) {
+            return false;
+        }
+        if (!Objects.equals(this.basicUserInfo, other.basicUserInfo)) {
+            return false;
+        }
+        if (!Objects.equals(this.ssn, other.ssn)) {
+            return false;
+        }
+        if (!Objects.equals(this.integratorSpecificUserId, other.integratorSpecificUserId)) {
+            return false;
+        }
+        if (!Objects.equals(this.dateOfBirth, other.dateOfBirth)) {
+            return false;
+        }
+        if (!Objects.equals(this.relyingPartyUserId, other.relyingPartyUserId)) {
+            return false;
+        }
+        if (!Objects.equals(this.emailAddress, other.emailAddress)) {
+            return false;
+        }
+        if (!Objects.equals(this.organisationIdIdentifier, other.organisationIdIdentifier)) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "RequestedAttributes{" + "basicUserInfo=" + basicUserInfo + ", customIdentifier=" + customIdentifier + ", ssn=" + ssn + ", integratorSpecificUserId=" + integratorSpecificUserId + ", dateOfBirth=" + dateOfBirth + ", relyingPartyUserId=" + relyingPartyUserId + ", emailAddress=" + emailAddress + ", organisationIdIdentifier=" + organisationIdIdentifier + '}';
+    }
+}
