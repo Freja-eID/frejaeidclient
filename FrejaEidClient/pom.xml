@@ -7,10 +7,36 @@
     <packaging>jar</packaging>
     
     <name>FrejaEidClient</name>
+    <description>
+        Freja eID Client is a client library aimed to ease integration of relying party back-end systems with Freja eID Relying Party API. 
+    </description>
+    <url>https://github.com/Verisec/frejaeidclient</url>
+    
+    <licenses>
+        <license>
+            <name>Apache License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+    
+    <developers>
+        <developer>
+            <id>MilicaJelic</id>
+            <name>Milica Jelic</name>
+            <email>milica.jelic@verisec.com</email>
+            <organization>Verisec</organization>
+            <organizationUrl>https://www.verisec.com/</organizationUrl>
+            <roles>
+                <role>developer</role>
+            </roles>
+        </developer>
+    </developers>
 
     <properties>
         <maven.compiler.source>1.7</maven.compiler.source>
         <maven.compiler.target>1.7</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
     
     <distributionManagement>
@@ -31,6 +57,7 @@
         <developerConnection>
             scm:git:https://github.com/Verisec/frejaeidclient.git
         </developerConnection>
+        <url>https://github.com/Verisec/frejaeidclient</url>
         <tag>HEAD</tag>
     </scm>     
     
@@ -127,6 +154,19 @@
                             <source>8</source> 
                             <additionalparam>-Xdoclint:none</additionalparam>
                         </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>2.2.1</version>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
                     </execution>
                 </executions>
             </plugin>
