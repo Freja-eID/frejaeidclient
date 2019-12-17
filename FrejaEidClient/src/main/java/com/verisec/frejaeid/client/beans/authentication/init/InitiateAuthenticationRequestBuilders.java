@@ -68,7 +68,8 @@ public class InitiateAuthenticationRequestBuilders {
          * Sets organisation id as userInfo and {@link UserInfoType#ORG_ID} as
          * {@linkplain UserInfoType} for initiating transaction.
          *
-         * @param identifier
+         * @param identifier user's identifier that was previously set by
+         * organisation
          *
          * @return request builder
          */
