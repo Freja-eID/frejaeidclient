@@ -63,7 +63,7 @@ SignClientApi signClient = SignClient.create(sslSettings, FrejaEnvironment.TEST)
 ```
 Initiate request
 ```java
-InitiateSignRequest request = InitiateSignRequest.createDefaultWithEmail("email@example.com", "title", "text");
+InitiateSignRequest request = InitiateSignRequest.createDefaultWithEmail("email@example.com", "Title", "Text to be signed");
 String reference = signClient.initiate(request);
 ```
 Poll for request
