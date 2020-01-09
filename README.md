@@ -31,3 +31,47 @@ This client library provides a set of classes, interfaces and utility methods de
 
 * Integrator Relying Party Management API Client
   + using all available services as an Integrator Relying Party
+
+## Examples
+### Init connection to API (test environment)
+```java
+SslSettings sslSettings = SslSettings.create("/path/to/keystore.jks", "SuperSecretKeystorePassword", "/path/to/server/certificate.crt");
+```
+### Init, monitor and cancel authentication request
+Create authentication client
+```java
+AuthenticationClientApi authenticationClient = AuthenticationClient.create(sslSettings, FrejaEnvironment.TEST).build();
+```
+Initiate request
+```java
+InitiateAuthenticationRequest request = InitiateAuthenticationRequest.createDefaultWithEmail("email@example.com");
+String reference = authenticationClient.initiate(request);
+```
+Poll for request
+```java
+int maxWaitingTimeInSeconds = 30;
+AuthenticationResult result = authenticationClient.pollForResult(AuthenticationResultRequest.create(reference), maxWaitingTimeInSeconds);
+```
+Cancel request
+```java
+authenticationClient.cancel(CancelAuthenticationRequest.create(reference));
+```
+### Init, monitor and cancel signature request
+Create sign client
+```java
+SignClientApi signClient = SignClient.create(sslSettings, FrejaEnvironment.TEST).build();
+```
+Initiate request
+```java
+InitiateSignRequest request = InitiateSignRequest.createDefaultWithEmail("email@example.com", "title", "text");
+String reference = signClient.initiate(request);
+```
+Poll for request
+```java
+int maxWaitingTimeInSeconds = 60;
+SignResult result = signClient.pollForResult(SignResultRequest.create(reference), maxWaitingTimeInSeconds);
+```
+Cancel request
+```java
+signClient.cancel(CancelSignRequest.create(reference));
+```
