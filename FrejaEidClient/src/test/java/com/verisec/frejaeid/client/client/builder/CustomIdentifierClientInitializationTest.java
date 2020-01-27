@@ -5,14 +5,11 @@ import com.verisec.frejaeid.client.client.impl.CustomIdentifierClient;
 import com.verisec.frejaeid.client.client.util.TestUtil;
 import com.verisec.frejaeid.client.enums.FrejaEnvironment;
 import com.verisec.frejaeid.client.exceptions.FrejaEidClientInternalException;
-import java.util.logging.Logger;
 import org.junit.Assert;
 import org.junit.Test;
 import com.verisec.frejaeid.client.client.api.CustomIdentifierClientApi;
 
 public class CustomIdentifierClientInitializationTest {
-
-    private static final Logger LOG = Logger.getLogger(AuthenticationClientInitialisationTest.class.getName());
 
     @Test
     public void customIdentifierClientInit_invalidKeystorePath_expectKeystoreError() {

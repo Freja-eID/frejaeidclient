@@ -88,7 +88,7 @@ public class SignClientHttpTest extends CommonHttpTest {
         sendInitiateSignRequestAndAssertResponse(initiateSignRequestDefaultEmail);
         InitiateSignRequest initiateSignRequestDefaultSsn = InitiateSignRequest.createDefaultWithSsn(SsnUserInfo.create(Country.FINLAND, SSN), title, dataToSignText);
         sendInitiateSignRequestAndAssertResponse(initiateSignRequestDefaultSsn);
-        InitiateSignRequest initSignRequestCustomRequestWithRequestedAttributes = InitiateSignRequest.createCustom()
+        InitiateSignRequest initSignCustomRequestWithRequestedAttributes = InitiateSignRequest.createCustom()
                 .setEmail(EMAIL)
                 .setDataToSign(dataToSign)
                 .setExpiry(Long.MAX_VALUE)
@@ -98,9 +98,9 @@ public class SignClientHttpTest extends CommonHttpTest {
                 .setPushNotification(pushNotification)
                 .setTitle(title)
                 .build();
-        sendInitiateSignRequestAndAssertResponse(initSignRequestCustomRequestWithRequestedAttributes);
+        sendInitiateSignRequestAndAssertResponse(initSignCustomRequestWithRequestedAttributes);
 
-        InitiateSignRequest initSignRequestCustomRequestWithRequestedAttributesExtendedDataToSign = InitiateSignRequest.createCustom()
+        InitiateSignRequest initSignCustomRequestWithRequestedAttributesExtendedDataToSign = InitiateSignRequest.createCustom()
                 .setEmail(EMAIL)
                 .setDataToSign(DataToSign.create(dataToSignText, binaryData))
                 .setExpiry(Long.MAX_VALUE)
@@ -110,24 +110,24 @@ public class SignClientHttpTest extends CommonHttpTest {
                 .setPushNotification(pushNotification)
                 .setTitle(title)
                 .build();
-        sendInitiateSignRequestAndAssertResponse(initSignRequestCustomRequestWithRequestedAttributesExtendedDataToSign);
+        sendInitiateSignRequestAndAssertResponse(initSignCustomRequestWithRequestedAttributesExtendedDataToSign);
 
-        InitiateSignRequest initSignRequestCustomRequestWithDefaultValues = InitiateSignRequest.createCustom()
+        InitiateSignRequest initSignCustomRequestWithDefaultValues = InitiateSignRequest.createCustom()
                 .setEmail(EMAIL)
                 .setDataToSign(DataToSign.create(dataToSignText, binaryData))
                 .build();
-        sendInitiateSignRequestAndAssertResponse(initSignRequestCustomRequestWithDefaultValues);
+        sendInitiateSignRequestAndAssertResponse(initSignCustomRequestWithDefaultValues);
 
-        InitiateSignRequest initSignRequestCustomRequestWithRelyingPartyId = InitiateSignRequest.createCustom()
+        InitiateSignRequest initSignCustomRequestWithRelyingPartyId = InitiateSignRequest.createCustom()
                 .setEmail(EMAIL)
                 .setDataToSign(DataToSign.create(dataToSignText, binaryData))
                 .setRelyingPartyId(RELYING_PARTY_ID)
                 .build();
-        InitiateSignRequest expectedInitSignRequestCustomRequestWithRelyingPartyId = InitiateSignRequest.createCustom()
+        InitiateSignRequest expectedInitSignCustomRequestWithRelyingPartyId = InitiateSignRequest.createCustom()
                 .setEmail(EMAIL)
                 .setDataToSign(DataToSign.create(dataToSignText, binaryData))
                 .build();
-        sendInitiateSignRequestAndAssertResponse(expectedInitSignRequestCustomRequestWithRelyingPartyId, initSignRequestCustomRequestWithRelyingPartyId);
+        sendInitiateSignRequestAndAssertResponse(expectedInitSignCustomRequestWithRelyingPartyId, initSignCustomRequestWithRelyingPartyId);
 
     }
 
@@ -136,7 +136,7 @@ public class SignClientHttpTest extends CommonHttpTest {
         SignClient signClient = SignClient.create(SslSettings.create(TestUtil.getKeystorePath(TestUtil.KEYSTORE_PATH), TestUtil.KEYSTORE_PASSWORD, TestUtil.getKeystorePath(TestUtil.CERTIFICATE_PATH)), FrejaEnvironment.TEST)
                 .setTestModeCustomUrl("http://localhost:" + MOCK_SERVICE_PORT).setTransactionContext(TransactionContext.ORGANISATIONAL).build();
         DataToSign dataToSign = DataToSign.create(Base64.encodeBase64String(dataToSignText.getBytes(StandardCharsets.UTF_8)));
-        InitiateSignRequest initSignRequestCustomRequestWithRequestedAttributes = InitiateSignRequest.createCustom()
+        InitiateSignRequest initSignCustomRequestWithRequestedAttributes = InitiateSignRequest.createCustom()
                 .setOrganisationId(ORGANISATION_ID)
                 .setDataToSign(dataToSign)
                 .setExpiry(Long.MAX_VALUE)
@@ -149,9 +149,9 @@ public class SignClientHttpTest extends CommonHttpTest {
 
         String initSignResponseString = jsonService.serializeToJson(initiateSignResponse);
 
-        startMockServer(initSignRequestCustomRequestWithRequestedAttributes, HttpStatusCode.OK.getCode(), initSignResponseString);
+        startMockServer(initSignCustomRequestWithRequestedAttributes, HttpStatusCode.OK.getCode(), initSignResponseString);
 
-        String reference = signClient.initiate(initSignRequestCustomRequestWithRequestedAttributes);
+        String reference = signClient.initiate(initSignCustomRequestWithRequestedAttributes);
         stopServer();
         Assert.assertEquals(REFERENCE, reference);
     }
