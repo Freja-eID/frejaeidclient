@@ -24,9 +24,9 @@ This client library provides a set of classes, interfaces and utility methods de
   + deleting a custom identifier
 
 * Organisation ID Management API Client
-  + setting a organisation identiifer for a user
-  + deleting a organisation identifier for a user
-  + fetching result of adding a organisation identifier for a user
+  + adding an organisation identifier for a user
+  + deleting an organisation identifier for a user
+  + fetching result of adding an organisation identifier for a user
   + cancelling adding organisation identifier for a user
 
 * Integrator Relying Party Management API Client
