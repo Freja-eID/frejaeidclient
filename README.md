@@ -32,6 +32,16 @@ This client library provides a set of classes, interfaces and utility methods de
 * Integrator Relying Party Management API Client
   + using all available services as an Integrator Relying Party
 
+## Add Freja eID Client to your build
+To add a dependency on Freja eID Client using Maven, use the following:
+```xml
+<dependency>
+    <groupId>com.verisec.frejaeid</groupId>
+    <artifactId>FrejaEidClient</artifactId>
+    <version>2.0.0</version>
+</dependency>
+```
+
 ## Examples
 ### Init connection to API (test environment)
 ```java
