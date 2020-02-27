@@ -41,6 +41,7 @@ public class AuthenticationClient extends BasicClient implements AuthenticationC
      * type of client keyStore or server certificate etc.).
      */
     public static Builder create(SslSettings sslSettings, FrejaEnvironment frejaEnvironment) throws FrejaEidClientInternalException {
+        if(sslSettings == null) throw new FrejaEidClientInternalException("SslSettings cannot be null.");
         if (sslSettings.getSslContext() == null) {
             return new Builder(sslSettings.getKeystorePath(), sslSettings.getKeystorePass(), sslSettings.getServerCertificatePath(), frejaEnvironment);
         }
