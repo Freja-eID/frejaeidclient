@@ -187,7 +187,7 @@ public class BasicClient {
 
         public abstract <T extends BasicClient> T build() throws FrejaEidClientInternalException;
 
-        protected void checkSetParametars() throws FrejaEidClientInternalException {
+        protected void checkSetParameters() throws FrejaEidClientInternalException {
             if (pollingTimeout < 1000 || pollingTimeout > 30000) {
                 throw new FrejaEidClientInternalException("Polling timeout must be between 1 and 30 seconds.");
             }

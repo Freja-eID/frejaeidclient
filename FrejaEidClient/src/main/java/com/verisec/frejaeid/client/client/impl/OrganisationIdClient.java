@@ -41,6 +41,9 @@ public class OrganisationIdClient extends BasicClient implements OrganisationIdC
      * type of client keyStore or server certificate etc.).
      */
     public static Builder create(SslSettings sslSettings, FrejaEnvironment frejaEnvironment) throws FrejaEidClientInternalException {
+        if (sslSettings == null) {
+            throw new FrejaEidClientInternalException("SslSettings cannot be null.");
+        }
         if (sslSettings.getSslContext() == null) {
             return new Builder(sslSettings.getKeystorePath(), sslSettings.getKeystorePass(), sslSettings.getServerCertificatePath(), frejaEnvironment);
         }
@@ -90,7 +93,7 @@ public class OrganisationIdClient extends BasicClient implements OrganisationIdC
         @Override
         public OrganisationIdClient build() throws FrejaEidClientInternalException {
             transactionContext = TransactionContext.ORGANISATIONAL;
-            checkSetParametars();
+            checkSetParameters();
             if (httpService == null) {
                 httpService = new HttpService(sslContext, connectionTimeout, readTimeout);
             }

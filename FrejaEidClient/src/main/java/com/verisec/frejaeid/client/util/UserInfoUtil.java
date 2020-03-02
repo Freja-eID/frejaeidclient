@@ -13,7 +13,7 @@ public class UserInfoUtil {
             String jsonSsnUserInfo = jsonService.serializeToJson(ssnUserInfo);
             return Base64.encodeBase64String(jsonSsnUserInfo.getBytes(StandardCharsets.UTF_8));
         } catch (FrejaEidClientInternalException ex) {
-            throw new FrejaEidClientInternalException("Failed to seriliaze user info.", ex);
+            throw new FrejaEidClientInternalException("Failed to serialize user info.", ex);
         }
     }
 }
