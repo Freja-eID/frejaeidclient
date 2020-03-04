@@ -28,9 +28,11 @@ import javax.net.ssl.TrustManagerFactory;
 
 public class BasicClient {
 
-    private static final int DEFAULT_CONNECTION_TIMEOUT_IN_MILLSECONDS = 20000;
-    private static final int DEFAULT_READ_TIMEOUT_IN_MILLSECONDS = 20000;
-    private static final int DEFAULT_POLLING_TIMEOUT_IN_MILLSECONDS = 3000;
+    private static final int DEFAULT_CONNECTION_TIMEOUT_IN_MILLISECONDS = 20000;
+    private static final int DEFAULT_READ_TIMEOUT_IN_MILLISECONDS = 20000;
+    private static final int DEFAULT_POLLING_TIMEOUT_IN_MILLISECONDS = 3000;
+    private static final int MINIMUM_POLLING_TIMEOUT_IN_MILLISECONDS = 1000;
+    private static final int MAXIMUM_POLLING_TIMEOUT_IN_MILLISECONDS = 30000;
     protected JsonService jsonService;
     protected AuthenticationService authenticationService;
     protected SignService signService;
@@ -51,9 +53,9 @@ public class BasicClient {
     public abstract static class GenericBuilder {
 
         protected String serverCustomUrl = null;
-        protected int connectionTimeout = DEFAULT_CONNECTION_TIMEOUT_IN_MILLSECONDS;
-        protected int readTimeout = DEFAULT_READ_TIMEOUT_IN_MILLSECONDS;
-        protected int pollingTimeout = DEFAULT_POLLING_TIMEOUT_IN_MILLSECONDS;
+        protected int connectionTimeout = DEFAULT_CONNECTION_TIMEOUT_IN_MILLISECONDS;
+        protected int readTimeout = DEFAULT_READ_TIMEOUT_IN_MILLISECONDS;
+        protected int pollingTimeout = DEFAULT_POLLING_TIMEOUT_IN_MILLISECONDS;
         protected HttpServiceApi httpService;
         protected SSLContext sslContext;
         protected TransactionContext transactionContext;
@@ -126,7 +128,7 @@ public class BasicClient {
          * host.
          *
          * @param connectionTimeout in milliseconds on client side. Default
-         * value is {@value #DEFAULT_CONNECTION_TIMEOUT_IN_MILLSECONDS}
+         * value is {@value #DEFAULT_CONNECTION_TIMEOUT_IN_MILLISECONDS}
          * milliseconds.
          * @return clientBuilder
          */
@@ -140,7 +142,7 @@ public class BasicClient {
          * established (maximum time of inactivity between two data packages).
          *
          * @param readTimeout in milliseconds on client side. Default value is
-         * {@value #DEFAULT_READ_TIMEOUT_IN_MILLSECONDS} milliseconds.
+         * {@value #DEFAULT_READ_TIMEOUT_IN_MILLISECONDS} milliseconds.
          * @return clientBuilder
          */
         public GenericBuilder setReadTimeout(int readTimeout) {
@@ -153,7 +155,7 @@ public class BasicClient {
          * results.
          *
          * @param pollingTimeout in milliseconds on client side. Default value
-         * is {@value #DEFAULT_POLLING_TIMEOUT_IN_MILLSECONDS} milliseconds.
+         * is {@value #DEFAULT_POLLING_TIMEOUT_IN_MILLISECONDS} milliseconds.
          * @return clientBuilder
          */
         public GenericBuilder setPollingTimeout(int pollingTimeout) {
@@ -188,8 +190,8 @@ public class BasicClient {
         public abstract <T extends BasicClient> T build() throws FrejaEidClientInternalException;
 
         protected void checkSetParameters() throws FrejaEidClientInternalException {
-            if (pollingTimeout < 1000 || pollingTimeout > 30000) {
-                throw new FrejaEidClientInternalException("Polling timeout must be between 1 and 30 seconds.");
+            if (pollingTimeout < MINIMUM_POLLING_TIMEOUT_IN_MILLISECONDS || pollingTimeout > MAXIMUM_POLLING_TIMEOUT_IN_MILLISECONDS) {
+                throw new FrejaEidClientInternalException(String.format("Polling timeout must be between %s and %s seconds.", MINIMUM_POLLING_TIMEOUT_IN_MILLISECONDS/1000, MAXIMUM_POLLING_TIMEOUT_IN_MILLISECONDS/1000));
             }
             if (transactionContext == null) {
                 transactionContext = TransactionContext.PERSONAL;
