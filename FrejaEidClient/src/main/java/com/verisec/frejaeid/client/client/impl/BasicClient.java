@@ -42,11 +42,10 @@ public class BasicClient {
 
     protected BasicClient(String serverCustomUrl, int pollingTimeoutInMillseconds, TransactionContext transactionContext, HttpServiceApi httpService) throws FrejaEidClientInternalException {
         jsonService = new JsonService();
-        String serverAddress = serverCustomUrl;
-        signService = new SignService(serverAddress, pollingTimeoutInMillseconds, transactionContext, httpService);
-        organisationIdService = new OrganisationIdService(serverAddress, pollingTimeoutInMillseconds, httpService);
-        customIdentifierService = new CustomIdentifierService(serverAddress, httpService);
-        authenticationService = new AuthenticationService(serverAddress, httpService, pollingTimeoutInMillseconds, transactionContext);
+        signService = new SignService(serverCustomUrl, pollingTimeoutInMillseconds, transactionContext, httpService);
+        organisationIdService = new OrganisationIdService(serverCustomUrl, pollingTimeoutInMillseconds, httpService);
+        customIdentifierService = new CustomIdentifierService(serverCustomUrl, httpService);
+        authenticationService = new AuthenticationService(serverCustomUrl, httpService, pollingTimeoutInMillseconds, transactionContext);
         requestValidationService = new RequestValidationService();
     }
 
