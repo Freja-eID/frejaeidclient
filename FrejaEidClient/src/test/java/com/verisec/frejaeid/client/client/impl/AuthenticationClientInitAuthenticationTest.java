@@ -25,7 +25,6 @@ import org.mockito.Mockito;
 public class AuthenticationClientInitAuthenticationTest {
 
     private final HttpServiceApi httpServiceMock = Mockito.mock(HttpServiceApi.class);
-
     private static final String EMAIL = "eid.demo.verisec@gmail.com";
     private static final String SSN = "199207295578";
     private static final String REFERENCE = "123456789012345678";
