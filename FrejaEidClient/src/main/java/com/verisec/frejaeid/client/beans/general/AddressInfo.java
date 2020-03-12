@@ -2,7 +2,7 @@ package com.verisec.frejaeid.client.beans.general;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.verisec.frejaeid.client.enums.AddressSource;
+import com.verisec.frejaeid.client.enums.AddressSourceType;
 import com.verisec.frejaeid.client.enums.AddressType;
 import com.verisec.frejaeid.client.enums.Country;
 import java.util.Objects;
@@ -21,12 +21,12 @@ public class AddressInfo {
     private final String address3;
     private final long validFrom;
     private final AddressType type;
-    private final AddressSource source;
+    private final AddressSourceType sourceType;
 
     @JsonCreator
     public AddressInfo(@JsonProperty("country") Country country, @JsonProperty("city") String city, @JsonProperty("postCode") String postCode,
             @JsonProperty("address1") String address1, @JsonProperty("address2") String address2, @JsonProperty("address3") String address3,
-            @JsonProperty("validFrom") long validFrom, @JsonProperty("type") AddressType type, @JsonProperty("source") AddressSource source) {
+            @JsonProperty("validFrom") long validFrom, @JsonProperty("type") AddressType type, @JsonProperty("sourceType") AddressSourceType sourceType) {
         this.country = country;
         this.city = city;
         this.postCode = postCode;
@@ -35,7 +35,7 @@ public class AddressInfo {
         this.address3 = address3;
         this.validFrom = validFrom;
         this.type = type;
-        this.source = source;
+        this.sourceType = sourceType;
     }
 
     public Country getCountry() {
@@ -70,13 +70,13 @@ public class AddressInfo {
         return type;
     }
 
-    public AddressSource getSource() {
-        return source;
+    public AddressSourceType getSourceType() {
+        return sourceType;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(country, city, postCode, address1, address2, address3, validFrom, type, source);
+        return Objects.hash(country, city, postCode, address1, address2, address3, validFrom, type, sourceType);
     }
 
     @Override
@@ -115,7 +115,7 @@ public class AddressInfo {
         if (this.type != other.type) {
             return false;
         }
-        if (this.source != other.source) {
+        if (this.sourceType != other.sourceType) {
             return false;
         }
         return true;
@@ -123,7 +123,7 @@ public class AddressInfo {
 
     @Override
     public String toString() {
-        return "AddressInfo{" + "country=" + country + ", city=" + city + ", postCode=" + postCode + ", address1=" + address1 + ", address2=" + address2 + ", address3=" + address3 + ", validFrom=" + validFrom + ", type=" + type + ", source=" + source + '}';
+        return "AddressInfo{" + "country=" + country + ", city=" + city + ", postCode=" + postCode + ", address1=" + address1 + ", address2=" + address2 + ", address3=" + address3 + ", validFrom=" + validFrom + ", type=" + type + ", sourceType=" + sourceType + '}';
     }
 
 }
