@@ -16,14 +16,15 @@ import java.util.Map;
  * <br> - {@link #RELYING_PARTY_USER_ID}
  * <br> - {@link #EMAIL_ADDRESS}
  * <br> - {@link #ORGANISATION_ID_IDENTIFIER}
+ * <br> - {@link #ADDRESSES}
  *
  */
 public enum AttributeToReturn {
 
     /**
-     * If BASIC_USER_INFO is requested, BasicUserInfo which contains name and
-     * surname will be returned and it can be requested only for
-     * {@linkplain MinRegistrationLevel#EXTENDED} and
+     * If BASIC_USER_INFO is requested, {@linkplain BasicUserInfo} which
+     * contains name and surname will be returned and it can be requested only
+     * for {@linkplain MinRegistrationLevel#EXTENDED} and
      * {@linkplain MinRegistrationLevel#PLUS}.
      */
     BASIC_USER_INFO("BASIC_USER_INFO"),
@@ -62,7 +63,12 @@ public enum AttributeToReturn {
      * Organisation id identifier can be requested only if it is set previously.
      */
     ORGANISATION_ID_IDENTIFIER("ORGANISATION_ID_IDENTIFIER"),
-    
+    /**
+     * If ADDRESSES is requested, list of {@linkplain AddressInfo} which
+     * contains user's current addresses will be returned and it can be
+     * requested only for {@linkplain MinRegistrationLevel#EXTENDED} and
+     * {@linkplain MinRegistrationLevel#PLUS}.
+     */
     ADDRESSES("ADDRESSES");
 
     private final String name;
