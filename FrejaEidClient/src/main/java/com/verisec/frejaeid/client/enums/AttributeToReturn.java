@@ -61,7 +61,9 @@ public enum AttributeToReturn {
     /**
      * Organisation id identifier can be requested only if it is set previously.
      */
-    ORGANISATION_ID_IDENTIFIER("ORGANISATION_ID_IDENTIFIER");
+    ORGANISATION_ID_IDENTIFIER("ORGANISATION_ID_IDENTIFIER"),
+    
+    ADDRESSES("ADDRESSES");
 
     private final String name;
 
