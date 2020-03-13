@@ -1,6 +1,8 @@
 package com.verisec.frejaeid.client.enums;
 
+import com.verisec.frejaeid.client.beans.general.BasicUserInfo;
 import com.verisec.frejaeid.client.beans.general.SsnUserInfo;
+import com.verisec.frejaeid.client.beans.general.AddressInfo;
 
 import java.util.HashMap;
 import java.util.Map;
