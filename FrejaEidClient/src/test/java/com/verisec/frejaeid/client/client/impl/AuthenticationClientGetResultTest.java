@@ -46,7 +46,7 @@ public class AuthenticationClientGetResultTest {
     private static final String DATE_OF_BIRTH = "1987-10-18";
     private static final String EMAIL_ADDRESS = "test@frejaeid.com";
     private static final String ORGANISATION_ID = "vealrad";
-    private static final List<AddressInfo> ADDRESSES = Arrays.asList(new AddressInfo(Country.SWEDEN, "city", "postCode", "address1", "address2", "address3", 0, AddressType.RESIDENTIAL, AddressSourceType.GOVERNMENT_REGISTRY));
+    private static final List<AddressInfo> ADDRESSES = Arrays.asList(AddressInfo.create(Country.SWEDEN, "city", "postCode", "address1", "address2", "address3", 0, AddressType.RESIDENTIAL, AddressSourceType.GOVERNMENT_REGISTRY));
     private static final RequestedAttributes REQUESTED_ATTRIBUTES = new RequestedAttributes(BASIC_USER_INFO, CUSTOM_IDENTIFIER, SSN, null, DATE_OF_BIRTH, RELYING_PARTY_USER_ID, EMAIL_ADDRESS, ORGANISATION_ID, ADDRESSES);
 
     @Test

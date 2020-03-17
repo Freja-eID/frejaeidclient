@@ -13,7 +13,7 @@ import java.util.Objects;
  */
 public class AddressInfo {
 
-    private final Country country;
+    private final String country;
     private final String city;
     private final String postCode;
     private final String address1;
@@ -22,9 +22,14 @@ public class AddressInfo {
     private final long validFrom;
     private final AddressType type;
     private final AddressSourceType sourceType;
+    
+    public static AddressInfo create(Country country, String city, String postCode, String address1, 
+            String address2, String address3, long validFrom, AddressType type, AddressSourceType sourceType) {
+        return new AddressInfo(country.getCountryCode(), city, postCode, address1, address2, address3, validFrom, type, sourceType);                
+    }
 
     @JsonCreator
-    public AddressInfo(@JsonProperty("country") Country country, @JsonProperty("city") String city, @JsonProperty("postCode") String postCode,
+    private AddressInfo(@JsonProperty("country") String country, @JsonProperty("city") String city, @JsonProperty("postCode") String postCode,
             @JsonProperty("address1") String address1, @JsonProperty("address2") String address2, @JsonProperty("address3") String address3,
             @JsonProperty("validFrom") long validFrom, @JsonProperty("type") AddressType type, @JsonProperty("sourceType") AddressSourceType sourceType) {
         this.country = country;
@@ -38,7 +43,7 @@ public class AddressInfo {
         this.sourceType = sourceType;
     }
 
-    public Country getCountry() {
+    public String getCountry() {
         return country;
     }
 
