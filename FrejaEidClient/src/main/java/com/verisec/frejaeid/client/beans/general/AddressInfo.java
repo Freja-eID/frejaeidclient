@@ -19,19 +19,19 @@ public class AddressInfo {
     private final String address1;
     private final String address2;
     private final String address3;
-    private final long validFrom;
+    private final String validFrom;
     private final AddressType type;
     private final AddressSourceType sourceType;
     
     public static AddressInfo create(Country country, String city, String postCode, String address1, 
-            String address2, String address3, long validFrom, AddressType type, AddressSourceType sourceType) {
+            String address2, String address3, String validFrom, AddressType type, AddressSourceType sourceType) {
         return new AddressInfo(country.getCountryCode(), city, postCode, address1, address2, address3, validFrom, type, sourceType);                
     }
 
     @JsonCreator
     private AddressInfo(@JsonProperty("country") String country, @JsonProperty("city") String city, @JsonProperty("postCode") String postCode,
             @JsonProperty("address1") String address1, @JsonProperty("address2") String address2, @JsonProperty("address3") String address3,
-            @JsonProperty("validFrom") long validFrom, @JsonProperty("type") AddressType type, @JsonProperty("sourceType") AddressSourceType sourceType) {
+            @JsonProperty("validFrom") String validFrom, @JsonProperty("type") AddressType type, @JsonProperty("sourceType") AddressSourceType sourceType) {
         this.country = country;
         this.city = city;
         this.postCode = postCode;
@@ -67,7 +67,7 @@ public class AddressInfo {
         return address3;
     }
 
-    public long getValidFrom() {
+    public String getValidFrom() {
         return validFrom;
     }
 
@@ -96,7 +96,7 @@ public class AddressInfo {
             return false;
         }
         final AddressInfo other = (AddressInfo) obj;
-        if (this.validFrom != other.validFrom) {
+        if (!Objects.equals(this.country, other.country)) {
             return false;
         }
         if (!Objects.equals(this.city, other.city)) {
@@ -114,7 +114,7 @@ public class AddressInfo {
         if (!Objects.equals(this.address3, other.address3)) {
             return false;
         }
-        if (this.country != other.country) {
+        if (!Objects.equals(this.validFrom, other.validFrom)) {
             return false;
         }
         if (this.type != other.type) {

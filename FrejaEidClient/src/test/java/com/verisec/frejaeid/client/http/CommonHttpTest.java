@@ -39,7 +39,7 @@ public abstract class CommonHttpTest {
     protected static final String DATE_OF_BIRTH = "1987-10-18";
     protected static final String EMAIL_ADDRESS = "test@frejaeid.com";
     protected static final String ORGANISATION_ID = "vealrad";
-    protected static final List<AddressInfo> ADDRESSES = Arrays.asList(AddressInfo.create(Country.SWEDEN, "city", "postCode", "address1", "address2", "address3", 0, AddressType.RESIDENTIAL, AddressSourceType.GOVERNMENT_REGISTRY));
+    protected static final List<AddressInfo> ADDRESSES = Arrays.asList(AddressInfo.create(Country.SWEDEN, "city", "postCode", "address1", "address2", "address3", "1993-12-30", AddressType.RESIDENTIAL, AddressSourceType.GOVERNMENT_REGISTRY));
     protected static final RequestedAttributes REQUESTED_ATTRIBUTES = new RequestedAttributes(BASIC_USER_INFO, CUSTOM_IDENTIFIER, SSN_USER_INFO, null, DATE_OF_BIRTH, RELYING_PARTY_USER_ID, EMAIL_ADDRESS, ORGANISATION_ID, ADDRESSES);
     protected static final String POST_PARAMS_DELIMITER = "&";
     protected static final String KEY_VALUE_DELIMITER = "=";

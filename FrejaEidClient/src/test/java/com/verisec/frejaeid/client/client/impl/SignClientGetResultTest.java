@@ -41,7 +41,7 @@ public class SignClientGetResultTest {
     private static final String RELYING_PARTY_USER_ID = "relyingPartyUserId";
     private static final String EMAIL_ADDRESS = "test@frejaeid.com";
     private static final String ORGANISATION_ID = "orgId";
-    private static final List<AddressInfo> ADDRESSES = Arrays.asList(AddressInfo.create(Country.SWEDEN, "city", "postCode", "address1", "address2", "address3", 0, AddressType.RESIDENTIAL, AddressSourceType.GOVERNMENT_REGISTRY));
+    private static final List<AddressInfo> ADDRESSES = Arrays.asList(AddressInfo.create(Country.SWEDEN, "city", "postCode", "address1", "address2", "address3", "1993-12-30", AddressType.RESIDENTIAL, AddressSourceType.GOVERNMENT_REGISTRY));
     private static final RequestedAttributes REQUESTED_ATTRIBUTES = new RequestedAttributes(new BasicUserInfo("name", "surname"), "customIdentifier", SsnUserInfo.create(Country.SWEDEN, "ssn"), "integratorSpecificId", "1987-10-18", RELYING_PARTY_USER_ID, EMAIL_ADDRESS, ORGANISATION_ID, ADDRESSES);
 
     @Test
