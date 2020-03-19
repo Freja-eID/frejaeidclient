@@ -8,8 +8,9 @@ import com.verisec.frejaeid.client.enums.Country;
 import java.util.Objects;
 
 /**
- *
- * @author vedrbuk
+ * AddressInfo contains information about user's address. It can be requested as
+ * attribute.
+ * 
  */
 public class AddressInfo {
 
