@@ -46,7 +46,7 @@ public class OrganisationIdClientInitAddOrganisationIdTest {
         Mockito.when(httpServiceMock.send(Mockito.anyString(), Mockito.any(RequestTemplate.class), Mockito.any(RelyingPartyRequest.class), Mockito.eq(InitiateAddOrganisationIdResponse.class), (String) Mockito.isNull())).thenReturn(expectedResponse);
 
         InitiateAddOrganisationIdRequest initiateAddOrganisationIdDefaultEmailRequest = InitiateAddOrganisationIdRequest.createDefaultWithEmail(EMAIL, OrganisationId.create(ORGANISATION_ID_TITLE, IDENTIFIER_NAME, IDENTIFIER));
-        InitiateAddOrganisationIdRequest initiateAddOrganisationIdDefaultSsnRequest = InitiateAddOrganisationIdRequest.createDefaultWithSsn(SsnUserInfo.create(Country.SWEDEN, SSN), OrganisationId.create(ORGANISATION_ID_TITLE, IDENTIFIER_NAME, IDENTIFIER));
+        InitiateAddOrganisationIdRequest initiateAddOrganisationIdDefaultSsnRequest = InitiateAddOrganisationIdRequest.createDefaultWithSsn(new SsnUserInfo(Country.SWEDEN, SSN), OrganisationId.create(ORGANISATION_ID_TITLE, IDENTIFIER_NAME, IDENTIFIER));
 
         String reference = organisationIdClient.initiateAdd(initiateAddOrganisationIdDefaultEmailRequest);
         Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getUrl() + MethodUrl.ORGANISATION_ID_INIT_ADD, RequestTemplate.INIT_ADD_ORGANISATION_ID_TEMPLATE, initiateAddOrganisationIdDefaultEmailRequest, InitiateAddOrganisationIdResponse.class, null);

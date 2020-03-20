@@ -41,7 +41,7 @@ public class CustomIdentifierClientTest {
         SetCustomIdentifierRequest setCustomIdentifierRequestDefaultEmail = SetCustomIdentifierRequest.createDefaultWithEmail(EMAIL, CUSTOM_IDENTIFIER);
         customIdentifierClient.set(setCustomIdentifierRequestDefaultEmail);
         Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getUrl() + MethodUrl.CUSTOM_IDENTIFIER_SET, RequestTemplate.SET_CUSTOM_IDENITIFIER_TEMPLATE, setCustomIdentifierRequestDefaultEmail, EmptyFrejaResponse.class, null);
-        SetCustomIdentifierRequest setCustomIdentifierRequestDefaultSsn = SetCustomIdentifierRequest.createDefaultWithSsn(SsnUserInfo.create(Country.NORWAY, SSN), CUSTOM_IDENTIFIER);
+        SetCustomIdentifierRequest setCustomIdentifierRequestDefaultSsn = SetCustomIdentifierRequest.createDefaultWithSsn(new SsnUserInfo(Country.NORWAY, SSN), CUSTOM_IDENTIFIER);
         customIdentifierClient.set(setCustomIdentifierRequestDefaultSsn);
         Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getUrl() + MethodUrl.CUSTOM_IDENTIFIER_SET, RequestTemplate.SET_CUSTOM_IDENITIFIER_TEMPLATE, setCustomIdentifierRequestDefaultSsn, EmptyFrejaResponse.class, null);
     }
@@ -53,7 +53,7 @@ public class CustomIdentifierClientTest {
                 .build();
         Mockito.when(httpServiceMock.send(Mockito.anyString(), Mockito.any(RequestTemplate.class), Mockito.any(RelyingPartyRequest.class), Mockito.eq(EmptyFrejaResponse.class), Mockito.anyString())).thenReturn(EmptyFrejaResponse.INSTANCE);
         SetCustomIdentifierRequest setCustomIdentifierRequestEmail = SetCustomIdentifierRequest.createCustom().setEmailAndCustomIdentifier(EMAIL, CUSTOM_IDENTIFIER).setRelyingPartyId(RELYING_PARTY_ID).build();
-        SetCustomIdentifierRequest setCustomIdentifierRequestSsn = SetCustomIdentifierRequest.createCustom().setSsnAndCustomIdentifier(SsnUserInfo.create(Country.NORWAY, SSN), CUSTOM_IDENTIFIER).setRelyingPartyId(RELYING_PARTY_ID).build();
+        SetCustomIdentifierRequest setCustomIdentifierRequestSsn = SetCustomIdentifierRequest.createCustom().setSsnAndCustomIdentifier(new SsnUserInfo(Country.NORWAY, SSN), CUSTOM_IDENTIFIER).setRelyingPartyId(RELYING_PARTY_ID).build();
         SetCustomIdentifierRequest setCustomIdentifierRequestPhoneNum = SetCustomIdentifierRequest.createCustom().setPhoneNumberAndCustomIdentifier(EMAIL, CUSTOM_IDENTIFIER).setRelyingPartyId(RELYING_PARTY_ID).build();
         List<SetCustomIdentifierRequest> requests = Arrays.asList(setCustomIdentifierRequestEmail, setCustomIdentifierRequestSsn, setCustomIdentifierRequestPhoneNum);
         for (SetCustomIdentifierRequest request : requests) {

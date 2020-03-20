@@ -190,7 +190,7 @@ public class BasicClient {
 
         protected void checkSetParameters() throws FrejaEidClientInternalException {
             if (pollingTimeout < MINIMUM_POLLING_TIMEOUT_IN_MILLISECONDS || pollingTimeout > MAXIMUM_POLLING_TIMEOUT_IN_MILLISECONDS) {
-                throw new FrejaEidClientInternalException(String.format("Polling timeout must be between %s and %s seconds.", MINIMUM_POLLING_TIMEOUT_IN_MILLISECONDS/1000, MAXIMUM_POLLING_TIMEOUT_IN_MILLISECONDS/1000));
+                throw new FrejaEidClientInternalException(String.format("Polling timeout must be between %s and %s seconds.", MINIMUM_POLLING_TIMEOUT_IN_MILLISECONDS / 1000, MAXIMUM_POLLING_TIMEOUT_IN_MILLISECONDS / 1000));
             }
             if (transactionContext == null) {
                 transactionContext = TransactionContext.PERSONAL;

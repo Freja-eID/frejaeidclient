@@ -31,7 +31,7 @@ public abstract class CommonHttpTest {
     protected static final String EMAIL = "eid.demo.verisec@gmail.com";
     protected static final String SSN = "123455697887";
     protected static final String RELYING_PARTY_ID = "relying_party_id";
-    protected static final SsnUserInfo SSN_USER_INFO = SsnUserInfo.create(Country.SWEDEN, SSN);
+    protected static final SsnUserInfo SSN_USER_INFO = new SsnUserInfo(Country.SWEDEN, SSN);
     protected static final BasicUserInfo BASIC_USER_INFO = new BasicUserInfo("John", "Fante");
     protected static final String CUSTOM_IDENTIFIER = "vejofan";
     protected static final String DETAILS = "Ask the dust";
@@ -39,7 +39,7 @@ public abstract class CommonHttpTest {
     protected static final String DATE_OF_BIRTH = "1987-10-18";
     protected static final String EMAIL_ADDRESS = "test@frejaeid.com";
     protected static final String ORGANISATION_ID = "vealrad";
-    protected static final List<AddressInfo> ADDRESSES = Arrays.asList(AddressInfo.create(Country.SWEDEN, "city", "postCode", "address1", "address2", "address3", "1993-12-30", AddressType.RESIDENTIAL, AddressSourceType.GOVERNMENT_REGISTRY));
+    protected static final List<AddressInfo> ADDRESSES = Arrays.asList(new AddressInfo(Country.SWEDEN, "city", "postCode", "address1", "address2", "address3", "1993-12-30", AddressType.RESIDENTIAL, AddressSourceType.GOVERNMENT_REGISTRY));
     protected static final RequestedAttributes REQUESTED_ATTRIBUTES = new RequestedAttributes(BASIC_USER_INFO, CUSTOM_IDENTIFIER, SSN_USER_INFO, null, DATE_OF_BIRTH, RELYING_PARTY_USER_ID, EMAIL_ADDRESS, ORGANISATION_ID, ADDRESSES);
     protected static final String POST_PARAMS_DELIMITER = "&";
     protected static final String KEY_VALUE_DELIMITER = "=";
