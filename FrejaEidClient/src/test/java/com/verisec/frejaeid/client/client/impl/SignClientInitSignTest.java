@@ -110,7 +110,7 @@ public class SignClientInitSignTest {
                 .setExpiry(expiry)
                 .setMinRegistrationLevel(minRegistrationLevel)
                 .setPushNotification(pushNotification)
-                .setAttributesToReturn(AttributeToReturn.CUSTOM_IDENTIFIER, AttributeToReturn.BASIC_USER_INFO, AttributeToReturn.DATE_OF_BIRTH, AttributeToReturn.EMAIL_ADDRESS, AttributeToReturn.INTEGRATOR_SPECIFIC_USER_ID, AttributeToReturn.RELYING_PARTY_USER_ID, AttributeToReturn.SSN)
+                .setAttributesToReturn(AttributeToReturn.CUSTOM_IDENTIFIER, AttributeToReturn.BASIC_USER_INFO, AttributeToReturn.DATE_OF_BIRTH, AttributeToReturn.EMAIL_ADDRESS, AttributeToReturn.INTEGRATOR_SPECIFIC_USER_ID, AttributeToReturn.RELYING_PARTY_USER_ID, AttributeToReturn.SSN, AttributeToReturn.ADDRESSES)
                 .setTitle(title)
                 .setRelyingPartyId(RELYING_PARTY_ID)
                 .build();

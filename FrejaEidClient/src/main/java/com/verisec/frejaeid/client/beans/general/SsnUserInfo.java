@@ -12,20 +12,20 @@ import java.util.Objects;
  */
 public class SsnUserInfo {
 
-    private final String country;
+    private final Country country;
     private final String ssn;
-
+    
     public static SsnUserInfo create(Country country, String ssn) {
-        return new SsnUserInfo(country.getCountryCode(), ssn);
+        return new SsnUserInfo(country, ssn);
     }
 
     @JsonCreator
-    private SsnUserInfo(@JsonProperty("country") String country, @JsonProperty("ssn") String ssn) {
+    private SsnUserInfo(@JsonProperty("country") Country country, @JsonProperty("ssn") String ssn) {
         this.country = country;
         this.ssn = ssn;
     }
 
-    public String getCountry() {
+    public Country getCountry() {
         return country;
     }
 

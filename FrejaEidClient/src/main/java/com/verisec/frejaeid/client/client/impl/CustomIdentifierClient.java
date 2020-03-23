@@ -38,6 +38,9 @@ public class CustomIdentifierClient extends BasicClient implements CustomIdentif
      * type of client keyStore or server certificate etc.).
      */
     public static Builder create(SslSettings sslSettings, FrejaEnvironment frejaEnvironment) throws FrejaEidClientInternalException {
+        if (sslSettings == null) {
+            throw new FrejaEidClientInternalException("SslSettings cannot be null.");
+        }
         if (sslSettings.getSslContext() == null) {
             return new Builder(sslSettings.getKeystorePath(), sslSettings.getKeystorePass(), sslSettings.getServerCertificatePath(), frejaEnvironment);
         }
@@ -69,7 +72,7 @@ public class CustomIdentifierClient extends BasicClient implements CustomIdentif
         @Override
         public CustomIdentifierClient build() throws FrejaEidClientInternalException {
             transactionContext = TransactionContext.PERSONAL;
-            checkSetParametars();
+            checkSetParameters();
             if (httpService == null) {
                 httpService = new HttpService(sslContext, connectionTimeout, readTimeout);
             }
