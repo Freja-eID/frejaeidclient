@@ -8,9 +8,12 @@ import com.verisec.frejaeid.client.beans.general.SsnUserInfo;
 import com.verisec.frejaeid.client.beans.authentication.get.AuthenticationResults;
 import com.verisec.frejaeid.client.beans.authentication.get.AuthenticationResultRequest;
 import com.verisec.frejaeid.client.beans.authentication.get.AuthenticationResult;
+import com.verisec.frejaeid.client.beans.general.AddressInfo;
 import com.verisec.frejaeid.client.beans.general.SslSettings;
 import com.verisec.frejaeid.client.client.api.AuthenticationClientApi;
 import com.verisec.frejaeid.client.client.util.TestUtil;
+import com.verisec.frejaeid.client.enums.AddressSourceType;
+import com.verisec.frejaeid.client.enums.AddressType;
 import com.verisec.frejaeid.client.enums.TransactionStatus;
 import com.verisec.frejaeid.client.enums.Country;
 import com.verisec.frejaeid.client.enums.FrejaEnvironment;
@@ -23,6 +26,7 @@ import com.verisec.frejaeid.client.http.HttpServiceApi;
 import com.verisec.frejaeid.client.util.MethodUrl;
 import com.verisec.frejaeid.client.util.RequestTemplate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import org.junit.Assert;
 import org.junit.Test;
@@ -42,7 +46,8 @@ public class AuthenticationClientGetResultTest {
     private static final String DATE_OF_BIRTH = "1987-10-18";
     private static final String EMAIL_ADDRESS = "test@frejaeid.com";
     private static final String ORGANISATION_ID = "vealrad";
-    private static final RequestedAttributes REQUESTED_ATTRIBUTES = new RequestedAttributes(BASIC_USER_INFO, CUSTOM_IDENTIFIER, SSN, null, DATE_OF_BIRTH, RELYING_PARTY_USER_ID, EMAIL_ADDRESS, ORGANISATION_ID);
+    private static final List<AddressInfo> ADDRESSES = Arrays.asList(new AddressInfo(Country.SWEDEN, "city", "postCode", "address1", "address2", "address3", "1993-12-30", AddressType.RESIDENTIAL, AddressSourceType.GOVERNMENT_REGISTRY));
+    private static final RequestedAttributes REQUESTED_ATTRIBUTES = new RequestedAttributes(BASIC_USER_INFO, CUSTOM_IDENTIFIER, SSN, null, DATE_OF_BIRTH, RELYING_PARTY_USER_ID, EMAIL_ADDRESS, ORGANISATION_ID, ADDRESSES);
 
     @Test
     public void getAuthenticationResult_relyignPartyIdNull_success() throws FrejaEidClientInternalException, FrejaEidException {
@@ -185,9 +190,9 @@ public class AuthenticationClientGetResultTest {
     }
 
     private AuthenticationResults prepareResponse() {
-        RequestedAttributes attributes1 = new RequestedAttributes(BASIC_USER_INFO, CUSTOM_IDENTIFIER, SSN, null, DATE_OF_BIRTH, RELYING_PARTY_USER_ID, EMAIL_ADDRESS, ORGANISATION_ID);
+        RequestedAttributes attributes1 = new RequestedAttributes(BASIC_USER_INFO, CUSTOM_IDENTIFIER, SSN, null, DATE_OF_BIRTH, RELYING_PARTY_USER_ID, EMAIL_ADDRESS, ORGANISATION_ID, ADDRESSES);
         AuthenticationResult firstResponse = new AuthenticationResult(REFERENCE, TransactionStatus.STARTED, DETAILS, attributes1);
-        RequestedAttributes attributes2 = new RequestedAttributes(null, "test", null, null, null, null, null, null);
+        RequestedAttributes attributes2 = new RequestedAttributes(null, "test", null, null, null, null, null, null, null);
         AuthenticationResult secondResponse = new AuthenticationResult(REFERENCE, TransactionStatus.DELIVERED_TO_MOBILE, "test", attributes2);
         List<AuthenticationResult> responses = new ArrayList<>();
         responses.add(firstResponse);

@@ -94,7 +94,7 @@ public class SignClientHttpTest extends CommonHttpTest {
                 .setExpiry(Long.MAX_VALUE)
                 .setMinRegistrationLevel(MinRegistrationLevel.BASIC)
                 .setAttributesToReturn(AttributeToReturn.BASIC_USER_INFO, AttributeToReturn.CUSTOM_IDENTIFIER, AttributeToReturn.DATE_OF_BIRTH,
-                        AttributeToReturn.EMAIL_ADDRESS, AttributeToReturn.INTEGRATOR_SPECIFIC_USER_ID, AttributeToReturn.RELYING_PARTY_USER_ID, AttributeToReturn.SSN)
+                        AttributeToReturn.EMAIL_ADDRESS, AttributeToReturn.INTEGRATOR_SPECIFIC_USER_ID, AttributeToReturn.RELYING_PARTY_USER_ID, AttributeToReturn.SSN, AttributeToReturn.ADDRESSES)
                 .setPushNotification(pushNotification)
                 .setTitle(title)
                 .build();
@@ -106,7 +106,7 @@ public class SignClientHttpTest extends CommonHttpTest {
                 .setExpiry(Long.MAX_VALUE)
                 .setMinRegistrationLevel(MinRegistrationLevel.BASIC)
                 .setAttributesToReturn(AttributeToReturn.BASIC_USER_INFO, AttributeToReturn.CUSTOM_IDENTIFIER, AttributeToReturn.DATE_OF_BIRTH,
-                        AttributeToReturn.EMAIL_ADDRESS, AttributeToReturn.INTEGRATOR_SPECIFIC_USER_ID, AttributeToReturn.RELYING_PARTY_USER_ID, AttributeToReturn.SSN)
+                        AttributeToReturn.EMAIL_ADDRESS, AttributeToReturn.INTEGRATOR_SPECIFIC_USER_ID, AttributeToReturn.RELYING_PARTY_USER_ID, AttributeToReturn.SSN, AttributeToReturn.ADDRESSES)
                 .setPushNotification(pushNotification)
                 .setTitle(title)
                 .build();
@@ -142,7 +142,7 @@ public class SignClientHttpTest extends CommonHttpTest {
                 .setExpiry(Long.MAX_VALUE)
                 .setMinRegistrationLevel(MinRegistrationLevel.EXTENDED)
                 .setAttributesToReturn(AttributeToReturn.BASIC_USER_INFO, AttributeToReturn.CUSTOM_IDENTIFIER, AttributeToReturn.DATE_OF_BIRTH,
-                        AttributeToReturn.EMAIL_ADDRESS, AttributeToReturn.INTEGRATOR_SPECIFIC_USER_ID, AttributeToReturn.RELYING_PARTY_USER_ID, AttributeToReturn.SSN, AttributeToReturn.ORGANISATION_ID_IDENTIFIER)
+                        AttributeToReturn.EMAIL_ADDRESS, AttributeToReturn.INTEGRATOR_SPECIFIC_USER_ID, AttributeToReturn.RELYING_PARTY_USER_ID, AttributeToReturn.SSN, AttributeToReturn.ORGANISATION_ID_IDENTIFIER, AttributeToReturn.ADDRESSES)
                 .setPushNotification(pushNotification)
                 .setTitle(title)
                 .build();
