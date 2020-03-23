@@ -2,6 +2,7 @@ package com.verisec.frejaeid.client.client.impl;
 
 import com.verisec.frejaeid.client.beans.general.BasicUserInfo;
 import com.verisec.frejaeid.client.beans.common.RelyingPartyRequest;
+import com.verisec.frejaeid.client.beans.general.AddressInfo;
 import com.verisec.frejaeid.client.beans.general.SslSettings;
 import com.verisec.frejaeid.client.beans.general.RequestedAttributes;
 import com.verisec.frejaeid.client.beans.general.SsnUserInfo;
@@ -11,6 +12,8 @@ import com.verisec.frejaeid.client.beans.sign.get.SignResultsRequest;
 import com.verisec.frejaeid.client.beans.sign.get.SignResults;
 import com.verisec.frejaeid.client.client.api.SignClientApi;
 import com.verisec.frejaeid.client.client.util.TestUtil;
+import com.verisec.frejaeid.client.enums.AddressSourceType;
+import com.verisec.frejaeid.client.enums.AddressType;
 import com.verisec.frejaeid.client.enums.TransactionStatus;
 import com.verisec.frejaeid.client.enums.Country;
 import com.verisec.frejaeid.client.enums.FrejaEnvironment;
@@ -23,6 +26,7 @@ import com.verisec.frejaeid.client.http.HttpServiceApi;
 import com.verisec.frejaeid.client.util.MethodUrl;
 import com.verisec.frejaeid.client.util.RequestTemplate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import org.junit.Assert;
 import org.junit.Test;
@@ -37,7 +41,8 @@ public class SignClientGetResultTest {
     private static final String RELYING_PARTY_USER_ID = "relyingPartyUserId";
     private static final String EMAIL_ADDRESS = "test@frejaeid.com";
     private static final String ORGANISATION_ID = "orgId";
-    private static final RequestedAttributes REQUESTED_ATTRIBUTES = new RequestedAttributes(new BasicUserInfo("name", "surname"), "customIdentifier", SsnUserInfo.create(Country.SWEDEN, "ssn"), "integratorSpecificId", "1987-10-18", RELYING_PARTY_USER_ID, EMAIL_ADDRESS, ORGANISATION_ID);
+    private static final List<AddressInfo> ADDRESSES = Arrays.asList(new AddressInfo(Country.SWEDEN, "city", "postCode", "address1", "address2", "address3", "1993-12-30", AddressType.RESIDENTIAL, AddressSourceType.GOVERNMENT_REGISTRY));
+    private static final RequestedAttributes REQUESTED_ATTRIBUTES = new RequestedAttributes(new BasicUserInfo("name", "surname"), "customIdentifier", SsnUserInfo.create(Country.SWEDEN, "ssn"), "integratorSpecificId", "1987-10-18", RELYING_PARTY_USER_ID, EMAIL_ADDRESS, ORGANISATION_ID, ADDRESSES);
 
     @Test
     public void getSignResult_relyingPartyIdNull_expectSuccess() throws FrejaEidClientInternalException, FrejaEidException {

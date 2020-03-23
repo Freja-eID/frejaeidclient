@@ -43,6 +43,9 @@ public class SignClient extends BasicClient implements SignClientApi {
      * type of client keyStore or server certificate etc.).
      */
     public static Builder create(SslSettings sslSettings, FrejaEnvironment frejaEnvironment) throws FrejaEidClientInternalException {
+        if (sslSettings == null) {
+            throw new FrejaEidClientInternalException("SslSettings cannot be null.");
+        }
         if (sslSettings.getSslContext() == null) {
             return new Builder(sslSettings.getKeystorePath(), sslSettings.getKeystorePass(), sslSettings.getServerCertificatePath(), frejaEnvironment);
         }
@@ -91,7 +94,7 @@ public class SignClient extends BasicClient implements SignClientApi {
 
         @Override
         public SignClient build() throws FrejaEidClientInternalException {
-            checkSetParametars();
+            checkSetParameters();
             if (httpService == null) {
                 httpService = new HttpService(sslContext, connectionTimeout, readTimeout);
             }

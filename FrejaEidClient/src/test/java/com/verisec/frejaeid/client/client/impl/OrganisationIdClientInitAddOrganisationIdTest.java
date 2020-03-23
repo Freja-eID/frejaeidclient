@@ -40,7 +40,7 @@ public class OrganisationIdClientInitAddOrganisationIdTest {
     @Test
     public void initAddOrganisationId_defaultRequests_expectSuccess() throws FrejaEidClientInternalException, FrejaEidException {
         InitiateAddOrganisationIdResponse expectedResponse = new InitiateAddOrganisationIdResponse(REFERENCE);
-        OrganisationIdClientApi organisaionIdClient = OrganisationIdClient.create(SslSettings.create(TestUtil.getKeystorePath(TestUtil.KEYSTORE_PATH), TestUtil.KEYSTORE_PASSWORD, TestUtil.getKeystorePath(TestUtil.CERTIFICATE_PATH)), FrejaEnvironment.TEST)
+        OrganisationIdClientApi organisationIdClient = OrganisationIdClient.create(SslSettings.create(TestUtil.getKeystorePath(TestUtil.KEYSTORE_PATH), TestUtil.KEYSTORE_PASSWORD, TestUtil.getKeystorePath(TestUtil.CERTIFICATE_PATH)), FrejaEnvironment.TEST)
                 .setHttpService(httpServiceMock)
                 .build();
         Mockito.when(httpServiceMock.send(Mockito.anyString(), Mockito.any(RequestTemplate.class), Mockito.any(RelyingPartyRequest.class), Mockito.eq(InitiateAddOrganisationIdResponse.class), (String) Mockito.isNull())).thenReturn(expectedResponse);
@@ -48,11 +48,11 @@ public class OrganisationIdClientInitAddOrganisationIdTest {
         InitiateAddOrganisationIdRequest initiateAddOrganisationIdDefaultEmailRequest = InitiateAddOrganisationIdRequest.createDefaultWithEmail(EMAIL, OrganisationId.create(ORGANISATION_ID_TITLE, IDENTIFIER_NAME, IDENTIFIER));
         InitiateAddOrganisationIdRequest initiateAddOrganisationIdDefaultSsnRequest = InitiateAddOrganisationIdRequest.createDefaultWithSsn(SsnUserInfo.create(Country.SWEDEN, SSN), OrganisationId.create(ORGANISATION_ID_TITLE, IDENTIFIER_NAME, IDENTIFIER));
 
-        String reference = organisaionIdClient.initiateAdd(initiateAddOrganisationIdDefaultEmailRequest);
+        String reference = organisationIdClient.initiateAdd(initiateAddOrganisationIdDefaultEmailRequest);
         Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getUrl() + MethodUrl.ORGANISATION_ID_INIT_ADD, RequestTemplate.INIT_ADD_ORGANISATION_ID_TEMPLATE, initiateAddOrganisationIdDefaultEmailRequest, InitiateAddOrganisationIdResponse.class, null);
         Assert.assertEquals(REFERENCE, reference);
 
-        reference = organisaionIdClient.initiateAdd(initiateAddOrganisationIdDefaultSsnRequest);
+        reference = organisationIdClient.initiateAdd(initiateAddOrganisationIdDefaultSsnRequest);
         Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getUrl() + MethodUrl.ORGANISATION_ID_INIT_ADD, RequestTemplate.INIT_ADD_ORGANISATION_ID_TEMPLATE, initiateAddOrganisationIdDefaultSsnRequest, InitiateAddOrganisationIdResponse.class, null);
         Assert.assertEquals(REFERENCE, reference);
     }

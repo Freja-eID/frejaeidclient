@@ -18,13 +18,13 @@ public class OrganisationId {
      * Creates instance of {@linkplain OrganisationId}.
      *
      * @param title will be shown to user on organisation id card (for example
-     * "Developers"). Maximum length is 20 characters. It cannot be {@code null}
+     * "Developers"). Maximum length is 22 characters. It cannot be {@code null}
      * or empty.
      * @param identifierName name of identifier that will be set to user (for
-     * example "employee number"). Maximum length is 25 characters. It cannot be
+     * example "employee number"). Maximum length is 30 characters. It cannot be
      * {@code null} or empty.
      * @param identifier will be set for user. Can be used for initiating
-     * transaction. Maximum length is 25 characters. It cannot be {@code null}
+     * transaction. Maximum length is 128 characters. It cannot be {@code null}
      * or empty.
      * @return informations for organisation id
      */

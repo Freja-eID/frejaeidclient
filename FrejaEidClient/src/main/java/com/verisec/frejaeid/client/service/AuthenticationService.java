@@ -28,7 +28,7 @@ public class AuthenticationService extends BasicService {
         this.transactionContext = transactionContext;
     }
 
-    public AuthenticationService(String serverAddress, boolean skipJwsValidation, HttpServiceApi httpService) throws FrejaEidClientInternalException {
+    public AuthenticationService(String serverAddress, HttpServiceApi httpService) throws FrejaEidClientInternalException {
         super(serverAddress, httpService);
         this.pollingTimeoutInMilliseconds = 0;
         this.transactionContext = TransactionContext.PERSONAL;

@@ -2,6 +2,7 @@ package com.verisec.frejaeid.client.beans.general;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -20,12 +21,13 @@ public class RequestedAttributes {
     private final String relyingPartyUserId;
     private final String emailAddress;
     private final String organisationIdIdentifier;
+    private final List<AddressInfo> addresses;
 
     @JsonCreator
     public RequestedAttributes(@JsonProperty(value = "basicUserInfo") BasicUserInfo basicUserInfo, @JsonProperty(value = "customIdentifier") String customIdentifier,
             @JsonProperty(value = "ssn") SsnUserInfo ssn, @JsonProperty(value = "integratorSpecificUserId") String integratorSpecificUserId,
             @JsonProperty(value = "dateOfBirth") String dateOfBirth, @JsonProperty(value = "relyingPartyUserId") String relyingPartyUserId, @JsonProperty(value = "emailAddress") String emailAddress,
-            @JsonProperty(value = "organisationIdIdentifier") String organisationIdIdentifier) {
+            @JsonProperty(value = "organisationIdIdentifier") String organisationIdIdentifier, @JsonProperty(value = "addresses") List<AddressInfo> addresses) {
         this.basicUserInfo = basicUserInfo;
         this.customIdentifier = customIdentifier;
         this.ssn = ssn;
@@ -34,6 +36,7 @@ public class RequestedAttributes {
         this.relyingPartyUserId = relyingPartyUserId;
         this.emailAddress = emailAddress;
         this.organisationIdIdentifier = organisationIdIdentifier;
+        this.addresses = addresses;
     }
 
     public BasicUserInfo getBasicUserInfo() {
@@ -68,9 +71,13 @@ public class RequestedAttributes {
         return organisationIdIdentifier;
     }
 
+    public List<AddressInfo> getAddresses() {
+        return addresses;
+    }
+     
     @Override
     public int hashCode() {
-        return Objects.hash(basicUserInfo, customIdentifier, ssn, integratorSpecificUserId, dateOfBirth, relyingPartyUserId, emailAddress, organisationIdIdentifier);
+        return Objects.hash(basicUserInfo, customIdentifier, ssn, integratorSpecificUserId, dateOfBirth, relyingPartyUserId, emailAddress, organisationIdIdentifier, addresses);
     }
 
     @Override
@@ -88,12 +95,6 @@ public class RequestedAttributes {
         if (!Objects.equals(this.customIdentifier, other.customIdentifier)) {
             return false;
         }
-        if (!Objects.equals(this.basicUserInfo, other.basicUserInfo)) {
-            return false;
-        }
-        if (!Objects.equals(this.ssn, other.ssn)) {
-            return false;
-        }
         if (!Objects.equals(this.integratorSpecificUserId, other.integratorSpecificUserId)) {
             return false;
         }
@@ -109,11 +110,21 @@ public class RequestedAttributes {
         if (!Objects.equals(this.organisationIdIdentifier, other.organisationIdIdentifier)) {
             return false;
         }
+        if (!Objects.equals(this.basicUserInfo, other.basicUserInfo)) {
+            return false;
+        }
+        if (!Objects.equals(this.ssn, other.ssn)) {
+            return false;
+        }
+        if (!Objects.equals(this.addresses, other.addresses)) {
+            return false;
+        }
         return true;
     }
 
     @Override
     public String toString() {
-        return "RequestedAttributes{" + "basicUserInfo=" + basicUserInfo + ", customIdentifier=" + customIdentifier + ", ssn=" + ssn + ", integratorSpecificUserId=" + integratorSpecificUserId + ", dateOfBirth=" + dateOfBirth + ", relyingPartyUserId=" + relyingPartyUserId + ", emailAddress=" + emailAddress + ", organisationIdIdentifier=" + organisationIdIdentifier + '}';
+        return "RequestedAttributes{" + "basicUserInfo=" + basicUserInfo + ", customIdentifier=" + customIdentifier + ", ssn=" + ssn + ", integratorSpecificUserId=" + integratorSpecificUserId + ", dateOfBirth=" + dateOfBirth + ", relyingPartyUserId=" + relyingPartyUserId + ", emailAddress=" + emailAddress + ", organisationIdIdentifier=" + organisationIdIdentifier + ", addresses=" + addresses + '}';
     }
+
 }
