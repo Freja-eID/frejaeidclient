@@ -44,11 +44,11 @@ public class CustomIdentifierClientHttpTest extends CommonHttpTest {
     public void setCustomAttribute_success() throws IOException, FrejaEidClientInternalException, InterruptedException, FrejaEidException {
         SetCustomIdentifierRequest customIdentifierRequestDefaultEmail = SetCustomIdentifierRequest.createDefaultWithEmail(EMAIL, CUSTOM_IDENTIFIER);
         sendSetCustomIdentifierRequestAndAssertResponse(customIdentifierRequestDefaultEmail);
-        SetCustomIdentifierRequest customIdentifierRequestDefaultSsn = SetCustomIdentifierRequest.createDefaultWithSsn(new SsnUserInfo(Country.NORWAY, SSN), CUSTOM_IDENTIFIER);
+        SetCustomIdentifierRequest customIdentifierRequestDefaultSsn = SetCustomIdentifierRequest.createDefaultWithSsn(SsnUserInfo.create(Country.NORWAY, SSN), CUSTOM_IDENTIFIER);
         sendSetCustomIdentifierRequestAndAssertResponse(customIdentifierRequestDefaultSsn);
         SetCustomIdentifierRequest customIdentifierRequestEmail = SetCustomIdentifierRequest.createCustom().setEmailAndCustomIdentifier(EMAIL, CUSTOM_IDENTIFIER).build();
         sendSetCustomIdentifierRequestAndAssertResponse(customIdentifierRequestEmail);
-        SetCustomIdentifierRequest customIdentifierRequestSsn = SetCustomIdentifierRequest.createCustom().setSsnAndCustomIdentifier(new SsnUserInfo(Country.NORWAY, SSN), CUSTOM_IDENTIFIER).build();
+        SetCustomIdentifierRequest customIdentifierRequestSsn = SetCustomIdentifierRequest.createCustom().setSsnAndCustomIdentifier(SsnUserInfo.create(Country.NORWAY, SSN), CUSTOM_IDENTIFIER).build();
         sendSetCustomIdentifierRequestAndAssertResponse(customIdentifierRequestSsn);
         SetCustomIdentifierRequest customIdentifierRequestPhoneNum = SetCustomIdentifierRequest.createCustom().setPhoneNumberAndCustomIdentifier(EMAIL, CUSTOM_IDENTIFIER).build();
         sendSetCustomIdentifierRequestAndAssertResponse(customIdentifierRequestPhoneNum);

@@ -36,7 +36,7 @@ public class AuthenticationClientGetResultTest {
 
     private final HttpServiceApi httpServiceMock = Mockito.mock(HttpServiceApi.class);
 
-    private static final SsnUserInfo SSN = new SsnUserInfo(Country.SWEDEN, "199207295578");
+    private static final SsnUserInfo SSN = SsnUserInfo.create(Country.SWEDEN, "199207295578");
     private static final String REFERENCE = "123456789012345678";
     private static final String RELYING_PARTY_ID = "relyingPartyId";
     private static final BasicUserInfo BASIC_USER_INFO = new BasicUserInfo("John", "Fante");

@@ -65,7 +65,7 @@ public class SignClientInitSignTest {
         Mockito.when(httpServiceMock.send(Mockito.anyString(), Mockito.any(RequestTemplate.class), Mockito.any(RelyingPartyRequest.class), Mockito.eq(InitiateSignResponse.class), (String) Mockito.isNull())).thenReturn(expectedResponse);
 
         InitiateSignRequest initiateSignDefaultEmailRequest = InitiateSignRequest.createDefaultWithEmail(EMAIL, title, text);
-        InitiateSignRequest initiateSignDefaultSsnRequest = InitiateSignRequest.createDefaultWithSsn(new SsnUserInfo(Country.SWEDEN, SSN), title, text);
+        InitiateSignRequest initiateSignDefaultSsnRequest = InitiateSignRequest.createDefaultWithSsn(SsnUserInfo.create(Country.SWEDEN, SSN), title, text);
 
         String reference = signClient.initiate(initiateSignDefaultEmailRequest);
         Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getUrl() + MethodUrl.SIGN_INIT, RequestTemplate.INIT_SIGN_TEMPLATE, initiateSignDefaultEmailRequest, InitiateSignResponse.class, null);
@@ -85,7 +85,7 @@ public class SignClientInitSignTest {
         Mockito.when(httpServiceMock.send(Mockito.anyString(), Mockito.any(RequestTemplate.class), Mockito.any(RelyingPartyRequest.class), Mockito.eq(InitiateSignResponse.class), (String) Mockito.isNull())).thenReturn(expectedResponse);
 
         InitiateSignRequest initiateSignDefaultEmailRequest = InitiateSignRequest.createDefaultWithEmail(EMAIL, title, text);
-        InitiateSignRequest initiateSignDefaultSsnRequest = InitiateSignRequest.createDefaultWithSsn(new SsnUserInfo(Country.SWEDEN, SSN), title, text);
+        InitiateSignRequest initiateSignDefaultSsnRequest = InitiateSignRequest.createDefaultWithSsn(SsnUserInfo.create(Country.SWEDEN, SSN), title, text);
 
         String reference = signClient.initiate(initiateSignDefaultEmailRequest);
         Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getUrl() + MethodUrl.ORGANISATION_SIGN_INIT, RequestTemplate.INIT_SIGN_TEMPLATE, initiateSignDefaultEmailRequest, InitiateSignResponse.class, null);

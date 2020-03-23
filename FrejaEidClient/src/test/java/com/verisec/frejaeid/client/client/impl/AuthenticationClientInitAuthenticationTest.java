@@ -57,7 +57,7 @@ public class AuthenticationClientInitAuthenticationTest {
 
     @Test
     public void initAuth_userInfoTypeSsn_success() throws FrejaEidClientInternalException, FrejaEidException {
-        InitiateAuthenticationRequest initiateAuthenticationRequest = InitiateAuthenticationRequest.createDefaultWithSsn(new SsnUserInfo(COUNTRY, SSN));
+        InitiateAuthenticationRequest initiateAuthenticationRequest = InitiateAuthenticationRequest.createDefaultWithSsn(SsnUserInfo.create(COUNTRY, SSN));
         initAuth_relyingPartyNull_success(initiateAuthenticationRequest);
     }
 
@@ -69,7 +69,7 @@ public class AuthenticationClientInitAuthenticationTest {
 
     @Test
     public void initAuth_userInfoTypeSsn_requestedAttributes_success() throws FrejaEidClientInternalException, FrejaEidException {
-        InitiateAuthenticationRequest initiateAuthenticationRequest = InitiateAuthenticationRequest.createCustom().setSsn(new SsnUserInfo(COUNTRY, SSN)).setAttributesToReturn(AttributeToReturn.CUSTOM_IDENTIFIER, AttributeToReturn.BASIC_USER_INFO, AttributeToReturn.DATE_OF_BIRTH, AttributeToReturn.EMAIL_ADDRESS, AttributeToReturn.INTEGRATOR_SPECIFIC_USER_ID, AttributeToReturn.RELYING_PARTY_USER_ID, AttributeToReturn.SSN, AttributeToReturn.ORGANISATION_ID_IDENTIFIER).setRelyingPartyId(RELYING_PARTY_ID).build();
+        InitiateAuthenticationRequest initiateAuthenticationRequest = InitiateAuthenticationRequest.createCustom().setSsn(SsnUserInfo.create(COUNTRY, SSN)).setAttributesToReturn(AttributeToReturn.CUSTOM_IDENTIFIER, AttributeToReturn.BASIC_USER_INFO, AttributeToReturn.DATE_OF_BIRTH, AttributeToReturn.EMAIL_ADDRESS, AttributeToReturn.INTEGRATOR_SPECIFIC_USER_ID, AttributeToReturn.RELYING_PARTY_USER_ID, AttributeToReturn.SSN, AttributeToReturn.ORGANISATION_ID_IDENTIFIER).setRelyingPartyId(RELYING_PARTY_ID).build();
         initAuth_personalContext_relyingPartyNotNull_success(initiateAuthenticationRequest);
     }
 

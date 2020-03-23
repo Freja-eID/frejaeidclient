@@ -64,7 +64,7 @@ public class OrganisationIdClientHttpTest extends CommonHttpTest {
         InitiateAddOrganisationIdRequest initiateAddOrganisationIdRequestDefaultEmail = InitiateAddOrganisationIdRequest.createDefaultWithEmail(EMAIL, OrganisationId.create(ORGANISATION_ID_TITLE, IDENTIFIER_NAME, IDENTIFIER));
         sendInitiateAddOrganisationIdRequestAndAssertResponse(initiateAddOrganisationIdRequestDefaultEmail);
 
-        InitiateAddOrganisationIdRequest initiateAddOrganisationIdRequestDefaultSsn = InitiateAddOrganisationIdRequest.createDefaultWithSsn(new SsnUserInfo(Country.FINLAND, SSN), OrganisationId.create(ORGANISATION_ID_TITLE, IDENTIFIER_NAME, IDENTIFIER));
+        InitiateAddOrganisationIdRequest initiateAddOrganisationIdRequestDefaultSsn = InitiateAddOrganisationIdRequest.createDefaultWithSsn(SsnUserInfo.create(Country.FINLAND, SSN), OrganisationId.create(ORGANISATION_ID_TITLE, IDENTIFIER_NAME, IDENTIFIER));
         sendInitiateAddOrganisationIdRequestAndAssertResponse(initiateAddOrganisationIdRequestDefaultSsn);
 
         InitiateAddOrganisationIdRequest initAddOrganisationIdRequestCustomEmail = InitiateAddOrganisationIdRequest.createCustom()
@@ -75,7 +75,7 @@ public class OrganisationIdClientHttpTest extends CommonHttpTest {
         sendInitiateAddOrganisationIdRequestAndAssertResponse(initAddOrganisationIdRequestCustomEmail);
 
         InitiateAddOrganisationIdRequest initAddOrganisationIdRequestCustomSsn = InitiateAddOrganisationIdRequest.createCustom()
-                .setSsnAndOrganisationId(new SsnUserInfo(Country.DENMARK, SSN), OrganisationId.create(ORGANISATION_ID_TITLE, IDENTIFIER_NAME, IDENTIFIER))
+                .setSsnAndOrganisationId(SsnUserInfo.create(Country.DENMARK, SSN), OrganisationId.create(ORGANISATION_ID_TITLE, IDENTIFIER_NAME, IDENTIFIER))
                 .setExpiry(Long.MAX_VALUE)
                 .setMinRegistrationLevel(MinRegistrationLevel.EXTENDED)
                 .build();
@@ -104,11 +104,11 @@ public class OrganisationIdClientHttpTest extends CommonHttpTest {
         sendInitiateAddOrganisationIdRequestAndAssertResponse(expectedInitAddOrganisationIdRequestWithRelyingPartyId, initAddOrganisationIdRequestWithRelyingPartyId);
 
         InitiateAddOrganisationIdRequest initAddOrganisationIdRequestWithDefaultValues = InitiateAddOrganisationIdRequest.createCustom()
-                .setSsnAndOrganisationId(new SsnUserInfo(Country.NORWAY, SSN), OrganisationId.create(ORGANISATION_ID_TITLE, IDENTIFIER_NAME, IDENTIFIER))
+                .setSsnAndOrganisationId(SsnUserInfo.create(Country.NORWAY, SSN), OrganisationId.create(ORGANISATION_ID_TITLE, IDENTIFIER_NAME, IDENTIFIER))
                 .setRelyingPartyId(RELYING_PARTY_ID)
                 .build();
         InitiateAddOrganisationIdRequest expectedInitAddOrganisationIdRequestWithDefaultValues = InitiateAddOrganisationIdRequest.createCustom()
-                .setSsnAndOrganisationId(new SsnUserInfo(Country.NORWAY, SSN), OrganisationId.create(ORGANISATION_ID_TITLE, IDENTIFIER_NAME, IDENTIFIER))
+                .setSsnAndOrganisationId(SsnUserInfo.create(Country.NORWAY, SSN), OrganisationId.create(ORGANISATION_ID_TITLE, IDENTIFIER_NAME, IDENTIFIER))
                 .build();
         sendInitiateAddOrganisationIdRequestAndAssertResponse(expectedInitAddOrganisationIdRequestWithDefaultValues, initAddOrganisationIdRequestWithDefaultValues);
     }

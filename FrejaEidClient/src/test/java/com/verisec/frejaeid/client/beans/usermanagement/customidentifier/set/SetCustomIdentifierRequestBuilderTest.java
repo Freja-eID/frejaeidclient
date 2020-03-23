@@ -11,7 +11,7 @@ import org.junit.Test;
 public class SetCustomIdentifierRequestBuilderTest {
 
     private static final String EMAIL = "email";
-    private static final SsnUserInfo SSN_USER_INFO = new SsnUserInfo(Country.SWEDEN, "123123123");
+    private static final SsnUserInfo SSN_USER_INFO = SsnUserInfo.create(Country.SWEDEN, "123123123");
     private static final String PHONE_NUMBER = "123123123";
     private static final String IDENTIFIER = "identifier";
     private static final String RELYING_PARTY_ID = "relyingPartyId";

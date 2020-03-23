@@ -18,7 +18,7 @@ import java.util.TreeSet;
 public class InitiateSignRequestBuildersTest {
 
     private static final String EMAIL = "email";
-    private static final SsnUserInfo SSN_USER_INFO = new SsnUserInfo(Country.SWEDEN, "123123123");
+    private static final SsnUserInfo SSN_USER_INFO = SsnUserInfo.create(Country.SWEDEN, "123123123");
     private static final String PHONE_NUMBER = "123123123";
     private static final MinRegistrationLevel REGISTRATION_STATE = MinRegistrationLevel.EXTENDED;
     private static final Long EXPIRY = Long.MIN_VALUE;

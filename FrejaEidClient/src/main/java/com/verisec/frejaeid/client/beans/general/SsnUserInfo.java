@@ -14,9 +14,13 @@ public class SsnUserInfo {
 
     private final Country country;
     private final String ssn;
+    
+    public static SsnUserInfo create(Country country, String ssn) {
+        return new SsnUserInfo(country, ssn);
+    }
 
     @JsonCreator
-    public SsnUserInfo(@JsonProperty("country") Country country, @JsonProperty("ssn") String ssn) {
+    private SsnUserInfo(@JsonProperty("country") Country country, @JsonProperty("ssn") String ssn) {
         this.country = country;
         this.ssn = ssn;
     }

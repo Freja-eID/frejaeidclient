@@ -86,7 +86,7 @@ public class SignClientHttpTest extends CommonHttpTest {
         DataToSign dataToSign = DataToSign.create(Base64.encodeBase64String(dataToSignText.getBytes(StandardCharsets.UTF_8)));
         InitiateSignRequest initiateSignRequestDefaultEmail = InitiateSignRequest.createDefaultWithEmail(EMAIL, title, dataToSignText);
         sendInitiateSignRequestAndAssertResponse(initiateSignRequestDefaultEmail);
-        InitiateSignRequest initiateSignRequestDefaultSsn = InitiateSignRequest.createDefaultWithSsn(new SsnUserInfo(Country.FINLAND, SSN), title, dataToSignText);
+        InitiateSignRequest initiateSignRequestDefaultSsn = InitiateSignRequest.createDefaultWithSsn(SsnUserInfo.create(Country.FINLAND, SSN), title, dataToSignText);
         sendInitiateSignRequestAndAssertResponse(initiateSignRequestDefaultSsn);
         InitiateSignRequest initSignCustomRequestWithRequestedAttributes = InitiateSignRequest.createCustom()
                 .setEmail(EMAIL)

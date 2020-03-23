@@ -67,7 +67,7 @@ public class AuthenticationClientHttpTest extends CommonHttpTest {
         InitiateAuthenticationRequest initiateAuthenticationRequestDefaultWithEmail = InitiateAuthenticationRequest.createDefaultWithEmail(EMAIL);
         sendInitAuthRequestAndAssertResponse(initiateAuthenticationRequestDefaultWithEmail, initAuthResponseString);
 
-        InitiateAuthenticationRequest initiateAuthenticationRequestDefaultWithSsn = InitiateAuthenticationRequest.createDefaultWithSsn(new SsnUserInfo(Country.NORWAY, SSN));
+        InitiateAuthenticationRequest initiateAuthenticationRequestDefaultWithSsn = InitiateAuthenticationRequest.createDefaultWithSsn(SsnUserInfo.create(Country.NORWAY, SSN));
         sendInitAuthRequestAndAssertResponse(initiateAuthenticationRequestDefaultWithSsn, initAuthResponseString);
 
         InitiateAuthenticationRequest initAuthenticationRequestWithRequestedAttributesUserInfoEmail = InitiateAuthenticationRequest.createCustom()
@@ -83,7 +83,7 @@ public class AuthenticationClientHttpTest extends CommonHttpTest {
         sendInitAuthRequestAndAssertResponse(initAuthenticationRequestWithRequestedAttributesUserInfoPhoneNum, initAuthResponseString);
 
         InitiateAuthenticationRequest initAuthenticationRequestWithRequestedAttributesUserInfoSsn = InitiateAuthenticationRequest.createCustom()
-                .setSsn(new SsnUserInfo(Country.NORWAY, SSN))
+                .setSsn(SsnUserInfo.create(Country.NORWAY, SSN))
                 .setAttributesToReturn(AttributeToReturn.BASIC_USER_INFO, AttributeToReturn.EMAIL_ADDRESS, AttributeToReturn.SSN, AttributeToReturn.CUSTOM_IDENTIFIER, AttributeToReturn.INTEGRATOR_SPECIFIC_USER_ID, AttributeToReturn.ADDRESSES)
                 .build();
         sendInitAuthRequestAndAssertResponse(initAuthenticationRequestWithRequestedAttributesUserInfoSsn, initAuthResponseString);
