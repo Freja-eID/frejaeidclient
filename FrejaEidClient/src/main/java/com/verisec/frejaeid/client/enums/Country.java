@@ -1,6 +1,7 @@
 package com.verisec.frejaeid.client.enums;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum Country {
 
@@ -262,6 +263,7 @@ public enum Country {
         this.countryCode = countryCode;
     }
 
+    @JsonValue
     public String getCountryCode() {
         return countryCode;
     }
@@ -274,7 +276,7 @@ public enum Country {
             return UNKNOWN;
         }
     }
-
+    
     public static Country getByCountryCode(String countryCode) {
         for (Country country : values()) {
             if (country.getCountryCode().equals(countryCode)) {
