@@ -3,6 +3,7 @@ package com.verisec.frejaeid.client.enums;
 import com.verisec.frejaeid.client.beans.general.BasicUserInfo;
 import com.verisec.frejaeid.client.beans.general.SsnUserInfo;
 import com.verisec.frejaeid.client.beans.general.AddressInfo;
+import com.verisec.frejaeid.client.beans.general.Email;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -71,7 +72,12 @@ public enum AttributeToReturn {
      * requested only for {@linkplain MinRegistrationLevel#EXTENDED} and
      * {@linkplain MinRegistrationLevel#PLUS}.
      */
-    ADDRESSES("ADDRESSES");
+    ADDRESSES("ADDRESSES"),
+    /**
+     * If ALL_EMAIL_ADDRESSES is requested, list of {@linkplain Email} which contains all
+     * user's email addresses register in the Freja eID.
+     */
+    ALL_EMAIL_ADDRESSES("ALL_EMAIL_ADDRESSES");
 
     private final String name;
 
