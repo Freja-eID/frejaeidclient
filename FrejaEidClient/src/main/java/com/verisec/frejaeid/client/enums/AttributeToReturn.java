@@ -75,7 +75,7 @@ public enum AttributeToReturn {
     ADDRESSES("ADDRESSES"),
     /**
      * If ALL_EMAIL_ADDRESSES is requested, list of {@linkplain Email} which contains all
-     * user's email addresses register in the Freja eID.
+     * user's email addresses registered in Freja eID.
      */
     ALL_EMAIL_ADDRESSES("ALL_EMAIL_ADDRESSES");
 
