@@ -6,8 +6,8 @@ package com.verisec.frejaeid.client.enums;
  */
 public enum AddressSourceType {
     
-    MANUAL_ENTRY("Manual_Entry"),
-    GOVERNMENT_REGISTRY("Government_Registry");
+    MANUAL_ENTRY("MANUAL_ENTRY"),
+    GOVERNMENT_REGISTRY("GOVERNMENT_REGISTRY");
 
     private String sourceType;
 
