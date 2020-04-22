@@ -22,12 +22,14 @@ public class RequestedAttributes {
     private final String emailAddress;
     private final String organisationIdIdentifier;
     private final List<AddressInfo> addresses;
+    private final List<Email> allEmailAddresses;
 
     @JsonCreator
     public RequestedAttributes(@JsonProperty(value = "basicUserInfo") BasicUserInfo basicUserInfo, @JsonProperty(value = "customIdentifier") String customIdentifier,
             @JsonProperty(value = "ssn") SsnUserInfo ssn, @JsonProperty(value = "integratorSpecificUserId") String integratorSpecificUserId,
             @JsonProperty(value = "dateOfBirth") String dateOfBirth, @JsonProperty(value = "relyingPartyUserId") String relyingPartyUserId, @JsonProperty(value = "emailAddress") String emailAddress,
-            @JsonProperty(value = "organisationIdIdentifier") String organisationIdIdentifier, @JsonProperty(value = "addresses") List<AddressInfo> addresses) {
+            @JsonProperty(value = "organisationIdIdentifier") String organisationIdIdentifier, @JsonProperty(value = "addresses") List<AddressInfo> addresses,
+            @JsonProperty(value = "allEmailAddresses") List<Email> allEmailAddresses) {
         this.basicUserInfo = basicUserInfo;
         this.customIdentifier = customIdentifier;
         this.ssn = ssn;
@@ -37,6 +39,7 @@ public class RequestedAttributes {
         this.emailAddress = emailAddress;
         this.organisationIdIdentifier = organisationIdIdentifier;
         this.addresses = addresses;
+        this.allEmailAddresses = allEmailAddresses;
     }
 
     public BasicUserInfo getBasicUserInfo() {
@@ -74,10 +77,16 @@ public class RequestedAttributes {
     public List<AddressInfo> getAddresses() {
         return addresses;
     }
-     
+
+    public List<Email> getAllEmailAddresses() {
+        return allEmailAddresses;
+    }
+
     @Override
     public int hashCode() {
-        return Objects.hash(basicUserInfo, customIdentifier, ssn, integratorSpecificUserId, dateOfBirth, relyingPartyUserId, emailAddress, organisationIdIdentifier, addresses);
+        return Objects.hash(basicUserInfo, customIdentifier, ssn, integratorSpecificUserId,
+                dateOfBirth, relyingPartyUserId, emailAddress, organisationIdIdentifier,
+                addresses, allEmailAddresses);
     }
 
     @Override
@@ -119,12 +128,15 @@ public class RequestedAttributes {
         if (!Objects.equals(this.addresses, other.addresses)) {
             return false;
         }
+        if (!Objects.equals(this.allEmailAddresses, other.allEmailAddresses)) {
+            return false;
+        }
         return true;
     }
 
     @Override
     public String toString() {
-        return "RequestedAttributes{" + "basicUserInfo=" + basicUserInfo + ", customIdentifier=" + customIdentifier + ", ssn=" + ssn + ", integratorSpecificUserId=" + integratorSpecificUserId + ", dateOfBirth=" + dateOfBirth + ", relyingPartyUserId=" + relyingPartyUserId + ", emailAddress=" + emailAddress + ", organisationIdIdentifier=" + organisationIdIdentifier + ", addresses=" + addresses + '}';
+        return "RequestedAttributes{" + "basicUserInfo=" + basicUserInfo + ", customIdentifier=" + customIdentifier + ", ssn=" + ssn + ", integratorSpecificUserId=" + integratorSpecificUserId + ", dateOfBirth=" + dateOfBirth + ", relyingPartyUserId=" + relyingPartyUserId + ", emailAddress=" + emailAddress + ", organisationIdIdentifier=" + organisationIdIdentifier + ", addresses=" + addresses + ", allEmailAddresses=" + allEmailAddresses + '}';
     }
 
 }

@@ -3,6 +3,7 @@ package com.verisec.frejaeid.client.enums;
 import com.verisec.frejaeid.client.beans.general.BasicUserInfo;
 import com.verisec.frejaeid.client.beans.general.SsnUserInfo;
 import com.verisec.frejaeid.client.beans.general.AddressInfo;
+import com.verisec.frejaeid.client.beans.general.Email;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -58,7 +59,7 @@ public enum AttributeToReturn {
      */
     RELYING_PARTY_USER_ID("RELYING_PARTY_USER_ID"),
     /**
-     * Email address of user.
+     * Primary email address of user.
      */
     EMAIL_ADDRESS("EMAIL_ADDRESS"),
     /**
@@ -67,11 +68,17 @@ public enum AttributeToReturn {
     ORGANISATION_ID_IDENTIFIER("ORGANISATION_ID_IDENTIFIER"),
     /**
      * If ADDRESSES is requested, list of {@linkplain AddressInfo} which
-     * contains user's current addresses will be returned and it can be
+     * contains user's current physical addresses will be returned and it can be
      * requested only for {@linkplain MinRegistrationLevel#EXTENDED} and
      * {@linkplain MinRegistrationLevel#PLUS}.
      */
-    ADDRESSES("ADDRESSES");
+    ADDRESSES("ADDRESSES"),
+    /**
+     * If ALL_EMAIL_ADDRESSES is requested, list of {@linkplain Email} which
+     * contains all user's email addresses registered in Freja eID will be
+     * returned.
+     */
+    ALL_EMAIL_ADDRESSES("ALL_EMAIL_ADDRESSES");
 
     private final String name;
 

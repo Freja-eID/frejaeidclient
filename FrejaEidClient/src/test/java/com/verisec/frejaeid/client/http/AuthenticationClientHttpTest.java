@@ -72,25 +72,25 @@ public class AuthenticationClientHttpTest extends CommonHttpTest {
 
         InitiateAuthenticationRequest initAuthenticationRequestWithRequestedAttributesUserInfoEmail = InitiateAuthenticationRequest.createCustom()
                 .setEmail(EMAIL)
-                .setAttributesToReturn(AttributeToReturn.BASIC_USER_INFO, AttributeToReturn.EMAIL_ADDRESS, AttributeToReturn.SSN, AttributeToReturn.CUSTOM_IDENTIFIER, AttributeToReturn.INTEGRATOR_SPECIFIC_USER_ID, AttributeToReturn.ADDRESSES)
+                .setAttributesToReturn(AttributeToReturn.BASIC_USER_INFO, AttributeToReturn.EMAIL_ADDRESS, AttributeToReturn.SSN, AttributeToReturn.CUSTOM_IDENTIFIER, AttributeToReturn.INTEGRATOR_SPECIFIC_USER_ID, AttributeToReturn.ADDRESSES, AttributeToReturn.ALL_EMAIL_ADDRESSES)
                 .build();
         sendInitAuthRequestAndAssertResponse(initAuthenticationRequestWithRequestedAttributesUserInfoEmail, initAuthResponseString);
 
         InitiateAuthenticationRequest initAuthenticationRequestWithRequestedAttributesUserInfoPhoneNum = InitiateAuthenticationRequest.createCustom()
                 .setPhoneNumber(EMAIL)
-                .setAttributesToReturn(AttributeToReturn.BASIC_USER_INFO, AttributeToReturn.EMAIL_ADDRESS, AttributeToReturn.SSN, AttributeToReturn.CUSTOM_IDENTIFIER, AttributeToReturn.INTEGRATOR_SPECIFIC_USER_ID, AttributeToReturn.ADDRESSES)
+                .setAttributesToReturn(AttributeToReturn.BASIC_USER_INFO, AttributeToReturn.EMAIL_ADDRESS, AttributeToReturn.SSN, AttributeToReturn.CUSTOM_IDENTIFIER, AttributeToReturn.INTEGRATOR_SPECIFIC_USER_ID, AttributeToReturn.ADDRESSES, AttributeToReturn.ALL_EMAIL_ADDRESSES)
                 .build();
         sendInitAuthRequestAndAssertResponse(initAuthenticationRequestWithRequestedAttributesUserInfoPhoneNum, initAuthResponseString);
 
         InitiateAuthenticationRequest initAuthenticationRequestWithRequestedAttributesUserInfoSsn = InitiateAuthenticationRequest.createCustom()
                 .setSsn(SsnUserInfo.create(Country.NORWAY, SSN))
-                .setAttributesToReturn(AttributeToReturn.BASIC_USER_INFO, AttributeToReturn.EMAIL_ADDRESS, AttributeToReturn.SSN, AttributeToReturn.CUSTOM_IDENTIFIER, AttributeToReturn.INTEGRATOR_SPECIFIC_USER_ID, AttributeToReturn.ADDRESSES)
+                .setAttributesToReturn(AttributeToReturn.BASIC_USER_INFO, AttributeToReturn.EMAIL_ADDRESS, AttributeToReturn.SSN, AttributeToReturn.CUSTOM_IDENTIFIER, AttributeToReturn.INTEGRATOR_SPECIFIC_USER_ID, AttributeToReturn.ADDRESSES, AttributeToReturn.ALL_EMAIL_ADDRESSES)
                 .build();
         sendInitAuthRequestAndAssertResponse(initAuthenticationRequestWithRequestedAttributesUserInfoSsn, initAuthResponseString);
 
         InitiateAuthenticationRequest initAuthenticationRequestWithRequestedAttributesUserInfoInferred = InitiateAuthenticationRequest.createCustom()
                 .setInferred()
-                .setAttributesToReturn(AttributeToReturn.BASIC_USER_INFO, AttributeToReturn.EMAIL_ADDRESS, AttributeToReturn.SSN, AttributeToReturn.CUSTOM_IDENTIFIER, AttributeToReturn.INTEGRATOR_SPECIFIC_USER_ID, AttributeToReturn.ADDRESSES)
+                .setAttributesToReturn(AttributeToReturn.BASIC_USER_INFO, AttributeToReturn.EMAIL_ADDRESS, AttributeToReturn.SSN, AttributeToReturn.CUSTOM_IDENTIFIER, AttributeToReturn.INTEGRATOR_SPECIFIC_USER_ID, AttributeToReturn.ADDRESSES, AttributeToReturn.ALL_EMAIL_ADDRESSES)
                 .build();
         sendInitAuthRequestAndAssertResponse(initAuthenticationRequestWithRequestedAttributesUserInfoInferred, initAuthResponseString);
 
@@ -114,7 +114,7 @@ public class AuthenticationClientHttpTest extends CommonHttpTest {
                 .setTestModeCustomUrl("http://localhost:" + MOCK_SERVICE_PORT).setTransactionContext(TransactionContext.ORGANISATIONAL).build();
         InitiateAuthenticationRequest initAuthenticationRequestWithRequestedAttributesUserInfoOrganisationId = InitiateAuthenticationRequest.createCustom()
                 .setOrganisationId(ORGANISATION_ID)
-                .setAttributesToReturn(AttributeToReturn.BASIC_USER_INFO, AttributeToReturn.EMAIL_ADDRESS, AttributeToReturn.SSN, AttributeToReturn.CUSTOM_IDENTIFIER, AttributeToReturn.INTEGRATOR_SPECIFIC_USER_ID, AttributeToReturn.ORGANISATION_ID_IDENTIFIER, AttributeToReturn.ADDRESSES)
+                .setAttributesToReturn(AttributeToReturn.BASIC_USER_INFO, AttributeToReturn.EMAIL_ADDRESS, AttributeToReturn.SSN, AttributeToReturn.CUSTOM_IDENTIFIER, AttributeToReturn.INTEGRATOR_SPECIFIC_USER_ID, AttributeToReturn.ORGANISATION_ID_IDENTIFIER, AttributeToReturn.ADDRESSES, AttributeToReturn.ALL_EMAIL_ADDRESSES)
                 .build();
 
         String initAuthResponseString = jsonService.serializeToJson(initiateAuthenticationResponse);
