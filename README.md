@@ -57,7 +57,7 @@ Initiate request
 InitiateAuthenticationRequest request = InitiateAuthenticationRequest.createDefaultWithEmail("email@example.com");
 String reference = authenticationClient.initiate(request);
 ```
-Poll for request
+Poll for result
 ```java
 int maxWaitingTimeInSeconds = 30;
 AuthenticationResult result = authenticationClient.pollForResult(AuthenticationResultRequest.create(reference), maxWaitingTimeInSeconds);
@@ -76,7 +76,7 @@ Initiate request
 InitiateSignRequest request = InitiateSignRequest.createDefaultWithEmail("email@example.com", "Title", "Text to be signed");
 String reference = signClient.initiate(request);
 ```
-Poll for request
+Poll for result
 ```java
 int maxWaitingTimeInSeconds = 60;
 SignResult result = signClient.pollForResult(SignResultRequest.create(reference), maxWaitingTimeInSeconds);
