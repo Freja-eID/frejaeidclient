@@ -16,13 +16,17 @@ import com.verisec.frejaeid.client.http.HttpService;
 import com.verisec.frejaeid.client.http.HttpServiceApi;
 import java.util.List;
 import javax.net.ssl.SSLContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Performs authentication actions.
  *
  */
 public class AuthenticationClient extends BasicClient implements AuthenticationClientApi {
-
+    
+    public static final Logger LOG = LoggerFactory.getLogger(AuthenticationClient.class);
+    
     private AuthenticationClient(String serverCustomUrl, int pollingTimeoutInMillseconds, TransactionContext transactionContext, HttpServiceApi httpService) throws FrejaEidClientInternalException {
         super(serverCustomUrl, pollingTimeoutInMillseconds, transactionContext, httpService);
     }
@@ -49,55 +53,72 @@ public class AuthenticationClient extends BasicClient implements AuthenticationC
         }
         return new Builder(sslSettings.getSslContext(), frejaEnvironment);
     }
-
+    
     @Override
     public String initiate(InitiateAuthenticationRequest initiateAuthenticationRequest) throws FrejaEidClientInternalException, FrejaEidException {
         requestValidationService.validateInitAuthRequest(initiateAuthenticationRequest, authenticationService.getTransactionContext());
-        return authenticationService.initiate(initiateAuthenticationRequest).getAuthRef();
+        LOG.debug("Initiating authentication transaction for user info type {}, minimum registration level of user {} and requesting attributes {}.", initiateAuthenticationRequest.getUserInfoType(), initiateAuthenticationRequest.getMinRegistrationLevel(), initiateAuthenticationRequest.getAttributesToReturn());
+        String reference = authenticationService.initiate(initiateAuthenticationRequest).getAuthRef();
+        LOG.debug("Received authetnication transaction reference {}.", reference);
+        return reference;
     }
-
+    
     @Override
     public AuthenticationResult getResult(AuthenticationResultRequest authenticationResultRequest) throws FrejaEidClientInternalException, FrejaEidException {
         requestValidationService.validateResultRequest(authenticationResultRequest);
-        return authenticationService.getResult(authenticationResultRequest);
+        LOG.debug("Getting result for authentication transaction reference {}.", authenticationResultRequest.getAuthRef());
+        AuthenticationResult authenticationResult = authenticationService.getResult(authenticationResultRequest);
+        LOG.debug("Received {} status for authentication trasnsaction reference {}.", authenticationResult.getStatus(), authenticationResult.getAuthRef());
+        return authenticationResult;
     }
-
+    
     @Override
     public List<AuthenticationResult> getResults(AuthenticationResultsRequest authenticationResultsRequest) throws FrejaEidClientInternalException, FrejaEidException {
         requestValidationService.validateResultsRequest(authenticationResultsRequest);
-        return authenticationService.getResults(authenticationResultsRequest).getAuthenticationResults();
+        LOG.debug("Getting all authentication transaction results.");
+        List<AuthenticationResult> authenticationResults = authenticationService.getResults(authenticationResultsRequest).getAuthenticationResults();
+        LOG.debug("Successfully received authentication results.");
+        return authenticationResults;
     }
-
+    
     @Override
     public AuthenticationResult pollForResult(AuthenticationResultRequest authenticationResultRequest, int maxWaitingTimeInSec) throws FrejaEidClientInternalException, FrejaEidException, FrejaEidClientPollingException {
         requestValidationService.validateResultRequest(authenticationResultRequest);
-        return authenticationService.pollForResult(authenticationResultRequest, maxWaitingTimeInSec);
+        LOG.debug("Polling {} s for result for authentication transaction reference {}.", maxWaitingTimeInSec, authenticationResultRequest.getAuthRef());
+        AuthenticationResult authenticationResult = authenticationService.pollForResult(authenticationResultRequest, maxWaitingTimeInSec);
+        LOG.debug("Received {} status for authentication trasnsaction reference {}, after polling for result.", authenticationResult.getStatus(), authenticationResult.getAuthRef());
+        return authenticationResult;
     }
-
+    
     @Override
     public void cancel(CancelAuthenticationRequest cancelAuthenticationRequest) throws FrejaEidClientInternalException, FrejaEidException {
         requestValidationService.validateCancelRequest(cancelAuthenticationRequest);
+        LOG.debug("Canceling authentication transaction with reference {}.", cancelAuthenticationRequest.getAuthRef());
         authenticationService.cancel(cancelAuthenticationRequest);
+        LOG.debug("Successfully canceled authentication transaction with reference {}.", cancelAuthenticationRequest.getAuthRef());
     }
-
+    
     public static class Builder extends GenericBuilder {
-
+        
+        public static final Logger LOG = LoggerFactory.getLogger(Builder.class);
+        
         private Builder(SSLContext sslContext, FrejaEnvironment frejaEnvironment) throws FrejaEidClientInternalException {
             super(sslContext, frejaEnvironment);
         }
-
+        
         private Builder(String keystorePath, String keystorePass, String certificatePath, FrejaEnvironment frejaEnvironment) throws FrejaEidClientInternalException {
             super(keystorePath, keystorePass, certificatePath, frejaEnvironment);
         }
-
+        
         @Override
         public AuthenticationClient build() throws FrejaEidClientInternalException {
             checkSetParameters();
             if (httpService == null) {
                 httpService = new HttpService(sslContext, connectionTimeout, readTimeout);
             }
+            LOG.debug("Successfully created AuthenticationClient with server url {}, polling timeout {} and transaction context {}.", serverCustomUrl, pollingTimeout, transactionContext);
             return new AuthenticationClient(serverCustomUrl, pollingTimeout, transactionContext, httpService);
         }
-
+        
     }
 }

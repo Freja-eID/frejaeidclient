@@ -22,9 +22,12 @@ import java.security.UnrecoverableKeyException;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
+import java.util.concurrent.TimeUnit;
 import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManagerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class BasicClient {
 
@@ -51,6 +54,8 @@ public class BasicClient {
 
     public abstract static class GenericBuilder {
 
+        public static final Logger LOG = LoggerFactory.getLogger(GenericBuilder.class);
+
         protected String serverCustomUrl = null;
         protected int connectionTimeout = DEFAULT_CONNECTION_TIMEOUT_IN_MILLISECONDS;
         protected int readTimeout = DEFAULT_READ_TIMEOUT_IN_MILLISECONDS;
@@ -63,10 +68,7 @@ public class BasicClient {
             if (sslContext != null) {
                 this.sslContext = sslContext;
             }
-            serverCustomUrl = FrejaEnvironment.PRODUCTION.getUrl();
-            if (frejaEnvironment == FrejaEnvironment.TEST) {
-                serverCustomUrl = FrejaEnvironment.TEST.getUrl();
-            }
+            setServerCustomUrl(frejaEnvironment);
         }
 
         public GenericBuilder(String keystorePath, String keystorePass, String certificatePath, FrejaEnvironment frejaEnvironment) throws FrejaEidClientInternalException {
@@ -75,9 +77,11 @@ public class BasicClient {
                 try (InputStream keyStoreStream = new FileInputStream(keystorePath)) {
                     KeyStore keyStore = KeyStore.getInstance(keyStoreType.getType());
                     keyStore.load(keyStoreStream, keystorePass.toCharArray());
+                    LOG.debug("Creating SSL Context with keystore file on path {}.", keystorePath);
                     createSSLContext(keyStore, keystorePass, certificatePath);
 
                 } catch (FrejaEidClientInternalException | IOException | KeyStoreException | NoSuchAlgorithmException | CertificateException e) {
+                    LOG.error("Failed to initialize SSL context with keystore type {} and path {}.", keyStoreType, keystorePath, e);
                     numberOfFails++;
                     continue;
                 }
@@ -86,6 +90,11 @@ public class BasicClient {
             if (numberOfFails == KeyStoreType.values().length) {
                 throw new FrejaEidClientInternalException(String.format("Failed to initiate SSL context with supported keystore types %s.", KeyStoreType.getAllKeyStoreTypes()));
             }
+            setServerCustomUrl(frejaEnvironment);
+        }
+
+        private void setServerCustomUrl(FrejaEnvironment frejaEnvironment) {
+            LOG.debug("Setting {} freja environment {}", frejaEnvironment);
             serverCustomUrl = FrejaEnvironment.PRODUCTION.getUrl();
             if (frejaEnvironment == FrejaEnvironment.TEST) {
                 serverCustomUrl = FrejaEnvironment.TEST.getUrl();
@@ -93,6 +102,7 @@ public class BasicClient {
         }
 
         private KeyStore createTrustStoreWithCertificate(String certificatePath) throws FrejaEidClientInternalException {
+            LOG.debug("Creating trust store with certificate on path {}.", certificatePath);
             try (InputStream stream = new FileInputStream(certificatePath)) {
                 CertificateFactory cf = CertificateFactory.getInstance("X.509");
                 X509Certificate caCert = (X509Certificate) cf.generateCertificate(stream);
@@ -116,6 +126,7 @@ public class BasicClient {
                 tmf.init(keyStore);
                 SSLContext sslContext = SSLContext.getInstance("SSL");
                 sslContext.init(keyManagerFactory.getKeyManagers(), tmf.getTrustManagers(), null);
+                LOG.debug("Successfully created SSL Context.");
                 this.sslContext = sslContext;
             } catch (KeyManagementException | KeyStoreException | NoSuchAlgorithmException | UnrecoverableKeyException ex) {
                 throw new FrejaEidClientInternalException("Failed to create SSL context. ", ex);
@@ -132,6 +143,7 @@ public class BasicClient {
          * @return clientBuilder
          */
         public GenericBuilder setConnectionTimeout(int connectionTimeout) {
+            LOG.debug("Connection timeout set to {} ms.", connectionTimeout);
             this.connectionTimeout = connectionTimeout;
             return this;
         }
@@ -145,6 +157,7 @@ public class BasicClient {
          * @return clientBuilder
          */
         public GenericBuilder setReadTimeout(int readTimeout) {
+            LOG.debug("Read timeout set to {} ms.", readTimeout);
             this.readTimeout = readTimeout;
             return this;
         }
@@ -158,6 +171,7 @@ public class BasicClient {
          * @return clientBuilder
          */
         public GenericBuilder setPollingTimeout(int pollingTimeout) {
+            LOG.debug("Polling timeout set to {} ms.", pollingTimeout);
             this.pollingTimeout = pollingTimeout;
             return this;
         }
@@ -182,6 +196,7 @@ public class BasicClient {
          * @return clientBuilder
          */
         public GenericBuilder setTransactionContext(TransactionContext transactionContext) {
+            LOG.debug("Transaction context set to {}.", transactionContext);
             this.transactionContext = transactionContext;
             return this;
         }
@@ -190,7 +205,7 @@ public class BasicClient {
 
         protected void checkSetParameters() throws FrejaEidClientInternalException {
             if (pollingTimeout < MINIMUM_POLLING_TIMEOUT_IN_MILLISECONDS || pollingTimeout > MAXIMUM_POLLING_TIMEOUT_IN_MILLISECONDS) {
-                throw new FrejaEidClientInternalException(String.format("Polling timeout must be between %s and %s seconds.", MINIMUM_POLLING_TIMEOUT_IN_MILLISECONDS / 1000, MAXIMUM_POLLING_TIMEOUT_IN_MILLISECONDS / 1000));
+                throw new FrejaEidClientInternalException(String.format("Polling timeout must be between %s and %s seconds.", TimeUnit.MILLISECONDS.toSeconds(MINIMUM_POLLING_TIMEOUT_IN_MILLISECONDS), TimeUnit.MILLISECONDS.toSeconds(MAXIMUM_POLLING_TIMEOUT_IN_MILLISECONDS)));
             }
             if (transactionContext == null) {
                 transactionContext = TransactionContext.PERSONAL;

@@ -16,13 +16,18 @@ import com.verisec.frejaeid.client.http.HttpService;
 import com.verisec.frejaeid.client.http.HttpServiceApi;
 import java.util.List;
 import javax.net.ssl.SSLContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Performs sign actions.
  *
  */
 public class SignClient extends BasicClient implements SignClientApi {
-
+    
+    public static final Logger LOG = LoggerFactory.getLogger(SignClient.class);
+    private static final long DEFAULT_EXPIRY_TIME_IN_MILLIS = 120000;
+    
     private SignClient(String serverCustomUrl, int pollingTimeoutInMillseconds, TransactionContext transactionContext, HttpServiceApi httpService) throws FrejaEidClientInternalException {
         super(serverCustomUrl, pollingTimeoutInMillseconds, transactionContext, httpService);
     }
@@ -51,56 +56,74 @@ public class SignClient extends BasicClient implements SignClientApi {
         }
         return new Builder(sslSettings.getSslContext(), frejaEnvironment);
     }
-
+    
     @Override
     public String initiate(InitiateSignRequest initiateSignRequest) throws FrejaEidClientInternalException, FrejaEidException {
         requestValidationService.validateInitSignRequest(initiateSignRequest, signService.getTransactionContext());
-        return signService.initiate(initiateSignRequest).getSignRef();
+        LOG.debug("Initiating sign transaction for user info type {}, minimum registration level of user {}, requesting attributes {} and expiry time {} ms.", initiateSignRequest.getUserInfoType(), initiateSignRequest.getMinRegistrationLevel(),
+                initiateSignRequest.getAttributesToReturn(), initiateSignRequest.getExpiry() == null ? DEFAULT_EXPIRY_TIME_IN_MILLIS : initiateSignRequest.getExpiry());
+        String reference = signService.initiate(initiateSignRequest).getSignRef();
+        LOG.debug("Received sign transaction reference {}.", reference);
+        return reference;
     }
-
+    
     @Override
     public SignResult getResult(SignResultRequest getOneSignResultRequest) throws FrejaEidClientInternalException, FrejaEidException {
         requestValidationService.validateResultRequest(getOneSignResultRequest);
-        return signService.getResult(getOneSignResultRequest);
+        LOG.debug("Getting result for sign transaction reference {}.", getOneSignResultRequest.getSignRef());
+        SignResult signResult = signService.getResult(getOneSignResultRequest);
+        LOG.debug("Received {} status for sign trasnsaction reference {}.", signResult.getStatus(), signResult.getSignRef());
+        return signResult;
     }
-
+    
     @Override
     public List<SignResult> getResults(SignResultsRequest getSignResultsRequest) throws FrejaEidClientInternalException, FrejaEidException {
         requestValidationService.validateResultsRequest(getSignResultsRequest);
-        return signService.getResults(getSignResultsRequest).getSignatureResults();
+        LOG.debug("Getting all sign transaction results.");
+        List<SignResult> signResults = signService.getResults(getSignResultsRequest).getSignatureResults();
+        LOG.debug("Successfully received sign results.");
+        return signResults;
     }
-
+    
     @Override
     public SignResult pollForResult(SignResultRequest getOneSignResultRequest, int maxWaitingTimeInSec) throws FrejaEidClientInternalException, FrejaEidException, FrejaEidClientPollingException {
         requestValidationService.validateResultRequest(getOneSignResultRequest);
-        return signService.pollForResult(getOneSignResultRequest, maxWaitingTimeInSec);
+        LOG.debug("Polling {} s for result for sign transaction reference {}.", maxWaitingTimeInSec, getOneSignResultRequest.getSignRef());
+        SignResult signResult = signService.pollForResult(getOneSignResultRequest, maxWaitingTimeInSec);
+        LOG.debug("Received {} status for sign trasnsaction reference {}, after polling for result.", signResult.getStatus(), signResult.getSignRef());
+        return signResult;
     }
-
+    
     @Override
     public void cancel(CancelSignRequest cancelSignRequest) throws FrejaEidClientInternalException, FrejaEidException {
         requestValidationService.validateCancelRequest(cancelSignRequest);
+        LOG.debug("Canceling sign transaction with reference {}.", cancelSignRequest.getSignRef());
         signService.cancel(cancelSignRequest);
+        LOG.debug("Successfully canceled sign transaction with reference {}.", cancelSignRequest.getSignRef());
     }
-
+    
     public static class Builder extends GenericBuilder {
-
+        
+        public static final Logger LOG = LoggerFactory.getLogger(Builder.class);
+        
         private Builder(SSLContext sslContext, FrejaEnvironment frejaEnvironment) throws FrejaEidClientInternalException {
             super(sslContext, frejaEnvironment);
         }
-
+        
         private Builder(String keystorePath, String keystorePass, String certificatePath, FrejaEnvironment frejaEnvironment) throws FrejaEidClientInternalException {
             super(keystorePath, keystorePass, certificatePath, frejaEnvironment);
         }
-
+        
         @Override
         public SignClient build() throws FrejaEidClientInternalException {
             checkSetParameters();
             if (httpService == null) {
                 httpService = new HttpService(sslContext, connectionTimeout, readTimeout);
             }
+            LOG.debug("Successfully created SignClient with server url {}, polling timeout {} and transaction context {}.", serverCustomUrl, pollingTimeout, transactionContext);
             return new SignClient(serverCustomUrl, pollingTimeout, transactionContext, httpService);
         }
-
+        
     }
-
+    
 }

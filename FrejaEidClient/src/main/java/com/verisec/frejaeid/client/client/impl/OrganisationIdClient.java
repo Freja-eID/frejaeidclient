@@ -16,12 +16,17 @@ import com.verisec.frejaeid.client.http.HttpServiceApi;
 import javax.net.ssl.SSLContext;
 import com.verisec.frejaeid.client.exceptions.FrejaEidClientPollingException;
 import com.verisec.frejaeid.client.exceptions.FrejaEidException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Performs actions with organisation eID.
  *
  */
 public class OrganisationIdClient extends BasicClient implements OrganisationIdClientApi {
+
+    public static final Logger LOG = LoggerFactory.getLogger(OrganisationIdClient.class);
+    private static final long DEFAULT_EXPIRY_TIME_IN_MILLIS = 604800000;
 
     private OrganisationIdClient(String serverCustomUrl, int pollingTimeoutInMillseconds, HttpServiceApi httpService) throws FrejaEidClientInternalException {
         super(serverCustomUrl, pollingTimeoutInMillseconds, TransactionContext.ORGANISATIONAL, httpService);
@@ -53,34 +58,50 @@ public class OrganisationIdClient extends BasicClient implements OrganisationIdC
     @Override
     public String initiateAdd(InitiateAddOrganisationIdRequest initiateAddOrganisationIdRequest) throws FrejaEidClientInternalException, FrejaEidException {
         requestValidationService.validateInitAddOrganisationIdRequest(initiateAddOrganisationIdRequest);
-        return organisationIdService.initiateAdd(initiateAddOrganisationIdRequest).getOrgIdRef();
+        LOG.debug("Initiating adding organisation id with user info type {}, minimum registration level of user {} and expiry time {} min.", initiateAddOrganisationIdRequest.getUserInfoType(),
+                initiateAddOrganisationIdRequest.getMinRegistrationLevel(), initiateAddOrganisationIdRequest.getExpiry() == null ? DEFAULT_EXPIRY_TIME_IN_MILLIS : initiateAddOrganisationIdRequest.getExpiry());
+        String reference = organisationIdService.initiateAdd(initiateAddOrganisationIdRequest).getOrgIdRef();
+        LOG.debug("Received add organisation id transaction reference {}.", reference);
+        return reference;
     }
 
     @Override
     public OrganisationIdResult getResult(OrganisationIdResultRequest getOneOrganisationIdResultRequest) throws FrejaEidClientInternalException, FrejaEidException {
         requestValidationService.validateResultRequest(getOneOrganisationIdResultRequest);
-        return organisationIdService.getResult(getOneOrganisationIdResultRequest);
+        LOG.debug("Getting result for add organisation id transaction reference {}.", getOneOrganisationIdResultRequest.getOrgIdRef());
+        OrganisationIdResult organisationIdResult = organisationIdService.getResult(getOneOrganisationIdResultRequest);
+        LOG.debug("Received {} status for adding organisation id trasnsaction reference {}.", organisationIdResult.getStatus(), organisationIdResult.getOrgIdRef());
+        return organisationIdResult;
     }
 
     @Override
     public OrganisationIdResult pollForResult(OrganisationIdResultRequest getOneOrganisationIdResultRequest, int maxWaitingTimeInSec) throws FrejaEidClientInternalException, FrejaEidException, FrejaEidClientPollingException {
         requestValidationService.validateResultRequest(getOneOrganisationIdResultRequest);
-        return organisationIdService.pollForResult(getOneOrganisationIdResultRequest, maxWaitingTimeInSec);
+        LOG.debug("Polling {} s for result for adding organisation id transaction reference {}.", maxWaitingTimeInSec, getOneOrganisationIdResultRequest.getOrgIdRef());
+        OrganisationIdResult organisationIdResult = organisationIdService.pollForResult(getOneOrganisationIdResultRequest, maxWaitingTimeInSec);
+        LOG.debug("Received {} status for adding organisation id trasnsaction reference {}, after polling for result.", organisationIdResult.getStatus(), organisationIdResult.getOrgIdRef());
+        return organisationIdResult;
     }
 
     @Override
     public void cancelAdd(CancelAddOrganisationIdRequest cancelAddOrganisationIdRequest) throws FrejaEidClientInternalException, FrejaEidException {
         requestValidationService.validateCancelRequest(cancelAddOrganisationIdRequest);
+        LOG.debug("Canceling add organisation id transaction with reference {}.", cancelAddOrganisationIdRequest.getOrgIdRef());
         organisationIdService.cancelAdd(cancelAddOrganisationIdRequest);
+        LOG.debug("Successfully canceled adding organisation id transaction with reference {}.", cancelAddOrganisationIdRequest.getOrgIdRef());
     }
 
     @Override
     public void delete(DeleteOrganisationIdRequest deleteOrganisationIdRequest) throws FrejaEidClientInternalException, FrejaEidException {
         requestValidationService.validateDeleteOrganisationIdRequest(deleteOrganisationIdRequest);
+        LOG.debug("Deleting organisation id identifier {}.", deleteOrganisationIdRequest.getIdentifier());
         organisationIdService.delete(deleteOrganisationIdRequest);
+        LOG.debug("Successfully deleted organisation id identifier {}.", deleteOrganisationIdRequest.getIdentifier());
     }
 
     public static class Builder extends GenericBuilder {
+
+        public static final Logger LOG = LoggerFactory.getLogger(Builder.class);
 
         private Builder(SSLContext sslContext, FrejaEnvironment frejaEnvironment) throws FrejaEidClientInternalException {
             super(sslContext, frejaEnvironment);
@@ -97,6 +118,7 @@ public class OrganisationIdClient extends BasicClient implements OrganisationIdC
             if (httpService == null) {
                 httpService = new HttpService(sslContext, connectionTimeout, readTimeout);
             }
+            LOG.debug("Successfully created OrganisationIdClient with server url {}, polling timeout {} and transaction context {}.", serverCustomUrl, pollingTimeout, transactionContext);
             return new OrganisationIdClient(serverCustomUrl, pollingTimeout, httpService);
         }
 
