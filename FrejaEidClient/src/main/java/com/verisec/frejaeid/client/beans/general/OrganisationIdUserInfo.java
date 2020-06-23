@@ -1,9 +1,7 @@
-package com.verisec.frejaeid.client.beans.organisationid.getall;
+package com.verisec.frejaeid.client.beans.general;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.verisec.frejaeid.client.beans.general.OrganisationId;
-import com.verisec.frejaeid.client.beans.general.SsnUserInfo;
 import com.verisec.frejaeid.client.enums.RegistrationState;
 import java.util.Objects;
 
@@ -66,7 +64,6 @@ public class OrganisationIdUserInfo {
         return true;
     }
 
-    
     @Override
     public String toString() {
         return "OrganisationIdUserInfo{" + "organisationId=" + organisationId + ", ssn=" + ssn + ", registrationState=" + registrationState + '}';

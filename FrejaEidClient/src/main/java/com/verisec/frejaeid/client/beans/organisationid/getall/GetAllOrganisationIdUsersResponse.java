@@ -1,5 +1,6 @@
 package com.verisec.frejaeid.client.beans.organisationid.getall;
 
+import com.verisec.frejaeid.client.beans.general.OrganisationIdUserInfo;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.verisec.frejaeid.client.beans.common.FrejaHttpResponse;

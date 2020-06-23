@@ -28,14 +28,15 @@ public class GetAllOrganisationIdUsersRequest implements RelyingPartyRequest {
     public static GetAllOrganisationIdUsersRequest create() {
         return new GetAllOrganisationIdUsersRequest(null);
     }
-    
+
     /**
      * Returns instance of {@linkplain GetAllOrganisationIdUsersRequest}.
      *
      * <b>Only relying parties that are integrators should use this method.</b>
      *
-     * @param relyingPartyId specifies relying party id for which response
-     * should be returned. It cannot be {@code null} or empty.
+     * @param relyingPartyId specifies relying party id for which users'
+     * information with Organisation ID should be returned. It cannot be
+     * {@code null} or empty.
      *
      * @return request
      */
@@ -74,5 +75,5 @@ public class GetAllOrganisationIdUsersRequest implements RelyingPartyRequest {
     public String toString() {
         return "GetAllOrganisationIdUsersRequest{" + "relyingPartyId=" + relyingPartyId + '}';
     }
-    
+
 }

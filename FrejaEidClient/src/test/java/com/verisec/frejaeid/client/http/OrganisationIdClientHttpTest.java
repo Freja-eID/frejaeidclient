@@ -10,7 +10,7 @@ import com.verisec.frejaeid.client.beans.organisationid.get.OrganisationIdResult
 import com.verisec.frejaeid.client.beans.organisationid.get.OrganisationIdResult;
 import com.verisec.frejaeid.client.beans.organisationid.getall.GetAllOrganisationIdUsersRequest;
 import com.verisec.frejaeid.client.beans.organisationid.getall.GetAllOrganisationIdUsersResponse;
-import com.verisec.frejaeid.client.beans.organisationid.getall.OrganisationIdUserInfo;
+import com.verisec.frejaeid.client.beans.general.OrganisationIdUserInfo;
 import com.verisec.frejaeid.client.beans.organisationid.init.InitiateAddOrganisationIdRequest;
 import com.verisec.frejaeid.client.beans.organisationid.init.InitiateAddOrganisationIdResponse;
 import com.verisec.frejaeid.client.client.api.OrganisationIdClientApi;

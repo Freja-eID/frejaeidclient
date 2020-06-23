@@ -5,7 +5,7 @@ import com.verisec.frejaeid.client.beans.general.SslSettings;
 import com.verisec.frejaeid.client.beans.general.SsnUserInfo;
 import com.verisec.frejaeid.client.beans.organisationid.getall.GetAllOrganisationIdUsersRequest;
 import com.verisec.frejaeid.client.beans.organisationid.getall.GetAllOrganisationIdUsersResponse;
-import com.verisec.frejaeid.client.beans.organisationid.getall.OrganisationIdUserInfo;
+import com.verisec.frejaeid.client.beans.general.OrganisationIdUserInfo;
 import com.verisec.frejaeid.client.client.api.OrganisationIdClientApi;
 import com.verisec.frejaeid.client.client.util.TestUtil;
 import com.verisec.frejaeid.client.enums.Country;
