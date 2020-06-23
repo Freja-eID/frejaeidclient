@@ -21,7 +21,7 @@ public enum MinRegistrationLevel {
     }
 
     /**
-     * Returns state of the MinRegistrationLevel constant
+     * Returns state of the MinRegistrationLevel constant.
      *
      * @return state
      */
@@ -50,7 +50,7 @@ public enum MinRegistrationLevel {
 
     @Override
     public String toString() {
-        return "RegistrationState{" + "state=" + state + '}';
+        return "MinRegistrationLevel{" + "state=" + state + '}';
     }
 
 }

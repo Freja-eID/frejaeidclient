@@ -4,6 +4,8 @@ import com.verisec.frejaeid.client.beans.organisationid.cancel.CancelAddOrganisa
 import com.verisec.frejaeid.client.beans.organisationid.delete.DeleteOrganisationIdRequest;
 import com.verisec.frejaeid.client.beans.organisationid.get.OrganisationIdResultRequest;
 import com.verisec.frejaeid.client.beans.organisationid.get.OrganisationIdResult;
+import com.verisec.frejaeid.client.beans.organisationid.getall.GetAllOrganisationIdUsersRequest;
+import com.verisec.frejaeid.client.beans.organisationid.getall.GetAllOrganisationIdUsersResponse;
 import com.verisec.frejaeid.client.beans.organisationid.init.InitiateAddOrganisationIdRequest;
 import com.verisec.frejaeid.client.enums.TransactionStatus;
 import com.verisec.frejaeid.client.exceptions.FrejaEidClientInternalException;
@@ -85,4 +87,15 @@ public interface OrganisationIdClientApi {
      */
     public void delete(DeleteOrganisationIdRequest deleteOrganisationIdRequest) throws FrejaEidClientInternalException, FrejaEidException;
 
+    /**
+     * Gets information about users which have Organisation ID.
+     *
+     * @param getAllOrganisationIdUsersRequest
+     * @return {@linkplain GetAllOrganisationIdUsersResponse}
+     *
+     * @throws FrejaEidClientInternalException if internal validation of request
+     * fails.
+     * @throws FrejaEidException if server returns an error.
+     */
+    public GetAllOrganisationIdUsersResponse getAllUsers(GetAllOrganisationIdUsersRequest getAllOrganisationIdUsersRequest) throws FrejaEidClientInternalException, FrejaEidException;
 }

@@ -5,6 +5,8 @@ import com.verisec.frejaeid.client.beans.organisationid.cancel.CancelAddOrganisa
 import com.verisec.frejaeid.client.beans.organisationid.delete.DeleteOrganisationIdRequest;
 import com.verisec.frejaeid.client.beans.organisationid.get.OrganisationIdResult;
 import com.verisec.frejaeid.client.beans.organisationid.get.OrganisationIdResultRequest;
+import com.verisec.frejaeid.client.beans.organisationid.getall.GetAllOrganisationIdUsersRequest;
+import com.verisec.frejaeid.client.beans.organisationid.getall.GetAllOrganisationIdUsersResponse;
 import com.verisec.frejaeid.client.beans.organisationid.init.InitiateAddOrganisationIdRequest;
 import com.verisec.frejaeid.client.client.api.OrganisationIdClientApi;
 import com.verisec.frejaeid.client.enums.FrejaEnvironment;
@@ -80,6 +82,12 @@ public class OrganisationIdClient extends BasicClient implements OrganisationIdC
         organisationIdService.delete(deleteOrganisationIdRequest);
     }
 
+    @Override
+    public GetAllOrganisationIdUsersResponse getAllUsers(GetAllOrganisationIdUsersRequest getAllOrganisationIdUsersRequest) throws FrejaEidClientInternalException, FrejaEidException {
+        requestValidationService.validateGetAllOrganisationIdUsersRequest(getAllOrganisationIdUsersRequest);
+        return organisationIdService.getAllUsers(getAllOrganisationIdUsersRequest);
+    }
+    
     public static class Builder extends GenericBuilder {
 
         private Builder(SSLContext sslContext, FrejaEnvironment frejaEnvironment) throws FrejaEidClientInternalException {
