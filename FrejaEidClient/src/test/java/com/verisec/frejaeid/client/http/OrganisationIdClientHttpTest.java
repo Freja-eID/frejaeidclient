@@ -8,6 +8,9 @@ import com.verisec.frejaeid.client.beans.organisationid.cancel.CancelAddOrganisa
 import com.verisec.frejaeid.client.beans.organisationid.delete.DeleteOrganisationIdRequest;
 import com.verisec.frejaeid.client.beans.organisationid.get.OrganisationIdResultRequest;
 import com.verisec.frejaeid.client.beans.organisationid.get.OrganisationIdResult;
+import com.verisec.frejaeid.client.beans.organisationid.getall.GetAllOrganisationIdUsersRequest;
+import com.verisec.frejaeid.client.beans.organisationid.getall.GetAllOrganisationIdUsersResponse;
+import com.verisec.frejaeid.client.beans.organisationid.getall.OrganisationIdUserInfo;
 import com.verisec.frejaeid.client.beans.organisationid.init.InitiateAddOrganisationIdRequest;
 import com.verisec.frejaeid.client.beans.organisationid.init.InitiateAddOrganisationIdResponse;
 import com.verisec.frejaeid.client.client.api.OrganisationIdClientApi;
@@ -18,11 +21,13 @@ import com.verisec.frejaeid.client.enums.Country;
 import com.verisec.frejaeid.client.enums.FrejaEnvironment;
 import com.verisec.frejaeid.client.enums.HttpStatusCode;
 import com.verisec.frejaeid.client.enums.MinRegistrationLevel;
+import com.verisec.frejaeid.client.enums.RegistrationState;
 import com.verisec.frejaeid.client.exceptions.FrejaEidClientInternalException;
 import com.verisec.frejaeid.client.exceptions.FrejaEidException;
 import static com.verisec.frejaeid.client.http.CommonHttpTest.jsonService;
 import com.verisec.frejaeid.client.util.JsonService;
 import java.io.IOException;
+import java.util.Arrays;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -31,6 +36,7 @@ public class OrganisationIdClientHttpTest extends CommonHttpTest {
 
     private static InitiateAddOrganisationIdResponse initiateAddOrganisationIdResponse;
     private static OrganisationIdResult organisationIdResult;
+    private static GetAllOrganisationIdUsersResponse getAllOrganisationIdUsersResponse;
     private static OrganisationIdClientApi organisationIdClient;
     private static final String ORGANISATION_ID_TITLE = "OrgananisationId title";
     private static final String IDENTIFIER_NAME = "Identifier name";
@@ -41,6 +47,8 @@ public class OrganisationIdClientHttpTest extends CommonHttpTest {
         jsonService = new JsonService();
         initiateAddOrganisationIdResponse = new InitiateAddOrganisationIdResponse(REFERENCE);
         organisationIdResult = new OrganisationIdResult(REFERENCE, TransactionStatus.STARTED, null);
+        OrganisationIdUserInfo organisationIdUserInfo = new OrganisationIdUserInfo(OrganisationId.create(ORGANISATION_ID_TITLE, IDENTIFIER_NAME, IDENTIFIER), SSN_USER_INFO, RegistrationState.EXTENDED);
+        getAllOrganisationIdUsersResponse = new GetAllOrganisationIdUsersResponse(Arrays.asList(organisationIdUserInfo));
 
         organisationIdClient = OrganisationIdClient.create(SslSettings.create(TestUtil.getKeystorePath(TestUtil.KEYSTORE_PATH), TestUtil.KEYSTORE_PASSWORD, TestUtil.getKeystorePath(TestUtil.CERTIFICATE_PATH)), FrejaEnvironment.TEST)
                 .setTestModeCustomUrl("http://localhost:" + MOCK_SERVICE_PORT).build();
@@ -173,5 +181,26 @@ public class OrganisationIdClientHttpTest extends CommonHttpTest {
         startMockServer(expectedDeleteOrganisationIdRequest, HttpStatusCode.OK.getCode(), responseString);
 
         organisationIdClient.delete(deleteOrganisationIdRequest);
+    }
+    
+    @Test
+    public void getAllOrganisationIdUsers_sendRequestWithoutRelyingPartyId_success() throws FrejaEidClientInternalException, IOException, FrejaEidException {
+        GetAllOrganisationIdUsersRequest getAllOrganisationIdUsersRequest = GetAllOrganisationIdUsersRequest.create();
+        String responseString = jsonService.serializeToJson(getAllOrganisationIdUsersResponse);
+        
+        startMockServer(getAllOrganisationIdUsersRequest, HttpStatusCode.OK.getCode(), responseString);
+        
+        GetAllOrganisationIdUsersResponse response = organisationIdClient.getAllUsers(getAllOrganisationIdUsersRequest);
+        Assert.assertEquals(getAllOrganisationIdUsersResponse, response);
+    }
+    
+    @Test
+    public void getAllOrganisationIdUsers_sendRequestWithRelyingPartyId_success() throws FrejaEidClientInternalException, IOException, FrejaEidException {
+        GetAllOrganisationIdUsersRequest getAllOrganisationIdUsersRequest = GetAllOrganisationIdUsersRequest.create(RELYING_PARTY_ID);
+        String responseString = jsonService.serializeToJson(getAllOrganisationIdUsersResponse);
+        startMockServer(getAllOrganisationIdUsersRequest, HttpStatusCode.OK.getCode(), responseString);
+        
+        GetAllOrganisationIdUsersResponse response = organisationIdClient.getAllUsers(getAllOrganisationIdUsersRequest);
+        Assert.assertEquals(getAllOrganisationIdUsersResponse, response);
     }
 }

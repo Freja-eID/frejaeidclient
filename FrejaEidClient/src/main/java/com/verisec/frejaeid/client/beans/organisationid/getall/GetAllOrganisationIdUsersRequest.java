@@ -1,6 +1,8 @@
 package com.verisec.frejaeid.client.beans.organisationid.getall;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.verisec.frejaeid.client.beans.common.RelyingPartyRequest;
 import java.util.Objects;
 
@@ -13,10 +15,20 @@ public class GetAllOrganisationIdUsersRequest implements RelyingPartyRequest {
     @JsonIgnore
     private final String relyingPartyId;
 
-    private GetAllOrganisationIdUsersRequest(String relyingPartyId) {
+    @JsonCreator
+    private GetAllOrganisationIdUsersRequest(@JsonProperty("relyingPartyId") String relyingPartyId) {
         this.relyingPartyId = relyingPartyId;
     }
 
+    /**
+     * Returns instance of {@linkplain GetAllOrganisationIdUsersRequest}.
+     *
+     * @return request
+     */
+    public static GetAllOrganisationIdUsersRequest create() {
+        return new GetAllOrganisationIdUsersRequest(null);
+    }
+    
     /**
      * Returns instance of {@linkplain GetAllOrganisationIdUsersRequest}.
      *
@@ -62,5 +74,5 @@ public class GetAllOrganisationIdUsersRequest implements RelyingPartyRequest {
     public String toString() {
         return "GetAllOrganisationIdUsersRequest{" + "relyingPartyId=" + relyingPartyId + '}';
     }
-
+    
 }

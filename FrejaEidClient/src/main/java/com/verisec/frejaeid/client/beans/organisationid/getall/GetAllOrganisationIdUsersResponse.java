@@ -3,9 +3,8 @@ package com.verisec.frejaeid.client.beans.organisationid.getall;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.verisec.frejaeid.client.beans.common.FrejaHttpResponse;
-import com.verisec.frejaeid.client.beans.general.OrganisationId;
-import com.verisec.frejaeid.client.beans.general.SsnUserInfo;
-import com.verisec.frejaeid.client.enums.RegistrationState;
+import java.util.List;
+import java.util.Objects;
 
 /**
  *
@@ -13,33 +12,43 @@ import com.verisec.frejaeid.client.enums.RegistrationState;
  */
 public class GetAllOrganisationIdUsersResponse implements FrejaHttpResponse {
 
-    private final OrganisationId organisationId;
-    private final SsnUserInfo ssn;
-    private final RegistrationState registrationState;
+    private final List<OrganisationIdUserInfo> userInfos;
 
     @JsonCreator
-    public GetAllOrganisationIdUsersResponse(@JsonProperty("organisationId") OrganisationId organisationId, 
-            @JsonProperty("ssn") SsnUserInfo ssn, @JsonProperty("registrationState") RegistrationState registrationState) {
-        this.organisationId = organisationId;
-        this.ssn = ssn;
-        this.registrationState = registrationState;
+    public GetAllOrganisationIdUsersResponse(@JsonProperty("userInfos") List<OrganisationIdUserInfo> userInfos) {
+        this.userInfos = userInfos;
     }
 
-    public OrganisationId getOrganisationId() {
-        return organisationId;
+    public List<OrganisationIdUserInfo> getUserInfos() {
+        return userInfos;
     }
 
-    public SsnUserInfo getSsn() {
-        return ssn;
+    @Override
+    public int hashCode() {
+        return Objects.hash(userInfos);
     }
 
-    public RegistrationState getRegistrationState() {
-        return registrationState;
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final GetAllOrganisationIdUsersResponse other = (GetAllOrganisationIdUsersResponse) obj;
+        if (!Objects.equals(this.userInfos, other.userInfos)) {
+            return false;
+        }
+        return true;
     }
 
     @Override
     public String toString() {
-        return "GetAllOrganisationIdUsersResponse{" + "organisationId=" + organisationId + ", ssn=" + ssn + ", registrationState=" + registrationState + '}';
+        return "GetAllOrganisationIdUsersResponse{" + "userInfos=" + userInfos + '}';
     }
-    
+
 }

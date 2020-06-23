@@ -9,6 +9,7 @@ import com.verisec.frejaeid.client.beans.general.SslSettings;
 import com.verisec.frejaeid.client.beans.organisationid.cancel.CancelAddOrganisationIdRequest;
 import com.verisec.frejaeid.client.beans.organisationid.delete.DeleteOrganisationIdRequest;
 import com.verisec.frejaeid.client.beans.organisationid.get.OrganisationIdResultRequest;
+import com.verisec.frejaeid.client.beans.organisationid.getall.GetAllOrganisationIdUsersRequest;
 import com.verisec.frejaeid.client.beans.organisationid.init.InitiateAddOrganisationIdRequest;
 import com.verisec.frejaeid.client.beans.sign.cancel.CancelSignRequest;
 import com.verisec.frejaeid.client.beans.sign.get.SignResultRequest;
@@ -738,6 +739,16 @@ public class RequestValidationServiceTest {
     public void deleteOrgId_emptyRelyingPartyId_expectError() throws FrejaEidException {
         try {
             organisationIdClient.delete(DeleteOrganisationIdRequest.create(IDENTIFIER, ""));
+            Assert.fail("Test should throw exception!");
+        } catch (FrejaEidClientInternalException ex) {
+            Assert.assertEquals("RelyingPartyId cannot be empty.", ex.getLocalizedMessage());
+        }
+    }
+    
+    @Test
+    public void getAllOrgIdUsers_emptyRelyingPartyId_expectError() throws FrejaEidException {
+        try {
+            organisationIdClient.getAllUsers(GetAllOrganisationIdUsersRequest.create(""));
             Assert.fail("Test should throw exception!");
         } catch (FrejaEidClientInternalException ex) {
             Assert.assertEquals("RelyingPartyId cannot be empty.", ex.getLocalizedMessage());
