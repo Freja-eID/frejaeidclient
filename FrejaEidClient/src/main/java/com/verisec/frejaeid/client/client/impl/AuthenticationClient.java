@@ -57,7 +57,7 @@ public class AuthenticationClient extends BasicClient implements AuthenticationC
     @Override
     public String initiate(InitiateAuthenticationRequest initiateAuthenticationRequest) throws FrejaEidClientInternalException, FrejaEidException {
         requestValidationService.validateInitAuthRequest(initiateAuthenticationRequest, authenticationService.getTransactionContext());
-        LOG.debug("Initiating authentication transaction for user info type {}, minimum registration level of user {} and requesting attributes {}.", initiateAuthenticationRequest.getUserInfoType(), initiateAuthenticationRequest.getMinRegistrationLevel(), initiateAuthenticationRequest.getAttributesToReturn());
+        LOG.debug("Initiating authentication transaction for user info type {}, minimum registration level of user {} and requesting attributes {}.", initiateAuthenticationRequest.getUserInfoType(), initiateAuthenticationRequest.getMinRegistrationLevel().getState(), initiateAuthenticationRequest.getAttributesToReturn());
         String reference = authenticationService.initiate(initiateAuthenticationRequest).getAuthRef();
         LOG.debug("Received authetnication transaction reference {}.", reference);
         return reference;
@@ -77,14 +77,14 @@ public class AuthenticationClient extends BasicClient implements AuthenticationC
         requestValidationService.validateResultsRequest(authenticationResultsRequest);
         LOG.debug("Getting all authentication transaction results.");
         List<AuthenticationResult> authenticationResults = authenticationService.getResults(authenticationResultsRequest).getAuthenticationResults();
-        LOG.debug("Successfully received authentication results.");
+        LOG.debug("Successfully received authentication transaction results.");
         return authenticationResults;
     }
     
     @Override
     public AuthenticationResult pollForResult(AuthenticationResultRequest authenticationResultRequest, int maxWaitingTimeInSec) throws FrejaEidClientInternalException, FrejaEidException, FrejaEidClientPollingException {
         requestValidationService.validateResultRequest(authenticationResultRequest);
-        LOG.debug("Polling {} s for result for authentication transaction reference {}.", maxWaitingTimeInSec, authenticationResultRequest.getAuthRef());
+        LOG.debug("Polling {}s for result for authentication transaction reference {}.", maxWaitingTimeInSec, authenticationResultRequest.getAuthRef());
         AuthenticationResult authenticationResult = authenticationService.pollForResult(authenticationResultRequest, maxWaitingTimeInSec);
         LOG.debug("Received {} status for authentication trasnsaction reference {}, after polling for result.", authenticationResult.getStatus(), authenticationResult.getAuthRef());
         return authenticationResult;
@@ -116,7 +116,7 @@ public class AuthenticationClient extends BasicClient implements AuthenticationC
             if (httpService == null) {
                 httpService = new HttpService(sslContext, connectionTimeout, readTimeout);
             }
-            LOG.debug("Successfully created AuthenticationClient with server url {}, polling timeout {} and transaction context {}.", serverCustomUrl, pollingTimeout, transactionContext);
+            LOG.debug("Successfully created AuthenticationClient with server url {}, polling timeout {}ms and transaction context {}.", serverCustomUrl, pollingTimeout, transactionContext.getContext());
             return new AuthenticationClient(serverCustomUrl, pollingTimeout, transactionContext, httpService);
         }
         

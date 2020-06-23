@@ -60,6 +60,8 @@ public class BasicClient {
         protected int connectionTimeout = DEFAULT_CONNECTION_TIMEOUT_IN_MILLISECONDS;
         protected int readTimeout = DEFAULT_READ_TIMEOUT_IN_MILLISECONDS;
         protected int pollingTimeout = DEFAULT_POLLING_TIMEOUT_IN_MILLISECONDS;
+        protected static final String FREJA_ENVIRONMENT_PROD = "PRODUCTION";
+        protected static final String FREJA_ENVIRONMENT_TEST = "TEST";
         protected HttpServiceApi httpService;
         protected SSLContext sslContext;
         protected TransactionContext transactionContext;
@@ -94,7 +96,7 @@ public class BasicClient {
         }
 
         private void setServerCustomUrl(FrejaEnvironment frejaEnvironment) {
-            LOG.debug("Setting {} freja environment {}", frejaEnvironment);
+            LOG.debug("Setting Freja environment {}", frejaEnvironment == FrejaEnvironment.TEST ? FREJA_ENVIRONMENT_TEST : FREJA_ENVIRONMENT_PROD);
             serverCustomUrl = FrejaEnvironment.PRODUCTION.getUrl();
             if (frejaEnvironment == FrejaEnvironment.TEST) {
                 serverCustomUrl = FrejaEnvironment.TEST.getUrl();
@@ -143,7 +145,7 @@ public class BasicClient {
          * @return clientBuilder
          */
         public GenericBuilder setConnectionTimeout(int connectionTimeout) {
-            LOG.debug("Connection timeout set to {} ms.", connectionTimeout);
+            LOG.debug("Connection timeout set to {}ms.", connectionTimeout);
             this.connectionTimeout = connectionTimeout;
             return this;
         }
@@ -157,7 +159,7 @@ public class BasicClient {
          * @return clientBuilder
          */
         public GenericBuilder setReadTimeout(int readTimeout) {
-            LOG.debug("Read timeout set to {} ms.", readTimeout);
+            LOG.debug("Read timeout set to {}ms.", readTimeout);
             this.readTimeout = readTimeout;
             return this;
         }
@@ -171,7 +173,7 @@ public class BasicClient {
          * @return clientBuilder
          */
         public GenericBuilder setPollingTimeout(int pollingTimeout) {
-            LOG.debug("Polling timeout set to {} ms.", pollingTimeout);
+            LOG.debug("Polling timeout set to {}ms.", pollingTimeout);
             this.pollingTimeout = pollingTimeout;
             return this;
         }
@@ -196,7 +198,7 @@ public class BasicClient {
          * @return clientBuilder
          */
         public GenericBuilder setTransactionContext(TransactionContext transactionContext) {
-            LOG.debug("Transaction context set to {}.", transactionContext);
+            LOG.debug("Transaction context set to {}.", transactionContext.getContext());
             this.transactionContext = transactionContext;
             return this;
         }
