@@ -11,12 +11,16 @@ import javax.net.ssl.SSLContext;
 import com.verisec.frejaeid.client.client.api.CustomIdentifierClientApi;
 import com.verisec.frejaeid.client.enums.TransactionContext;
 import com.verisec.frejaeid.client.exceptions.FrejaEidException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Performs actions with custom identifier.
  *
  */
 public class CustomIdentifierClient extends BasicClient implements CustomIdentifierClientApi {
+
+    public static final Logger LOG = LoggerFactory.getLogger(CustomIdentifierClient.class);
 
     private CustomIdentifierClient(String serverCustomUrl, int pollingTimeout, HttpServiceApi httpService) throws FrejaEidClientInternalException {
         super(serverCustomUrl, pollingTimeout, TransactionContext.PERSONAL, httpService);
@@ -50,16 +54,22 @@ public class CustomIdentifierClient extends BasicClient implements CustomIdentif
     @Override
     public void set(SetCustomIdentifierRequest setCustomIdentifierRequest) throws FrejaEidClientInternalException, FrejaEidException {
         requestValidationService.validateSetCustomIDentifierRequest(setCustomIdentifierRequest);
+        LOG.debug("Setting custom identifier for user info type {}.", setCustomIdentifierRequest.getUserInfoType());
         customIdentifierService.set(setCustomIdentifierRequest);
+        LOG.debug("Successfully set custom identifier.");
     }
 
     @Override
     public void delete(DeleteCustomIdentifierRequest deleteCustomIdentifierRequest) throws FrejaEidClientInternalException, FrejaEidException {
         requestValidationService.validateDeleteCustomIdentifierRequest(deleteCustomIdentifierRequest);
+        LOG.debug("Deleting custom identifier {}.", deleteCustomIdentifierRequest.getCustomIdentifier());
         customIdentifierService.delete(deleteCustomIdentifierRequest);
+        LOG.debug("Successfully deleted custom identifier {}.", deleteCustomIdentifierRequest.getCustomIdentifier());
     }
 
     public static class Builder extends GenericBuilder {
+
+        public static final Logger LOG = LoggerFactory.getLogger(Builder.class);
 
         private Builder(SSLContext sslContext, FrejaEnvironment frejaEnvironment) throws FrejaEidClientInternalException {
             super(sslContext, frejaEnvironment);
@@ -76,6 +86,7 @@ public class CustomIdentifierClient extends BasicClient implements CustomIdentif
             if (httpService == null) {
                 httpService = new HttpService(sslContext, connectionTimeout, readTimeout);
             }
+            LOG.debug("Successfully created CustomIdentifierClient with server URL {}, polling timeout {}ms and transaction context {}.", serverCustomUrl, pollingTimeout, transactionContext.getContext());
             return new CustomIdentifierClient(serverCustomUrl, pollingTimeout, httpService);
         }
 
