@@ -1,8 +1,14 @@
 package com.verisec.frejaeid.client.enums;
 
 /**
+ * User's registration state in Freja eID:
+ * <br> - {@linkplain #EMAIL_CONFIRMED}
+ * <br> - {@linkplain #BASIC}
+ * <br> - {@linkplain #APPLIED_FOR_EXTENDED}
+ * <br> - {@linkplain #EXTENDED}
+ * <br> - {@linkplain #VETTING_CONFIRMED}
+ * <br> - {@linkplain #PLUS}
  *
- * @author vedrbuk
  */
 public enum RegistrationState {
 

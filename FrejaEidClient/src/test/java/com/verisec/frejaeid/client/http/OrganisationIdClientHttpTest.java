@@ -28,6 +28,7 @@ import static com.verisec.frejaeid.client.http.CommonHttpTest.jsonService;
 import com.verisec.frejaeid.client.util.JsonService;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.List;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -190,8 +191,8 @@ public class OrganisationIdClientHttpTest extends CommonHttpTest {
         
         startMockServer(getAllOrganisationIdUsersRequest, HttpStatusCode.OK.getCode(), responseString);
         
-        GetAllOrganisationIdUsersResponse response = organisationIdClient.getAllUsers(getAllOrganisationIdUsersRequest);
-        Assert.assertEquals(getAllOrganisationIdUsersResponse, response);
+        List<OrganisationIdUserInfo> actualListOfOrganisationIdUserInfos = organisationIdClient.getAllUsers(getAllOrganisationIdUsersRequest);
+        Assert.assertEquals(getAllOrganisationIdUsersResponse.getUserInfos(), actualListOfOrganisationIdUserInfos);
     }
     
     @Test
@@ -200,7 +201,7 @@ public class OrganisationIdClientHttpTest extends CommonHttpTest {
         String responseString = jsonService.serializeToJson(getAllOrganisationIdUsersResponse);
         startMockServer(getAllOrganisationIdUsersRequest, HttpStatusCode.OK.getCode(), responseString);
         
-        GetAllOrganisationIdUsersResponse response = organisationIdClient.getAllUsers(getAllOrganisationIdUsersRequest);
-        Assert.assertEquals(getAllOrganisationIdUsersResponse, response);
+        List<OrganisationIdUserInfo> actualListOfOrganisationIdUserInfos = organisationIdClient.getAllUsers(getAllOrganisationIdUsersRequest);
+        Assert.assertEquals(getAllOrganisationIdUsersResponse.getUserInfos(), actualListOfOrganisationIdUserInfos);
     }
 }

@@ -7,10 +7,6 @@ import com.verisec.frejaeid.client.beans.common.FrejaHttpResponse;
 import java.util.List;
 import java.util.Objects;
 
-/**
- *
- * @author vedrbuk
- */
 public class GetAllOrganisationIdUsersResponse implements FrejaHttpResponse {
 
     private final List<OrganisationIdUserInfo> userInfos;

@@ -5,10 +5,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.verisec.frejaeid.client.enums.RegistrationState;
 import java.util.Objects;
 
-/**
- *
- * @author vedrbuk
- */
 public class OrganisationIdUserInfo {
 
     private final OrganisationId organisationId;

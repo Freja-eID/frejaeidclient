@@ -1,18 +1,12 @@
 package com.verisec.frejaeid.client.beans.organisationid.getall;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.verisec.frejaeid.client.beans.common.RelyingPartyRequest;
 import java.util.Objects;
 
-/**
- *
- * @author vedrbuk
- */
 public class GetAllOrganisationIdUsersRequest implements RelyingPartyRequest {
 
-    @JsonIgnore
     private final String relyingPartyId;
 
     @JsonCreator

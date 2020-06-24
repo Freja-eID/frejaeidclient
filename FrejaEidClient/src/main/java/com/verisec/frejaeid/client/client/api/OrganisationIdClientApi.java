@@ -1,16 +1,17 @@
 package com.verisec.frejaeid.client.client.api;
 
+import com.verisec.frejaeid.client.beans.general.OrganisationIdUserInfo;
 import com.verisec.frejaeid.client.beans.organisationid.cancel.CancelAddOrganisationIdRequest;
 import com.verisec.frejaeid.client.beans.organisationid.delete.DeleteOrganisationIdRequest;
 import com.verisec.frejaeid.client.beans.organisationid.get.OrganisationIdResultRequest;
 import com.verisec.frejaeid.client.beans.organisationid.get.OrganisationIdResult;
 import com.verisec.frejaeid.client.beans.organisationid.getall.GetAllOrganisationIdUsersRequest;
-import com.verisec.frejaeid.client.beans.organisationid.getall.GetAllOrganisationIdUsersResponse;
 import com.verisec.frejaeid.client.beans.organisationid.init.InitiateAddOrganisationIdRequest;
 import com.verisec.frejaeid.client.enums.TransactionStatus;
 import com.verisec.frejaeid.client.exceptions.FrejaEidClientInternalException;
 import com.verisec.frejaeid.client.exceptions.FrejaEidClientPollingException;
 import com.verisec.frejaeid.client.exceptions.FrejaEidException;
+import java.util.List;
 
 /**
  * Performs actions with organisation eID.
@@ -91,11 +92,11 @@ public interface OrganisationIdClientApi {
      * Gets information about users which have Organisation ID.
      *
      * @param getAllOrganisationIdUsersRequest
-     * @return {@linkplain GetAllOrganisationIdUsersResponse}
+     * @return list of {@linkplain OrganisationIdUserInfo}
      *
      * @throws FrejaEidClientInternalException if internal validation of request
      * fails.
      * @throws FrejaEidException if server returns an error.
      */
-    public GetAllOrganisationIdUsersResponse getAllUsers(GetAllOrganisationIdUsersRequest getAllOrganisationIdUsersRequest) throws FrejaEidClientInternalException, FrejaEidException;
+    public List<OrganisationIdUserInfo> getAllUsers(GetAllOrganisationIdUsersRequest getAllOrganisationIdUsersRequest) throws FrejaEidClientInternalException, FrejaEidException;
 }
