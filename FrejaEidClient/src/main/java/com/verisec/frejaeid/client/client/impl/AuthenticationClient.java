@@ -68,7 +68,7 @@ public class AuthenticationClient extends BasicClient implements AuthenticationC
         requestValidationService.validateResultRequest(authenticationResultRequest);
         LOG.debug("Getting result for authentication transaction reference {}.", authenticationResultRequest.getAuthRef());
         AuthenticationResult authenticationResult = authenticationService.getResult(authenticationResultRequest);
-        LOG.debug("Received {} status for authentication trasnsaction reference {}.", authenticationResult.getStatus(), authenticationResult.getAuthRef());
+        LOG.debug("Received {} status for authentication transaction reference {}.", authenticationResult.getStatus(), authenticationResult.getAuthRef());
         return authenticationResult;
     }
     
@@ -86,7 +86,7 @@ public class AuthenticationClient extends BasicClient implements AuthenticationC
         requestValidationService.validateResultRequest(authenticationResultRequest);
         LOG.debug("Polling {}s for result for authentication transaction reference {}.", maxWaitingTimeInSec, authenticationResultRequest.getAuthRef());
         AuthenticationResult authenticationResult = authenticationService.pollForResult(authenticationResultRequest, maxWaitingTimeInSec);
-        LOG.debug("Received {} status for authentication trasnsaction reference {}, after polling for result.", authenticationResult.getStatus(), authenticationResult.getAuthRef());
+        LOG.debug("Received {} status for authentication transaction reference {}, after polling for result.", authenticationResult.getStatus(), authenticationResult.getAuthRef());
         return authenticationResult;
     }
     

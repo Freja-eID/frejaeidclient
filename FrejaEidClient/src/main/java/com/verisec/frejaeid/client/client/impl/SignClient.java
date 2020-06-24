@@ -91,7 +91,7 @@ public class SignClient extends BasicClient implements SignClientApi {
         requestValidationService.validateResultRequest(getOneSignResultRequest);
         LOG.debug("Polling {}s for result for sign transaction reference {}.", maxWaitingTimeInSec, getOneSignResultRequest.getSignRef());
         SignResult signResult = signService.pollForResult(getOneSignResultRequest, maxWaitingTimeInSec);
-        LOG.debug("Received {} status for sign trasnsaction reference {}, after polling for result.", signResult.getStatus(), signResult.getSignRef());
+        LOG.debug("Received {} status for sign transaction reference {}, after polling for result.", signResult.getStatus(), signResult.getSignRef());
         return signResult;
     }
     
