@@ -12,7 +12,7 @@ public class OrganisationIdUserInfo {
     private final RegistrationState registrationState;
 
     @JsonCreator
-    public OrganisationIdUserInfo(@JsonProperty("organisationId") OrganisationId organisationId, 
+    public OrganisationIdUserInfo(@JsonProperty("organisationId") OrganisationId organisationId,
             @JsonProperty("ssn") SsnUserInfo ssn, @JsonProperty("registrationState") RegistrationState registrationState) {
         this.organisationId = organisationId;
         this.ssn = ssn;
@@ -33,7 +33,7 @@ public class OrganisationIdUserInfo {
 
     @Override
     public int hashCode() {
-        return Objects.hash(organisationId,ssn, registrationState);
+        return Objects.hash(organisationId, ssn, registrationState);
     }
 
     @Override
@@ -64,5 +64,5 @@ public class OrganisationIdUserInfo {
     public String toString() {
         return "OrganisationIdUserInfo{" + "organisationId=" + organisationId + ", ssn=" + ssn + ", registrationState=" + registrationState + '}';
     }
-    
+
 }
