@@ -84,7 +84,7 @@ public class HttpService implements HttpServiceApi {
         poolingHttpConnectionManager.setMaxTotal(20);
         poolingHttpConnectionManager.setDefaultMaxPerRoute(20);
         httpClient = httpClientBuilder.setConnectionManager(poolingHttpConnectionManager).build();
-        LOG.debug("Successfully created http client with SSL context, connection timeout {}ms and read timeout {}ms.", connectionTimeout, readTimeout);
+        LOG.debug("Successfully created HTTP client with SSL context, connection timeout {}ms and read timeout {}ms.", connectionTimeout, readTimeout);
         userAgentHeader = makeUserAgentHeader();
     }
 

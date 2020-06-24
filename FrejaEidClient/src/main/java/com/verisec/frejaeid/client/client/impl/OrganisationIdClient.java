@@ -119,7 +119,7 @@ public class OrganisationIdClient extends BasicClient implements OrganisationIdC
             if (httpService == null) {
                 httpService = new HttpService(sslContext, connectionTimeout, readTimeout);
             }
-            LOG.debug("Successfully created OrganisationIdClient with server url {}, polling timeout {}ms and transaction context {}.", serverCustomUrl, pollingTimeout, transactionContext.getContext());
+            LOG.debug("Successfully created OrganisationIdClient with server URL {}, polling timeout {}ms and transaction context {}.", serverCustomUrl, pollingTimeout, transactionContext.getContext());
             return new OrganisationIdClient(serverCustomUrl, pollingTimeout, httpService);
         }
 

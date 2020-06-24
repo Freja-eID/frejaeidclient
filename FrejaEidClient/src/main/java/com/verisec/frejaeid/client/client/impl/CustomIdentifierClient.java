@@ -86,7 +86,7 @@ public class CustomIdentifierClient extends BasicClient implements CustomIdentif
             if (httpService == null) {
                 httpService = new HttpService(sslContext, connectionTimeout, readTimeout);
             }
-            LOG.debug("Successfully created CustomIdentifierClient with server url {}, polling timeout {}ms and transaction context {}.", serverCustomUrl, pollingTimeout, transactionContext.getContext());
+            LOG.debug("Successfully created CustomIdentifierClient with server URL {}, polling timeout {}ms and transaction context {}.", serverCustomUrl, pollingTimeout, transactionContext.getContext());
             return new CustomIdentifierClient(serverCustomUrl, pollingTimeout, httpService);
         }
 

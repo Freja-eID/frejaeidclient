@@ -121,7 +121,7 @@ public class SignClient extends BasicClient implements SignClientApi {
             if (httpService == null) {
                 httpService = new HttpService(sslContext, connectionTimeout, readTimeout);
             }
-            LOG.debug("Successfully created SignClient with server url {}, polling timeout {}ms and transaction context {}.", serverCustomUrl, pollingTimeout, transactionContext.getContext());
+            LOG.debug("Successfully created SignClient with server URL {}, polling timeout {}ms and transaction context {}.", serverCustomUrl, pollingTimeout, transactionContext.getContext());
             return new SignClient(serverCustomUrl, pollingTimeout, transactionContext, httpService);
         }
         

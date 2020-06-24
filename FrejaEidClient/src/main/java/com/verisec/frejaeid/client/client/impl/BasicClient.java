@@ -79,7 +79,7 @@ public class BasicClient {
                 try (InputStream keyStoreStream = new FileInputStream(keystorePath)) {
                     KeyStore keyStore = KeyStore.getInstance(keyStoreType.getType());
                     keyStore.load(keyStoreStream, keystorePass.toCharArray());
-                    LOG.debug("Creating SSL Context with keystore file on path {}.", keystorePath);
+                    LOG.debug("Creating SSL context with keystore file on path {}.", keystorePath);
                     createSSLContext(keyStore, keystorePass, certificatePath);
 
                 } catch (FrejaEidClientInternalException | IOException | KeyStoreException | NoSuchAlgorithmException | CertificateException e) {
@@ -128,7 +128,7 @@ public class BasicClient {
                 tmf.init(keyStore);
                 SSLContext sslContext = SSLContext.getInstance("SSL");
                 sslContext.init(keyManagerFactory.getKeyManagers(), tmf.getTrustManagers(), null);
-                LOG.debug("Successfully created SSL Context.");
+                LOG.debug("Successfully created SSL context.");
                 this.sslContext = sslContext;
             } catch (KeyManagementException | KeyStoreException | NoSuchAlgorithmException | UnrecoverableKeyException ex) {
                 throw new FrejaEidClientInternalException("Failed to create SSL context. ", ex);

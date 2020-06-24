@@ -59,7 +59,7 @@ public class AuthenticationClient extends BasicClient implements AuthenticationC
         requestValidationService.validateInitAuthRequest(initiateAuthenticationRequest, authenticationService.getTransactionContext());
         LOG.debug("Initiating authentication transaction for user info type {}, minimum registration level of user {} and requesting attributes {}.", initiateAuthenticationRequest.getUserInfoType(), initiateAuthenticationRequest.getMinRegistrationLevel().getState(), initiateAuthenticationRequest.getAttributesToReturn());
         String reference = authenticationService.initiate(initiateAuthenticationRequest).getAuthRef();
-        LOG.debug("Received authetnication transaction reference {}.", reference);
+        LOG.debug("Received authentication transaction reference {}.", reference);
         return reference;
     }
     
@@ -116,7 +116,7 @@ public class AuthenticationClient extends BasicClient implements AuthenticationC
             if (httpService == null) {
                 httpService = new HttpService(sslContext, connectionTimeout, readTimeout);
             }
-            LOG.debug("Successfully created AuthenticationClient with server url {}, polling timeout {}ms and transaction context {}.", serverCustomUrl, pollingTimeout, transactionContext.getContext());
+            LOG.debug("Successfully created AuthenticationClient with server URL {}, polling timeout {}ms and transaction context {}.", serverCustomUrl, pollingTimeout, transactionContext.getContext());
             return new AuthenticationClient(serverCustomUrl, pollingTimeout, transactionContext, httpService);
         }
         
