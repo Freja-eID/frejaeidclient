@@ -32,8 +32,12 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.http.protocol.HttpContext;
 import org.apache.http.util.EntityUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class HttpService implements HttpServiceApi {
+    
+    public static final Logger LOG = LoggerFactory.getLogger(HttpService.class);
 
     private static final int DEFAULT_TRIES_NUMBER_HTTP_POOL = 3;
     private JsonService jsonService;
@@ -80,6 +84,7 @@ public class HttpService implements HttpServiceApi {
         poolingHttpConnectionManager.setMaxTotal(20);
         poolingHttpConnectionManager.setDefaultMaxPerRoute(20);
         httpClient = httpClientBuilder.setConnectionManager(poolingHttpConnectionManager).build();
+        LOG.debug("Successfully created HTTP client with SSL context, connection timeout {}ms and read timeout {}ms.", connectionTimeout, readTimeout);
         userAgentHeader = makeUserAgentHeader();
     }
 
@@ -106,6 +111,7 @@ public class HttpService implements HttpServiceApi {
             request.addHeader(HttpHeaders.USER_AGENT, userAgentHeader);
             request.setEntity(params);
             httpResponse = httpClient.execute(request);
+            LOG.debug("Successfully sent {}.", relyingPartyRequest.getClass());
             HttpEntity entity = httpResponse.getEntity();
             int httpStatusCodeValue = httpResponse.getStatusLine().getStatusCode();
             httpStatusCode = HttpStatusCode.getHttpStatusCode(httpStatusCodeValue);
