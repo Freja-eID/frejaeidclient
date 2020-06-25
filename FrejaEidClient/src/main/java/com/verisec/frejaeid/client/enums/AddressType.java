@@ -1,9 +1,5 @@
 package com.verisec.frejaeid.client.enums;
 
-/**
- *
- * @author vedrbuk
- */
 public enum AddressType {
 
     RESIDENTIAL("Residential"),

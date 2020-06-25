@@ -6,6 +6,7 @@ import com.verisec.frejaeid.client.beans.common.ResultRequest;
 import com.verisec.frejaeid.client.beans.common.ResultsRequest;
 import com.verisec.frejaeid.client.beans.common.RelyingPartyRequest;
 import com.verisec.frejaeid.client.beans.organisationid.delete.DeleteOrganisationIdRequest;
+import com.verisec.frejaeid.client.beans.organisationid.getall.GetAllOrganisationIdUsersRequest;
 import com.verisec.frejaeid.client.beans.organisationid.init.InitiateAddOrganisationIdRequest;
 import com.verisec.frejaeid.client.beans.sign.init.InitiateSignRequest;
 import com.verisec.frejaeid.client.beans.usermanagement.customidentifier.delete.DeleteCustomIdentifierRequest;
@@ -91,6 +92,11 @@ public class RequestValidationService {
         validateRequest(deleteOrganisationIdRequest);
         validateIdentifier(deleteOrganisationIdRequest.getIdentifier());
         validateRelyingPartyIdIsEmpty(deleteOrganisationIdRequest.getRelyingPartyId());
+    }
+    
+    public void validateGetAllOrganisationIdUsersRequest(GetAllOrganisationIdUsersRequest getAllOrganisationIdUsersRequest) throws FrejaEidClientInternalException {
+        validateRequest(getAllOrganisationIdUsersRequest);
+        validateRelyingPartyIdIsEmpty(getAllOrganisationIdUsersRequest.getRelyingPartyId());
     }
 
     private void validateRequest(RelyingPartyRequest relyingPartyRequest) throws FrejaEidClientInternalException {
