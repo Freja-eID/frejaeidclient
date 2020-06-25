@@ -14,6 +14,7 @@ public enum RequestTemplate {
     ORGANISATION_ID_RESULT_TEMPLATE("getOneOrganisationIdResultRequest={0}"),
     DELETE_ORGANINSATION_ID_TEMPLATE("deleteOrganisationIdRequest={0}"),
     CANCEL_ADD_ORGANISATION_ID_TEMPLATE("cancelAddOrganisationIdRequest={0}"),
+    GET_ALL_ORGANISATION_ID_USERS_TEMPLATE("getAllOrganisationIdUsersRequest={0}"),
     RELYING_PARTY_ID("relyingPartyId={0}"),
     SET_CUSTOM_IDENITIFIER_TEMPLATE("setCustomIdentifierRequest={0}"),
     DELETE_CUSTOM_IDENTIFIER_TEMPLATE("deleteCustomIdentifierRequest={0}");

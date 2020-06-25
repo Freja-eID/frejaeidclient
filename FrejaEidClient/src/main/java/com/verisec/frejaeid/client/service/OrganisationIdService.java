@@ -5,6 +5,8 @@ import com.verisec.frejaeid.client.beans.organisationid.cancel.CancelAddOrganisa
 import com.verisec.frejaeid.client.beans.organisationid.delete.DeleteOrganisationIdRequest;
 import com.verisec.frejaeid.client.beans.organisationid.get.OrganisationIdResultRequest;
 import com.verisec.frejaeid.client.beans.organisationid.get.OrganisationIdResult;
+import com.verisec.frejaeid.client.beans.organisationid.getall.GetAllOrganisationIdUsersRequest;
+import com.verisec.frejaeid.client.beans.organisationid.getall.GetAllOrganisationIdUsersResponse;
 import com.verisec.frejaeid.client.beans.organisationid.init.InitiateAddOrganisationIdRequest;
 import com.verisec.frejaeid.client.beans.organisationid.init.InitiateAddOrganisationIdResponse;
 import com.verisec.frejaeid.client.exceptions.FrejaEidClientInternalException;
@@ -59,5 +61,9 @@ public class OrganisationIdService extends BasicService {
 
     public EmptyFrejaResponse cancelAdd(CancelAddOrganisationIdRequest cancelAddOrganisationIdRequest) throws FrejaEidClientInternalException, FrejaEidException {
         return httpService.send(getUrl(serverAddress, MethodUrl.ORGANISATION_ID_CANCEL_ADD), RequestTemplate.CANCEL_ADD_ORGANISATION_ID_TEMPLATE, cancelAddOrganisationIdRequest, EmptyFrejaResponse.class, cancelAddOrganisationIdRequest.getRelyingPartyId());
+    }
+    
+    public GetAllOrganisationIdUsersResponse getAllUsers(GetAllOrganisationIdUsersRequest getAllOrganisationIdUsersRequest) throws FrejaEidClientInternalException, FrejaEidException {
+        return httpService.send(getUrl(serverAddress, MethodUrl.ORGANISATION_ID_GET_ALL_USERS), RequestTemplate.GET_ALL_ORGANISATION_ID_USERS_TEMPLATE, getAllOrganisationIdUsersRequest, GetAllOrganisationIdUsersResponse.class, getAllOrganisationIdUsersRequest.getRelyingPartyId());
     }
 }

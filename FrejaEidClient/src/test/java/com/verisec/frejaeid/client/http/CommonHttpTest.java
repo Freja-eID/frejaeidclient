@@ -54,22 +54,22 @@ public abstract class CommonHttpTest {
         server.createContext("/", new HttpHandler() {
             @Override
             public void handle(HttpExchange t) throws IOException {
-                String requestData = null;
+                String requestData;
                 try (InputStreamReader isr = new InputStreamReader(t.getRequestBody())) {
                     BufferedReader reader = new BufferedReader(isr);
                     requestData = reader.readLine();
                     Assert.assertNotNull(requestData);
 
                     String[] postParams = requestData.split(POST_PARAMS_DELIMITER);
-                    String RequestParam = postParams[0].split(KEY_VALUE_DELIMITER, 2)[1];
+                    String requestParam = postParams[0].split(KEY_VALUE_DELIMITER, 2)[1];
                     if (postParams.length == 2) {
                         String relyingPartyIdParam = postParams[1].split(KEY_VALUE_DELIMITER, 2)[1];
                         Assert.assertEquals(RELYING_PARTY_ID, relyingPartyIdParam);
                     }
-                    String jsonReceivedRequest = new String(Base64.decodeBase64(RequestParam), StandardCharsets.UTF_8);
+                    String jsonReceivedRequest = new String(Base64.decodeBase64(requestParam), StandardCharsets.UTF_8);
                     String jsonExpectedRequest = jsonService.serializeToJson(expectedRequest);
                     Assert.assertEquals(jsonExpectedRequest, jsonReceivedRequest);
-                    RelyingPartyRequest receivedRequest = jsonService.deserializeFromJson(Base64.decodeBase64(RequestParam), expectedRequest.getClass());
+                    RelyingPartyRequest receivedRequest = jsonService.deserializeFromJson(Base64.decodeBase64(requestParam), expectedRequest.getClass());
                     Assert.assertEquals(expectedRequest, receivedRequest);
                 } catch (Exception ex) {
                     Assert.fail(ex.getMessage());

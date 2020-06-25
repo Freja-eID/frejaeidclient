@@ -1,10 +1,12 @@
 package com.verisec.frejaeid.client.client.impl;
 
+import com.verisec.frejaeid.client.beans.general.OrganisationIdUserInfo;
 import com.verisec.frejaeid.client.beans.general.SslSettings;
 import com.verisec.frejaeid.client.beans.organisationid.cancel.CancelAddOrganisationIdRequest;
 import com.verisec.frejaeid.client.beans.organisationid.delete.DeleteOrganisationIdRequest;
 import com.verisec.frejaeid.client.beans.organisationid.get.OrganisationIdResult;
 import com.verisec.frejaeid.client.beans.organisationid.get.OrganisationIdResultRequest;
+import com.verisec.frejaeid.client.beans.organisationid.getall.GetAllOrganisationIdUsersRequest;
 import com.verisec.frejaeid.client.beans.organisationid.init.InitiateAddOrganisationIdRequest;
 import com.verisec.frejaeid.client.client.api.OrganisationIdClientApi;
 import com.verisec.frejaeid.client.enums.FrejaEnvironment;
@@ -16,6 +18,7 @@ import com.verisec.frejaeid.client.http.HttpServiceApi;
 import javax.net.ssl.SSLContext;
 import com.verisec.frejaeid.client.exceptions.FrejaEidClientPollingException;
 import com.verisec.frejaeid.client.exceptions.FrejaEidException;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -100,6 +103,15 @@ public class OrganisationIdClient extends BasicClient implements OrganisationIdC
         LOG.debug("Successfully deleted organisation ID identifier {}.", deleteOrganisationIdRequest.getIdentifier());
     }
 
+    @Override
+    public List<OrganisationIdUserInfo> getAllUsers(GetAllOrganisationIdUsersRequest getAllOrganisationIdUsersRequest) throws FrejaEidClientInternalException, FrejaEidException {
+        requestValidationService.validateGetAllOrganisationIdUsersRequest(getAllOrganisationIdUsersRequest);
+        LOG.debug("Getting information about users with organisation ID.");  
+        List<OrganisationIdUserInfo> organisationIdUserInfos = organisationIdService.getAllUsers(getAllOrganisationIdUsersRequest).getUserInfos();
+        LOG.debug("Successfully got information about users with organisation ID.");
+        return organisationIdUserInfos;
+    }
+    
     public static class Builder extends GenericBuilder {
 
         public static final Logger LOG = LoggerFactory.getLogger(Builder.class);
