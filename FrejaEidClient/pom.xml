@@ -31,6 +31,16 @@
                 <role>developer</role>
             </roles>
         </developer>
+        <developer>
+            <id>DraganaBukumira</id>
+            <name>dragana.bukumira</name>
+            <email>dragana.bukumira@verisec.com</email>
+            <organization>Verisec</organization>
+            <organizationUrl>https://www.verisec.com/</organizationUrl>
+            <roles>
+                <role>developer</role>
+            </roles>
+        </developer>
     </developers>
 
     <properties>
