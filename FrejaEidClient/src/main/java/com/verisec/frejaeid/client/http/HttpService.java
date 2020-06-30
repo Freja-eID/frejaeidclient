@@ -36,7 +36,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class HttpService implements HttpServiceApi {
-    
+
     public static final Logger LOG = LoggerFactory.getLogger(HttpService.class);
 
     private static final int DEFAULT_TRIES_NUMBER_HTTP_POOL = 3;
@@ -88,6 +88,7 @@ public class HttpService implements HttpServiceApi {
         userAgentHeader = makeUserAgentHeader();
     }
 
+    @Override
     public final <Response extends FrejaHttpResponse> Response send(String methodUrl, RequestTemplate requestTemplate, RelyingPartyRequest relyingPartyRequest, Class<Response> responseType, String relyingPartyId) throws FrejaEidClientInternalException, FrejaEidException {
 
         HttpResponse httpResponse = null;
@@ -96,14 +97,17 @@ public class HttpService implements HttpServiceApi {
 
         try {
             request = new HttpPost(methodUrl);
-            String jsonRequest = jsonService.serializeToJson(relyingPartyRequest);
+            String requestBody = "";
+            if (requestTemplate != null) {
+                String jsonRequest = jsonService.serializeToJson(relyingPartyRequest);
 
-            String jsonRequestB64 = Base64.encodeBase64String(jsonRequest.getBytes(StandardCharsets.UTF_8));
-            String requestBody = MessageFormat.format(requestTemplate.getTemplate(), jsonRequestB64);
+                String jsonRequestB64 = Base64.encodeBase64String(jsonRequest.getBytes(StandardCharsets.UTF_8));
+                requestBody = MessageFormat.format(requestTemplate.getTemplate(), jsonRequestB64);
+            }
 
             if (relyingPartyId != null) {
                 String relyingPartyIdRequest = MessageFormat.format(RequestTemplate.RELYING_PARTY_ID.getTemplate(), relyingPartyId);
-                requestBody += POST_PARAMS_DELIMITER + relyingPartyIdRequest;
+                requestBody += requestTemplate != null ? POST_PARAMS_DELIMITER + relyingPartyIdRequest : relyingPartyIdRequest;
             }
 
             StringEntity params = new StringEntity(requestBody, StandardCharsets.UTF_8);
