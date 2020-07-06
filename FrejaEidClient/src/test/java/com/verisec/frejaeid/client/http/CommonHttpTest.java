@@ -13,6 +13,7 @@ import com.verisec.frejaeid.client.enums.AddressSourceType;
 import com.verisec.frejaeid.client.enums.AddressType;
 import com.verisec.frejaeid.client.enums.Country;
 import com.verisec.frejaeid.client.util.JsonService;
+import com.verisec.frejaeid.client.util.RequestTemplate;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -58,19 +59,34 @@ public abstract class CommonHttpTest {
                 try (InputStreamReader isr = new InputStreamReader(t.getRequestBody())) {
                     BufferedReader reader = new BufferedReader(isr);
                     requestData = reader.readLine();
-                    Assert.assertNotNull(requestData);
 
-                    String[] postParams = requestData.split(POST_PARAMS_DELIMITER);
-                    String requestParam = postParams[0].split(KEY_VALUE_DELIMITER, 2)[1];
-                    if (postParams.length == 2) {
-                        String relyingPartyIdParam = postParams[1].split(KEY_VALUE_DELIMITER, 2)[1];
-                        Assert.assertEquals(RELYING_PARTY_ID, relyingPartyIdParam);
+                    if (requestData != null) {
+                        String[] postParams = requestData.split(POST_PARAMS_DELIMITER);
+                        if (postParams.length == 2) {
+                            String relyingPartyIdParam = postParams[1].split(KEY_VALUE_DELIMITER, 2)[1];
+                            Assert.assertEquals(RELYING_PARTY_ID, relyingPartyIdParam);
+                            
+                            String requestParam = postParams[0].split(KEY_VALUE_DELIMITER, 2)[1];
+                            String jsonReceivedRequest = new String(Base64.decodeBase64(requestParam), StandardCharsets.UTF_8);
+                            String jsonExpectedRequest = jsonService.serializeToJson(expectedRequest);
+                            Assert.assertEquals(jsonExpectedRequest, jsonReceivedRequest);
+                            
+                            RelyingPartyRequest receivedRequest = jsonService.deserializeFromJson(Base64.decodeBase64(requestParam), expectedRequest.getClass());
+                            Assert.assertEquals(expectedRequest, receivedRequest);
+                        } else if (RequestTemplate.RELYING_PARTY_ID.getTemplate().contains(postParams[0].split(KEY_VALUE_DELIMITER, 2)[0])) {
+                            String relyingPartyIdParam = postParams[0].split(KEY_VALUE_DELIMITER, 2)[1];
+                            Assert.assertEquals(RELYING_PARTY_ID, relyingPartyIdParam);
+                        } else {
+                            String requestParam = postParams[0].split(KEY_VALUE_DELIMITER, 2)[1];
+                            String jsonReceivedRequest = new String(Base64.decodeBase64(requestParam), StandardCharsets.UTF_8);
+                            String jsonExpectedRequest = jsonService.serializeToJson(expectedRequest);
+                            Assert.assertEquals(jsonExpectedRequest, jsonReceivedRequest);
+                            
+                            RelyingPartyRequest receivedRequest = jsonService.deserializeFromJson(Base64.decodeBase64(requestParam), expectedRequest.getClass());
+                            Assert.assertEquals(expectedRequest, receivedRequest);
+                        }
+
                     }
-                    String jsonReceivedRequest = new String(Base64.decodeBase64(requestParam), StandardCharsets.UTF_8);
-                    String jsonExpectedRequest = jsonService.serializeToJson(expectedRequest);
-                    Assert.assertEquals(jsonExpectedRequest, jsonReceivedRequest);
-                    RelyingPartyRequest receivedRequest = jsonService.deserializeFromJson(Base64.decodeBase64(requestParam), expectedRequest.getClass());
-                    Assert.assertEquals(expectedRequest, receivedRequest);
                 } catch (Exception ex) {
                     Assert.fail(ex.getMessage());
                 }
@@ -84,7 +100,7 @@ public abstract class CommonHttpTest {
         server.setExecutor(null); // creates a default executor
         server.start();
     }
-
+    
     @After
     public void stopServer() throws InterruptedException {
         stopMockServer();
