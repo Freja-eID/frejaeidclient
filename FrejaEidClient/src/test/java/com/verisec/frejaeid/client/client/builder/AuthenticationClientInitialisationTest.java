@@ -61,11 +61,11 @@ public class AuthenticationClientInitialisationTest {
     public void authClientInit_invalidPoolingTime_expectError() {
         try {
             AuthenticationClientApi authenticationClient = AuthenticationClient.create(SslSettings.create(TestUtil.getKeystorePath(TestUtil.KEYSTORE_PATH), TestUtil.KEYSTORE_PASSWORD, TestUtil.getKeystorePath(TestUtil.CERTIFICATE_PATH)), FrejaEnvironment.TEST)
-                    .setPollingTimeout(0)
+                    .setPollingTimeout(500)
                     .build();
             Assert.fail("Test should throw exception!");
         } catch (FrejaEidClientInternalException ex) {
-            Assert.assertEquals("Polling timeout must be between 1 and 30 seconds.", ex.getLocalizedMessage());
+            Assert.assertEquals("Polling timeout must be between 1 and 60 seconds.", ex.getLocalizedMessage());
         }
     }
 
