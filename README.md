@@ -59,7 +59,7 @@ String reference = authenticationClient.initiate(request);
 ```
 Poll for result
 ```java
-int maxWaitingTimeInSeconds = 30;
+int maxWaitingTimeInSeconds = 120;
 AuthenticationResult result = authenticationClient.pollForResult(AuthenticationResultRequest.create(reference), maxWaitingTimeInSeconds);
 ```
 Cancel request
@@ -78,7 +78,7 @@ String reference = signClient.initiate(request);
 ```
 Poll for result
 ```java
-int maxWaitingTimeInSeconds = 60;
+int maxWaitingTimeInSeconds = 180;
 SignResult result = signClient.pollForResult(SignResultRequest.create(reference), maxWaitingTimeInSeconds);
 ```
 Cancel request
