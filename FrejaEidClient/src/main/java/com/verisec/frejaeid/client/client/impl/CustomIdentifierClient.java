@@ -21,7 +21,6 @@ import org.slf4j.LoggerFactory;
 public class CustomIdentifierClient extends BasicClient implements CustomIdentifierClientApi {
 
     public static final Logger LOG = LoggerFactory.getLogger(CustomIdentifierClient.class);
-    private static final int DEFAULT_POLLING_TIMEOUT_IN_MILLISECONDS = 3000;
 
     private CustomIdentifierClient(String serverCustomUrl, int pollingTimeout, HttpServiceApi httpService) throws FrejaEidClientInternalException {
         super(serverCustomUrl, pollingTimeout, TransactionContext.PERSONAL, httpService);
@@ -78,20 +77,6 @@ public class CustomIdentifierClient extends BasicClient implements CustomIdentif
 
         private Builder(String keystorePath, String keystorePass, String certificatePath, FrejaEnvironment frejaEnvironment) throws FrejaEidClientInternalException {
             super(keystorePath, keystorePass, certificatePath, frejaEnvironment);
-        }
-        
-        /**
-         * Polling timeout is maximum time for waiting when polling for final results.
-         *
-         * @param pollingTimeout in milliseconds on client side. Default value is
-         * {@value #DEFAULT_POLLING_TIMEOUT_IN_MILLISECONDS} milliseconds.
-         * @return clientBuilder
-         */
-        @Override
-        public GenericBuilder setPollingTimeout(int pollingTimeout) {
-            LOG.debug("Polling timeout set to {}ms.", pollingTimeout);
-            this.pollingTimeout = pollingTimeout;
-            return this;
         }
 
         @Override

@@ -117,7 +117,7 @@ public class SignClient extends BasicClient implements SignClientApi {
         }
 
         /**
-         * Polling timeout is maximum time for waiting when polling for final results.
+         * Polling timeout is time between two polls for final results.
          *
          * @param pollingTimeout in milliseconds on client side. Default value is
          * {@value #DEFAULT_POLLING_TIMEOUT_IN_MILLISECONDS} milliseconds.
@@ -125,9 +125,7 @@ public class SignClient extends BasicClient implements SignClientApi {
          */
         @Override
         public GenericBuilder setPollingTimeout(int pollingTimeout) {
-            LOG.debug("Polling timeout set to {}ms.", pollingTimeout);
-            this.pollingTimeout = pollingTimeout;
-            return this;
+            return super.setPollingTimeout(pollingTimeout);
         }
 
         @Override

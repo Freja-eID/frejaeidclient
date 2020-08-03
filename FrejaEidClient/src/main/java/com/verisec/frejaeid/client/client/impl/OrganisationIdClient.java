@@ -126,7 +126,7 @@ public class OrganisationIdClient extends BasicClient implements OrganisationIdC
         }
 
         /**
-         * Polling timeout is maximum time for waiting when polling for final results.
+         * Polling timeout is time between two polls for final results.
          *
          * @param pollingTimeout in milliseconds on client side. Default value is
          * {@value #DEFAULT_POLLING_TIMEOUT_IN_MILLISECONDS} milliseconds.
@@ -134,9 +134,7 @@ public class OrganisationIdClient extends BasicClient implements OrganisationIdC
          */
         @Override
         public GenericBuilder setPollingTimeout(int pollingTimeout) {
-            LOG.debug("Polling timeout set to {}ms.", pollingTimeout);
-            this.pollingTimeout = pollingTimeout;
-            return this;
+            return super.setPollingTimeout(pollingTimeout);
         }
 
         @Override
