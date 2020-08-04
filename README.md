@@ -38,7 +38,7 @@ To add a dependency on Freja eID Client using Maven, use the following:
 <dependency>
     <groupId>com.verisec.frejaeid</groupId>
     <artifactId>FrejaEidClient</artifactId>
-    <version>2.3.0</version>
+    <version>2.4.1</version>
 </dependency>
 ```
 
@@ -59,7 +59,7 @@ String reference = authenticationClient.initiate(request);
 ```
 Poll for result
 ```java
-int maxWaitingTimeInSeconds = 30;
+int maxWaitingTimeInSeconds = 120;
 AuthenticationResult result = authenticationClient.pollForResult(AuthenticationResultRequest.create(reference), maxWaitingTimeInSeconds);
 ```
 Cancel request
@@ -78,7 +78,7 @@ String reference = signClient.initiate(request);
 ```
 Poll for result
 ```java
-int maxWaitingTimeInSeconds = 60;
+int maxWaitingTimeInSeconds = 180;
 SignResult result = signClient.pollForResult(SignResultRequest.create(reference), maxWaitingTimeInSeconds);
 ```
 Cancel request

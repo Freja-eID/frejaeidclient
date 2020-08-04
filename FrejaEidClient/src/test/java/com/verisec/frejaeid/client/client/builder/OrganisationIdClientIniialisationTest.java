@@ -59,11 +59,11 @@ public class OrganisationIdClientIniialisationTest {
     public void orgIdClientInit_invalidPoolingTime_expectError() {
         try {
             OrganisationIdClientApi organsiationIdClient = OrganisationIdClient.create(SslSettings.create(TestUtil.getKeystorePath(TestUtil.KEYSTORE_PATH), TestUtil.KEYSTORE_PASSWORD, TestUtil.getKeystorePath(TestUtil.CERTIFICATE_PATH)), FrejaEnvironment.TEST)
-                    .setPollingTimeout(0)
+                    .setPollingTimeout(500)
                     .build();
             Assert.fail("Test should throw exception!");
         } catch (FrejaEidClientInternalException ex) {
-            Assert.assertEquals("Invalid error", "Polling timeout must be between 1 and 30 seconds.", ex.getLocalizedMessage());
+            Assert.assertEquals("Invalid error", "Polling timeout must be between 1 and 60 seconds.", ex.getLocalizedMessage());
         }
     }
 

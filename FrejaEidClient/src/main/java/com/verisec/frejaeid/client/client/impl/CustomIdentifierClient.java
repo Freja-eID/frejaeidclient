@@ -82,11 +82,15 @@ public class CustomIdentifierClient extends BasicClient implements CustomIdentif
         @Override
         public CustomIdentifierClient build() throws FrejaEidClientInternalException {
             transactionContext = TransactionContext.PERSONAL;
-            checkSetParameters();
             if (httpService == null) {
                 httpService = new HttpService(sslContext, connectionTimeout, readTimeout);
             }
-            LOG.debug("Successfully created CustomIdentifierClient with server URL {}, polling timeout {}ms and transaction context {}.", serverCustomUrl, pollingTimeout, transactionContext.getContext());
+            if (pollingTimeout == 0) {
+                pollingTimeout = DEFAULT_POLLING_TIMEOUT_IN_MILLISECONDS;
+            }
+            checkSetParameters();
+            LOG.debug("Successfully created CustomIdentifierClient with server URL {}, polling timeout {}ms and transaction context {}.",
+                    serverCustomUrl, pollingTimeout, transactionContext.getContext());
             return new CustomIdentifierClient(serverCustomUrl, pollingTimeout, httpService);
         }
 

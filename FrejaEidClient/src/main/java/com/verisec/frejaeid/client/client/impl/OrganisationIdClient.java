@@ -31,6 +31,7 @@ public class OrganisationIdClient extends BasicClient implements OrganisationIdC
 
     public static final Logger LOG = LoggerFactory.getLogger(OrganisationIdClient.class);
     private static final long DEFAULT_EXPIRY_TIME_IN_MILLIS = TimeUnit.DAYS.toMillis(7);
+    private static final int DEFAULT_POLLING_TIMEOUT_IN_MILLISECONDS = 60000;
 
     private OrganisationIdClient(String serverCustomUrl, int pollingTimeoutInMillseconds, HttpServiceApi httpService) throws FrejaEidClientInternalException {
         super(serverCustomUrl, pollingTimeoutInMillseconds, TransactionContext.ORGANISATIONAL, httpService);
@@ -106,12 +107,12 @@ public class OrganisationIdClient extends BasicClient implements OrganisationIdC
     @Override
     public List<OrganisationIdUserInfo> getAllUsers(GetAllOrganisationIdUsersRequest getAllOrganisationIdUsersRequest) throws FrejaEidClientInternalException, FrejaEidException {
         requestValidationService.validateGetAllOrganisationIdUsersRequest(getAllOrganisationIdUsersRequest);
-        LOG.debug("Getting information about users with organisation ID.");  
+        LOG.debug("Getting information about users with organisation ID.");
         List<OrganisationIdUserInfo> organisationIdUserInfos = organisationIdService.getAllUsers(getAllOrganisationIdUsersRequest).getUserInfos();
         LOG.debug("Successfully got information about users with organisation ID.");
         return organisationIdUserInfos;
     }
-    
+
     public static class Builder extends GenericBuilder {
 
         public static final Logger LOG = LoggerFactory.getLogger(Builder.class);
@@ -124,14 +125,30 @@ public class OrganisationIdClient extends BasicClient implements OrganisationIdC
             super(keystorePath, keystorePass, certificatePath, frejaEnvironment);
         }
 
+        /**
+         * Polling timeout is time between two polls for final results.
+         *
+         * @param pollingTimeout in milliseconds on client side. Default value is
+         * {@value #DEFAULT_POLLING_TIMEOUT_IN_MILLISECONDS} milliseconds.
+         * @return builder
+         */
+        @Override
+        public Builder setPollingTimeout(int pollingTimeout) {
+            return (Builder) super.setPollingTimeout(pollingTimeout);
+        }
+
         @Override
         public OrganisationIdClient build() throws FrejaEidClientInternalException {
             transactionContext = TransactionContext.ORGANISATIONAL;
-            checkSetParameters();
             if (httpService == null) {
                 httpService = new HttpService(sslContext, connectionTimeout, readTimeout);
             }
-            LOG.debug("Successfully created OrganisationIdClient with server URL {}, polling timeout {}ms and transaction context {}.", serverCustomUrl, pollingTimeout, transactionContext.getContext());
+            if (pollingTimeout == 0) {
+                pollingTimeout = DEFAULT_POLLING_TIMEOUT_IN_MILLISECONDS;
+            }
+            checkSetParameters();
+            LOG.debug("Successfully created OrganisationIdClient with server URL {}, polling timeout {}ms and transaction context {}.",
+                    serverCustomUrl, pollingTimeout, transactionContext.getContext());
             return new OrganisationIdClient(serverCustomUrl, pollingTimeout, httpService);
         }
 
