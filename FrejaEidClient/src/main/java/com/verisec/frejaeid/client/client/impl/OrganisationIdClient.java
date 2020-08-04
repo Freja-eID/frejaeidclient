@@ -130,11 +130,11 @@ public class OrganisationIdClient extends BasicClient implements OrganisationIdC
          *
          * @param pollingTimeout in milliseconds on client side. Default value is
          * {@value #DEFAULT_POLLING_TIMEOUT_IN_MILLISECONDS} milliseconds.
-         * @return clientBuilder
+         * @return builder
          */
         @Override
-        public GenericBuilder setPollingTimeout(int pollingTimeout) {
-            return super.setPollingTimeout(pollingTimeout);
+        public Builder setPollingTimeout(int pollingTimeout) {
+            return (Builder) super.setPollingTimeout(pollingTimeout);
         }
 
         @Override
