@@ -24,9 +24,9 @@ import org.slf4j.LoggerFactory;
  *
  */
 public class AuthenticationClient extends BasicClient implements AuthenticationClientApi {
-    
+
     public static final Logger LOG = LoggerFactory.getLogger(AuthenticationClient.class);
-    
+
     private AuthenticationClient(String serverCustomUrl, int pollingTimeoutInMillseconds, TransactionContext transactionContext, HttpServiceApi httpService) throws FrejaEidClientInternalException {
         super(serverCustomUrl, pollingTimeoutInMillseconds, transactionContext, httpService);
     }
@@ -53,7 +53,7 @@ public class AuthenticationClient extends BasicClient implements AuthenticationC
         }
         return new Builder(sslSettings.getSslContext(), frejaEnvironment);
     }
-    
+
     @Override
     public String initiate(InitiateAuthenticationRequest initiateAuthenticationRequest) throws FrejaEidClientInternalException, FrejaEidException {
         requestValidationService.validateInitAuthRequest(initiateAuthenticationRequest, authenticationService.getTransactionContext());
@@ -62,7 +62,7 @@ public class AuthenticationClient extends BasicClient implements AuthenticationC
         LOG.debug("Received authentication transaction reference {}.", reference);
         return reference;
     }
-    
+
     @Override
     public AuthenticationResult getResult(AuthenticationResultRequest authenticationResultRequest) throws FrejaEidClientInternalException, FrejaEidException {
         requestValidationService.validateResultRequest(authenticationResultRequest);
@@ -71,7 +71,7 @@ public class AuthenticationClient extends BasicClient implements AuthenticationC
         LOG.debug("Received {} status for authentication transaction reference {}.", authenticationResult.getStatus(), authenticationResult.getAuthRef());
         return authenticationResult;
     }
-    
+
     @Override
     public List<AuthenticationResult> getResults(AuthenticationResultsRequest authenticationResultsRequest) throws FrejaEidClientInternalException, FrejaEidException {
         requestValidationService.validateResultsRequest(authenticationResultsRequest);
@@ -80,7 +80,7 @@ public class AuthenticationClient extends BasicClient implements AuthenticationC
         LOG.debug("Successfully received authentication transaction results.");
         return authenticationResults;
     }
-    
+
     @Override
     public AuthenticationResult pollForResult(AuthenticationResultRequest authenticationResultRequest, int maxWaitingTimeInSec) throws FrejaEidClientInternalException, FrejaEidException, FrejaEidClientPollingException {
         requestValidationService.validateResultRequest(authenticationResultRequest);
@@ -89,7 +89,7 @@ public class AuthenticationClient extends BasicClient implements AuthenticationC
         LOG.debug("Received {} status for authentication transaction reference {}, after polling for result.", authenticationResult.getStatus(), authenticationResult.getAuthRef());
         return authenticationResult;
     }
-    
+
     @Override
     public void cancel(CancelAuthenticationRequest cancelAuthenticationRequest) throws FrejaEidClientInternalException, FrejaEidException {
         requestValidationService.validateCancelRequest(cancelAuthenticationRequest);
@@ -97,28 +97,33 @@ public class AuthenticationClient extends BasicClient implements AuthenticationC
         authenticationService.cancel(cancelAuthenticationRequest);
         LOG.debug("Successfully canceled authentication transaction with reference {}.", cancelAuthenticationRequest.getAuthRef());
     }
-    
+
     public static class Builder extends GenericBuilder {
-        
+
         public static final Logger LOG = LoggerFactory.getLogger(Builder.class);
-        
+
         private Builder(SSLContext sslContext, FrejaEnvironment frejaEnvironment) throws FrejaEidClientInternalException {
             super(sslContext, frejaEnvironment);
         }
-        
+
         private Builder(String keystorePath, String keystorePass, String certificatePath, FrejaEnvironment frejaEnvironment) throws FrejaEidClientInternalException {
             super(keystorePath, keystorePass, certificatePath, frejaEnvironment);
         }
-        
+
         @Override
         public AuthenticationClient build() throws FrejaEidClientInternalException {
-            checkSetParameters();
             if (httpService == null) {
                 httpService = new HttpService(sslContext, connectionTimeout, readTimeout);
             }
-            LOG.debug("Successfully created AuthenticationClient with server URL {}, polling timeout {}ms and transaction context {}.", serverCustomUrl, pollingTimeout, transactionContext.getContext());
+            if (pollingTimeout == 0) {
+                pollingTimeout = DEFAULT_POLLING_TIMEOUT_IN_MILLISECONDS;
+            }
+            checkSetParameters();
+            LOG.debug("Successfully created AuthenticationClient with server URL {}, polling timeout {}ms and transaction context {}.",
+                    serverCustomUrl, pollingTimeout, transactionContext.getContext());
+            
             return new AuthenticationClient(serverCustomUrl, pollingTimeout, transactionContext, httpService);
         }
-        
+
     }
 }

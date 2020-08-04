@@ -25,10 +25,11 @@ import org.slf4j.LoggerFactory;
  *
  */
 public class SignClient extends BasicClient implements SignClientApi {
-    
+
     public static final Logger LOG = LoggerFactory.getLogger(SignClient.class);
     private static final long DEFAULT_EXPIRY_TIME_IN_MILLIS = TimeUnit.MINUTES.toMillis(2);
-    
+    private static final int DEFAULT_POLLING_TIMEOUT_IN_MILLISECONDS = 60000;
+
     private SignClient(String serverCustomUrl, int pollingTimeoutInMillseconds, TransactionContext transactionContext, HttpServiceApi httpService) throws FrejaEidClientInternalException {
         super(serverCustomUrl, pollingTimeoutInMillseconds, transactionContext, httpService);
     }
@@ -57,7 +58,7 @@ public class SignClient extends BasicClient implements SignClientApi {
         }
         return new Builder(sslSettings.getSslContext(), frejaEnvironment);
     }
-    
+
     @Override
     public String initiate(InitiateSignRequest initiateSignRequest) throws FrejaEidClientInternalException, FrejaEidException {
         requestValidationService.validateInitSignRequest(initiateSignRequest, signService.getTransactionContext());
@@ -67,7 +68,7 @@ public class SignClient extends BasicClient implements SignClientApi {
         LOG.debug("Received sign transaction reference {}.", reference);
         return reference;
     }
-    
+
     @Override
     public SignResult getResult(SignResultRequest getOneSignResultRequest) throws FrejaEidClientInternalException, FrejaEidException {
         requestValidationService.validateResultRequest(getOneSignResultRequest);
@@ -76,7 +77,7 @@ public class SignClient extends BasicClient implements SignClientApi {
         LOG.debug("Received {} status for sign transaction reference {}.", signResult.getStatus(), signResult.getSignRef());
         return signResult;
     }
-    
+
     @Override
     public List<SignResult> getResults(SignResultsRequest getSignResultsRequest) throws FrejaEidClientInternalException, FrejaEidException {
         requestValidationService.validateResultsRequest(getSignResultsRequest);
@@ -85,7 +86,7 @@ public class SignClient extends BasicClient implements SignClientApi {
         LOG.debug("Successfully received sign transaction results.");
         return signResults;
     }
-    
+
     @Override
     public SignResult pollForResult(SignResultRequest getOneSignResultRequest, int maxWaitingTimeInSec) throws FrejaEidClientInternalException, FrejaEidException, FrejaEidClientPollingException {
         requestValidationService.validateResultRequest(getOneSignResultRequest);
@@ -94,7 +95,7 @@ public class SignClient extends BasicClient implements SignClientApi {
         LOG.debug("Received {} status for sign transaction reference {}, after polling for result.", signResult.getStatus(), signResult.getSignRef());
         return signResult;
     }
-    
+
     @Override
     public void cancel(CancelSignRequest cancelSignRequest) throws FrejaEidClientInternalException, FrejaEidException {
         requestValidationService.validateCancelRequest(cancelSignRequest);
@@ -102,29 +103,45 @@ public class SignClient extends BasicClient implements SignClientApi {
         signService.cancel(cancelSignRequest);
         LOG.debug("Successfully canceled sign transaction with reference {}.", cancelSignRequest.getSignRef());
     }
-    
+
     public static class Builder extends GenericBuilder {
-        
+
         public static final Logger LOG = LoggerFactory.getLogger(Builder.class);
-        
+
         private Builder(SSLContext sslContext, FrejaEnvironment frejaEnvironment) throws FrejaEidClientInternalException {
             super(sslContext, frejaEnvironment);
         }
-        
+
         private Builder(String keystorePath, String keystorePass, String certificatePath, FrejaEnvironment frejaEnvironment) throws FrejaEidClientInternalException {
             super(keystorePath, keystorePass, certificatePath, frejaEnvironment);
         }
-        
+
+        /**
+         * Polling timeout is time between two polls for final results.
+         *
+         * @param pollingTimeout in milliseconds on client side. Default value is
+         * {@value #DEFAULT_POLLING_TIMEOUT_IN_MILLISECONDS} milliseconds.
+         * @return builder
+         */
+        @Override
+        public Builder setPollingTimeout(int pollingTimeout) {
+            return (Builder) super.setPollingTimeout(pollingTimeout);
+        }
+
         @Override
         public SignClient build() throws FrejaEidClientInternalException {
-            checkSetParameters();
             if (httpService == null) {
                 httpService = new HttpService(sslContext, connectionTimeout, readTimeout);
             }
-            LOG.debug("Successfully created SignClient with server URL {}, polling timeout {}ms and transaction context {}.", serverCustomUrl, pollingTimeout, transactionContext.getContext());
+            if (pollingTimeout == 0) {
+                pollingTimeout = DEFAULT_POLLING_TIMEOUT_IN_MILLISECONDS;
+            }
+            checkSetParameters();
+            LOG.debug("Successfully created SignClient with server URL {}, polling timeout {}ms and transaction context {}.",
+                    serverCustomUrl, pollingTimeout, transactionContext.getContext());
             return new SignClient(serverCustomUrl, pollingTimeout, transactionContext, httpService);
         }
-        
+
     }
-    
+
 }

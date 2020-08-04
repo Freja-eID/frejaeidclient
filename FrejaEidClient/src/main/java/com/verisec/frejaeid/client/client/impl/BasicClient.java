@@ -33,9 +33,9 @@ public class BasicClient {
 
     private static final int DEFAULT_CONNECTION_TIMEOUT_IN_MILLISECONDS = 20000;
     private static final int DEFAULT_READ_TIMEOUT_IN_MILLISECONDS = 20000;
-    private static final int DEFAULT_POLLING_TIMEOUT_IN_MILLISECONDS = 3000;
+    protected static final int DEFAULT_POLLING_TIMEOUT_IN_MILLISECONDS = 3000;
     private static final int MINIMUM_POLLING_TIMEOUT_IN_MILLISECONDS = 1000;
-    private static final int MAXIMUM_POLLING_TIMEOUT_IN_MILLISECONDS = 30000;
+    private static final int MAXIMUM_POLLING_TIMEOUT_IN_MILLISECONDS = 60000;
     protected JsonService jsonService;
     protected AuthenticationService authenticationService;
     protected SignService signService;
@@ -59,7 +59,7 @@ public class BasicClient {
         protected String serverCustomUrl = null;
         protected int connectionTimeout = DEFAULT_CONNECTION_TIMEOUT_IN_MILLISECONDS;
         protected int readTimeout = DEFAULT_READ_TIMEOUT_IN_MILLISECONDS;
-        protected int pollingTimeout = DEFAULT_POLLING_TIMEOUT_IN_MILLISECONDS;
+        protected int pollingTimeout = 0;
         protected static final String FREJA_ENVIRONMENT_PROD = "PRODUCTION";
         protected static final String FREJA_ENVIRONMENT_TEST = "TEST";
         protected HttpServiceApi httpService;
@@ -165,11 +165,10 @@ public class BasicClient {
         }
 
         /**
-         * Polling timeout is maximum time for waiting when polling for final
-         * results.
+         * Polling timeout is time between two polls for final results.
          *
-         * @param pollingTimeout in milliseconds on client side. Default value
-         * is {@value #DEFAULT_POLLING_TIMEOUT_IN_MILLISECONDS} milliseconds.
+         * @param pollingTimeout in milliseconds on client side. Default value is
+         * {@value #DEFAULT_POLLING_TIMEOUT_IN_MILLISECONDS} milliseconds.
          * @return clientBuilder
          */
         public GenericBuilder setPollingTimeout(int pollingTimeout) {
