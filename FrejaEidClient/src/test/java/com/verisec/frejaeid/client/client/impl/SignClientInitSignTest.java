@@ -46,7 +46,7 @@ public class SignClientInitSignTest {
     private final DataToSign dataToSign = DataToSign.create("SGVsbG8=");
 
     @Before
-    public void initDefaultRequest() throws FrejaEidClientInternalException {
+    public void initDefaultRequest() {
         minRegistrationLevel = MinRegistrationLevel.BASIC;
         title = "Sign transaction title";
         text = "Sign transaction text";
@@ -110,7 +110,7 @@ public class SignClientInitSignTest {
                 .setExpiry(expiry)
                 .setMinRegistrationLevel(minRegistrationLevel)
                 .setPushNotification(pushNotification)
-                .setAttributesToReturn(AttributeToReturn.CUSTOM_IDENTIFIER, AttributeToReturn.BASIC_USER_INFO, AttributeToReturn.DATE_OF_BIRTH, AttributeToReturn.EMAIL_ADDRESS, AttributeToReturn.INTEGRATOR_SPECIFIC_USER_ID, AttributeToReturn.RELYING_PARTY_USER_ID, AttributeToReturn.SSN, AttributeToReturn.ADDRESSES, AttributeToReturn.ALL_EMAIL_ADDRESSES)
+                .setAttributesToReturn(AttributeToReturn.values())
                 .setTitle(title)
                 .setRelyingPartyId(RELYING_PARTY_ID)
                 .build();
@@ -143,7 +143,7 @@ public class SignClientInitSignTest {
     }
 
     @Test
-    public void initSign_userInfoTelefonNumber_expectError() throws FrejaEidClientInternalException, FrejaEidException {
+    public void initSign_userInfoTelephoneNumber_expectError() throws FrejaEidClientInternalException, FrejaEidException {
         InitiateSignRequest initiateSignRequest = InitiateSignRequest.createCustom()
                 .setPhoneNumber(EMAIL)
                 .setDataToSign(dataToSign)

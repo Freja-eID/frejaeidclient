@@ -41,6 +41,7 @@ public class InitiateSignRequestBuildersTest {
         REQUESTED_ATTRIBUTES.add(AttributeToReturn.ORGANISATION_ID_IDENTIFIER);
         REQUESTED_ATTRIBUTES.add(AttributeToReturn.ADDRESSES);
         REQUESTED_ATTRIBUTES.add(AttributeToReturn.ALL_EMAIL_ADDRESSES);
+        REQUESTED_ATTRIBUTES.add(AttributeToReturn.ALL_PHONE_NUMBERS);
     }
 
     @Test
@@ -65,7 +66,7 @@ public class InitiateSignRequestBuildersTest {
                 .setTitle(TITLE)
                 .setDataToSign(DataToSign.create(TEXT))
                 .setMinRegistrationLevel(REGISTRATION_STATE)
-                .setAttributesToReturn(AttributeToReturn.SSN, AttributeToReturn.BASIC_USER_INFO, AttributeToReturn.CUSTOM_IDENTIFIER, AttributeToReturn.DATE_OF_BIRTH, AttributeToReturn.EMAIL_ADDRESS, AttributeToReturn.INTEGRATOR_SPECIFIC_USER_ID, AttributeToReturn.RELYING_PARTY_USER_ID, AttributeToReturn.ORGANISATION_ID_IDENTIFIER, AttributeToReturn.ADDRESSES, AttributeToReturn.ALL_EMAIL_ADDRESSES)
+                .setAttributesToReturn(AttributeToReturn.values())
                 .setExpiry(EXPIRY)
                 .setPushNotification(PUSH_NOTIFICATION)
                 .setRelyingPartyId(RELYING_PARTY_ID)
@@ -80,7 +81,7 @@ public class InitiateSignRequestBuildersTest {
                 .setEmail(EMAIL)
                 .setTitle(TITLE)
                 .setDataToSign(DataToSign.create(TEXT))
-                .setAttributesToReturn(AttributeToReturn.SSN, AttributeToReturn.BASIC_USER_INFO, AttributeToReturn.CUSTOM_IDENTIFIER, AttributeToReturn.DATE_OF_BIRTH, AttributeToReturn.EMAIL_ADDRESS, AttributeToReturn.INTEGRATOR_SPECIFIC_USER_ID, AttributeToReturn.RELYING_PARTY_USER_ID, AttributeToReturn.ORGANISATION_ID_IDENTIFIER, AttributeToReturn.ADDRESSES, AttributeToReturn.ALL_EMAIL_ADDRESSES)
+                .setAttributesToReturn(AttributeToReturn.values())
                 .setExpiry(EXPIRY)
                 .setRelyingPartyId(RELYING_PARTY_ID)
                 .build();
@@ -96,7 +97,7 @@ public class InitiateSignRequestBuildersTest {
                 .setDataToSign(DataToSign.create(TEXT))
                 .setMinRegistrationLevel(REGISTRATION_STATE)
                 .setPushNotification(PUSH_NOTIFICATION)
-                .setAttributesToReturn(AttributeToReturn.SSN, AttributeToReturn.BASIC_USER_INFO, AttributeToReturn.CUSTOM_IDENTIFIER, AttributeToReturn.DATE_OF_BIRTH, AttributeToReturn.EMAIL_ADDRESS, AttributeToReturn.INTEGRATOR_SPECIFIC_USER_ID, AttributeToReturn.RELYING_PARTY_USER_ID, AttributeToReturn.ORGANISATION_ID_IDENTIFIER, AttributeToReturn.ADDRESSES, AttributeToReturn.ALL_EMAIL_ADDRESSES)
+                .setAttributesToReturn(AttributeToReturn.values())
                 .setExpiry(EXPIRY)
                 .setRelyingPartyId(RELYING_PARTY_ID)
                 .build();
@@ -129,7 +130,7 @@ public class InitiateSignRequestBuildersTest {
                 .setDataToSign(DataToSign.create(TEXT, TEXT.getBytes()))
                 .setMinRegistrationLevel(REGISTRATION_STATE)
                 .setPushNotification(PUSH_NOTIFICATION)
-                .setAttributesToReturn(AttributeToReturn.SSN, AttributeToReturn.BASIC_USER_INFO, AttributeToReturn.CUSTOM_IDENTIFIER, AttributeToReturn.DATE_OF_BIRTH, AttributeToReturn.EMAIL_ADDRESS, AttributeToReturn.INTEGRATOR_SPECIFIC_USER_ID, AttributeToReturn.RELYING_PARTY_USER_ID, AttributeToReturn.ORGANISATION_ID_IDENTIFIER, AttributeToReturn.ADDRESSES, AttributeToReturn.ALL_EMAIL_ADDRESSES)
+                .setAttributesToReturn(AttributeToReturn.values())
                 .setExpiry(EXPIRY)
                 .setRelyingPartyId(RELYING_PARTY_ID)
                 .build();
@@ -145,7 +146,7 @@ public class InitiateSignRequestBuildersTest {
                 .setDataToSign(DataToSign.create(TEXT, null))
                 .setMinRegistrationLevel(REGISTRATION_STATE)
                 .setPushNotification(PUSH_NOTIFICATION)
-                .setAttributesToReturn(AttributeToReturn.SSN, AttributeToReturn.BASIC_USER_INFO, AttributeToReturn.CUSTOM_IDENTIFIER, AttributeToReturn.DATE_OF_BIRTH, AttributeToReturn.EMAIL_ADDRESS, AttributeToReturn.INTEGRATOR_SPECIFIC_USER_ID, AttributeToReturn.RELYING_PARTY_USER_ID, AttributeToReturn.ORGANISATION_ID_IDENTIFIER, AttributeToReturn.ADDRESSES, AttributeToReturn.ALL_EMAIL_ADDRESSES)
+                .setAttributesToReturn(AttributeToReturn.values())
                 .setExpiry(EXPIRY)
                 .setRelyingPartyId(RELYING_PARTY_ID)
                 .build();
@@ -161,7 +162,7 @@ public class InitiateSignRequestBuildersTest {
                 .setDataToSign(DataToSign.create(TEXT, "".getBytes()))
                 .setMinRegistrationLevel(REGISTRATION_STATE)
                 .setPushNotification(PUSH_NOTIFICATION)
-                .setAttributesToReturn(AttributeToReturn.SSN, AttributeToReturn.BASIC_USER_INFO, AttributeToReturn.CUSTOM_IDENTIFIER, AttributeToReturn.DATE_OF_BIRTH, AttributeToReturn.EMAIL_ADDRESS, AttributeToReturn.INTEGRATOR_SPECIFIC_USER_ID, AttributeToReturn.RELYING_PARTY_USER_ID, AttributeToReturn.ORGANISATION_ID_IDENTIFIER, AttributeToReturn.ADDRESSES, AttributeToReturn.ALL_EMAIL_ADDRESSES)
+                .setAttributesToReturn(AttributeToReturn.values())
                 .setExpiry(EXPIRY)
                 .setRelyingPartyId(RELYING_PARTY_ID)
                 .build();
@@ -177,7 +178,7 @@ public class InitiateSignRequestBuildersTest {
                 .setDataToSign(DataToSign.create(TEXT))
                 .setMinRegistrationLevel(null)
                 .setPushNotification(PUSH_NOTIFICATION)
-                .setAttributesToReturn(AttributeToReturn.SSN, AttributeToReturn.BASIC_USER_INFO, AttributeToReturn.CUSTOM_IDENTIFIER, AttributeToReturn.DATE_OF_BIRTH, AttributeToReturn.EMAIL_ADDRESS, AttributeToReturn.INTEGRATOR_SPECIFIC_USER_ID, AttributeToReturn.RELYING_PARTY_USER_ID, AttributeToReturn.ORGANISATION_ID_IDENTIFIER, AttributeToReturn.ADDRESSES, AttributeToReturn.ALL_EMAIL_ADDRESSES)
+                .setAttributesToReturn(AttributeToReturn.values())
                 .setExpiry(EXPIRY)
                 .setRelyingPartyId(null)
                 .build();
@@ -185,7 +186,7 @@ public class InitiateSignRequestBuildersTest {
     }
 
     @Test
-    public void createCustomRequest_userInfoTypeOrganisationId() throws FrejaEidClientInternalException {
+    public void createCustomRequest_userInfoTypeOrganisationId() {
         InitiateSignRequest expectedInitiateSignRequest = new InitiateSignRequest(UserInfoType.ORG_ID, ORGANISATION_ID, REGISTRATION_STATE, TITLE, PUSH_NOTIFICATION, EXPIRY, DataToSignType.SIMPLE_UTF8_TEXT, DataToSign.create(TEXT), SignatureType.SIMPLE, REQUESTED_ATTRIBUTES, RELYING_PARTY_ID);
         InitiateSignRequest initiateSignRequest = InitiateSignRequest.createCustom()
                 .setOrganisationId(ORGANISATION_ID)
@@ -193,7 +194,7 @@ public class InitiateSignRequestBuildersTest {
                 .setDataToSign(DataToSign.create(TEXT))
                 .setMinRegistrationLevel(REGISTRATION_STATE)
                 .setPushNotification(PUSH_NOTIFICATION)
-                .setAttributesToReturn(AttributeToReturn.SSN, AttributeToReturn.BASIC_USER_INFO, AttributeToReturn.CUSTOM_IDENTIFIER, AttributeToReturn.DATE_OF_BIRTH, AttributeToReturn.EMAIL_ADDRESS, AttributeToReturn.INTEGRATOR_SPECIFIC_USER_ID, AttributeToReturn.RELYING_PARTY_USER_ID, AttributeToReturn.ORGANISATION_ID_IDENTIFIER, AttributeToReturn.ADDRESSES, AttributeToReturn.ALL_EMAIL_ADDRESSES)
+                .setAttributesToReturn(AttributeToReturn.values())
                 .setExpiry(EXPIRY)
                 .setRelyingPartyId(RELYING_PARTY_ID)
                 .build();
