@@ -4,6 +4,7 @@ import com.verisec.frejaeid.client.beans.general.BasicUserInfo;
 import com.verisec.frejaeid.client.beans.general.SsnUserInfo;
 import com.verisec.frejaeid.client.beans.general.AddressInfo;
 import com.verisec.frejaeid.client.beans.general.Email;
+import com.verisec.frejaeid.client.beans.general.PhoneNumberInfo;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -20,7 +21,8 @@ import java.util.Map;
  * <br> - {@link #EMAIL_ADDRESS}
  * <br> - {@link #ORGANISATION_ID_IDENTIFIER}
  * <br> - {@link #ADDRESSES}
- *
+ * <br> - {@link #ALL_EMAIL_ADDRESSES}
+ * <br> - {@link #ALL_PHONE_NUMBERS}
  */
 public enum AttributeToReturn {
 
@@ -78,7 +80,13 @@ public enum AttributeToReturn {
      * contains all user's email addresses registered in Freja eID will be
      * returned.
      */
-    ALL_EMAIL_ADDRESSES("ALL_EMAIL_ADDRESSES");
+    ALL_EMAIL_ADDRESSES("ALL_EMAIL_ADDRESSES"),
+    /**
+     * If ALL_PHONE_NUMBERS is requested, list of {@linkplain PhoneNumberInfo} which
+     * contains all user's phone numbers registered in Freja eID will be
+     * returned.
+     */
+    ALL_PHONE_NUMBERS("ALL_PHONE_NUMBERS");
 
     private final String name;
 

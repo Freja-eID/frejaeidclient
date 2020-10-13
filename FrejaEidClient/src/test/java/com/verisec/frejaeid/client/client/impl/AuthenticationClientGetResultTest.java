@@ -1,16 +1,11 @@
 package com.verisec.frejaeid.client.client.impl;
 
 import com.verisec.frejaeid.client.beans.authentication.get.AuthenticationResultsRequest;
-import com.verisec.frejaeid.client.beans.general.BasicUserInfo;
+import com.verisec.frejaeid.client.beans.general.*;
 import com.verisec.frejaeid.client.beans.common.RelyingPartyRequest;
-import com.verisec.frejaeid.client.beans.general.RequestedAttributes;
-import com.verisec.frejaeid.client.beans.general.SsnUserInfo;
 import com.verisec.frejaeid.client.beans.authentication.get.AuthenticationResults;
 import com.verisec.frejaeid.client.beans.authentication.get.AuthenticationResultRequest;
 import com.verisec.frejaeid.client.beans.authentication.get.AuthenticationResult;
-import com.verisec.frejaeid.client.beans.general.AddressInfo;
-import com.verisec.frejaeid.client.beans.general.Email;
-import com.verisec.frejaeid.client.beans.general.SslSettings;
 import com.verisec.frejaeid.client.client.api.AuthenticationClientApi;
 import com.verisec.frejaeid.client.client.util.TestUtil;
 import com.verisec.frejaeid.client.enums.AddressSourceType;
@@ -46,13 +41,15 @@ public class AuthenticationClientGetResultTest {
     private static final String RELYING_PARTY_USER_ID = "relyingPartyUserId";
     private static final String DATE_OF_BIRTH = "1987-10-18";
     private static final String EMAIL_ADDRESS = "test@frejaeid.com";
+    private static final String PHONE_NUMBER = "+46123456789";
     private static final String ORGANISATION_ID = "vealrad";
     private static final List<AddressInfo> ADDRESSES = Arrays.asList(new AddressInfo(Country.SWEDEN, "city", "postCode", "address1", "address2", "address3", "1993-12-30", AddressType.RESIDENTIAL, AddressSourceType.GOVERNMENT_REGISTRY));
     private static final List<Email> ALL_EMAIL_ADDRESSES = Arrays.asList(new Email(EMAIL_ADDRESS));
-    private static final RequestedAttributes REQUESTED_ATTRIBUTES = new RequestedAttributes(BASIC_USER_INFO, CUSTOM_IDENTIFIER, SSN, null, DATE_OF_BIRTH, RELYING_PARTY_USER_ID, EMAIL_ADDRESS, ORGANISATION_ID, ADDRESSES, ALL_EMAIL_ADDRESSES);
+    private static final List<PhoneNumberInfo> ALL_PHONE_NUMBERS = Arrays.asList(new PhoneNumberInfo(PHONE_NUMBER));
+    private static final RequestedAttributes REQUESTED_ATTRIBUTES = new RequestedAttributes(BASIC_USER_INFO, CUSTOM_IDENTIFIER, SSN, null, DATE_OF_BIRTH, RELYING_PARTY_USER_ID, EMAIL_ADDRESS, ORGANISATION_ID, ADDRESSES, ALL_EMAIL_ADDRESSES, ALL_PHONE_NUMBERS);
 
     @Test
-    public void getAuthenticationResult_relyignPartyIdNull_success() throws FrejaEidClientInternalException, FrejaEidException {
+    public void getAuthenticationResult_relyingPartyIdNull_success() throws FrejaEidClientInternalException, FrejaEidException {
         AuthenticationClientApi authenticationClient = AuthenticationClient.create(SslSettings.create(TestUtil.getKeystorePath(TestUtil.KEYSTORE_PATH), TestUtil.KEYSTORE_PASSWORD, TestUtil.getKeystorePath(TestUtil.CERTIFICATE_PATH)), FrejaEnvironment.TEST)
                 .setHttpService(httpServiceMock)
                 .setTransactionContext(TransactionContext.PERSONAL).build();
@@ -192,10 +189,9 @@ public class AuthenticationClientGetResultTest {
     }
 
     private AuthenticationResults prepareResponse() {
-        RequestedAttributes attributes1 = new RequestedAttributes(BASIC_USER_INFO, CUSTOM_IDENTIFIER, SSN, null, DATE_OF_BIRTH, RELYING_PARTY_USER_ID, EMAIL_ADDRESS, ORGANISATION_ID, ADDRESSES, ALL_EMAIL_ADDRESSES
-        );
+        RequestedAttributes attributes1 = new RequestedAttributes(BASIC_USER_INFO, CUSTOM_IDENTIFIER, SSN, null, DATE_OF_BIRTH, RELYING_PARTY_USER_ID, EMAIL_ADDRESS, ORGANISATION_ID, ADDRESSES, ALL_EMAIL_ADDRESSES, ALL_PHONE_NUMBERS);
         AuthenticationResult firstResponse = new AuthenticationResult(REFERENCE, TransactionStatus.STARTED, DETAILS, attributes1);
-        RequestedAttributes attributes2 = new RequestedAttributes(null, "test", null, null, null, null, null, null, null, null);
+        RequestedAttributes attributes2 = new RequestedAttributes(null, "test", null, null, null, null, null, null, null, null, null);
         AuthenticationResult secondResponse = new AuthenticationResult(REFERENCE, TransactionStatus.DELIVERED_TO_MOBILE, "test", attributes2);
         List<AuthenticationResult> responses = new ArrayList<>();
         responses.add(firstResponse);
