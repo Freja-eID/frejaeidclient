@@ -49,6 +49,7 @@ public class SignClientHttpTest extends CommonHttpTest {
     private static SignResult signResultWithRequestedAttributes;
     private static SignResults signResults;
     private static SignClientApi signClient;
+    private static final AttributeToReturn[] ATTRIBUTES_TO_RETURN = AttributeToReturn.values();
 
     @BeforeClass
     public static void init() throws FrejaEidClientInternalException {
@@ -93,8 +94,7 @@ public class SignClientHttpTest extends CommonHttpTest {
                 .setDataToSign(dataToSign)
                 .setExpiry(Long.MAX_VALUE)
                 .setMinRegistrationLevel(MinRegistrationLevel.BASIC)
-                .setAttributesToReturn(AttributeToReturn.BASIC_USER_INFO, AttributeToReturn.CUSTOM_IDENTIFIER, AttributeToReturn.DATE_OF_BIRTH,
-                        AttributeToReturn.EMAIL_ADDRESS, AttributeToReturn.INTEGRATOR_SPECIFIC_USER_ID, AttributeToReturn.RELYING_PARTY_USER_ID, AttributeToReturn.SSN, AttributeToReturn.ADDRESSES, AttributeToReturn.ALL_EMAIL_ADDRESSES)
+                .setAttributesToReturn(ATTRIBUTES_TO_RETURN)
                 .setPushNotification(pushNotification)
                 .setTitle(title)
                 .build();
@@ -105,8 +105,7 @@ public class SignClientHttpTest extends CommonHttpTest {
                 .setDataToSign(DataToSign.create(dataToSignText, binaryData))
                 .setExpiry(Long.MAX_VALUE)
                 .setMinRegistrationLevel(MinRegistrationLevel.BASIC)
-                .setAttributesToReturn(AttributeToReturn.BASIC_USER_INFO, AttributeToReturn.CUSTOM_IDENTIFIER, AttributeToReturn.DATE_OF_BIRTH,
-                        AttributeToReturn.EMAIL_ADDRESS, AttributeToReturn.INTEGRATOR_SPECIFIC_USER_ID, AttributeToReturn.RELYING_PARTY_USER_ID, AttributeToReturn.SSN, AttributeToReturn.ADDRESSES, AttributeToReturn.ALL_EMAIL_ADDRESSES)
+                .setAttributesToReturn(ATTRIBUTES_TO_RETURN)
                 .setPushNotification(pushNotification)
                 .setTitle(title)
                 .build();
@@ -141,8 +140,7 @@ public class SignClientHttpTest extends CommonHttpTest {
                 .setDataToSign(dataToSign)
                 .setExpiry(Long.MAX_VALUE)
                 .setMinRegistrationLevel(MinRegistrationLevel.EXTENDED)
-                .setAttributesToReturn(AttributeToReturn.BASIC_USER_INFO, AttributeToReturn.CUSTOM_IDENTIFIER, AttributeToReturn.DATE_OF_BIRTH,
-                        AttributeToReturn.EMAIL_ADDRESS, AttributeToReturn.INTEGRATOR_SPECIFIC_USER_ID, AttributeToReturn.RELYING_PARTY_USER_ID, AttributeToReturn.SSN, AttributeToReturn.ORGANISATION_ID_IDENTIFIER, AttributeToReturn.ADDRESSES, AttributeToReturn.ALL_EMAIL_ADDRESSES)
+                .setAttributesToReturn(ATTRIBUTES_TO_RETURN)
                 .setPushNotification(pushNotification)
                 .setTitle(title)
                 .build();

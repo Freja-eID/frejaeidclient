@@ -39,7 +39,7 @@ import org.junit.Test;
 
 public class RequestValidationServiceTest {
 
-    private static final String ORGANISATION_ID_TITLE = "OrgananisationId title";
+    private static final String ORGANISATION_ID_TITLE = "OrganisationId title";
     private static final String IDENTIFIER_NAME = "Identifier name";
     private static final String IDENTIFIER = "identifier";
     private static final String TEXT = "text";
