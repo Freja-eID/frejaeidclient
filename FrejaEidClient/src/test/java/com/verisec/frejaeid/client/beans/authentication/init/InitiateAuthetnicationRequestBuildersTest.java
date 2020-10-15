@@ -36,6 +36,7 @@ public class InitiateAuthetnicationRequestBuildersTest {
         REQUESTED_ATTRIBUTES.add(AttributeToReturn.ORGANISATION_ID_IDENTIFIER);
         REQUESTED_ATTRIBUTES.add(AttributeToReturn.ADDRESSES);
         REQUESTED_ATTRIBUTES.add(AttributeToReturn.ALL_EMAIL_ADDRESSES);
+        REQUESTED_ATTRIBUTES.add(AttributeToReturn.ALL_PHONE_NUMBERS);
     }
 
     @Test
@@ -58,7 +59,7 @@ public class InitiateAuthetnicationRequestBuildersTest {
         InitiateAuthenticationRequest initiateAuthenticationRequest = InitiateAuthenticationRequest.createCustom()
                 .setEmail(EMAIL)
                 .setMinRegistrationLevel(REGISTRATION_STATE)
-                .setAttributesToReturn(AttributeToReturn.SSN, AttributeToReturn.BASIC_USER_INFO, AttributeToReturn.CUSTOM_IDENTIFIER, AttributeToReturn.DATE_OF_BIRTH, AttributeToReturn.EMAIL_ADDRESS, AttributeToReturn.INTEGRATOR_SPECIFIC_USER_ID, AttributeToReturn.RELYING_PARTY_USER_ID, AttributeToReturn.ORGANISATION_ID_IDENTIFIER, AttributeToReturn.ADDRESSES, AttributeToReturn.ALL_EMAIL_ADDRESSES)
+                .setAttributesToReturn(AttributeToReturn.values())
                 .setRelyingPartyId(RELYING_PARTY_ID)
                 .build();
         Assert.assertEquals(expectedInitiateAuthenticationRequest, initiateAuthenticationRequest);
@@ -69,7 +70,7 @@ public class InitiateAuthetnicationRequestBuildersTest {
         InitiateAuthenticationRequest expectedInitiateAuthenticationRequest = new InitiateAuthenticationRequest(UserInfoType.EMAIL, EMAIL, MinRegistrationLevel.BASIC, REQUESTED_ATTRIBUTES, RELYING_PARTY_ID);
         InitiateAuthenticationRequest initiateAuthenticationRequest = InitiateAuthenticationRequest.createCustom()
                 .setEmail(EMAIL)
-                .setAttributesToReturn(AttributeToReturn.SSN, AttributeToReturn.BASIC_USER_INFO, AttributeToReturn.CUSTOM_IDENTIFIER, AttributeToReturn.DATE_OF_BIRTH, AttributeToReturn.EMAIL_ADDRESS, AttributeToReturn.INTEGRATOR_SPECIFIC_USER_ID, AttributeToReturn.RELYING_PARTY_USER_ID, AttributeToReturn.ORGANISATION_ID_IDENTIFIER, AttributeToReturn.ADDRESSES, AttributeToReturn.ALL_EMAIL_ADDRESSES)
+                .setAttributesToReturn(AttributeToReturn.values())
                 .setRelyingPartyId(RELYING_PARTY_ID)
                 .build();
         Assert.assertEquals(expectedInitiateAuthenticationRequest, initiateAuthenticationRequest);
@@ -80,7 +81,7 @@ public class InitiateAuthetnicationRequestBuildersTest {
         InitiateAuthenticationRequest expectedInitiateAuthenticationRequest = new InitiateAuthenticationRequest(UserInfoType.SSN, UserInfoUtil.convertSsnUserInfo(SSN_USER_INFO), MinRegistrationLevel.EXTENDED, REQUESTED_ATTRIBUTES, RELYING_PARTY_ID);
         InitiateAuthenticationRequest initiateAuthenticationRequest = InitiateAuthenticationRequest.createCustom()
                 .setSsn(SSN_USER_INFO)
-                .setAttributesToReturn(AttributeToReturn.SSN, AttributeToReturn.BASIC_USER_INFO, AttributeToReturn.CUSTOM_IDENTIFIER, AttributeToReturn.DATE_OF_BIRTH, AttributeToReturn.EMAIL_ADDRESS, AttributeToReturn.INTEGRATOR_SPECIFIC_USER_ID, AttributeToReturn.RELYING_PARTY_USER_ID, AttributeToReturn.ORGANISATION_ID_IDENTIFIER, AttributeToReturn.ADDRESSES, AttributeToReturn.ALL_EMAIL_ADDRESSES)
+                .setAttributesToReturn(AttributeToReturn.values())
                 .setMinRegistrationLevel(REGISTRATION_STATE)
                 .setRelyingPartyId(RELYING_PARTY_ID)
                 .build();
@@ -92,7 +93,7 @@ public class InitiateAuthetnicationRequestBuildersTest {
         InitiateAuthenticationRequest expectedInitiateAuthenticationRequest = new InitiateAuthenticationRequest(UserInfoType.PHONE, PHONE_NUMBER, REGISTRATION_STATE, REQUESTED_ATTRIBUTES, RELYING_PARTY_ID);
         InitiateAuthenticationRequest initiateAuthenticationRequest = InitiateAuthenticationRequest.createCustom()
                 .setPhoneNumber(PHONE_NUMBER)
-                .setAttributesToReturn(AttributeToReturn.SSN, AttributeToReturn.BASIC_USER_INFO, AttributeToReturn.CUSTOM_IDENTIFIER, AttributeToReturn.DATE_OF_BIRTH, AttributeToReturn.EMAIL_ADDRESS, AttributeToReturn.INTEGRATOR_SPECIFIC_USER_ID, AttributeToReturn.RELYING_PARTY_USER_ID, AttributeToReturn.ORGANISATION_ID_IDENTIFIER, AttributeToReturn.ADDRESSES, AttributeToReturn.ALL_EMAIL_ADDRESSES)
+                .setAttributesToReturn(AttributeToReturn.values())
                 .setMinRegistrationLevel(REGISTRATION_STATE)
                 .setRelyingPartyId(RELYING_PARTY_ID)
                 .build();
@@ -104,7 +105,7 @@ public class InitiateAuthetnicationRequestBuildersTest {
         InitiateAuthenticationRequest expectedInitiateAuthenticationRequest = new InitiateAuthenticationRequest(UserInfoType.INFERRED, INFERRED_USER_INFO, REGISTRATION_STATE, REQUESTED_ATTRIBUTES, RELYING_PARTY_ID);
         InitiateAuthenticationRequest initiateAuthenticationRequest = InitiateAuthenticationRequest.createCustom()
                 .setInferred()
-                .setAttributesToReturn(AttributeToReturn.SSN, AttributeToReturn.BASIC_USER_INFO, AttributeToReturn.CUSTOM_IDENTIFIER, AttributeToReturn.DATE_OF_BIRTH, AttributeToReturn.EMAIL_ADDRESS, AttributeToReturn.INTEGRATOR_SPECIFIC_USER_ID, AttributeToReturn.RELYING_PARTY_USER_ID, AttributeToReturn.ORGANISATION_ID_IDENTIFIER, AttributeToReturn.ADDRESSES, AttributeToReturn.ALL_EMAIL_ADDRESSES)
+                .setAttributesToReturn(AttributeToReturn.values())
                 .setMinRegistrationLevel(REGISTRATION_STATE)
                 .setRelyingPartyId(RELYING_PARTY_ID)
                 .build();
@@ -116,7 +117,7 @@ public class InitiateAuthetnicationRequestBuildersTest {
         InitiateAuthenticationRequest expectedInitiateAuthenticationRequest = new InitiateAuthenticationRequest(UserInfoType.INFERRED, INFERRED_USER_INFO, MinRegistrationLevel.BASIC, REQUESTED_ATTRIBUTES, null);
         InitiateAuthenticationRequest initiateAuthenticationRequest = InitiateAuthenticationRequest.createCustom()
                 .setInferred()
-                .setAttributesToReturn(AttributeToReturn.SSN, AttributeToReturn.BASIC_USER_INFO, AttributeToReturn.CUSTOM_IDENTIFIER, AttributeToReturn.DATE_OF_BIRTH, AttributeToReturn.EMAIL_ADDRESS, AttributeToReturn.INTEGRATOR_SPECIFIC_USER_ID, AttributeToReturn.RELYING_PARTY_USER_ID, AttributeToReturn.ORGANISATION_ID_IDENTIFIER, AttributeToReturn.ADDRESSES, AttributeToReturn.ALL_EMAIL_ADDRESSES)
+                .setAttributesToReturn(AttributeToReturn.values())
                 .setMinRegistrationLevel(null)
                 .setRelyingPartyId(null)
                 .build();
@@ -124,11 +125,11 @@ public class InitiateAuthetnicationRequestBuildersTest {
     }
 
     @Test
-    public void createCustomRequest_userInfoOrganisationId() throws FrejaEidClientInternalException {
+    public void createCustomRequest_userInfoOrganisationId() {
         InitiateAuthenticationRequest expectedInitiateAuthenticationRequest = new InitiateAuthenticationRequest(UserInfoType.ORG_ID, ORGANISATION_ID, MinRegistrationLevel.EXTENDED, REQUESTED_ATTRIBUTES, RELYING_PARTY_ID);
         InitiateAuthenticationRequest initiateAuthenticationRequest = InitiateAuthenticationRequest.createCustom()
                 .setOrganisationId(ORGANISATION_ID)
-                .setAttributesToReturn(AttributeToReturn.SSN, AttributeToReturn.BASIC_USER_INFO, AttributeToReturn.CUSTOM_IDENTIFIER, AttributeToReturn.DATE_OF_BIRTH, AttributeToReturn.EMAIL_ADDRESS, AttributeToReturn.INTEGRATOR_SPECIFIC_USER_ID, AttributeToReturn.RELYING_PARTY_USER_ID, AttributeToReturn.ORGANISATION_ID_IDENTIFIER, AttributeToReturn.ADDRESSES, AttributeToReturn.ALL_EMAIL_ADDRESSES)
+                .setAttributesToReturn(AttributeToReturn.values())
                 .setMinRegistrationLevel(REGISTRATION_STATE)
                 .setRelyingPartyId(RELYING_PARTY_ID)
                 .build();

@@ -39,7 +39,7 @@ public class OrganisationIdClientHttpTest extends CommonHttpTest {
     private static OrganisationIdResult organisationIdResult;
     private static GetAllOrganisationIdUsersResponse getAllOrganisationIdUsersResponse;
     private static OrganisationIdClientApi organisationIdClient;
-    private static final String ORGANISATION_ID_TITLE = "OrgananisationId title";
+    private static final String ORGANISATION_ID_TITLE = "OrganisationId title";
     private static final String IDENTIFIER_NAME = "Identifier name";
     private static final String IDENTIFIER = "identifier";
 

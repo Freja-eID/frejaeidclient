@@ -1,12 +1,7 @@
 package com.verisec.frejaeid.client.client.impl;
 
-import com.verisec.frejaeid.client.beans.general.BasicUserInfo;
+import com.verisec.frejaeid.client.beans.general.*;
 import com.verisec.frejaeid.client.beans.common.RelyingPartyRequest;
-import com.verisec.frejaeid.client.beans.general.AddressInfo;
-import com.verisec.frejaeid.client.beans.general.Email;
-import com.verisec.frejaeid.client.beans.general.SslSettings;
-import com.verisec.frejaeid.client.beans.general.RequestedAttributes;
-import com.verisec.frejaeid.client.beans.general.SsnUserInfo;
 import com.verisec.frejaeid.client.beans.sign.get.SignResult;
 import com.verisec.frejaeid.client.beans.sign.get.SignResultRequest;
 import com.verisec.frejaeid.client.beans.sign.get.SignResultsRequest;
@@ -41,10 +36,12 @@ public class SignClientGetResultTest {
     private static final String SIGN_DETAILS = "This is sign transaction";
     private static final String RELYING_PARTY_USER_ID = "relyingPartyUserId";
     private static final String EMAIL_ADDRESS = "test@frejaeid.com";
+    private static final String PHONE_NUMBER = "+46123456789";
     private static final String ORGANISATION_ID = "orgId";
     private static final List<AddressInfo> ADDRESSES = Arrays.asList(new AddressInfo(Country.SWEDEN, "city", "postCode", "address1", "address2", "address3", "1993-12-30", AddressType.RESIDENTIAL, AddressSourceType.GOVERNMENT_REGISTRY));
     private static final List<Email> ALL_EMAIL_ADDRESSES = Arrays.asList(new Email(EMAIL_ADDRESS));
-    private static final RequestedAttributes REQUESTED_ATTRIBUTES = new RequestedAttributes(new BasicUserInfo("name", "surname"), "customIdentifier", SsnUserInfo.create(Country.SWEDEN, "ssn"), "integratorSpecificId", "1987-10-18", RELYING_PARTY_USER_ID, EMAIL_ADDRESS, ORGANISATION_ID, ADDRESSES, ALL_EMAIL_ADDRESSES);
+    private static final List<PhoneNumberInfo> ALL_PHONE_NUMBERS = Arrays.asList(new PhoneNumberInfo(PHONE_NUMBER));
+    private static final RequestedAttributes REQUESTED_ATTRIBUTES = new RequestedAttributes(new BasicUserInfo("name", "surname"), "customIdentifier", SsnUserInfo.create(Country.SWEDEN, "ssn"), "integratorSpecificId", "1987-10-18", RELYING_PARTY_USER_ID, EMAIL_ADDRESS, ORGANISATION_ID, ADDRESSES, ALL_EMAIL_ADDRESSES, ALL_PHONE_NUMBERS);
 
     @Test
     public void getSignResult_relyingPartyIdNull_expectSuccess() throws FrejaEidClientInternalException, FrejaEidException {
