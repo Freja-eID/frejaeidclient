@@ -11,7 +11,7 @@ public class CancelSignRequest extends CancelRequest {
      * reference.
      *
      * @param reference unique transaction reference provided by server as a
-     * result of initiating transaction. It cannot be {@code null} or empty.
+     *                  result of initiating transaction. It cannot be {@code null} or empty.
      * @return request
      */
     public static CancelSignRequest create(String reference) {
@@ -24,10 +24,10 @@ public class CancelSignRequest extends CancelRequest {
      *
      * <b>Only relying parties that are integrators should use this method.</b>
      *
-     * @param reference unique transaction reference provided by server as a
-     * result of initiating transaction. It cannot be {@code null} or empty.
+     * @param reference      unique transaction reference provided by server as a
+     *                       result of initiating transaction. It cannot be {@code null} or empty.
      * @param relyingPartyId specifies relying party id for which transaction is
-     * initiated. It cannot be {@code null} or empty.
+     *                       initiated. It cannot be {@code null} or empty.
      * @return request
      */
     public static CancelSignRequest create(String reference, String relyingPartyId) {

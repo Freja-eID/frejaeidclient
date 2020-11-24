@@ -15,10 +15,10 @@ public class InitiateAddOrganisationIdRequestBuilders {
          * Sets email as userInfo and {@linkplain UserInfoType#EMAIL} as
          * {@linkplain UserInfoType} for initiating transaction.
          *
-         * @param email user's email that will be used to identify the end user.
-         * Maximum length is 256 characters.
+         * @param email          user's email that will be used to identify the end user.
+         *                       Maximum length is 256 characters.
          * @param organisationId instance of {@linkplain OrganisationId} that
-         * contains information regarding organisation id.
+         *                       contains information regarding organisation id.
          * @return request builder
          */
         public SetOptionalParamsBuilder setEmailAndOrganisationId(String email, OrganisationId organisationId) {
@@ -29,32 +29,33 @@ public class InitiateAddOrganisationIdRequestBuilders {
          * Sets ssnUserInfo as userInfo and {@linkplain UserInfoType#SSN} as
          * {@linkplain UserInfoType} for initiating transaction.
          *
-         * @param ssnUserInfo instance of {@linkplain SsnUserInfo} that contains
-         * personal number and country of user that will be used to identify the
-         * end user.
+         * @param ssnUserInfo    instance of {@linkplain SsnUserInfo} that contains
+         *                       personal number and country of user that will be used to identify the
+         *                       end user.
          * @param organisationId instance of {@linkplain OrganisationId} that
-         * contains information regarding organisation id.
-         *
+         *                       contains information regarding organisation id.
          * @return request builder
          * @throws FrejaEidClientInternalException if error occurs when
-         * generating JSON content from ssnUserInfo
+         *                                         generating JSON content from ssnUserInfo
          */
-        public SetOptionalParamsBuilder setSsnAndOrganisationId(SsnUserInfo ssnUserInfo, OrganisationId organisationId) throws FrejaEidClientInternalException {
-            return new SetOptionalParamsBuilder(UserInfoType.SSN, UserInfoUtil.convertSsnUserInfo(ssnUserInfo), organisationId);
+        public SetOptionalParamsBuilder setSsnAndOrganisationId(SsnUserInfo ssnUserInfo, OrganisationId organisationId)
+                throws FrejaEidClientInternalException {
+            return new SetOptionalParamsBuilder(UserInfoType.SSN, UserInfoUtil.convertSsnUserInfo(ssnUserInfo),
+                                                organisationId);
         }
 
         /**
          * Sets phoneNumber as userInfo and {@link UserInfoType#PHONE} as
          * {@linkplain UserInfoType} for initiating transaction.
          *
-         * @param phoneNumber user's phone number that will be used to identify
-         * the end user in format +467123456789.
+         * @param phoneNumber    user's phone number that will be used to identify
+         *                       the end user in format +467123456789.
          * @param organisationId instance of {@linkplain OrganisationId} that
-         * contains information regarding organisation id.
-         *
+         *                       contains information regarding organisation id.
          * @return request builder
          */
-        public SetOptionalParamsBuilder setPhoneNumberAndOrganisationId(String phoneNumber, OrganisationId organisationId) {
+        public SetOptionalParamsBuilder setPhoneNumberAndOrganisationId(String phoneNumber,
+                                                                        OrganisationId organisationId) {
             return new SetOptionalParamsBuilder(UserInfoType.PHONE, phoneNumber, organisationId);
         }
 
@@ -62,9 +63,8 @@ public class InitiateAddOrganisationIdRequestBuilders {
          * Sets {@linkplain UserInfoType#INFERRED} as {@linkplain UserInfoType}
          * for initiating transaction.
          *
-         *
          * @param organisationId instance of {@linkplain OrganisationId} that
-         * contains information regarding organisation id.
+         *                       contains information regarding organisation id.
          * @return request builder
          */
         public SetOptionalParamsBuilder setInferredAndOrganisationId(OrganisationId organisationId) {
@@ -93,8 +93,8 @@ public class InitiateAddOrganisationIdRequestBuilders {
          * {@link MinRegistrationLevel#EXTENDED}.
          *
          * @param minRegistrationLevel will be set as minimum required
-         * registration level for user in order to approve/decline adding
-         * organisation id.
+         *                             registration level for user in order to approve/decline adding
+         *                             organisation id.
          * @return request builder
          */
         public SetOptionalParamsBuilder setMinRegistrationLevel(MinRegistrationLevel minRegistrationLevel) {
@@ -110,9 +110,9 @@ public class InitiateAddOrganisationIdRequestBuilders {
          * wait for the user to confirm the adding organisation id request.
          *
          * @param timeToExpiry optional parameter, expressed in milliseconds
-         * since January 1, 1970, 00:00 UTC. Min value is current time +2
-         * minutes, max value is current time +30 days. If not present, defaults
-         * to current time 7 days.
+         *                     since January 1, 1970, 00:00 UTC. Min value is current time +2
+         *                     minutes, max value is current time +30 days. If not present, defaults
+         *                     to current time 7 days.
          * @return request builder
          */
         public SetOptionalParamsBuilder setExpiry(Long timeToExpiry) {
@@ -125,7 +125,7 @@ public class InitiateAddOrganisationIdRequestBuilders {
          * method.</b>
          *
          * @param relyingPartyId specifies relying party id for which
-         * transaction is initiated. It cannot be {@code null} or empty.
+         *                       transaction is initiated. It cannot be {@code null} or empty.
          * @return request builder
          */
         public SetOptionalParamsBuilder setRelyingPartyId(String relyingPartyId) {
@@ -134,7 +134,8 @@ public class InitiateAddOrganisationIdRequestBuilders {
         }
 
         public InitiateAddOrganisationIdRequest build() {
-            return new InitiateAddOrganisationIdRequest(userInfoType, userInfo, organisationId, minRegistrationLevel, expiry, relyingPartyId);
+            return new InitiateAddOrganisationIdRequest(userInfoType, userInfo, organisationId, minRegistrationLevel,
+                                                        expiry, relyingPartyId);
         }
 
     }

@@ -1,10 +1,10 @@
 package com.verisec.frejaeid.client.beans.common;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.Objects;
 
 /**
- *
  * @author vemijel
  */
 public abstract class DeleteIdentifierRequest implements RelyingPartyRequest {

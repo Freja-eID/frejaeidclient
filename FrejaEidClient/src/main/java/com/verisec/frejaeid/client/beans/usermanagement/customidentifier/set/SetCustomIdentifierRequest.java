@@ -9,6 +9,7 @@ import com.verisec.frejaeid.client.beans.usermanagement.customidentifier.set.Set
 import com.verisec.frejaeid.client.enums.UserInfoType;
 import com.verisec.frejaeid.client.exceptions.FrejaEidClientInternalException;
 import com.verisec.frejaeid.client.util.UserInfoUtil;
+
 import java.util.Objects;
 
 public class SetCustomIdentifierRequest implements RelyingPartyRequest {
@@ -22,11 +23,10 @@ public class SetCustomIdentifierRequest implements RelyingPartyRequest {
      * Returns instance of {@linkplain SetCustomIdentifierRequest} with
      * {@linkplain UserInfoType} {@code EMAIL}.
      *
-     * @param email will be used to identify the end user. It cannot be
-     * {@code null} or empty. Maximum length is 256 characters.
+     * @param email            will be used to identify the end user. It cannot be
+     *                         {@code null} or empty. Maximum length is 256 characters.
      * @param customIdentifier will be set for user. Maximum length is 128
-     * characters. It cannot be {@code null} or empty.
-     *
+     *                         characters. It cannot be {@code null} or empty.
      * @return request
      */
     public static SetCustomIdentifierRequest createDefaultWithEmail(String email, String customIdentifier) {
@@ -37,19 +37,19 @@ public class SetCustomIdentifierRequest implements RelyingPartyRequest {
      * Returns instance of {@linkplain SetCustomIdentifierRequest} with
      * {@linkplain UserInfoType} {@code SSN}.
      *
-     * @param ssnUserInfo instance of {@linkplain SsnUserInfo} that contains
-     * personal number and country that will be used to identify the end user.
-     * It cannot be {@code null}.
+     * @param ssnUserInfo      instance of {@linkplain SsnUserInfo} that contains
+     *                         personal number and country that will be used to identify the end user.
+     *                         It cannot be {@code null}.
      * @param customIdentifier will be set for user. Maximum length is 128
-     * characters. It cannot be {@code null} or empty.
-     *
+     *                         characters. It cannot be {@code null} or empty.
      * @return request
      * @throws FrejaEidClientInternalException if error occurs when generating
-     * JSON content from ssnUserInfo
-     *
+     *                                         JSON content from ssnUserInfo
      */
-    public static SetCustomIdentifierRequest createDefaultWithSsn(SsnUserInfo ssnUserInfo, String customIdentifier) throws FrejaEidClientInternalException {
-        return new SetCustomIdentifierRequest(UserInfoType.SSN, UserInfoUtil.convertSsnUserInfo(ssnUserInfo), customIdentifier, null);
+    public static SetCustomIdentifierRequest createDefaultWithSsn(SsnUserInfo ssnUserInfo, String customIdentifier)
+            throws FrejaEidClientInternalException {
+        return new SetCustomIdentifierRequest(UserInfoType.SSN, UserInfoUtil.convertSsnUserInfo(ssnUserInfo),
+                                              customIdentifier, null);
     }
 
     /**
@@ -63,11 +63,14 @@ public class SetCustomIdentifierRequest implements RelyingPartyRequest {
     }
 
     @JsonCreator
-    private SetCustomIdentifierRequest(@JsonProperty(value = "userInfoType") UserInfoType userInfoType, @JsonProperty(value = "userInfo") String userInfo, @JsonProperty(value = "customIdentifier") String customIdentifier) {
+    private SetCustomIdentifierRequest(@JsonProperty(value = "userInfoType") UserInfoType userInfoType,
+                                       @JsonProperty(value = "userInfo") String userInfo,
+                                       @JsonProperty(value = "customIdentifier") String customIdentifier) {
         this(userInfoType, userInfo, customIdentifier, null);
     }
 
-    SetCustomIdentifierRequest(UserInfoType userInfoType, String userInfo, String customIdentifier, String relyingPartyId) {
+    SetCustomIdentifierRequest(UserInfoType userInfoType, String userInfo, String customIdentifier,
+                               String relyingPartyId) {
         this.userInfo = userInfo;
         this.userInfoType = userInfoType;
         this.customIdentifier = customIdentifier;
@@ -125,7 +128,8 @@ public class SetCustomIdentifierRequest implements RelyingPartyRequest {
 
     @Override
     public String toString() {
-        return "SetCustomIdentifierRequest{" + "userInfoType=" + userInfoType + ", userInfo=" + userInfo + ", customIdentifier=" + customIdentifier + '}';
+        return "SetCustomIdentifierRequest{" + "userInfoType=" + userInfoType + ", userInfo=" + userInfo + ", " +
+                "customIdentifier=" + customIdentifier + '}';
     }
 
 }

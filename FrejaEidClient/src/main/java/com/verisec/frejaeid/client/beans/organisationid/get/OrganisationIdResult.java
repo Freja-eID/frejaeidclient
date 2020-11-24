@@ -6,16 +6,15 @@ import com.verisec.frejaeid.client.beans.common.Result;
 import com.verisec.frejaeid.client.enums.TransactionStatus;
 
 /**
- *
  * Contains transaction reference, transaction status, details and requested
  * attributes.
- *
  */
 public class OrganisationIdResult extends Result {
 
     @JsonCreator
-    public OrganisationIdResult(@JsonProperty(value = "orgIdRef") String reference, @JsonProperty(value = "status") TransactionStatus status,
-            @JsonProperty(value = "details") String details) {
+    public OrganisationIdResult(@JsonProperty(value = "orgIdRef") String reference,
+                                @JsonProperty(value = "status") TransactionStatus status,
+                                @JsonProperty(value = "details") String details) {
         super(reference, status, details, null);
     }
 

@@ -9,7 +9,8 @@ public class FrejaHttpErrorResponse implements FrejaHttpResponse {
     private final String message;
 
     @JsonCreator
-    public FrejaHttpErrorResponse(@JsonProperty(value = "code") int code, @JsonProperty(value = "message") String message) {
+    public FrejaHttpErrorResponse(@JsonProperty(value = "code") int code,
+                                  @JsonProperty(value = "message") String message) {
         this.code = code;
         this.message = message;
     }

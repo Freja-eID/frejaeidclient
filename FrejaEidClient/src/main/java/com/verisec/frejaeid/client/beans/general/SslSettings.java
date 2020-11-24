@@ -1,13 +1,14 @@
 package com.verisec.frejaeid.client.beans.general;
 
 import com.verisec.frejaeid.client.exceptions.FrejaEidClientInternalException;
+
 import javax.net.ssl.SSLContext;
+
 import org.apache.commons.lang3.StringUtils;
 
 /**
  * There are two ways of establishing the SSL connection with the server and
  * passing the client key pair and the server certificate to the library.
- *
  */
 public class SslSettings {
 
@@ -21,21 +22,23 @@ public class SslSettings {
      * with given keyStore (supported types are
      * <B>JKS</B>,
      * <B>JCEKS</B>, <B>PKCS12</B>), password and trusted server certificate.
-     *
+     * <p>
      * In order to establish SSL with server, client should provide path of
      * keyStore and password and path of trusted server certificate.
      *
-     * @param keystorePath absolute path of keyStore file where key pair with
-     * appropriate SSL certificate is stored.
-     * @param keystorePass password of client keyStore.
+     * @param keystorePath          absolute path of keyStore file where key pair with
+     *                              appropriate SSL certificate is stored.
+     * @param keystorePass          password of client keyStore.
      * @param serverCertificatePath absolute path of server certificate.
      * @return sslSettings
      * @throws FrejaEidClientInternalException if any parameter is {@code null}
-     * or empty.
+     *                                         or empty.
      */
-    public static SslSettings create(String keystorePath, String keystorePass, String serverCertificatePath) throws FrejaEidClientInternalException {
+    public static SslSettings create(String keystorePath, String keystorePass, String serverCertificatePath)
+            throws FrejaEidClientInternalException {
         if (StringUtils.isAnyBlank(keystorePath, keystorePass, serverCertificatePath)) {
-            throw new FrejaEidClientInternalException("KeyStore Path, keyStore password or server certificate path cannot be null or empty.");
+            throw new FrejaEidClientInternalException(
+                    "KeyStore Path, keyStore password or server certificate path cannot be null or empty.");
         }
         return new SslSettings(keystorePath, keystorePass, serverCertificatePath);
     }
@@ -47,16 +50,16 @@ public class SslSettings {
      * <B>JCEKS</B>, <B>PKCS12</B>), password.
      *
      * <B>Use this creator if you have added server certificate to keyStore.</B>
-     *
+     * <p>
      * In order to establish SSL with server, client should provide path of
      * keyStore and password.
      *
      * @param keystorePath absolute path of keyStore file where key pair with
-     * appropriate SSL certificate and server certificate are stored.
+     *                     appropriate SSL certificate and server certificate are stored.
      * @param keystorePass password of client keyStore.
      * @return sslSettings
      * @throws FrejaEidClientInternalException if any parameter is {@code null}
-     * or empty.
+     *                                         or empty.
      */
     public static SslSettings create(String keystorePath, String keystorePass) throws FrejaEidClientInternalException {
         if (StringUtils.isAnyBlank(keystorePath, keystorePass)) {
@@ -71,7 +74,7 @@ public class SslSettings {
      * object from javax.net.ssl package.
      *
      * @param sslContext created using keyStore file where key pair with
-     * appropriate SSL certificate is stored.
+     *                   appropriate SSL certificate is stored.
      * @return sslSettings
      */
     public static SslSettings create(SSLContext sslContext) {

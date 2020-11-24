@@ -10,6 +10,7 @@ import com.verisec.frejaeid.client.enums.AddressType;
 import com.verisec.frejaeid.client.enums.Country;
 import com.verisec.frejaeid.client.util.JsonService;
 import com.verisec.frejaeid.client.util.RequestTemplate;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -38,17 +39,24 @@ public abstract class CommonHttpTest {
     protected static final String EMAIL_ADDRESS = "test@frejaeid.com";
     protected static final String PHONE_NUMBER = "+46123456789";
     protected static final String ORGANISATION_ID = "vealrad";
-    protected static final List<AddressInfo> ADDRESSES = Arrays.asList(new AddressInfo(Country.SWEDEN, "city", "postCode", "address1", "address2", "address3", "1993-12-30", AddressType.RESIDENTIAL, AddressSourceType.GOVERNMENT_REGISTRY));
+    protected static final List<AddressInfo> ADDRESSES = Arrays.asList(
+            new AddressInfo(Country.SWEDEN, "city", "postCode", "address1", "address2", "address3", "1993-12-30",
+                            AddressType.RESIDENTIAL, AddressSourceType.GOVERNMENT_REGISTRY));
     private static final List<Email> ALL_EMAIL_ADDRESSES = Arrays.asList(new Email(EMAIL_ADDRESS));
     private static final List<PhoneNumberInfo> ALL_PHONE_NUMBERS = Arrays.asList(new PhoneNumberInfo(PHONE_NUMBER));
-    protected static final RequestedAttributes REQUESTED_ATTRIBUTES = new RequestedAttributes(BASIC_USER_INFO, CUSTOM_IDENTIFIER, SSN_USER_INFO, null, DATE_OF_BIRTH, RELYING_PARTY_USER_ID, EMAIL_ADDRESS, ORGANISATION_ID, ADDRESSES, ALL_EMAIL_ADDRESSES, ALL_PHONE_NUMBERS);
+    protected static final RequestedAttributes REQUESTED_ATTRIBUTES =
+            new RequestedAttributes(BASIC_USER_INFO, CUSTOM_IDENTIFIER, SSN_USER_INFO, null, DATE_OF_BIRTH,
+                                    RELYING_PARTY_USER_ID, EMAIL_ADDRESS, ORGANISATION_ID, ADDRESSES,
+                                    ALL_EMAIL_ADDRESSES, ALL_PHONE_NUMBERS);
     protected static final String POST_PARAMS_DELIMITER = "&";
     protected static final String KEY_VALUE_DELIMITER = "=";
     protected static final int MOCK_SERVICE_PORT = 30665;
     private HttpServer server;
     protected static JsonService jsonService;
 
-    protected void startMockServer(final RelyingPartyRequest expectedRequest, final int statusCodeToReturn, final String responseToReturn) throws IOException {
+    protected void startMockServer(final RelyingPartyRequest expectedRequest, final int statusCodeToReturn,
+                                   final String responseToReturn)
+            throws IOException {
         server = HttpServer.create(new InetSocketAddress(MOCK_SERVICE_PORT), 0);
         server.createContext("/", new HttpHandler() {
             @Override
@@ -63,24 +71,30 @@ public abstract class CommonHttpTest {
                         if (postParams.length == 2) {
                             String relyingPartyIdParam = postParams[1].split(KEY_VALUE_DELIMITER, 2)[1];
                             Assert.assertEquals(RELYING_PARTY_ID, relyingPartyIdParam);
-                            
+
                             String requestParam = postParams[0].split(KEY_VALUE_DELIMITER, 2)[1];
-                            String jsonReceivedRequest = new String(Base64.decodeBase64(requestParam), StandardCharsets.UTF_8);
+                            String jsonReceivedRequest = new String(Base64.decodeBase64(requestParam),
+                                                                    StandardCharsets.UTF_8);
                             String jsonExpectedRequest = jsonService.serializeToJson(expectedRequest);
                             Assert.assertEquals(jsonExpectedRequest, jsonReceivedRequest);
-                            
-                            RelyingPartyRequest receivedRequest = jsonService.deserializeFromJson(Base64.decodeBase64(requestParam), expectedRequest.getClass());
+
+                            RelyingPartyRequest receivedRequest =
+                                    jsonService.deserializeFromJson(Base64.decodeBase64(requestParam),
+                                                                    expectedRequest.getClass());
                             Assert.assertEquals(expectedRequest, receivedRequest);
-                        } else if (RequestTemplate.RELYING_PARTY_ID.getTemplate().contains(postParams[0].split(KEY_VALUE_DELIMITER, 2)[0])) {
+                        } else if (containsKeyValueDelimiter(postParams)) {
                             String relyingPartyIdParam = postParams[0].split(KEY_VALUE_DELIMITER, 2)[1];
                             Assert.assertEquals(RELYING_PARTY_ID, relyingPartyIdParam);
                         } else {
                             String requestParam = postParams[0].split(KEY_VALUE_DELIMITER, 2)[1];
-                            String jsonReceivedRequest = new String(Base64.decodeBase64(requestParam), StandardCharsets.UTF_8);
+                            String jsonReceivedRequest = new String(Base64.decodeBase64(requestParam),
+                                                                    StandardCharsets.UTF_8);
                             String jsonExpectedRequest = jsonService.serializeToJson(expectedRequest);
                             Assert.assertEquals(jsonExpectedRequest, jsonReceivedRequest);
-                            
-                            RelyingPartyRequest receivedRequest = jsonService.deserializeFromJson(Base64.decodeBase64(requestParam), expectedRequest.getClass());
+
+                            RelyingPartyRequest receivedRequest =
+                                    jsonService.deserializeFromJson(Base64.decodeBase64(requestParam),
+                                                                    expectedRequest.getClass());
                             Assert.assertEquals(expectedRequest, receivedRequest);
                         }
 
@@ -98,7 +112,7 @@ public abstract class CommonHttpTest {
         server.setExecutor(null); // creates a default executor
         server.start();
     }
-    
+
     @After
     public void stopServer() throws InterruptedException {
         stopMockServer();
@@ -109,6 +123,10 @@ public abstract class CommonHttpTest {
         if (server != null) {
             server.stop(1);
         }
+    }
+
+    private boolean containsKeyValueDelimiter(String[] postParams) {
+        return RequestTemplate.RELYING_PARTY_ID.getTemplate().contains(postParams[0].split(KEY_VALUE_DELIMITER, 2)[0]);
     }
 
 }

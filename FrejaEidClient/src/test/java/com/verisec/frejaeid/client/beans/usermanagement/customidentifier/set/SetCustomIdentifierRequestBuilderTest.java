@@ -18,21 +18,27 @@ public class SetCustomIdentifierRequestBuilderTest {
 
     @Test
     public void createDefaultEmailRequest() {
-        SetCustomIdentifierRequest expectedSetCustomIdentifierRequest = new SetCustomIdentifierRequest(UserInfoType.EMAIL, EMAIL, IDENTIFIER, null);
-        SetCustomIdentifierRequest setCustomIdentifierRequest = SetCustomIdentifierRequest.createDefaultWithEmail(EMAIL, IDENTIFIER);
+        SetCustomIdentifierRequest expectedSetCustomIdentifierRequest =
+                new SetCustomIdentifierRequest(UserInfoType.EMAIL, EMAIL, IDENTIFIER, null);
+        SetCustomIdentifierRequest setCustomIdentifierRequest =
+                SetCustomIdentifierRequest.createDefaultWithEmail(EMAIL, IDENTIFIER);
         Assert.assertEquals(expectedSetCustomIdentifierRequest, setCustomIdentifierRequest);
     }
 
     @Test
     public void createDefaultSsnRequest() throws FrejaEidClientInternalException {
-        SetCustomIdentifierRequest expectedSetCustomIdentifierRequest = new SetCustomIdentifierRequest(UserInfoType.SSN, UserInfoUtil.convertSsnUserInfo(SSN_USER_INFO), IDENTIFIER, null);
-        SetCustomIdentifierRequest setCustomIdentifierRequest = SetCustomIdentifierRequest.createDefaultWithSsn(SSN_USER_INFO, IDENTIFIER);
+        SetCustomIdentifierRequest expectedSetCustomIdentifierRequest =
+                new SetCustomIdentifierRequest(UserInfoType.SSN, UserInfoUtil.convertSsnUserInfo(SSN_USER_INFO),
+                                               IDENTIFIER, null);
+        SetCustomIdentifierRequest setCustomIdentifierRequest =
+                SetCustomIdentifierRequest.createDefaultWithSsn(SSN_USER_INFO, IDENTIFIER);
         Assert.assertEquals(expectedSetCustomIdentifierRequest, setCustomIdentifierRequest);
     }
 
     @Test
     public void createCustomRequest_userInfoTypeEmail() {
-        SetCustomIdentifierRequest expectedSetCustomIdentifierRequest = new SetCustomIdentifierRequest(UserInfoType.EMAIL, EMAIL, IDENTIFIER, RELYING_PARTY_ID);
+        SetCustomIdentifierRequest expectedSetCustomIdentifierRequest =
+                new SetCustomIdentifierRequest(UserInfoType.EMAIL, EMAIL, IDENTIFIER, RELYING_PARTY_ID);
         SetCustomIdentifierRequest setCustomIdentifierRequest = SetCustomIdentifierRequest.createCustom()
                 .setEmailAndCustomIdentifier(EMAIL, IDENTIFIER)
                 .setRelyingPartyId(RELYING_PARTY_ID)
@@ -42,7 +48,9 @@ public class SetCustomIdentifierRequestBuilderTest {
 
     @Test
     public void createCustomRequest_userInfoTypeSsn() throws FrejaEidClientInternalException {
-        SetCustomIdentifierRequest expectedSetCustomIdentifierRequest = new SetCustomIdentifierRequest(UserInfoType.SSN, UserInfoUtil.convertSsnUserInfo(SSN_USER_INFO), IDENTIFIER, RELYING_PARTY_ID);
+        SetCustomIdentifierRequest expectedSetCustomIdentifierRequest =
+                new SetCustomIdentifierRequest(UserInfoType.SSN, UserInfoUtil.convertSsnUserInfo(SSN_USER_INFO),
+                                               IDENTIFIER, RELYING_PARTY_ID);
         SetCustomIdentifierRequest setCustomIdentifierRequest = SetCustomIdentifierRequest.createCustom()
                 .setSsnAndCustomIdentifier(SSN_USER_INFO, IDENTIFIER)
                 .setRelyingPartyId(RELYING_PARTY_ID)
@@ -52,23 +60,23 @@ public class SetCustomIdentifierRequestBuilderTest {
 
     @Test
     public void createCustomRequest_userInfoTypePhoneNumber() {
-        SetCustomIdentifierRequest expectedSetCustomIdentifierRequest = new SetCustomIdentifierRequest(UserInfoType.PHONE, PHONE_NUMBER, IDENTIFIER, RELYING_PARTY_ID);
+        SetCustomIdentifierRequest expectedSetCustomIdentifierRequest =
+                new SetCustomIdentifierRequest(UserInfoType.PHONE, PHONE_NUMBER, IDENTIFIER, RELYING_PARTY_ID);
         SetCustomIdentifierRequest setCustomIdentifierRequest = SetCustomIdentifierRequest.createCustom()
                 .setPhoneNumberAndCustomIdentifier(PHONE_NUMBER, IDENTIFIER)
                 .setRelyingPartyId(RELYING_PARTY_ID)
                 .build();
         Assert.assertEquals(expectedSetCustomIdentifierRequest, setCustomIdentifierRequest);
-
     }
 
     @Test
     public void createCustomRequest_relyingPartyIdNull() {
-        SetCustomIdentifierRequest expectedSetCustomIdentifierRequest = new SetCustomIdentifierRequest(UserInfoType.PHONE, PHONE_NUMBER, IDENTIFIER, null);
+        SetCustomIdentifierRequest expectedSetCustomIdentifierRequest =
+                new SetCustomIdentifierRequest(UserInfoType.PHONE, PHONE_NUMBER, IDENTIFIER, null);
         SetCustomIdentifierRequest setCustomIdentifierRequest = SetCustomIdentifierRequest.createCustom()
                 .setPhoneNumberAndCustomIdentifier(PHONE_NUMBER, IDENTIFIER)
                 .setRelyingPartyId(null)
                 .build();
         Assert.assertEquals(expectedSetCustomIdentifierRequest, setCustomIdentifierRequest);
-
     }
 }

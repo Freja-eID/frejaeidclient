@@ -7,7 +7,6 @@ import com.verisec.frejaeid.client.exceptions.FrejaEidException;
 
 /**
  * Performs actions with custom identifier.
- *
  */
 public interface CustomIdentifierClientApi {
 
@@ -17,25 +16,26 @@ public interface CustomIdentifierClientApi {
      * parameter in request.
      *
      * @param setCustomIdentifierRequest instance of
-     * {@linkplain SetCustomIdentifierRequest} with as said before, existing
-     * user information and custom identifier to be set.
-     *
+     *                                   {@linkplain SetCustomIdentifierRequest} with as said before, existing
+     *                                   user information and custom identifier to be set.
      * @throws FrejaEidClientInternalException if internal validation of request
-     * fails.
-     * @throws FrejaEidException if server returns an error.
+     *                                         fails.
+     * @throws FrejaEidException               if server returns an error.
      */
-    public void set(SetCustomIdentifierRequest setCustomIdentifierRequest) throws FrejaEidClientInternalException, FrejaEidException;
+    public void set(SetCustomIdentifierRequest setCustomIdentifierRequest)
+            throws FrejaEidClientInternalException, FrejaEidException;
 
     /**
      * Deletes a custom identifier for a specific user.
      *
      * @param deleteCustomIdentifierRequest contains custom identifier to be
-     * deleted for the end user. Must exist within the requesting relying party
-     * system inside the Freja eID service.
+     *                                      deleted for the end user. Must exist within the requesting relying party
+     *                                      system inside the Freja eID service.
      * @throws FrejaEidClientInternalException if internal validation of request
-     * fails.
-     * @throws FrejaEidException if server returns an error.
+     *                                         fails.
+     * @throws FrejaEidException               if server returns an error.
      */
-    public void delete(DeleteCustomIdentifierRequest deleteCustomIdentifierRequest) throws FrejaEidClientInternalException, FrejaEidException;
+    public void delete(DeleteCustomIdentifierRequest deleteCustomIdentifierRequest)
+            throws FrejaEidClientInternalException, FrejaEidException;
 
 }

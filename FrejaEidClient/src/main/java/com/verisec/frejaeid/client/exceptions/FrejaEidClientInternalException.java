@@ -2,7 +2,6 @@ package com.verisec.frejaeid.client.exceptions;
 
 /**
  * Occurs when client returns an internal error.
- *
  */
 public class FrejaEidClientInternalException extends Exception {
 

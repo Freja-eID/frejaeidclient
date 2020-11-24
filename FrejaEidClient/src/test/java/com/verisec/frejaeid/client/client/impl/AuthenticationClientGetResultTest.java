@@ -21,9 +21,11 @@ import com.verisec.frejaeid.client.exceptions.FrejaEidClientPollingException;
 import com.verisec.frejaeid.client.http.HttpServiceApi;
 import com.verisec.frejaeid.client.util.MethodUrl;
 import com.verisec.frejaeid.client.util.RequestTemplate;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
 import org.junit.Assert;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -43,20 +45,33 @@ public class AuthenticationClientGetResultTest {
     private static final String EMAIL_ADDRESS = "test@frejaeid.com";
     private static final String PHONE_NUMBER = "+46123456789";
     private static final String ORGANISATION_ID = "vealrad";
-    private static final List<AddressInfo> ADDRESSES = Arrays.asList(new AddressInfo(Country.SWEDEN, "city", "postCode", "address1", "address2", "address3", "1993-12-30", AddressType.RESIDENTIAL, AddressSourceType.GOVERNMENT_REGISTRY));
+    private static final List<AddressInfo> ADDRESSES = Arrays.asList(
+            new AddressInfo(Country.SWEDEN, "city", "postCode", "address1", "address2", "address3", "1993-12-30",
+                            AddressType.RESIDENTIAL, AddressSourceType.GOVERNMENT_REGISTRY));
     private static final List<Email> ALL_EMAIL_ADDRESSES = Arrays.asList(new Email(EMAIL_ADDRESS));
     private static final List<PhoneNumberInfo> ALL_PHONE_NUMBERS = Arrays.asList(new PhoneNumberInfo(PHONE_NUMBER));
-    private static final RequestedAttributes REQUESTED_ATTRIBUTES = new RequestedAttributes(BASIC_USER_INFO, CUSTOM_IDENTIFIER, SSN, null, DATE_OF_BIRTH, RELYING_PARTY_USER_ID, EMAIL_ADDRESS, ORGANISATION_ID, ADDRESSES, ALL_EMAIL_ADDRESSES, ALL_PHONE_NUMBERS);
+    private static final RequestedAttributes REQUESTED_ATTRIBUTES =
+            new RequestedAttributes(BASIC_USER_INFO, CUSTOM_IDENTIFIER, SSN, null, DATE_OF_BIRTH,
+                                    RELYING_PARTY_USER_ID, EMAIL_ADDRESS, ORGANISATION_ID, ADDRESSES,
+                                    ALL_EMAIL_ADDRESSES, ALL_PHONE_NUMBERS);
 
     @Test
-    public void getAuthenticationResult_relyingPartyIdNull_success() throws FrejaEidClientInternalException, FrejaEidException {
-        AuthenticationClientApi authenticationClient = AuthenticationClient.create(SslSettings.create(TestUtil.getKeystorePath(TestUtil.KEYSTORE_PATH), TestUtil.KEYSTORE_PASSWORD, TestUtil.getKeystorePath(TestUtil.CERTIFICATE_PATH)), FrejaEnvironment.TEST)
-                .setHttpService(httpServiceMock)
-                .setTransactionContext(TransactionContext.PERSONAL).build();
+    public void getAuthenticationResult_relyingPartyIdNull_success()
+            throws FrejaEidClientInternalException, FrejaEidException {
+        AuthenticationClientApi authenticationClient =
+                AuthenticationClient.create(TestUtil.getDefaultSslSettings(), FrejaEnvironment.TEST)
+                        .setHttpService(httpServiceMock)
+                        .setTransactionContext(TransactionContext.PERSONAL).build();
         AuthenticationResultRequest authenticationResultRequest = AuthenticationResultRequest.create(REFERENCE);
-        Mockito.when(httpServiceMock.send(Mockito.anyString(), Mockito.any(RequestTemplate.class), Mockito.any(RelyingPartyRequest.class), Mockito.eq(AuthenticationResult.class), (String) Mockito.isNull())).thenReturn(new AuthenticationResult(REFERENCE, TransactionStatus.STARTED, DETAILS, REQUESTED_ATTRIBUTES));
+        Mockito.when(httpServiceMock.send(Mockito.anyString(), Mockito.any(RequestTemplate.class),
+                                          Mockito.any(RelyingPartyRequest.class),
+                                          Mockito.eq(AuthenticationResult.class), (String) Mockito.isNull()))
+                .thenReturn(new AuthenticationResult(REFERENCE, TransactionStatus.STARTED, DETAILS,
+                                                     REQUESTED_ATTRIBUTES));
         AuthenticationResult response = authenticationClient.getResult(authenticationResultRequest);
-        Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getUrl() + MethodUrl.AUTHENTICATION_GET_RESULT, RequestTemplate.AUTHENTICATION_RESULT_TEMPLATE, authenticationResultRequest, AuthenticationResult.class, null);
+        Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getUrl() + MethodUrl.AUTHENTICATION_GET_RESULT,
+                                             RequestTemplate.AUTHENTICATION_RESULT_TEMPLATE,
+                                             authenticationResultRequest, AuthenticationResult.class, null);
         Assert.assertEquals(REFERENCE, response.getAuthRef());
         Assert.assertEquals(TransactionStatus.STARTED, response.getStatus());
         Assert.assertEquals(DETAILS, response.getDetails());
@@ -65,13 +80,21 @@ public class AuthenticationClientGetResultTest {
 
     @Test
     public void getAuthenticationResultPersonal_success() throws FrejaEidClientInternalException, FrejaEidException {
-        AuthenticationClientApi authenticationClient = AuthenticationClient.create(SslSettings.create(TestUtil.getKeystorePath(TestUtil.KEYSTORE_PATH), TestUtil.KEYSTORE_PASSWORD, TestUtil.getKeystorePath(TestUtil.CERTIFICATE_PATH)), FrejaEnvironment.TEST)
-                .setHttpService(httpServiceMock)
-                .setTransactionContext(TransactionContext.PERSONAL).build();
-        AuthenticationResultRequest authenticationResultRequest = AuthenticationResultRequest.create(REFERENCE, RELYING_PARTY_ID);
-        Mockito.when(httpServiceMock.send(Mockito.anyString(), Mockito.any(RequestTemplate.class), Mockito.any(RelyingPartyRequest.class), Mockito.eq(AuthenticationResult.class), Mockito.anyString())).thenReturn(new AuthenticationResult(REFERENCE, TransactionStatus.STARTED, DETAILS, REQUESTED_ATTRIBUTES));
+        AuthenticationClientApi authenticationClient =
+                AuthenticationClient.create(TestUtil.getDefaultSslSettings(), FrejaEnvironment.TEST)
+                        .setHttpService(httpServiceMock)
+                        .setTransactionContext(TransactionContext.PERSONAL).build();
+        AuthenticationResultRequest authenticationResultRequest =
+                AuthenticationResultRequest.create(REFERENCE, RELYING_PARTY_ID);
+        Mockito.when(httpServiceMock.send(Mockito.anyString(), Mockito.any(RequestTemplate.class),
+                                          Mockito.any(RelyingPartyRequest.class),
+                                          Mockito.eq(AuthenticationResult.class), Mockito.anyString()))
+                .thenReturn(new AuthenticationResult(REFERENCE, TransactionStatus.STARTED, DETAILS,
+                                                     REQUESTED_ATTRIBUTES));
         AuthenticationResult response = authenticationClient.getResult(authenticationResultRequest);
-        Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getUrl() + MethodUrl.AUTHENTICATION_GET_RESULT, RequestTemplate.AUTHENTICATION_RESULT_TEMPLATE, authenticationResultRequest, AuthenticationResult.class, RELYING_PARTY_ID);
+        Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getUrl() + MethodUrl.AUTHENTICATION_GET_RESULT,
+                                             RequestTemplate.AUTHENTICATION_RESULT_TEMPLATE,
+                                             authenticationResultRequest, AuthenticationResult.class, RELYING_PARTY_ID);
         Assert.assertEquals(REFERENCE, response.getAuthRef());
         Assert.assertEquals(TransactionStatus.STARTED, response.getStatus());
         Assert.assertEquals(DETAILS, response.getDetails());
@@ -79,14 +102,24 @@ public class AuthenticationClientGetResultTest {
     }
 
     @Test
-    public void getAuthenticationResultOrganisational_success() throws FrejaEidClientInternalException, FrejaEidException {
-        AuthenticationClientApi authenticationClient = AuthenticationClient.create(SslSettings.create(TestUtil.getKeystorePath(TestUtil.KEYSTORE_PATH), TestUtil.KEYSTORE_PASSWORD, TestUtil.getKeystorePath(TestUtil.CERTIFICATE_PATH)), FrejaEnvironment.TEST)
-                .setHttpService(httpServiceMock)
-                .setTransactionContext(TransactionContext.ORGANISATIONAL).build();
-        AuthenticationResultRequest authenticationResultRequest = AuthenticationResultRequest.create(REFERENCE, RELYING_PARTY_ID);
-        Mockito.when(httpServiceMock.send(Mockito.anyString(), Mockito.any(RequestTemplate.class), Mockito.any(RelyingPartyRequest.class), Mockito.eq(AuthenticationResult.class), Mockito.anyString())).thenReturn(new AuthenticationResult(REFERENCE, TransactionStatus.STARTED, DETAILS, REQUESTED_ATTRIBUTES));
+    public void getAuthenticationResultOrganisational_success()
+            throws FrejaEidClientInternalException, FrejaEidException {
+        AuthenticationClientApi authenticationClient =
+                AuthenticationClient.create(TestUtil.getDefaultSslSettings(), FrejaEnvironment.TEST)
+                        .setHttpService(httpServiceMock)
+                        .setTransactionContext(TransactionContext.ORGANISATIONAL).build();
+        AuthenticationResultRequest authenticationResultRequest =
+                AuthenticationResultRequest.create(REFERENCE, RELYING_PARTY_ID);
+        Mockito.when(httpServiceMock.send(Mockito.anyString(), Mockito.any(RequestTemplate.class),
+                                          Mockito.any(RelyingPartyRequest.class),
+                                          Mockito.eq(AuthenticationResult.class), Mockito.anyString()))
+                .thenReturn(new AuthenticationResult(REFERENCE, TransactionStatus.STARTED, DETAILS,
+                                                     REQUESTED_ATTRIBUTES));
         AuthenticationResult response = authenticationClient.getResult(authenticationResultRequest);
-        Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getUrl() + MethodUrl.ORGANISATION_AUTHENTICATION_GET_ONE_RESULT, RequestTemplate.AUTHENTICATION_RESULT_TEMPLATE, authenticationResultRequest, AuthenticationResult.class, RELYING_PARTY_ID);
+        Mockito.verify(httpServiceMock)
+                .send(FrejaEnvironment.TEST.getUrl() + MethodUrl.ORGANISATION_AUTHENTICATION_GET_ONE_RESULT,
+                      RequestTemplate.AUTHENTICATION_RESULT_TEMPLATE, authenticationResultRequest,
+                      AuthenticationResult.class, RELYING_PARTY_ID);
         Assert.assertEquals(REFERENCE, response.getAuthRef());
         Assert.assertEquals(TransactionStatus.STARTED, response.getStatus());
         Assert.assertEquals(DETAILS, response.getDetails());
@@ -94,55 +127,85 @@ public class AuthenticationClientGetResultTest {
     }
 
     @Test
-    public void getAuthenticationResult_invalidReference_expectInvalidReferenceError() throws FrejaEidClientInternalException, FrejaEidException {
-        AuthenticationResultRequest getOneAuthenticationResultRequest = AuthenticationResultRequest.create(REFERENCE, RELYING_PARTY_ID);
+    public void getAuthenticationResult_invalidReference_expectInvalidReferenceError()
+            throws FrejaEidClientInternalException, FrejaEidException {
+        AuthenticationResultRequest getOneAuthenticationResultRequest =
+                AuthenticationResultRequest.create(REFERENCE, RELYING_PARTY_ID);
         try {
-            AuthenticationClientApi authenticationClient = AuthenticationClient.create(SslSettings.create(TestUtil.getKeystorePath(TestUtil.KEYSTORE_PATH), TestUtil.KEYSTORE_PASSWORD, TestUtil.getKeystorePath(TestUtil.CERTIFICATE_PATH)), FrejaEnvironment.TEST)
-                    .setHttpService(httpServiceMock)
-                    .setTransactionContext(TransactionContext.PERSONAL).build();
-            Mockito.when(httpServiceMock.send(Mockito.anyString(), Mockito.any(RequestTemplate.class), Mockito.any(RelyingPartyRequest.class), Mockito.eq(AuthenticationResult.class), Mockito.anyString())).thenThrow(new FrejaEidException(FrejaEidErrorCode.INVALID_REFERENCE.getMessage(), FrejaEidErrorCode.INVALID_REFERENCE.getCode()));
-            AuthenticationResult response = authenticationClient.getResult(getOneAuthenticationResultRequest);
+            AuthenticationClientApi authenticationClient =
+                    AuthenticationClient.create(TestUtil.getDefaultSslSettings(), FrejaEnvironment.TEST)
+                            .setHttpService(httpServiceMock)
+                            .setTransactionContext(TransactionContext.PERSONAL).build();
+            Mockito.when(httpServiceMock.send(Mockito.anyString(), Mockito.any(RequestTemplate.class),
+                                              Mockito.any(RelyingPartyRequest.class),
+                                              Mockito.eq(AuthenticationResult.class), Mockito.anyString()))
+                    .thenThrow(new FrejaEidException(FrejaEidErrorCode.INVALID_REFERENCE.getMessage(),
+                                                     FrejaEidErrorCode.INVALID_REFERENCE.getCode()));
+            authenticationClient.getResult(getOneAuthenticationResultRequest);
             Assert.fail("Test should throw exception!");
         } catch (FrejaEidException rpEx) {
-            Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getUrl() + MethodUrl.AUTHENTICATION_GET_RESULT, RequestTemplate.AUTHENTICATION_RESULT_TEMPLATE, getOneAuthenticationResultRequest, AuthenticationResult.class, RELYING_PARTY_ID);
+            Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getUrl() + MethodUrl.AUTHENTICATION_GET_RESULT,
+                                                 RequestTemplate.AUTHENTICATION_RESULT_TEMPLATE,
+                                                 getOneAuthenticationResultRequest, AuthenticationResult.class,
+                                                 RELYING_PARTY_ID);
             Assert.assertEquals(1100, rpEx.getErrorCode());
             Assert.assertEquals("Invalid reference (for example, nonexistent or expired).", rpEx.getLocalizedMessage());
         }
     }
 
     @Test
-    public void pollForResult_relyingPartyIdNull_finalResponseRejected_success() throws FrejaEidClientInternalException, FrejaEidException, FrejaEidClientPollingException {
-        AuthenticationResult expectedResponse = new AuthenticationResult(DETAILS, TransactionStatus.REJECTED, DETAILS, null);
+    public void pollForResult_relyingPartyIdNull_finalResponseRejected_success()
+            throws FrejaEidClientInternalException, FrejaEidException, FrejaEidClientPollingException {
+        AuthenticationResult expectedResponse =
+                new AuthenticationResult(DETAILS, TransactionStatus.REJECTED, DETAILS, null);
         AuthenticationResultRequest authenticationResultRequest = AuthenticationResultRequest.create(REFERENCE);
-        Mockito.when(httpServiceMock.send(Mockito.anyString(), Mockito.any(RequestTemplate.class), Mockito.any(RelyingPartyRequest.class), Mockito.eq(AuthenticationResult.class), (String) Mockito.isNull())).thenReturn(expectedResponse);
-        AuthenticationClientApi authenticationClient = AuthenticationClient.create(SslSettings.create(TestUtil.getKeystorePath(TestUtil.KEYSTORE_PATH), TestUtil.KEYSTORE_PASSWORD, TestUtil.getKeystorePath(TestUtil.CERTIFICATE_PATH)), FrejaEnvironment.TEST)
-                .setHttpService(httpServiceMock)
-                .setTransactionContext(TransactionContext.PERSONAL).build();
+        Mockito.when(httpServiceMock.send(Mockito.anyString(), Mockito.any(RequestTemplate.class),
+                                          Mockito.any(RelyingPartyRequest.class),
+                                          Mockito.eq(AuthenticationResult.class), (String) Mockito.isNull()))
+                .thenReturn(expectedResponse);
+        AuthenticationClientApi authenticationClient =
+                AuthenticationClient.create(TestUtil.getDefaultSslSettings(), FrejaEnvironment.TEST)
+                        .setHttpService(httpServiceMock)
+                        .setTransactionContext(TransactionContext.PERSONAL).build();
         AuthenticationResult response = authenticationClient.pollForResult(authenticationResultRequest, 10000);
-        Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getUrl() + MethodUrl.AUTHENTICATION_GET_RESULT, RequestTemplate.AUTHENTICATION_RESULT_TEMPLATE, authenticationResultRequest, AuthenticationResult.class, null);
+        Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getUrl() + MethodUrl.AUTHENTICATION_GET_RESULT,
+                                             RequestTemplate.AUTHENTICATION_RESULT_TEMPLATE,
+                                             authenticationResultRequest, AuthenticationResult.class, null);
         Assert.assertEquals(TransactionStatus.REJECTED, response.getStatus());
     }
 
     @Test
-    public void pollForResult_relyingPartyIdNotNull_finalResponseRejected_success() throws FrejaEidClientInternalException, FrejaEidException, FrejaEidClientPollingException {
-        AuthenticationResult expectedResponse = new AuthenticationResult(DETAILS, TransactionStatus.REJECTED, DETAILS, null);
-        AuthenticationResultRequest authenticationResultRequest = AuthenticationResultRequest.create(REFERENCE, RELYING_PARTY_ID);
-        Mockito.when(httpServiceMock.send(Mockito.anyString(), Mockito.any(RequestTemplate.class), Mockito.any(RelyingPartyRequest.class), Mockito.eq(AuthenticationResult.class), Mockito.anyString())).thenReturn(expectedResponse);
-        AuthenticationClientApi authenticationClient = AuthenticationClient.create(SslSettings.create(TestUtil.getKeystorePath(TestUtil.KEYSTORE_PATH), TestUtil.KEYSTORE_PASSWORD, TestUtil.getKeystorePath(TestUtil.CERTIFICATE_PATH)), FrejaEnvironment.TEST)
-                .setHttpService(httpServiceMock)
-                .setTransactionContext(TransactionContext.PERSONAL).build();
-        AuthenticationResult response = authenticationClient.pollForResult(AuthenticationResultRequest.create(REFERENCE, RELYING_PARTY_ID), 10000);
-        Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getUrl() + MethodUrl.AUTHENTICATION_GET_RESULT, RequestTemplate.AUTHENTICATION_RESULT_TEMPLATE, authenticationResultRequest, AuthenticationResult.class, RELYING_PARTY_ID);
+    public void pollForResult_relyingPartyIdNotNull_finalResponseRejected_success()
+            throws FrejaEidClientInternalException, FrejaEidException, FrejaEidClientPollingException {
+        AuthenticationResult expectedResponse =
+                new AuthenticationResult(DETAILS, TransactionStatus.REJECTED, DETAILS, null);
+        AuthenticationResultRequest authenticationResultRequest =
+                AuthenticationResultRequest.create(REFERENCE, RELYING_PARTY_ID);
+        Mockito.when(httpServiceMock.send(Mockito.anyString(), Mockito.any(RequestTemplate.class),
+                                          Mockito.any(RelyingPartyRequest.class),
+                                          Mockito.eq(AuthenticationResult.class), Mockito.anyString()))
+                .thenReturn(expectedResponse);
+        AuthenticationClientApi authenticationClient =
+                AuthenticationClient.create(TestUtil.getDefaultSslSettings(), FrejaEnvironment.TEST)
+                        .setHttpService(httpServiceMock)
+                        .setTransactionContext(TransactionContext.PERSONAL).build();
+        AuthenticationResult response = authenticationClient
+                .pollForResult(AuthenticationResultRequest.create(REFERENCE, RELYING_PARTY_ID), 10000);
+        Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getUrl() + MethodUrl.AUTHENTICATION_GET_RESULT,
+                                             RequestTemplate.AUTHENTICATION_RESULT_TEMPLATE,
+                                             authenticationResultRequest, AuthenticationResult.class, RELYING_PARTY_ID);
         Assert.assertEquals(TransactionStatus.REJECTED, response.getStatus());
     }
 
     @Test
-    public void pollForResult_requestTimeout_expectTimeoutError() throws FrejaEidClientInternalException, FrejaEidException {
+    public void pollForResult_requestTimeout_expectTimeoutError()
+            throws FrejaEidClientInternalException, FrejaEidException {
         try {
-            AuthenticationClientApi authenticationClient = AuthenticationClient.create(SslSettings.create(TestUtil.getKeystorePath(TestUtil.KEYSTORE_PATH), TestUtil.KEYSTORE_PASSWORD, TestUtil.getKeystorePath(TestUtil.CERTIFICATE_PATH)), FrejaEnvironment.TEST)
-                    .setHttpService(httpServiceMock)
-                    .setTransactionContext(TransactionContext.PERSONAL).build();
-            AuthenticationResult response = authenticationClient.pollForResult(AuthenticationResultRequest.create(REFERENCE), 2);
+            AuthenticationClientApi authenticationClient =
+                    AuthenticationClient.create(TestUtil.getDefaultSslSettings(), FrejaEnvironment.TEST)
+                            .setHttpService(httpServiceMock)
+                            .setTransactionContext(TransactionContext.PERSONAL).build();
+            authenticationClient.pollForResult(AuthenticationResultRequest.create(REFERENCE), 2);
             Assert.fail("Test should throw exception!");
         } catch (FrejaEidClientPollingException ex) {
             Assert.assertEquals("A timeout of 2s was reached while sending request.", ex.getLocalizedMessage());
@@ -150,31 +213,43 @@ public class AuthenticationClientGetResultTest {
     }
 
     @Test
-    public void getAuthenticationResults_relyingPartyIdNull_success() throws FrejaEidClientInternalException, FrejaEidException {
+    public void getAuthenticationResults_relyingPartyIdNull_success()
+            throws FrejaEidClientInternalException, FrejaEidException {
         AuthenticationResults expectedResponse = prepareResponse();
         AuthenticationResultsRequest authenticationResultsRequest = AuthenticationResultsRequest.create();
-        Mockito.when(httpServiceMock.send(Mockito.anyString(), Mockito.any(RequestTemplate.class), Mockito.any(RelyingPartyRequest.class), Mockito.eq(AuthenticationResults.class), (String) Mockito.isNull())).thenReturn(expectedResponse);
+        Mockito.when(httpServiceMock.send(Mockito.anyString(), Mockito.any(RequestTemplate.class),
+                                          Mockito.any(RelyingPartyRequest.class),
+                                          Mockito.eq(AuthenticationResults.class), (String) Mockito.isNull()))
+                .thenReturn(expectedResponse);
         getAuthenticationResults_success(authenticationResultsRequest);
-
     }
 
     @Test
-    public void getAuthenticationResults_relyingPartyIdNotNull_success() throws FrejaEidClientInternalException, FrejaEidException {
+    public void getAuthenticationResults_relyingPartyIdNotNull_success()
+            throws FrejaEidClientInternalException, FrejaEidException {
         AuthenticationResults expectedResponse = prepareResponse();
-        AuthenticationResultsRequest authenticationResultsRequest = AuthenticationResultsRequest.create(RELYING_PARTY_ID);
-        Mockito.when(httpServiceMock.send(Mockito.anyString(), Mockito.any(RequestTemplate.class), Mockito.any(RelyingPartyRequest.class), Mockito.eq(AuthenticationResults.class), Mockito.anyString())).thenReturn(expectedResponse);
+        AuthenticationResultsRequest authenticationResultsRequest =
+                AuthenticationResultsRequest.create(RELYING_PARTY_ID);
+        Mockito.when(httpServiceMock.send(Mockito.anyString(), Mockito.any(RequestTemplate.class),
+                                          Mockito.any(RelyingPartyRequest.class),
+                                          Mockito.eq(AuthenticationResults.class),
+                                          Mockito.anyString()))
+                .thenReturn(expectedResponse);
         getAuthenticationResults_success(authenticationResultsRequest);
-
     }
 
-    private void getAuthenticationResults_success(AuthenticationResultsRequest getAuthenticationResultsRequest) throws FrejaEidClientInternalException, FrejaEidException {
-
-        AuthenticationClientApi authenticationClient = AuthenticationClient.create(SslSettings.create(TestUtil.getKeystorePath(TestUtil.KEYSTORE_PATH), TestUtil.KEYSTORE_PASSWORD, TestUtil.getKeystorePath(TestUtil.CERTIFICATE_PATH)), FrejaEnvironment.TEST)
-                .setHttpService(httpServiceMock)
-                .setTransactionContext(TransactionContext.PERSONAL).build();
+    private void getAuthenticationResults_success(AuthenticationResultsRequest getAuthenticationResultsRequest)
+            throws FrejaEidClientInternalException, FrejaEidException {
+        AuthenticationClientApi authenticationClient =
+                AuthenticationClient.create(TestUtil.getDefaultSslSettings(), FrejaEnvironment.TEST)
+                        .setHttpService(httpServiceMock)
+                        .setTransactionContext(TransactionContext.PERSONAL).build();
 
         List<AuthenticationResult> response = authenticationClient.getResults(getAuthenticationResultsRequest);
-        Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getUrl() + MethodUrl.AUTHENTICATION_GET_RESULTS, RequestTemplate.AUTHENTICATION_RESULTS_TEMPLATE, getAuthenticationResultsRequest, AuthenticationResults.class, getAuthenticationResultsRequest.getRelyingPartyId());
+        Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getUrl() + MethodUrl.AUTHENTICATION_GET_RESULTS,
+                                             RequestTemplate.AUTHENTICATION_RESULTS_TEMPLATE,
+                                             getAuthenticationResultsRequest, AuthenticationResults.class,
+                                             getAuthenticationResultsRequest.getRelyingPartyId());
         AuthenticationResult first = response.get(0);
         Assert.assertEquals(REFERENCE, first.getAuthRef());
         Assert.assertEquals(TransactionStatus.STARTED, first.getStatus());
@@ -189,10 +264,16 @@ public class AuthenticationClientGetResultTest {
     }
 
     private AuthenticationResults prepareResponse() {
-        RequestedAttributes attributes1 = new RequestedAttributes(BASIC_USER_INFO, CUSTOM_IDENTIFIER, SSN, null, DATE_OF_BIRTH, RELYING_PARTY_USER_ID, EMAIL_ADDRESS, ORGANISATION_ID, ADDRESSES, ALL_EMAIL_ADDRESSES, ALL_PHONE_NUMBERS);
-        AuthenticationResult firstResponse = new AuthenticationResult(REFERENCE, TransactionStatus.STARTED, DETAILS, attributes1);
-        RequestedAttributes attributes2 = new RequestedAttributes(null, "test", null, null, null, null, null, null, null, null, null);
-        AuthenticationResult secondResponse = new AuthenticationResult(REFERENCE, TransactionStatus.DELIVERED_TO_MOBILE, "test", attributes2);
+        RequestedAttributes attributes1 =
+                new RequestedAttributes(BASIC_USER_INFO, CUSTOM_IDENTIFIER, SSN, null, DATE_OF_BIRTH,
+                                        RELYING_PARTY_USER_ID, EMAIL_ADDRESS, ORGANISATION_ID, ADDRESSES,
+                                        ALL_EMAIL_ADDRESSES, ALL_PHONE_NUMBERS);
+        AuthenticationResult firstResponse =
+                new AuthenticationResult(REFERENCE, TransactionStatus.STARTED, DETAILS, attributes1);
+        RequestedAttributes attributes2 =
+                new RequestedAttributes(null, "test", null, null, null, null, null, null, null, null, null);
+        AuthenticationResult secondResponse =
+                new AuthenticationResult(REFERENCE, TransactionStatus.DELIVERED_TO_MOBILE, "test", attributes2);
         List<AuthenticationResult> responses = new ArrayList<>();
         responses.add(firstResponse);
         responses.add(secondResponse);

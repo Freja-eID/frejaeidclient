@@ -2,11 +2,11 @@ package com.verisec.frejaeid.client.beans.general;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.Objects;
 
 /**
  * Contains information regarding organisation id.
- *
  */
 public class OrganisationId {
 
@@ -17,15 +17,15 @@ public class OrganisationId {
     /**
      * Creates instance of {@linkplain OrganisationId}.
      *
-     * @param title will be shown to user on organisation id card (for example
-     * "Developers"). Maximum length is 22 characters. It cannot be {@code null}
-     * or empty.
+     * @param title          will be shown to user on organisation id card (for example
+     *                       "Developers"). Maximum length is 22 characters. It cannot be {@code null}
+     *                       or empty.
      * @param identifierName name of identifier that will be set to user (for
-     * example "employee number"). Maximum length is 30 characters. It cannot be
-     * {@code null} or empty.
-     * @param identifier will be set for user. Can be used for initiating
-     * transaction. Maximum length is 128 characters. It cannot be {@code null}
-     * or empty.
+     *                       example "employee number"). Maximum length is 30 characters. It cannot be
+     *                       {@code null} or empty.
+     * @param identifier     will be set for user. Can be used for initiating
+     *                       transaction. Maximum length is 128 characters. It cannot be {@code null}
+     *                       or empty.
      * @return informations for organisation id
      */
     public static OrganisationId create(String title, String identifierName, String identifier) {
@@ -33,7 +33,9 @@ public class OrganisationId {
     }
 
     @JsonCreator
-    private OrganisationId(@JsonProperty("title") String title, @JsonProperty("identifierName") String identifierName, @JsonProperty("identifier") String identifier) {
+    private OrganisationId(@JsonProperty("title") String title,
+                           @JsonProperty("identifierName") String identifierName,
+                           @JsonProperty("identifier") String identifier) {
         this.title = title;
         this.identifierName = identifierName;
         this.identifier = identifier;
@@ -82,7 +84,8 @@ public class OrganisationId {
 
     @Override
     public String toString() {
-        return "OrganisationId{" + "title=" + title + ", identifierName=" + identifierName + ", identifier=" + identifier + '}';
+        return "OrganisationId{" + "title=" + title + ", identifierName=" + identifierName
+                + ", identifier=" + identifier + '}';
     }
 
 }

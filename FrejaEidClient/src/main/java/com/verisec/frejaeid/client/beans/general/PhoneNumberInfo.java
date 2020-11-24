@@ -2,12 +2,12 @@ package com.verisec.frejaeid.client.beans.general;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.Objects;
 
 /**
  * PhoneNumberInfo contains information about user's phone number. It can be requested as
  * attribute to return.
- *
  */
 public class PhoneNumberInfo {
 

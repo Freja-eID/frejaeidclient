@@ -3,6 +3,7 @@ package com.verisec.frejaeid.client.util;
 import com.verisec.frejaeid.client.beans.general.SsnUserInfo;
 import com.verisec.frejaeid.client.exceptions.FrejaEidClientInternalException;
 import org.apache.commons.codec.binary.Base64;
+
 import java.nio.charset.StandardCharsets;
 
 public class UserInfoUtil {

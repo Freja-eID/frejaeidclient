@@ -3,6 +3,7 @@ package com.verisec.frejaeid.client.beans.authentication.get;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.verisec.frejaeid.client.beans.common.FrejaHttpResponse;
+
 import java.util.List;
 import java.util.Objects;
 
@@ -11,7 +12,8 @@ public class AuthenticationResults implements FrejaHttpResponse {
     private final List<AuthenticationResult> authenticationResults;
 
     @JsonCreator
-    public AuthenticationResults(@JsonProperty(value = "authenticationResults") List<AuthenticationResult> authenticationResults) {
+    public AuthenticationResults(@JsonProperty(value = "authenticationResults")
+                                         List<AuthenticationResult> authenticationResults) {
         this.authenticationResults = authenticationResults;
     }
 

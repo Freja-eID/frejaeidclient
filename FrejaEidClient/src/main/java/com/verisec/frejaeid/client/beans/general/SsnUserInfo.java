@@ -3,18 +3,18 @@ package com.verisec.frejaeid.client.beans.general;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.verisec.frejaeid.client.enums.Country;
+
 import java.util.Objects;
 
 /**
  * SsnUserInfo contains country and personal number. It can be used to start
  * transaction or requested as attribute.
- *
  */
 public class SsnUserInfo {
 
     private final Country country;
     private final String ssn;
-    
+
     public static SsnUserInfo create(Country country, String ssn) {
         return new SsnUserInfo(country, ssn);
     }

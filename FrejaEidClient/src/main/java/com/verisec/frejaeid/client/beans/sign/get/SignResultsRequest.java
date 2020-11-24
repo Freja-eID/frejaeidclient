@@ -21,7 +21,7 @@ public class SignResultsRequest extends ResultsRequest {
      * <b>Only relying parties that are integrators should use this method.</b>
      *
      * @param relyingPartyId specifies relying party id for which transaction is
-     * initiated. It cannot be {@code null} or empty.
+     *                       initiated. It cannot be {@code null} or empty.
      * @return request
      */
     public static SignResultsRequest create(String relyingPartyId) {

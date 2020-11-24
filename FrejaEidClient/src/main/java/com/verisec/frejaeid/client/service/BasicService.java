@@ -20,7 +20,9 @@ public class BasicService {
     }
 
     protected boolean isFinalStatus(TransactionStatus status) {
-        return (status == TransactionStatus.CANCELED || status == TransactionStatus.RP_CANCELED || status == TransactionStatus.EXPIRED || status == TransactionStatus.APPROVED || status == TransactionStatus.REJECTED);
+        return (status == TransactionStatus.CANCELED || status == TransactionStatus.RP_CANCELED
+                || status == TransactionStatus.EXPIRED || status == TransactionStatus.APPROVED
+                || status == TransactionStatus.REJECTED);
     }
 
 }
