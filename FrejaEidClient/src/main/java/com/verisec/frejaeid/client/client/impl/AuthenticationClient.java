@@ -79,8 +79,8 @@ public class AuthenticationClient extends BasicClient implements AuthenticationC
         LOG.debug("Getting result for authentication transaction reference {}.",
                   authenticationResultRequest.getAuthRef());
         AuthenticationResult authenticationResult = authenticationService.getResult(authenticationResultRequest);
-        LOG.debug("Received {} status for authentication transaction reference {}.", authenticationResult.getStatus()
-                , authenticationResult.getAuthRef());
+        LOG.debug("Received {} status for authentication transaction reference {}.", authenticationResult.getStatus(),
+                  authenticationResult.getAuthRef());
         return authenticationResult;
     }
 

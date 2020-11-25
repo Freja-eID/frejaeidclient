@@ -76,7 +76,8 @@ public class CustomIdentifierClient extends BasicClient implements CustomIdentif
 
         public static final Logger LOG = LoggerFactory.getLogger(Builder.class);
 
-        private Builder(SSLContext sslContext, FrejaEnvironment frejaEnvironment) {
+        private Builder(SSLContext sslContext, FrejaEnvironment frejaEnvironment)
+                throws FrejaEidClientInternalException {
             super(sslContext, frejaEnvironment);
         }
 

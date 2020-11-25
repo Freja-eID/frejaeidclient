@@ -71,7 +71,8 @@ public class BasicClient {
         protected SSLContext sslContext;
         protected TransactionContext transactionContext;
 
-        public GenericBuilder(SSLContext sslContext, FrejaEnvironment frejaEnvironment) {
+        public GenericBuilder(SSLContext sslContext, FrejaEnvironment frejaEnvironment)
+                throws FrejaEidClientInternalException {
             if (sslContext != null) {
                 this.sslContext = sslContext;
             }

@@ -59,8 +59,8 @@ public class InitiateSignRequestBuildersTest {
     public void createDefaultSsnRequest() throws FrejaEidClientInternalException {
         InitiateSignRequest expectedInitiateSignRequest =
                 new InitiateSignRequest(UserInfoType.SSN, UserInfoUtil.convertSsnUserInfo(SSN_USER_INFO),
-                                        MinRegistrationLevel.PLUS, TITLE, null, null, DataToSignType.SIMPLE_UTF8_TEXT
-                        , DataToSign.create(TEXT), SignatureType.SIMPLE, null, null);
+                                        MinRegistrationLevel.PLUS, TITLE, null, null, DataToSignType.SIMPLE_UTF8_TEXT,
+                                        DataToSign.create(TEXT), SignatureType.SIMPLE, null, null);
         InitiateSignRequest initiateSignRequest = InitiateSignRequest.createDefaultWithSsn(SSN_USER_INFO, TITLE, TEXT);
         Assert.assertEquals(expectedInitiateSignRequest, initiateSignRequest);
     }

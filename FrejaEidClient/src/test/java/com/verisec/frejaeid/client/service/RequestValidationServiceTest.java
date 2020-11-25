@@ -362,7 +362,6 @@ public class RequestValidationServiceTest {
     public void getSignResult_referenceNull_expectError() throws FrejaEidException {
         try {
             signClient.getResult(SignResultRequest.create(null));
-            ;
             Assert.fail("Test should throw exception!");
         } catch (FrejaEidClientInternalException ex) {
             Assert.assertEquals("Reference cannot be null or empty.", ex.getLocalizedMessage());

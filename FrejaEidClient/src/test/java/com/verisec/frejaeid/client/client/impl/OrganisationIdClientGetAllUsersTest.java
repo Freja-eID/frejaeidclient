@@ -67,8 +67,8 @@ public class OrganisationIdClientGetAllUsersTest {
                                           Mockito.eq(GetAllOrganisationIdUsersResponse.class), Mockito.anyString()))
                 .thenReturn(expectedResponse);
         List<OrganisationIdUserInfo> actualListOfOrgansiationIdUserInfos = organisationIdClient.getAllUsers(request);
-        Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getUrl() + MethodUrl.ORGANISATION_ID_GET_ALL_USERS
-                , null, request, GetAllOrganisationIdUsersResponse.class, RELYING_PARTY_ID);
+        Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getUrl() + MethodUrl.ORGANISATION_ID_GET_ALL_USERS,
+                                             null, request, GetAllOrganisationIdUsersResponse.class, RELYING_PARTY_ID);
         Assert.assertEquals(expectedResponse.getUserInfos(), actualListOfOrgansiationIdUserInfos);
     }
 }
