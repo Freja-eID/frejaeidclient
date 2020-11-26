@@ -14,6 +14,7 @@ import com.verisec.frejaeid.client.http.HttpServiceApi;
 import com.verisec.frejaeid.client.util.MethodUrl;
 import com.verisec.frejaeid.client.util.RequestTemplate;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
@@ -22,12 +23,17 @@ public class SignClientCancelTest {
     private final HttpServiceApi httpServiceMock = Mockito.mock(HttpServiceApi.class);
     private static final String REFERENCE = "reference";
     private static final String RELYING_PARTY_ID = "relyingPartyId";
+    private  SignClientApi signClient;
+
+    @Before
+    public void initialiseClient() throws FrejaEidClientInternalException {
+        signClient = SignClient.create(TestUtil.getDefaultSslSettings(), FrejaEnvironment.TEST)
+                .setHttpService(httpServiceMock)
+                .setTransactionContext(TransactionContext.PERSONAL).build();
+    }
 
     @Test
     public void cancelSign_relyingPartyIdNull_success() throws FrejaEidClientInternalException, FrejaEidException {
-        SignClientApi signClient = SignClient.create(TestUtil.getDefaultSslSettings(), FrejaEnvironment.TEST)
-                .setHttpService(httpServiceMock)
-                .setTransactionContext(TransactionContext.PERSONAL).build();
         CancelSignRequest cancelSignRequest = CancelSignRequest.create(REFERENCE);
         Mockito.when(httpServiceMock.send(Mockito.anyString(), Mockito.any(RequestTemplate.class),
                                           Mockito.any(RelyingPartyRequest.class),
@@ -41,9 +47,6 @@ public class SignClientCancelTest {
 
     @Test
     public void cancelSignPersonal_success() throws FrejaEidClientInternalException, FrejaEidException {
-        SignClientApi signClient = SignClient.create(TestUtil.getDefaultSslSettings(), FrejaEnvironment.TEST)
-                .setHttpService(httpServiceMock)
-                .setTransactionContext(TransactionContext.PERSONAL).build();
         CancelSignRequest cancelSignRequest = CancelSignRequest.create(REFERENCE, RELYING_PARTY_ID);
         Mockito.when(httpServiceMock.send(Mockito.anyString(), Mockito.any(RequestTemplate.class),
                                           Mockito.any(RelyingPartyRequest.class),
@@ -76,9 +79,6 @@ public class SignClientCancelTest {
             throws FrejaEidClientInternalException, FrejaEidException {
         CancelSignRequest cancelSignRequest = CancelSignRequest.create("123");
         try {
-            SignClientApi signClient = SignClient.create(TestUtil.getDefaultSslSettings(), FrejaEnvironment.TEST)
-                    .setHttpService(httpServiceMock)
-                    .setTransactionContext(TransactionContext.PERSONAL).build();
             FrejaEidException frejaEidException = new FrejaEidException(
                     FrejaEidErrorCode.INVALID_REFERENCE.getMessage(), FrejaEidErrorCode.INVALID_REFERENCE.getCode());
             Mockito.when(httpServiceMock.send(Mockito.anyString(), Mockito.any(RequestTemplate.class),

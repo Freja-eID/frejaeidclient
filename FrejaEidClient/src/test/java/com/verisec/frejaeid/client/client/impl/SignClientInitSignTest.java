@@ -39,9 +39,10 @@ public class SignClientInitSignTest {
 
     private Long expiry;
     private final DataToSign dataToSign = DataToSign.create("SGVsbG8=");
+    private SignClientApi signClient;
 
     @Before
-    public void initDefaultRequest() {
+    public void initDefaultRequest() throws FrejaEidClientInternalException {
         minRegistrationLevel = MinRegistrationLevel.BASIC;
         title = "Sign transaction title";
         text = "Sign transaction text";
@@ -49,15 +50,15 @@ public class SignClientInitSignTest {
         pushNotificationText = "Sign notification text";
         pushNotification = PushNotification.create(pushNotificationTitle, pushNotificationText);
         expiry = TimeUnit.MINUTES.toMillis(6);
+        signClient = SignClient.create(TestUtil.getDefaultSslSettings(), FrejaEnvironment.TEST)
+                .setHttpService(httpServiceMock)
+                .setTransactionContext(TransactionContext.PERSONAL).build();
     }
 
     @Test
     public void initSign_defaultRequests_personal_expectSuccess()
             throws FrejaEidClientInternalException, FrejaEidException {
         InitiateSignResponse expectedResponse = new InitiateSignResponse(SIGN_REFERENCE);
-        SignClientApi signClient = SignClient.create(TestUtil.getDefaultSslSettings(), FrejaEnvironment.TEST)
-                .setHttpService(httpServiceMock)
-                .setTransactionContext(TransactionContext.PERSONAL).build();
         Mockito.when(httpServiceMock.send(Mockito.anyString(), Mockito.any(RequestTemplate.class),
                                           Mockito.any(RelyingPartyRequest.class),
                                           Mockito.eq(InitiateSignResponse.class), (String) Mockito.isNull()))
@@ -114,9 +115,6 @@ public class SignClientInitSignTest {
     @Test
     public void initSign_customRequests_expectSuccess() throws FrejaEidClientInternalException, FrejaEidException {
         InitiateSignResponse expectedResponse = new InitiateSignResponse(SIGN_REFERENCE);
-        SignClientApi signClient = SignClient.create(TestUtil.getDefaultSslSettings(), FrejaEnvironment.TEST)
-                .setHttpService(httpServiceMock)
-                .setTransactionContext(TransactionContext.PERSONAL).build();
         Mockito.when(httpServiceMock.send(Mockito.anyString(), Mockito.any(RequestTemplate.class),
                                           Mockito.any(RelyingPartyRequest.class),
                                           Mockito.eq(InitiateSignResponse.class), Mockito.anyString()))
@@ -181,9 +179,6 @@ public class SignClientInitSignTest {
                 .setRelyingPartyId(RELYING_PARTY_ID)
                 .build();
         try {
-            SignClientApi signClient = SignClient.create(TestUtil.getDefaultSslSettings(), FrejaEnvironment.TEST)
-                    .setHttpService(httpServiceMock)
-                    .setTransactionContext(TransactionContext.PERSONAL).build();
             FrejaEidException frejaEidException = new FrejaEidException(
                     FrejaEidErrorCode.INVALID_USER_INFO.getMessage(), FrejaEidErrorCode.INVALID_USER_INFO.getCode());
             Mockito.when(httpServiceMock.send(Mockito.anyString(), Mockito.any(RequestTemplate.class),

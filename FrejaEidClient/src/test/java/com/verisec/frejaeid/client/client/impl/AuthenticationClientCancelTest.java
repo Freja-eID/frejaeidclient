@@ -14,6 +14,7 @@ import com.verisec.frejaeid.client.http.HttpServiceApi;
 import com.verisec.frejaeid.client.util.MethodUrl;
 import com.verisec.frejaeid.client.util.RequestTemplate;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
@@ -22,14 +23,18 @@ public class AuthenticationClientCancelTest {
     private final HttpServiceApi httpServiceMock = Mockito.mock(HttpServiceApi.class);
     private static final String REFERENCE = "reference";
     private static final String RELYING_PARTY_ID = "relyingPartyId";
+    private AuthenticationClientApi authenticationClient;
+
+    @Before
+    public void initialiseClient() throws FrejaEidClientInternalException {
+        authenticationClient = AuthenticationClient.create(TestUtil.getDefaultSslSettings(), FrejaEnvironment.TEST)
+                .setHttpService(httpServiceMock)
+                .setTransactionContext(TransactionContext.PERSONAL).build();
+    }
 
     @Test
     public void cancelAuthentication_relyingPartyIdNull_success()
             throws FrejaEidClientInternalException, FrejaEidException {
-        AuthenticationClientApi authenticationClient =
-                AuthenticationClient.create(TestUtil.getDefaultSslSettings(), FrejaEnvironment.TEST)
-                        .setHttpService(httpServiceMock)
-                        .setTransactionContext(TransactionContext.PERSONAL).build();
         CancelAuthenticationRequest cancelAuthenticationRequest = CancelAuthenticationRequest.create(REFERENCE);
         Mockito.when(httpServiceMock.send(Mockito.anyString(), Mockito.any(RequestTemplate.class),
                                           Mockito.any(RelyingPartyRequest.class),
@@ -43,10 +48,6 @@ public class AuthenticationClientCancelTest {
 
     @Test
     public void cancelAuthentication_personal_success() throws FrejaEidClientInternalException, FrejaEidException {
-        AuthenticationClientApi authenticationClient =
-                AuthenticationClient.create(TestUtil.getDefaultSslSettings(), FrejaEnvironment.TEST)
-                        .setHttpService(httpServiceMock)
-                        .setTransactionContext(TransactionContext.PERSONAL).build();
         CancelAuthenticationRequest cancelAuthenticationRequest =
                 CancelAuthenticationRequest.create(REFERENCE, RELYING_PARTY_ID);
         Mockito.when(httpServiceMock.send(Mockito.anyString(), Mockito.any(RequestTemplate.class),
@@ -85,11 +86,6 @@ public class AuthenticationClientCancelTest {
         CancelAuthenticationRequest cancelAuthenticationRequest =
                 CancelAuthenticationRequest.create(REFERENCE, RELYING_PARTY_ID);
         try {
-            AuthenticationClientApi authenticationClient =
-                    AuthenticationClient.create(TestUtil.getDefaultSslSettings(), FrejaEnvironment.TEST)
-                            .setHttpService(httpServiceMock)
-                            .setTransactionContext(TransactionContext.PERSONAL).build();
-
             Mockito.when(httpServiceMock.send(Mockito.anyString(), Mockito.any(RequestTemplate.class),
                                               Mockito.any(RelyingPartyRequest.class),
                                               Mockito.eq(EmptyFrejaResponse.class), Mockito.anyString()))

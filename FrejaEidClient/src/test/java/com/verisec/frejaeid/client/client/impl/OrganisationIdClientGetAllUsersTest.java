@@ -1,10 +1,10 @@
 package com.verisec.frejaeid.client.client.impl;
 
 import com.verisec.frejaeid.client.beans.general.OrganisationId;
+import com.verisec.frejaeid.client.beans.general.OrganisationIdUserInfo;
 import com.verisec.frejaeid.client.beans.general.SsnUserInfo;
 import com.verisec.frejaeid.client.beans.organisationid.getall.GetAllOrganisationIdUsersRequest;
 import com.verisec.frejaeid.client.beans.organisationid.getall.GetAllOrganisationIdUsersResponse;
-import com.verisec.frejaeid.client.beans.general.OrganisationIdUserInfo;
 import com.verisec.frejaeid.client.client.api.OrganisationIdClientApi;
 import com.verisec.frejaeid.client.client.util.TestUtil;
 import com.verisec.frejaeid.client.enums.Country;
@@ -15,18 +15,17 @@ import com.verisec.frejaeid.client.exceptions.FrejaEidException;
 import com.verisec.frejaeid.client.http.HttpServiceApi;
 import com.verisec.frejaeid.client.util.MethodUrl;
 import com.verisec.frejaeid.client.util.RequestTemplate;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+import org.mockito.Mockito;
 
 import java.util.Arrays;
 import java.util.List;
 
-import org.junit.Assert;
-import org.junit.Test;
-import org.mockito.Mockito;
-
 public class OrganisationIdClientGetAllUsersTest {
 
     private final HttpServiceApi httpServiceMock = Mockito.mock(HttpServiceApi.class);
-    private final OrganisationIdClientApi organisationIdClient;
 
     private static final OrganisationId ORGANISATION_ID =
             OrganisationId.create("Title", "Identifier name", "Identifier");
@@ -36,9 +35,10 @@ public class OrganisationIdClientGetAllUsersTest {
             new OrganisationIdUserInfo(ORGANISATION_ID, SSN, RegistrationState.EXTENDED);
     private final GetAllOrganisationIdUsersResponse expectedResponse =
             new GetAllOrganisationIdUsersResponse(Arrays.asList(organisationIdUserInfo));
+    private OrganisationIdClientApi organisationIdClient;
 
-
-    public OrganisationIdClientGetAllUsersTest() throws FrejaEidClientInternalException {
+    @Before
+    public void initialiseClient() throws FrejaEidClientInternalException {
         organisationIdClient = OrganisationIdClient.create(TestUtil.getDefaultSslSettings(), FrejaEnvironment.TEST)
                 .setHttpService(httpServiceMock)
                 .build();

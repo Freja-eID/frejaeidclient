@@ -17,6 +17,7 @@ import com.verisec.frejaeid.client.http.HttpServiceApi;
 import com.verisec.frejaeid.client.util.MethodUrl;
 import com.verisec.frejaeid.client.util.RequestTemplate;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
@@ -36,15 +37,19 @@ public class OrganisationIdClientInitAddOrganisationIdTest {
 
     private final MinRegistrationLevel minRegistrationLevel = MinRegistrationLevel.EXTENDED;
     private final Long expiry = TimeUnit.MINUTES.toMillis(6);
+    private OrganisationIdClientApi organisationIdClient;
+
+    @Before
+    public void initialiseClient() throws FrejaEidClientInternalException {
+        organisationIdClient = OrganisationIdClient.create(TestUtil.getDefaultSslSettings(), FrejaEnvironment.TEST)
+                .setHttpService(httpServiceMock)
+                .build();
+    }
 
     @Test
     public void initAddOrganisationId_defaultRequests_expectSuccess()
             throws FrejaEidClientInternalException, FrejaEidException {
         InitiateAddOrganisationIdResponse expectedResponse = new InitiateAddOrganisationIdResponse(REFERENCE);
-        OrganisationIdClientApi organisationIdClient =
-                OrganisationIdClient.create(TestUtil.getDefaultSslSettings(), FrejaEnvironment.TEST)
-                        .setHttpService(httpServiceMock)
-                        .build();
         Mockito.when(httpServiceMock.send(Mockito.anyString(), Mockito.any(RequestTemplate.class),
                                           Mockito.any(RelyingPartyRequest.class),
                                           Mockito.eq(InitiateAddOrganisationIdResponse.class),
@@ -77,10 +82,6 @@ public class OrganisationIdClientInitAddOrganisationIdTest {
     public void initAddOrganisationId_customRequests_expectSuccess()
             throws FrejaEidClientInternalException, FrejaEidException {
         InitiateAddOrganisationIdResponse expectedResponse = new InitiateAddOrganisationIdResponse(REFERENCE);
-        OrganisationIdClientApi organisationIdClient =
-                OrganisationIdClient.create(TestUtil.getDefaultSslSettings(), FrejaEnvironment.TEST)
-                        .setHttpService(httpServiceMock)
-                        .build();
         Mockito.when(httpServiceMock.send(Mockito.anyString(), Mockito.any(RequestTemplate.class),
                                           Mockito.any(RelyingPartyRequest.class),
                                           Mockito.eq(InitiateAddOrganisationIdResponse.class), Mockito.anyString()))
@@ -115,10 +116,6 @@ public class OrganisationIdClientInitAddOrganisationIdTest {
                         .setRelyingPartyId(RELYING_PARTY_ID)
                         .build();
         try {
-            OrganisationIdClientApi organisationIdClient =
-                    OrganisationIdClient.create(TestUtil.getDefaultSslSettings(), FrejaEnvironment.TEST)
-                            .setHttpService(httpServiceMock)
-                            .build();
             FrejaEidException frejaEidException = new FrejaEidException(
                     FrejaEidErrorCode.INVALID_USER_INFO.getMessage(), FrejaEidErrorCode.INVALID_USER_INFO.getCode());
             Mockito.when(httpServiceMock.send(Mockito.anyString(), Mockito.any(RequestTemplate.class),

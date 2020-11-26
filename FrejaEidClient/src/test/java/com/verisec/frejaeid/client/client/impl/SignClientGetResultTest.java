@@ -27,6 +27,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
@@ -50,6 +51,14 @@ public class SignClientGetResultTest {
                                     SsnUserInfo.create(Country.SWEDEN, "ssn"), "integratorSpecificId", "1987-10-18",
                                     RELYING_PARTY_USER_ID, EMAIL_ADDRESS, ORGANISATION_ID, ADDRESSES,
                                     ALL_EMAIL_ADDRESSES, ALL_PHONE_NUMBERS);
+    private SignClientApi signClient;
+
+    @Before
+    public void initialiseClient() throws FrejaEidClientInternalException {
+        signClient = SignClient.create(TestUtil.getDefaultSslSettings(), FrejaEnvironment.TEST)
+                .setHttpService(httpServiceMock)
+                .setTransactionContext(TransactionContext.PERSONAL).build();
+    }
 
     @Test
     public void getSignResult_relyingPartyIdNull_expectSuccess()
@@ -57,9 +66,6 @@ public class SignClientGetResultTest {
         SignResultRequest signResultsRequest = SignResultRequest.create(SIGN_REFERENCE);
         SignResult expectedResponse = new SignResult(SIGN_REFERENCE, TransactionStatus.STARTED, SIGN_DETAILS,
                                                      REQUESTED_ATTRIBUTES);
-        SignClientApi signClient = SignClient.create(TestUtil.getDefaultSslSettings(), FrejaEnvironment.TEST)
-                .setHttpService(httpServiceMock)
-                .setTransactionContext(TransactionContext.PERSONAL).build();
         Mockito.when(httpServiceMock.send(Mockito.anyString(), Mockito.any(RequestTemplate.class),
                                           Mockito.any(RelyingPartyRequest.class), Mockito.eq(SignResult.class),
                                           (String) Mockito.isNull())).thenReturn(expectedResponse);
@@ -78,9 +84,6 @@ public class SignClientGetResultTest {
         SignResultRequest signResultRequest = SignResultRequest.create(SIGN_REFERENCE, RELYING_PARTY_ID);
         SignResult expectedResponse =
                 new SignResult(SIGN_REFERENCE, TransactionStatus.STARTED, SIGN_DETAILS, REQUESTED_ATTRIBUTES);
-        SignClientApi signClient = SignClient.create(TestUtil.getDefaultSslSettings(), FrejaEnvironment.TEST)
-                .setHttpService(httpServiceMock)
-                .setTransactionContext(TransactionContext.PERSONAL).build();
         Mockito.when(httpServiceMock.send(Mockito.anyString(), Mockito.any(RequestTemplate.class),
                                           Mockito.any(RelyingPartyRequest.class), Mockito.eq(SignResult.class),
                                           Mockito.anyString())).thenReturn(expectedResponse);
@@ -120,9 +123,6 @@ public class SignClientGetResultTest {
             throws FrejaEidClientInternalException, FrejaEidException {
         SignResultRequest signResultRequest = SignResultRequest.create(SIGN_REFERENCE, RELYING_PARTY_ID);
         try {
-            SignClientApi signClient = SignClient.create(TestUtil.getDefaultSslSettings(), FrejaEnvironment.TEST)
-                    .setHttpService(httpServiceMock)
-                    .setTransactionContext(TransactionContext.PERSONAL).build();
             FrejaEidException frejaEidException = new FrejaEidException(
                     FrejaEidErrorCode.INVALID_REFERENCE.getMessage(), FrejaEidErrorCode.INVALID_REFERENCE.getCode());
             Mockito.when(httpServiceMock.send(Mockito.anyString(), Mockito.any(RequestTemplate.class),
@@ -143,9 +143,6 @@ public class SignClientGetResultTest {
     public void pollForResult_finalResponseRejected_success()
             throws FrejaEidClientInternalException, FrejaEidException, FrejaEidClientPollingException {
         SignResult expectedResponse = new SignResult(SIGN_REFERENCE, TransactionStatus.REJECTED, SIGN_DETAILS, null);
-        SignClientApi signClient = SignClient.create(TestUtil.getDefaultSslSettings(), FrejaEnvironment.TEST)
-                .setHttpService(httpServiceMock)
-                .setTransactionContext(TransactionContext.PERSONAL).build();
         Mockito.when(httpServiceMock.send(Mockito.anyString(), Mockito.any(RequestTemplate.class),
                                           Mockito.any(RelyingPartyRequest.class), Mockito.eq(SignResult.class),
                                           (String) Mockito.isNull())).thenReturn(expectedResponse);
@@ -161,9 +158,6 @@ public class SignClientGetResultTest {
     public void pollForResult_requestTimeout_expectTimeoutError()
             throws FrejaEidClientInternalException, FrejaEidException {
         try {
-            SignClientApi signClient = SignClient.create(TestUtil.getDefaultSslSettings(), FrejaEnvironment.TEST)
-                    .setHttpService(httpServiceMock)
-                    .setTransactionContext(TransactionContext.PERSONAL).build();
             signClient.pollForResult(SignResultRequest.create(SIGN_REFERENCE), 2);
             Assert.fail("Test should throw exception!");
         } catch (FrejaEidClientPollingException ex) {
@@ -195,9 +189,6 @@ public class SignClientGetResultTest {
 
     @Test
     public void getSignResults_expectError() throws FrejaEidClientInternalException, FrejaEidException {
-        SignClientApi signClient = SignClient.create(TestUtil.getDefaultSslSettings(), FrejaEnvironment.TEST)
-                .setHttpService(httpServiceMock)
-                .setTransactionContext(TransactionContext.PERSONAL).build();
         FrejaEidException frejaEidException =
                 new FrejaEidException(FrejaEidErrorCode.UNKNOWN_RELYING_PARTY.getMessage(),
                                       FrejaEidErrorCode.UNKNOWN_RELYING_PARTY.getCode());
@@ -221,10 +212,6 @@ public class SignClientGetResultTest {
 
     private void getSignResults_success(SignResultsRequest signResultsRequest)
             throws FrejaEidClientInternalException, FrejaEidException {
-        SignClientApi signClient = SignClient.create(TestUtil.getDefaultSslSettings(), FrejaEnvironment.TEST)
-                .setHttpService(httpServiceMock)
-                .setTransactionContext(TransactionContext.PERSONAL).build();
-
         List<SignResult> response = signClient.getResults(signResultsRequest);
         Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getUrl() + MethodUrl.SIGN_GET_RESULTS,
                                              RequestTemplate.SIGN_RESULTS_TEMPLATE, signResultsRequest,

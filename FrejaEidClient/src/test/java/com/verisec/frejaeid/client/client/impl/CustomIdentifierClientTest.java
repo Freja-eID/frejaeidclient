@@ -16,6 +16,7 @@ import com.verisec.frejaeid.client.http.HttpServiceApi;
 import com.verisec.frejaeid.client.util.MethodUrl;
 import com.verisec.frejaeid.client.util.RequestTemplate;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
@@ -32,11 +33,15 @@ public class CustomIdentifierClientTest {
     private static final String RELYING_PARTY_ID = "verisec_integrator";
     private static CustomIdentifierClientApi customIdentifierClient;
 
-    @Test
-    public void setCustomIdentifier_success() throws FrejaEidClientInternalException, FrejaEidException {
+    @Before
+    public void initialiseClient() throws FrejaEidClientInternalException {
         customIdentifierClient = CustomIdentifierClient.create(TestUtil.getDefaultSslSettings(), FrejaEnvironment.TEST)
                 .setHttpService(httpServiceMock)
                 .build();
+    }
+
+    @Test
+    public void setCustomIdentifier_success() throws FrejaEidClientInternalException, FrejaEidException {
         Mockito.when(httpServiceMock.send(Mockito.anyString(), Mockito.any(RequestTemplate.class),
                                           Mockito.any(RelyingPartyRequest.class),
                                           Mockito.eq(EmptyFrejaResponse.class), (String) Mockito.isNull()))
@@ -59,9 +64,6 @@ public class CustomIdentifierClientTest {
     @Test
     public void setCustomIdentifier_relyingPartyIdFromRequest_expectedSuccess()
             throws FrejaEidClientInternalException, FrejaEidException {
-        customIdentifierClient = CustomIdentifierClient.create(TestUtil.getDefaultSslSettings(), FrejaEnvironment.TEST)
-                .setHttpService(httpServiceMock)
-                .build();
         Mockito.when(httpServiceMock.send(Mockito.anyString(), Mockito.any(RequestTemplate.class),
                                           Mockito.any(RelyingPartyRequest.class),
                                           Mockito.eq(EmptyFrejaResponse.class), Mockito.anyString()))
@@ -94,10 +96,6 @@ public class CustomIdentifierClientTest {
         SetCustomIdentifierRequest setCustomIdentifierRequest =
                 SetCustomIdentifierRequest.createDefaultWithEmail(EMAIL, CUSTOM_IDENTIFIER);
         try {
-            customIdentifierClient =
-                    CustomIdentifierClient.create(TestUtil.getDefaultSslSettings(), FrejaEnvironment.TEST)
-                            .setHttpService(httpServiceMock)
-                            .build();
             FrejaEidException frejaEidException = new FrejaEidException(
                     FrejaEidErrorCode.USER_MANAGEMENT_CUSTOM_IDENTIFIER_ALREADY_EXISTS.getMessage(),
                     FrejaEidErrorCode.USER_MANAGEMENT_CUSTOM_IDENTIFIER_ALREADY_EXISTS.getCode());
@@ -119,9 +117,6 @@ public class CustomIdentifierClientTest {
 
     @Test
     public void deleteCustomIdentifier_success() throws FrejaEidClientInternalException, FrejaEidException {
-        customIdentifierClient = CustomIdentifierClient.create(TestUtil.getDefaultSslSettings(), FrejaEnvironment.TEST)
-                .setHttpService(httpServiceMock)
-                .build();
         DeleteCustomIdentifierRequest deleteCustomIdentifierRequest =
                 DeleteCustomIdentifierRequest.create(CUSTOM_IDENTIFIER);
         Mockito.when(httpServiceMock.send(Mockito.anyString(), Mockito.any(RequestTemplate.class),
@@ -137,9 +132,6 @@ public class CustomIdentifierClientTest {
     @Test
     public void deleteCustomIdentifier_relyingPartyIdFromRequest_expectedSuccess()
             throws FrejaEidClientInternalException, FrejaEidException {
-        customIdentifierClient = CustomIdentifierClient.create(TestUtil.getDefaultSslSettings(), FrejaEnvironment.TEST)
-                .setHttpService(httpServiceMock)
-                .build();
         DeleteCustomIdentifierRequest deleteCustomIdentifierRequest =
                 DeleteCustomIdentifierRequest.create(CUSTOM_IDENTIFIER, RELYING_PARTY_ID);
         Mockito.when(httpServiceMock.send(Mockito.anyString(), Mockito.any(RequestTemplate.class),
@@ -158,10 +150,6 @@ public class CustomIdentifierClientTest {
         DeleteCustomIdentifierRequest deleteCustomIdentifierRequest =
                 DeleteCustomIdentifierRequest.create(CUSTOM_IDENTIFIER);
         try {
-            customIdentifierClient =
-                    CustomIdentifierClient.create(TestUtil.getDefaultSslSettings(), FrejaEnvironment.TEST)
-                            .setHttpService(httpServiceMock)
-                            .build();
             FrejaEidException frejaEidException = new FrejaEidException(
                     FrejaEidErrorCode.USER_MANAGEMENT_CUSTOM_IDENTIFIER_DOES_NOT_EXIST.getMessage(),
                     FrejaEidErrorCode.USER_MANAGEMENT_CUSTOM_IDENTIFIER_DOES_NOT_EXIST.getCode());

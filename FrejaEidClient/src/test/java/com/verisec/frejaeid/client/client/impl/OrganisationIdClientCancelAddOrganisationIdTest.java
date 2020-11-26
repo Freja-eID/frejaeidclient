@@ -13,6 +13,7 @@ import com.verisec.frejaeid.client.http.HttpServiceApi;
 import com.verisec.frejaeid.client.util.MethodUrl;
 import com.verisec.frejaeid.client.util.RequestTemplate;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
@@ -21,13 +22,17 @@ public class OrganisationIdClientCancelAddOrganisationIdTest {
     private final HttpServiceApi httpServiceMock = Mockito.mock(HttpServiceApi.class);
     private static final String REFERENCE = "reference";
     private static final String RELYING_PARTY_ID = "relyingPartyId";
+    private OrganisationIdClientApi organisationIdClient;
+
+    @Before
+    public void initialiseClient() throws FrejaEidClientInternalException {
+        organisationIdClient = OrganisationIdClient.create(TestUtil.getDefaultSslSettings(), FrejaEnvironment.TEST)
+                .setHttpService(httpServiceMock)
+                .build();
+    }
 
     @Test
     public void cancelAdOrgId_relyingPartyIdNull_success() throws FrejaEidClientInternalException, FrejaEidException {
-        OrganisationIdClientApi organisationIdClient =
-                OrganisationIdClient.create(TestUtil.getDefaultSslSettings(), FrejaEnvironment.TEST)
-                        .setHttpService(httpServiceMock)
-                        .build();
         CancelAddOrganisationIdRequest cancelAddOrganisationIdRequest =
                 CancelAddOrganisationIdRequest.create(REFERENCE);
         Mockito.when(httpServiceMock.send(Mockito.anyString(), Mockito.any(RequestTemplate.class),
@@ -42,10 +47,6 @@ public class OrganisationIdClientCancelAddOrganisationIdTest {
 
     @Test
     public void cancelAddOrgId_success() throws FrejaEidClientInternalException, FrejaEidException {
-        OrganisationIdClientApi organisationIdClient =
-                OrganisationIdClient.create(TestUtil.getDefaultSslSettings(), FrejaEnvironment.TEST)
-                        .setHttpService(httpServiceMock)
-                        .build();
         CancelAddOrganisationIdRequest cancelAddOrganisationIdRequest =
                 CancelAddOrganisationIdRequest.create(REFERENCE, RELYING_PARTY_ID);
         Mockito.when(httpServiceMock.send(Mockito.anyString(), Mockito.any(RequestTemplate.class),
@@ -65,11 +66,6 @@ public class OrganisationIdClientCancelAddOrganisationIdTest {
         CancelAddOrganisationIdRequest cancelAddOrganisationIdRequest =
                 CancelAddOrganisationIdRequest.create(REFERENCE, RELYING_PARTY_ID);
         try {
-            OrganisationIdClientApi organisationIdClient =
-                    OrganisationIdClient.create(TestUtil.getDefaultSslSettings(), FrejaEnvironment.TEST)
-                            .setHttpService(httpServiceMock)
-                            .build();
-
             Mockito.when(httpServiceMock.send(Mockito.anyString(), Mockito.any(RequestTemplate.class),
                                               Mockito.any(RelyingPartyRequest.class),
                                               Mockito.eq(EmptyFrejaResponse.class), Mockito.anyString()))
