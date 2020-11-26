@@ -11,8 +11,7 @@ import com.verisec.frejaeid.client.util.RequestTemplate;
 
 public class CustomIdentifierService extends BasicService {
 
-    public CustomIdentifierService(String serverAddress, HttpServiceApi httpService)
-            throws FrejaEidClientInternalException {
+    public CustomIdentifierService(String serverAddress, HttpServiceApi httpService) {
         super(serverAddress, httpService);
     }
 

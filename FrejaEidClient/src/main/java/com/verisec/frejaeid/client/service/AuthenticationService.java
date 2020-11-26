@@ -24,15 +24,13 @@ public class AuthenticationService extends BasicService {
     private final TransactionContext transactionContext;
 
     public AuthenticationService(String serverAddress, HttpServiceApi httpService, int pollingTimeoutInMilliseconds,
-                                 TransactionContext transactionContext)
-            throws FrejaEidClientInternalException {
+                                 TransactionContext transactionContext) {
         super(serverAddress, httpService);
         this.pollingTimeoutInMilliseconds = pollingTimeoutInMilliseconds;
         this.transactionContext = transactionContext;
     }
 
-    public AuthenticationService(String serverAddress, HttpServiceApi httpService)
-            throws FrejaEidClientInternalException {
+    public AuthenticationService(String serverAddress, HttpServiceApi httpService) {
         super(serverAddress, httpService);
         this.pollingTimeoutInMilliseconds = 0;
         this.transactionContext = TransactionContext.PERSONAL;

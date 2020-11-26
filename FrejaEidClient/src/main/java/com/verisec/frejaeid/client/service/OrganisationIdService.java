@@ -22,14 +22,12 @@ public class OrganisationIdService extends BasicService {
 
     private final int pollingTimeoutInMilliseconds;
 
-    public OrganisationIdService(String serverAddress, int pollingTimeoutInMilliseconds, HttpServiceApi httpService)
-            throws FrejaEidClientInternalException {
+    public OrganisationIdService(String serverAddress, int pollingTimeoutInMilliseconds, HttpServiceApi httpService) {
         super(serverAddress, httpService);
         this.pollingTimeoutInMilliseconds = pollingTimeoutInMilliseconds;
     }
 
-    public OrganisationIdService(String serverAddress, HttpServiceApi httpService)
-            throws FrejaEidClientInternalException {
+    public OrganisationIdService(String serverAddress, HttpServiceApi httpService) {
         super(serverAddress, httpService);
         this.pollingTimeoutInMilliseconds = 0;
     }

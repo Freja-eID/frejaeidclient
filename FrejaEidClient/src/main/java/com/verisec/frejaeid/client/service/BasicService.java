@@ -10,7 +10,7 @@ public class BasicService {
     protected HttpServiceApi httpService;
     protected String serverAddress;
 
-    public BasicService(String serverAddress, HttpServiceApi httpService) throws FrejaEidClientInternalException {
+    public BasicService(String serverAddress, HttpServiceApi httpService) {
         this.httpService = httpService;
         this.serverAddress = serverAddress;
     }

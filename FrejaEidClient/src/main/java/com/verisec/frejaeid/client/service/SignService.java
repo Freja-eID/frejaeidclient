@@ -24,14 +24,13 @@ public class SignService extends BasicService {
     private final TransactionContext transactionContext;
 
     public SignService(String serverAddress, int pollingTimeoutInMilliseconds, TransactionContext transactionContext,
-                       HttpServiceApi httpService)
-            throws FrejaEidClientInternalException {
+                       HttpServiceApi httpService) {
         super(serverAddress, httpService);
         this.pollingTimeoutInMilliseconds = pollingTimeoutInMilliseconds;
         this.transactionContext = transactionContext;
     }
 
-    public SignService(String serverAddress, HttpServiceApi httpService) throws FrejaEidClientInternalException {
+    public SignService(String serverAddress, HttpServiceApi httpService) {
         super(serverAddress, httpService);
         this.pollingTimeoutInMilliseconds = 0;
         this.transactionContext = TransactionContext.PERSONAL;
