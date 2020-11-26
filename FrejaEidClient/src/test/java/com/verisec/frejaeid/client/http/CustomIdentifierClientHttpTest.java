@@ -1,7 +1,6 @@
 package com.verisec.frejaeid.client.http;
 
 import com.verisec.frejaeid.client.beans.common.EmptyFrejaResponse;
-import com.verisec.frejaeid.client.beans.general.SslSettings;
 import com.verisec.frejaeid.client.beans.general.SsnUserInfo;
 import com.verisec.frejaeid.client.beans.usermanagement.customidentifier.delete.DeleteCustomIdentifierRequest;
 import com.verisec.frejaeid.client.beans.usermanagement.customidentifier.set.SetCustomIdentifierRequest;
@@ -13,11 +12,10 @@ import com.verisec.frejaeid.client.enums.HttpStatusCode;
 import com.verisec.frejaeid.client.exceptions.FrejaEidClientInternalException;
 import com.verisec.frejaeid.client.exceptions.FrejaEidException;
 import com.verisec.frejaeid.client.util.JsonService;
-
-import java.io.IOException;
-
 import org.junit.BeforeClass;
 import org.junit.Test;
+
+import java.io.IOException;
 
 public class CustomIdentifierClientHttpTest extends CommonHttpTest {
 

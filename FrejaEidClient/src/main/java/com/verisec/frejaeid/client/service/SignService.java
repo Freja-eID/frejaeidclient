@@ -66,7 +66,7 @@ public class SignService extends BasicService {
                 Thread.sleep(pollingTimeoutInMilliseconds);
             } catch (InterruptedException ex) {
                 throw new FrejaEidClientInternalException(
-                        String.format("An error occured while waiting to make another request with %ss polling " +
+                        String.format("An error occurred while waiting to make another request with %ss polling " +
                                               "timeout.", maxWaitingTimeInSec), ex);
             }
         }

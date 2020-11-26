@@ -13,16 +13,14 @@ public enum FrejaEidErrorCode {
     INVALID_CONFIDENTIAL(1006, "Invalid confidential."),
     INVALID_MIN_REGISTRATION_LEVEL(1007, "Invalid minimum registration level."),
     UNKNOWN_RELYING_PARTY(1008, "Unknown Relying party."),
-    INTEGRATOR_SPECIFIC_USER_ID_PARAMETER_NOT_ALLOWED(1009, "You are not allowed to request integrator specific user " +
-            "id parameter."),
+    INTEGRATOR_SPECIFIC_USER_ID_PARAMETER_NOT_ALLOWED(1009, "You are not allowed to request integrator specific user id parameter."),
     INVALID_JSON_REQUEST(1010, "JSON request cannot be parsed."),
     INVALID_RELYING_PARTY_ID(1011, "Invalid relyingPartyId."),
     NON_EXISTING_USER(1012, "User with the specified user info does not exist in the Freja eID database."),
     INVALID_REFERENCE(1100, "Invalid reference (for example, nonexistent or expired)."),
     INVALID_INCLUDE_PREVIOUS(1200, "Invalid or missing includePrevious parameter."),
     //Authentication errors
-    AUTH_INIT_FAILED(2000, "Authentication request failed. Previous authentication request was rejected due to " +
-            "security reasons."),
+    AUTH_INIT_FAILED(2000, "Authentication request failed. Previous authentication request was rejected due to security reasons."),
     AUTH_INIT_INVALID_ATTRIBUTES_TO_RETURN(2002, "Invalid attributesToReturn parameter."),
     AUTH_INIT_FAILED_TO_GET_CUSTOM_IDENTIFIER(2003, "Custom identifier has to exist when it is requested."),
     //Signing errors

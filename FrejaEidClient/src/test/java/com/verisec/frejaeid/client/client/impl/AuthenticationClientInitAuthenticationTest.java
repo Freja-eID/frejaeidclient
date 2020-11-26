@@ -1,18 +1,12 @@
 package com.verisec.frejaeid.client.client.impl;
 
+import com.verisec.frejaeid.client.beans.authentication.init.InitiateAuthenticationRequest;
+import com.verisec.frejaeid.client.beans.authentication.init.InitiateAuthenticationResponse;
 import com.verisec.frejaeid.client.beans.common.RelyingPartyRequest;
 import com.verisec.frejaeid.client.beans.general.SsnUserInfo;
-import com.verisec.frejaeid.client.beans.authentication.init.InitiateAuthenticationResponse;
-import com.verisec.frejaeid.client.beans.authentication.init.InitiateAuthenticationRequest;
-import com.verisec.frejaeid.client.beans.general.SslSettings;
 import com.verisec.frejaeid.client.client.api.AuthenticationClientApi;
 import com.verisec.frejaeid.client.client.util.TestUtil;
-import com.verisec.frejaeid.client.enums.AttributeToReturn;
-import com.verisec.frejaeid.client.enums.Country;
-import com.verisec.frejaeid.client.enums.FrejaEnvironment;
-import com.verisec.frejaeid.client.enums.MinRegistrationLevel;
-import com.verisec.frejaeid.client.enums.FrejaEidErrorCode;
-import com.verisec.frejaeid.client.enums.TransactionContext;
+import com.verisec.frejaeid.client.enums.*;
 import com.verisec.frejaeid.client.exceptions.FrejaEidClientInternalException;
 import com.verisec.frejaeid.client.exceptions.FrejaEidException;
 import com.verisec.frejaeid.client.http.HttpServiceApi;

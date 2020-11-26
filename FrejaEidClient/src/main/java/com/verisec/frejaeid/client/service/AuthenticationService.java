@@ -60,8 +60,7 @@ public class AuthenticationService extends BasicService {
                                               int maxWaitingTimeInSec)
             throws FrejaEidClientInternalException, FrejaEidException, FrejaEidClientPollingException {
         long pollingEndTime = System.currentTimeMillis() + TimeUnit.SECONDS.toMillis(maxWaitingTimeInSec);
-        while (maxWaitingTimeInSec == 0
-                || ((System.currentTimeMillis() + pollingTimeoutInMilliseconds) < pollingEndTime)) {
+        while (maxWaitingTimeInSec == 0 || isPollingTimeExpired(pollingEndTime)) {
             AuthenticationResult getAuthenticationResult = getResult(authenticationResultRequest);
             if (maxWaitingTimeInSec == 0 || isFinalStatus(getAuthenticationResult.getStatus())) {
                 return getAuthenticationResult;
@@ -98,6 +97,10 @@ public class AuthenticationService extends BasicService {
 
     public TransactionContext getTransactionContext() {
         return transactionContext;
+    }
+
+    private boolean isPollingTimeExpired(long pollingEndTime) {
+        return (System.currentTimeMillis() + pollingTimeoutInMilliseconds) < pollingEndTime;
     }
 
 }

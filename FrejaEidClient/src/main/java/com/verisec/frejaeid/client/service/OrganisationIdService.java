@@ -54,8 +54,7 @@ public class OrganisationIdService extends BasicService {
                                               int maxWaitingTimeInSec)
             throws FrejaEidClientInternalException, FrejaEidException, FrejaEidClientPollingException {
         long pollingEndTime = System.currentTimeMillis() + TimeUnit.SECONDS.toMillis(maxWaitingTimeInSec);
-        while (maxWaitingTimeInSec == 0
-                || ((System.currentTimeMillis() + pollingTimeoutInMilliseconds) < pollingEndTime)) {
+        while (maxWaitingTimeInSec == 0 || isPollingTimeExpired(pollingEndTime)) {
             OrganisationIdResult getOrganisationIdResult = getResult(organisationIdResultRequest);
             if (maxWaitingTimeInSec == 0 || isFinalStatus(getOrganisationIdResult.getStatus())) {
                 return getOrganisationIdResult;
@@ -92,5 +91,9 @@ public class OrganisationIdService extends BasicService {
         return httpService.send(getUrl(serverAddress, MethodUrl.ORGANISATION_ID_GET_ALL_USERS), null,
                                 getAllOrganisationIdUsersRequest, GetAllOrganisationIdUsersResponse.class,
                                 getAllOrganisationIdUsersRequest.getRelyingPartyId());
+    }
+
+    private boolean isPollingTimeExpired(long pollingEndTime) {
+        return (System.currentTimeMillis() + pollingTimeoutInMilliseconds) < pollingEndTime;
     }
 }
