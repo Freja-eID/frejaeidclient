@@ -2,6 +2,7 @@ package com.verisec.frejaeid.client.beans.general;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 import java.util.Objects;
 
@@ -9,7 +10,6 @@ import java.util.Objects;
  * When retrieving results, additional information about the user can be
  * returned based on the type of attributes required through request. If
  * attribute is not required it will be {@code null}.
- *
  */
 public class RequestedAttributes {
 
@@ -26,12 +26,17 @@ public class RequestedAttributes {
     private final List<PhoneNumberInfo> allPhoneNumbers;
 
     @JsonCreator
-    public RequestedAttributes(@JsonProperty(value = "basicUserInfo") BasicUserInfo basicUserInfo, @JsonProperty(value = "customIdentifier") String customIdentifier,
-            @JsonProperty(value = "ssn") SsnUserInfo ssn, @JsonProperty(value = "integratorSpecificUserId") String integratorSpecificUserId,
-            @JsonProperty(value = "dateOfBirth") String dateOfBirth, @JsonProperty(value = "relyingPartyUserId") String relyingPartyUserId, @JsonProperty(value = "emailAddress") String emailAddress,
-            @JsonProperty(value = "organisationIdIdentifier") String organisationIdIdentifier, @JsonProperty(value = "addresses") List<AddressInfo> addresses,
-            @JsonProperty(value = "allEmailAddresses") List<Email> allEmailAddresses,
-            @JsonProperty(value = "allPhoneNumbers") List<PhoneNumberInfo> allPhoneNumbers) {
+    public RequestedAttributes(@JsonProperty(value = "basicUserInfo") BasicUserInfo basicUserInfo,
+                               @JsonProperty(value = "customIdentifier") String customIdentifier,
+                               @JsonProperty(value = "ssn") SsnUserInfo ssn,
+                               @JsonProperty(value = "integratorSpecificUserId") String integratorSpecificUserId,
+                               @JsonProperty(value = "dateOfBirth") String dateOfBirth,
+                               @JsonProperty(value = "relyingPartyUserId") String relyingPartyUserId,
+                               @JsonProperty(value = "emailAddress") String emailAddress,
+                               @JsonProperty(value = "organisationIdIdentifier") String organisationIdIdentifier,
+                               @JsonProperty(value = "addresses") List<AddressInfo> addresses,
+                               @JsonProperty(value = "allEmailAddresses") List<Email> allEmailAddresses,
+                               @JsonProperty(value = "allPhoneNumbers") List<PhoneNumberInfo> allPhoneNumbers) {
         this.basicUserInfo = basicUserInfo;
         this.customIdentifier = customIdentifier;
         this.ssn = ssn;
@@ -85,13 +90,15 @@ public class RequestedAttributes {
         return allEmailAddresses;
     }
 
-    public List<PhoneNumberInfo> getAllPhoneNumbers() { return allPhoneNumbers; }
+    public List<PhoneNumberInfo> getAllPhoneNumbers() {
+        return allPhoneNumbers;
+    }
 
     @Override
     public int hashCode() {
         return Objects.hash(basicUserInfo, customIdentifier, ssn, integratorSpecificUserId,
-                dateOfBirth, relyingPartyUserId, emailAddress, organisationIdIdentifier,
-                addresses, allEmailAddresses, allPhoneNumbers);
+                            dateOfBirth, relyingPartyUserId, emailAddress, organisationIdIdentifier,
+                            addresses, allEmailAddresses, allPhoneNumbers);
     }
 
     @Override

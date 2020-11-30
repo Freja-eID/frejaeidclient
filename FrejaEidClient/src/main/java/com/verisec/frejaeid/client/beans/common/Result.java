@@ -17,8 +17,10 @@ public abstract class Result implements FrejaHttpResponse {
     private final RequestedAttributes requestedAttributes;
 
     @JsonCreator
-    public Result(String reference, @JsonProperty(value = "status") TransactionStatus status,
-            @JsonProperty(value = "details") String details, @JsonProperty(value = "requestedAttributes") RequestedAttributes requestedAttributes) {
+    public Result(String reference,
+                  @JsonProperty(value = "status") TransactionStatus status,
+                  @JsonProperty(value = "details") String details,
+                  @JsonProperty(value = "requestedAttributes") RequestedAttributes requestedAttributes) {
         this.reference = reference;
         this.status = status;
         this.details = details;
@@ -52,7 +54,6 @@ public abstract class Result implements FrejaHttpResponse {
      * organisation id transactions this will always be {@code null}.
      *
      * @return instance of {@linkplain RequestedAttributes}
-     *
      */
     public RequestedAttributes getRequestedAttributes() {
         return requestedAttributes;
@@ -86,7 +87,8 @@ public abstract class Result implements FrejaHttpResponse {
 
     @Override
     public String toString() {
-        return "Result{" + "reference=" + reference + ", status=" + status + ", details=" + details + ", requestedAttributes=" + requestedAttributes + '}';
+        return "Result{" + "reference=" + reference + ", status=" + status + ", details=" + details + ", " +
+                "requestedAttributes=" + requestedAttributes + '}';
     }
 
 }

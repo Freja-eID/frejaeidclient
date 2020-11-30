@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.verisec.frejaeid.client.exceptions.FrejaEidClientInternalException;
+
 import java.io.IOException;
 import java.io.Serializable;
 import java.nio.charset.StandardCharsets;
@@ -30,15 +31,19 @@ public class JsonService implements Serializable {
         try {
             return mapper.writeValueAsString(jsonSerializable);
         } catch (JsonProcessingException ex) {
-            throw new FrejaEidClientInternalException(String.format("Error while serializing %s. ", jsonSerializable), ex);
+            throw new FrejaEidClientInternalException(
+                    String.format("Error while serializing %s. ", jsonSerializable), ex);
         }
     }
 
-    private <T> T deserialize(byte[] value, Class<? extends T> type, ObjectMapper mapper) throws FrejaEidClientInternalException {
+    private <T> T deserialize(byte[] value, Class<? extends T> type, ObjectMapper mapper)
+            throws FrejaEidClientInternalException {
         try {
             return mapper.readValue(value, type);
         } catch (IOException ex) {
-            throw new FrejaEidClientInternalException(String.format("Failed to deserialize value %s into object of class %s", new String(value, StandardCharsets.UTF_8), type.getName()), ex);
+            throw new FrejaEidClientInternalException(
+                    String.format("Failed to deserialize value %s into object of class %s",
+                                  new String(value, StandardCharsets.UTF_8), type.getName()), ex);
         }
     }
 

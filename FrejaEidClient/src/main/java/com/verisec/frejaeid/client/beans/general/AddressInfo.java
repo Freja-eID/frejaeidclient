@@ -5,12 +5,12 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.verisec.frejaeid.client.enums.AddressSourceType;
 import com.verisec.frejaeid.client.enums.AddressType;
 import com.verisec.frejaeid.client.enums.Country;
+
 import java.util.Objects;
 
 /**
  * AddressInfo contains information about user's address. It can be requested as
  * attribute.
- * 
  */
 public class AddressInfo {
 
@@ -23,11 +23,17 @@ public class AddressInfo {
     private final String validFrom;
     private final AddressType type;
     private final AddressSourceType sourceType;
-    
+
     @JsonCreator
-    public AddressInfo(@JsonProperty("country") Country country, @JsonProperty("city") String city, @JsonProperty("postCode") String postCode,
-            @JsonProperty("address1") String address1, @JsonProperty("address2") String address2, @JsonProperty("address3") String address3,
-            @JsonProperty("validFrom") String validFrom, @JsonProperty("type") AddressType type, @JsonProperty("sourceType") AddressSourceType sourceType) {
+    public AddressInfo(@JsonProperty("country") Country country,
+                       @JsonProperty("city") String city,
+                       @JsonProperty("postCode") String postCode,
+                       @JsonProperty("address1") String address1,
+                       @JsonProperty("address2") String address2,
+                       @JsonProperty("address3") String address3,
+                       @JsonProperty("validFrom") String validFrom,
+                       @JsonProperty("type") AddressType type,
+                       @JsonProperty("sourceType") AddressSourceType sourceType) {
         this.country = country;
         this.city = city;
         this.postCode = postCode;
@@ -124,7 +130,9 @@ public class AddressInfo {
 
     @Override
     public String toString() {
-        return "AddressInfo{" + "country=" + country + ", city=" + city + ", postCode=" + postCode + ", address1=" + address1 + ", address2=" + address2 + ", address3=" + address3 + ", validFrom=" + validFrom + ", type=" + type + ", sourceType=" + sourceType + '}';
+        return "AddressInfo{" + "country=" + country + ", city=" + city + ", postCode=" + postCode + ", address1="
+                + address1 + ", address2=" + address2 + ", address3=" + address3 + ", validFrom=" + validFrom
+                + ", type=" + type + ", sourceType=" + sourceType + '}';
     }
 
 }

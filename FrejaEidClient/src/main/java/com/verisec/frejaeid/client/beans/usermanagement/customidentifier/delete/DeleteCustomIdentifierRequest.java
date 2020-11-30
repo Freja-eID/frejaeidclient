@@ -11,8 +11,7 @@ public class DeleteCustomIdentifierRequest extends DeleteIdentifierRequest {
      * unique customIdentifier per relying party.
      *
      * @param customIdentifier identifier to be deleted for the end user. It
-     * cannot be {@code null} or empty.
-     *
+     *                         cannot be {@code null} or empty.
      * @return request
      */
     public static DeleteCustomIdentifierRequest create(String customIdentifier) {
@@ -26,10 +25,9 @@ public class DeleteCustomIdentifierRequest extends DeleteIdentifierRequest {
      * <b>Only relying parties that are integrators should use this method.</b>
      *
      * @param customIdentifier identifier to be deleted for the end user. It
-     * cannot be {@code null} or empty.
-     * @param relyingPartyId specifies relying party id by which custom
-     * identifier will be deleted. It cannot be {@code null} or empty.
-     *
+     *                         cannot be {@code null} or empty.
+     * @param relyingPartyId   specifies relying party id by which custom
+     *                         identifier will be deleted. It cannot be {@code null} or empty.
      * @return request
      */
     public static DeleteCustomIdentifierRequest create(String customIdentifier, String relyingPartyId) {

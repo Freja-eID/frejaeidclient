@@ -7,13 +7,15 @@ import com.verisec.frejaeid.client.enums.MinRegistrationLevel;
 import com.verisec.frejaeid.client.enums.UserInfoType;
 import com.verisec.frejaeid.client.exceptions.FrejaEidClientInternalException;
 import com.verisec.frejaeid.client.util.UserInfoUtil;
+
 import java.util.Set;
 import java.util.TreeSet;
+
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-public class InitiateAuthetnicationRequestBuildersTest {
+public class InitiateAuthenticationRequestBuildersTest {
 
     private static final String EMAIL = "email";
     private static final SsnUserInfo SSN_USER_INFO = SsnUserInfo.create(Country.SWEDEN, "123123123");
@@ -41,21 +43,28 @@ public class InitiateAuthetnicationRequestBuildersTest {
 
     @Test
     public void createDefaultEmailRequest() {
-        InitiateAuthenticationRequest expectedInitiateAuthenticationRequest = new InitiateAuthenticationRequest(UserInfoType.EMAIL, EMAIL, MinRegistrationLevel.BASIC, null, null);
-        InitiateAuthenticationRequest initiateAuthenticationRequest = InitiateAuthenticationRequest.createDefaultWithEmail(EMAIL);
+        InitiateAuthenticationRequest expectedInitiateAuthenticationRequest =
+                new InitiateAuthenticationRequest(UserInfoType.EMAIL, EMAIL, MinRegistrationLevel.BASIC, null, null);
+        InitiateAuthenticationRequest initiateAuthenticationRequest =
+                InitiateAuthenticationRequest.createDefaultWithEmail(EMAIL);
         Assert.assertEquals(expectedInitiateAuthenticationRequest, initiateAuthenticationRequest);
     }
 
     @Test
     public void createDefaultSsnRequest() throws FrejaEidClientInternalException {
-        InitiateAuthenticationRequest expectedInitiateAuthenticationRequest = new InitiateAuthenticationRequest(UserInfoType.SSN, UserInfoUtil.convertSsnUserInfo(SSN_USER_INFO), MinRegistrationLevel.BASIC, null, null);
-        InitiateAuthenticationRequest initiateAuthenticationRequest = InitiateAuthenticationRequest.createDefaultWithSsn(SSN_USER_INFO);
+        InitiateAuthenticationRequest expectedInitiateAuthenticationRequest =
+                new InitiateAuthenticationRequest(UserInfoType.SSN, UserInfoUtil.convertSsnUserInfo(SSN_USER_INFO),
+                                                  MinRegistrationLevel.BASIC, null, null);
+        InitiateAuthenticationRequest initiateAuthenticationRequest =
+                InitiateAuthenticationRequest.createDefaultWithSsn(SSN_USER_INFO);
         Assert.assertEquals(expectedInitiateAuthenticationRequest, initiateAuthenticationRequest);
     }
 
     @Test
     public void createCustomRequest_userInfoTypeEmail() {
-        InitiateAuthenticationRequest expectedInitiateAuthenticationRequest = new InitiateAuthenticationRequest(UserInfoType.EMAIL, EMAIL, MinRegistrationLevel.EXTENDED, REQUESTED_ATTRIBUTES, RELYING_PARTY_ID);
+        InitiateAuthenticationRequest expectedInitiateAuthenticationRequest =
+                new InitiateAuthenticationRequest(UserInfoType.EMAIL, EMAIL, MinRegistrationLevel.EXTENDED,
+                                                  REQUESTED_ATTRIBUTES, RELYING_PARTY_ID);
         InitiateAuthenticationRequest initiateAuthenticationRequest = InitiateAuthenticationRequest.createCustom()
                 .setEmail(EMAIL)
                 .setMinRegistrationLevel(REGISTRATION_STATE)
@@ -67,7 +76,9 @@ public class InitiateAuthetnicationRequestBuildersTest {
 
     @Test
     public void createCustomRequest_userInfoTypeEmail_defaultRegistrationState() {
-        InitiateAuthenticationRequest expectedInitiateAuthenticationRequest = new InitiateAuthenticationRequest(UserInfoType.EMAIL, EMAIL, MinRegistrationLevel.BASIC, REQUESTED_ATTRIBUTES, RELYING_PARTY_ID);
+        InitiateAuthenticationRequest expectedInitiateAuthenticationRequest =
+                new InitiateAuthenticationRequest(UserInfoType.EMAIL, EMAIL, MinRegistrationLevel.BASIC,
+                                                  REQUESTED_ATTRIBUTES, RELYING_PARTY_ID);
         InitiateAuthenticationRequest initiateAuthenticationRequest = InitiateAuthenticationRequest.createCustom()
                 .setEmail(EMAIL)
                 .setAttributesToReturn(AttributeToReturn.values())
@@ -78,7 +89,10 @@ public class InitiateAuthetnicationRequestBuildersTest {
 
     @Test
     public void createCustomRequest_userInfoTypeSsn() throws FrejaEidClientInternalException {
-        InitiateAuthenticationRequest expectedInitiateAuthenticationRequest = new InitiateAuthenticationRequest(UserInfoType.SSN, UserInfoUtil.convertSsnUserInfo(SSN_USER_INFO), MinRegistrationLevel.EXTENDED, REQUESTED_ATTRIBUTES, RELYING_PARTY_ID);
+        InitiateAuthenticationRequest expectedInitiateAuthenticationRequest =
+                new InitiateAuthenticationRequest(UserInfoType.SSN, UserInfoUtil.convertSsnUserInfo(SSN_USER_INFO),
+                                                  MinRegistrationLevel.EXTENDED, REQUESTED_ATTRIBUTES,
+                                                  RELYING_PARTY_ID);
         InitiateAuthenticationRequest initiateAuthenticationRequest = InitiateAuthenticationRequest.createCustom()
                 .setSsn(SSN_USER_INFO)
                 .setAttributesToReturn(AttributeToReturn.values())
@@ -90,7 +104,9 @@ public class InitiateAuthetnicationRequestBuildersTest {
 
     @Test
     public void createCustomRequest_userInfoTypePhoneNumber() {
-        InitiateAuthenticationRequest expectedInitiateAuthenticationRequest = new InitiateAuthenticationRequest(UserInfoType.PHONE, PHONE_NUMBER, REGISTRATION_STATE, REQUESTED_ATTRIBUTES, RELYING_PARTY_ID);
+        InitiateAuthenticationRequest expectedInitiateAuthenticationRequest =
+                new InitiateAuthenticationRequest(UserInfoType.PHONE, PHONE_NUMBER, REGISTRATION_STATE,
+                                                  REQUESTED_ATTRIBUTES, RELYING_PARTY_ID);
         InitiateAuthenticationRequest initiateAuthenticationRequest = InitiateAuthenticationRequest.createCustom()
                 .setPhoneNumber(PHONE_NUMBER)
                 .setAttributesToReturn(AttributeToReturn.values())
@@ -102,7 +118,9 @@ public class InitiateAuthetnicationRequestBuildersTest {
 
     @Test
     public void createCustomRequest_userInfoTypeInferred() {
-        InitiateAuthenticationRequest expectedInitiateAuthenticationRequest = new InitiateAuthenticationRequest(UserInfoType.INFERRED, INFERRED_USER_INFO, REGISTRATION_STATE, REQUESTED_ATTRIBUTES, RELYING_PARTY_ID);
+        InitiateAuthenticationRequest expectedInitiateAuthenticationRequest =
+                new InitiateAuthenticationRequest(UserInfoType.INFERRED, INFERRED_USER_INFO, REGISTRATION_STATE,
+                                                  REQUESTED_ATTRIBUTES, RELYING_PARTY_ID);
         InitiateAuthenticationRequest initiateAuthenticationRequest = InitiateAuthenticationRequest.createCustom()
                 .setInferred()
                 .setAttributesToReturn(AttributeToReturn.values())
@@ -114,7 +132,9 @@ public class InitiateAuthetnicationRequestBuildersTest {
 
     @Test
     public void createCustomRequest_minRegistrationLevelAndRelyingPartyIdNull() {
-        InitiateAuthenticationRequest expectedInitiateAuthenticationRequest = new InitiateAuthenticationRequest(UserInfoType.INFERRED, INFERRED_USER_INFO, MinRegistrationLevel.BASIC, REQUESTED_ATTRIBUTES, null);
+        InitiateAuthenticationRequest expectedInitiateAuthenticationRequest =
+                new InitiateAuthenticationRequest(UserInfoType.INFERRED, INFERRED_USER_INFO,
+                                                  MinRegistrationLevel.BASIC, REQUESTED_ATTRIBUTES, null);
         InitiateAuthenticationRequest initiateAuthenticationRequest = InitiateAuthenticationRequest.createCustom()
                 .setInferred()
                 .setAttributesToReturn(AttributeToReturn.values())
@@ -126,7 +146,9 @@ public class InitiateAuthetnicationRequestBuildersTest {
 
     @Test
     public void createCustomRequest_userInfoOrganisationId() {
-        InitiateAuthenticationRequest expectedInitiateAuthenticationRequest = new InitiateAuthenticationRequest(UserInfoType.ORG_ID, ORGANISATION_ID, MinRegistrationLevel.EXTENDED, REQUESTED_ATTRIBUTES, RELYING_PARTY_ID);
+        InitiateAuthenticationRequest expectedInitiateAuthenticationRequest =
+                new InitiateAuthenticationRequest(UserInfoType.ORG_ID, ORGANISATION_ID, MinRegistrationLevel.EXTENDED,
+                                                  REQUESTED_ATTRIBUTES, RELYING_PARTY_ID);
         InitiateAuthenticationRequest initiateAuthenticationRequest = InitiateAuthenticationRequest.createCustom()
                 .setOrganisationId(ORGANISATION_ID)
                 .setAttributesToReturn(AttributeToReturn.values())

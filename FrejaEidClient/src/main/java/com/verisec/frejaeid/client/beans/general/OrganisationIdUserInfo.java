@@ -3,6 +3,7 @@ package com.verisec.frejaeid.client.beans.general;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.verisec.frejaeid.client.enums.RegistrationState;
+
 import java.util.Objects;
 
 public class OrganisationIdUserInfo {
@@ -13,7 +14,8 @@ public class OrganisationIdUserInfo {
 
     @JsonCreator
     public OrganisationIdUserInfo(@JsonProperty("organisationId") OrganisationId organisationId,
-            @JsonProperty("ssn") SsnUserInfo ssn, @JsonProperty("registrationState") RegistrationState registrationState) {
+                                  @JsonProperty("ssn") SsnUserInfo ssn,
+                                  @JsonProperty("registrationState") RegistrationState registrationState) {
         this.organisationId = organisationId;
         this.ssn = ssn;
         this.registrationState = registrationState;
@@ -62,7 +64,8 @@ public class OrganisationIdUserInfo {
 
     @Override
     public String toString() {
-        return "OrganisationIdUserInfo{" + "organisationId=" + organisationId + ", ssn=" + ssn + ", registrationState=" + registrationState + '}';
+        return "OrganisationIdUserInfo{" + "organisationId=" + organisationId + ", ssn=" + ssn + ", registrationState" +
+                "=" + registrationState + '}';
     }
 
 }

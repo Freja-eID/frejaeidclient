@@ -8,7 +8,6 @@ package com.verisec.frejaeid.client.enums;
  * <br> - {@linkplain #EXTENDED}
  * <br> - {@linkplain #VETTING_CONFIRMED}
  * <br> - {@linkplain #PLUS}
- *
  */
 public enum RegistrationState {
 
@@ -39,8 +38,8 @@ public enum RegistrationState {
      * state.
      *
      * @param state The state must match exactly an identifier used to declare
-     * an RegistrationState constant in this type. (Extraneous whitespace
-     * characters are not permitted.)
+     *              an RegistrationState constant in this type. (Extraneous whitespace
+     *              characters are not permitted.)
      * @return The RegistrationState constant with the specified name and
      * {@code null} if there is no constant with the specified name.
      */

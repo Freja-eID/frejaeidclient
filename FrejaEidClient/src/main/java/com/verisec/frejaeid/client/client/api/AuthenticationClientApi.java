@@ -14,7 +14,6 @@ import java.util.List;
 
 /**
  * Performs authentication actions.
- *
  */
 public interface AuthenticationClientApi {
 
@@ -22,14 +21,15 @@ public interface AuthenticationClientApi {
      * Initiates authentication transaction. It will be active for two minutes.
      *
      * @param initiateAuthenticationRequest instance of
-     * {@linkplain InitiateAuthenticationRequest} with corresponding parameters.
+     *                                      {@linkplain InitiateAuthenticationRequest} with corresponding parameters.
      * @return authentication transaction reference which is used for fetching
      * results.
      * @throws FrejaEidClientInternalException if internal validation of request
-     * fails.
-     * @throws FrejaEidException if server returns an error.
+     *                                         fails.
+     * @throws FrejaEidException               if server returns an error.
      */
-    public String initiate(InitiateAuthenticationRequest initiateAuthenticationRequest) throws FrejaEidClientInternalException, FrejaEidException;
+    public String initiate(InitiateAuthenticationRequest initiateAuthenticationRequest)
+            throws FrejaEidClientInternalException, FrejaEidException;
 
     /**
      * Fetches a single result for a specified unique transaction reference
@@ -37,12 +37,12 @@ public interface AuthenticationClientApi {
      *
      * @param authenticationResultRequest contains transaction reference.
      * @return {@linkplain AuthenticationResult}
-     *
      * @throws FrejaEidClientInternalException if internal validation of request
-     * fails.
-     * @throws FrejaEidException if server returns an error.
+     *                                         fails.
+     * @throws FrejaEidException               if server returns an error.
      */
-    public AuthenticationResult getResult(AuthenticationResultRequest authenticationResultRequest) throws FrejaEidClientInternalException, FrejaEidException;
+    public AuthenticationResult getResult(AuthenticationResultRequest authenticationResultRequest)
+            throws FrejaEidClientInternalException, FrejaEidException;
 
     /**
      * Fetches the results of multiple outstanding authentications.
@@ -51,37 +51,38 @@ public interface AuthenticationClientApi {
      * @return a complete list of authentications, successfully initiated within
      * last 10 minutes.
      * @throws FrejaEidClientInternalException if internal validation of request
-     * fails.
-     * @throws FrejaEidException if server returns an error.
+     *                                         fails.
+     * @throws FrejaEidException               if server returns an error.
      */
-    public List<AuthenticationResult> getResults(AuthenticationResultsRequest authenticationResultsRequest) throws FrejaEidClientInternalException, FrejaEidException;
+    public List<AuthenticationResult> getResults(AuthenticationResultsRequest authenticationResultsRequest)
+            throws FrejaEidClientInternalException, FrejaEidException;
 
     /**
      * Blocking method which is used to fetch a single result with the final
      * {@linkplain TransactionStatus}.
      *
      * @param authenticationResultRequest contains transaction reference.
-     * @param maxWaitingTimeInSec is a maximum time in seconds to wait for a
-     * final TransactionStatus.
-     *
+     * @param maxWaitingTimeInSec         is a maximum time in seconds to wait for a
+     *                                    final TransactionStatus.
      * @return {@linkplain AuthenticationResult}
-     *
      * @throws FrejaEidClientInternalException if internal validation of request
-     * fails.
-     * @throws FrejaEidException if server returns an error.
-     * @throws FrejaEidClientPollingException if the maximum polling time
-     * expires before the action is completed.
-     *
+     *                                         fails.
+     * @throws FrejaEidException               if server returns an error.
+     * @throws FrejaEidClientPollingException  if the maximum polling time
+     *                                         expires before the action is completed.
      */
-    public AuthenticationResult pollForResult(AuthenticationResultRequest authenticationResultRequest, int maxWaitingTimeInSec) throws FrejaEidClientInternalException, FrejaEidException, FrejaEidClientPollingException;
+    public AuthenticationResult pollForResult(AuthenticationResultRequest authenticationResultRequest,
+                                              int maxWaitingTimeInSec)
+            throws FrejaEidClientInternalException, FrejaEidException, FrejaEidClientPollingException;
 
     /**
      * Cancels an initiated authentication request.
      *
      * @param cancelAuthenticationRequest contains transaction reference.
      * @throws FrejaEidClientInternalException if internal validation of request
-     * fails.
-     * @throws FrejaEidException if server returns an error.
+     *                                         fails.
+     * @throws FrejaEidException               if server returns an error.
      */
-    public void cancel(CancelAuthenticationRequest cancelAuthenticationRequest) throws FrejaEidClientInternalException, FrejaEidException;
+    public void cancel(CancelAuthenticationRequest cancelAuthenticationRequest)
+            throws FrejaEidClientInternalException, FrejaEidException;
 }

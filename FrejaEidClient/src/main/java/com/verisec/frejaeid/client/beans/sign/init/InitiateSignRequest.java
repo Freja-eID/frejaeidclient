@@ -13,6 +13,7 @@ import com.verisec.frejaeid.client.enums.SignatureType;
 import com.verisec.frejaeid.client.enums.UserInfoType;
 import com.verisec.frejaeid.client.exceptions.FrejaEidClientInternalException;
 import com.verisec.frejaeid.client.util.UserInfoUtil;
+
 import java.util.Objects;
 import java.util.Set;
 
@@ -38,16 +39,17 @@ public class InitiateSignRequest implements RelyingPartyRequest {
      * {@linkplain AttributeToReturn}.
      *
      * @param email user's email for which transaction will be initiated. It
-     * cannot be {@code null} or empty.
+     *              cannot be {@code null} or empty.
      * @param title this is transaction title that will be shown to user through
-     * Freja eID mobile application.
-     * @param text data that user will sign by approving this transaction, also
-     * will be shown through Freja eID mobile application.
-     *
+     *              Freja eID mobile application.
+     * @param text  data that user will sign by approving this transaction, also
+     *              will be shown through Freja eID mobile application.
      * @return request
      */
     public static InitiateSignRequest createDefaultWithEmail(String email, String title, String text) {
-        return new InitiateSignRequest(UserInfoType.EMAIL, email, MinRegistrationLevel.PLUS, title, null, null, DataToSignType.SIMPLE_UTF8_TEXT, DataToSign.create(text), SignatureType.SIMPLE, null, null);
+        return new InitiateSignRequest(UserInfoType.EMAIL, email, MinRegistrationLevel.PLUS, title, null, null,
+                                       DataToSignType.SIMPLE_UTF8_TEXT, DataToSign.create(text), SignatureType.SIMPLE,
+                                       null, null);
     }
 
     /**
@@ -58,20 +60,21 @@ public class InitiateSignRequest implements RelyingPartyRequest {
      * {@linkplain AttributeToReturn}.
      *
      * @param ssnUserInfo instance of {@linkplain SsnUserInfo} that contains
-     * with personal number and country for which transaction will be initiated.
-     * It cannot be {@code null}.
-     * @param title this is transaction title that will be shown to user through
-     * Freja eID mobile application.
-     * @param text data that user will sign by approving this transaction, also
-     * will be shown through Freja eID mobile application.
-     *
+     *                    with personal number and country for which transaction will be initiated.
+     *                    It cannot be {@code null}.
+     * @param title       this is transaction title that will be shown to user through
+     *                    Freja eID mobile application.
+     * @param text        data that user will sign by approving this transaction, also
+     *                    will be shown through Freja eID mobile application.
      * @return request
      * @throws FrejaEidClientInternalException if error occurs when generating
-     * JSON content from ssnUserInfo
-     *
+     *                                         JSON content from ssnUserInfo
      */
-    public static InitiateSignRequest createDefaultWithSsn(SsnUserInfo ssnUserInfo, String title, String text) throws FrejaEidClientInternalException {
-        return new InitiateSignRequest(UserInfoType.SSN, UserInfoUtil.convertSsnUserInfo(ssnUserInfo), MinRegistrationLevel.PLUS, title, null, null, DataToSignType.SIMPLE_UTF8_TEXT, DataToSign.create(text), SignatureType.SIMPLE, null, null);
+    public static InitiateSignRequest createDefaultWithSsn(SsnUserInfo ssnUserInfo, String title, String text)
+            throws FrejaEidClientInternalException {
+        return new InitiateSignRequest(UserInfoType.SSN, UserInfoUtil.convertSsnUserInfo(ssnUserInfo),
+                                       MinRegistrationLevel.PLUS, title, null, null, DataToSignType.SIMPLE_UTF8_TEXT,
+                                       DataToSign.create(text), SignatureType.SIMPLE, null, null);
     }
 
     /**
@@ -85,9 +88,17 @@ public class InitiateSignRequest implements RelyingPartyRequest {
     }
 
     @JsonCreator
-    InitiateSignRequest(@JsonProperty(value = "userInfoType") UserInfoType userInfoType, @JsonProperty(value = "userInfo") String userInfo, @JsonProperty(value = "minRegistrationLevel") MinRegistrationLevel minRegistrationLevel,
-            @JsonProperty(value = "title") String title, @JsonProperty(value = "pushNotification") PushNotification pushNotification, @JsonProperty(value = "expiry") Long expiry, @JsonProperty(value = "dataToSignType") DataToSignType dataToSignType,
-            @JsonProperty(value = "dataToSign") DataToSign dataToSign, @JsonProperty(value = "signatureType") SignatureType signatureType, @JsonProperty(value = "attributesToReturn") Set<AttributeToReturn> attributesToReturn, @JsonProperty(value = "relyingPartyId") String relyingPartyId) {
+    InitiateSignRequest(@JsonProperty(value = "userInfoType") UserInfoType userInfoType,
+                        @JsonProperty(value = "userInfo") String userInfo,
+                        @JsonProperty(value = "minRegistrationLevel") MinRegistrationLevel minRegistrationLevel,
+                        @JsonProperty(value = "title") String title,
+                        @JsonProperty(value = "pushNotification") PushNotification pushNotification,
+                        @JsonProperty(value = "expiry") Long expiry,
+                        @JsonProperty(value = "dataToSignType") DataToSignType dataToSignType,
+                        @JsonProperty(value = "dataToSign") DataToSign dataToSign,
+                        @JsonProperty(value = "signatureType") SignatureType signatureType,
+                        @JsonProperty(value = "attributesToReturn") Set<AttributeToReturn> attributesToReturn,
+                        @JsonProperty(value = "relyingPartyId") String relyingPartyId) {
         this.userInfoType = userInfoType;
         this.userInfo = userInfo;
         this.title = title;
@@ -148,7 +159,8 @@ public class InitiateSignRequest implements RelyingPartyRequest {
 
     @Override
     public int hashCode() {
-        return Objects.hash(userInfoType, userInfo, title, minRegistrationLevel, pushNotification, expiry, dataToSignType, dataToSign, signatureType, relyingPartyId);
+        return Objects.hash(userInfoType, userInfo, title, minRegistrationLevel, pushNotification, expiry,
+                            dataToSignType, dataToSign, signatureType, relyingPartyId);
     }
 
     @Override
@@ -201,7 +213,10 @@ public class InitiateSignRequest implements RelyingPartyRequest {
 
     @Override
     public String toString() {
-        return "InitiateSignRequest{" + "userInfoType=" + userInfoType + ", userInfo=" + userInfo + ", title=" + title + ", minRegistrationLevel=" + minRegistrationLevel + ", pushNotification=" + pushNotification + ", expiry=" + expiry + ", dataToSignType=" + dataToSignType + ", dataToSign=" + dataToSign + ", signatureType=" + signatureType + ", attributesToReturn=" + attributesToReturn + '}';
+        return "InitiateSignRequest{" + "userInfoType=" + userInfoType + ", userInfo=" + userInfo + ", title=" + title
+                + ", minRegistrationLevel=" + minRegistrationLevel + ", pushNotification=" + pushNotification +
+                ", expiry=" + expiry + ", dataToSignType=" + dataToSignType + ", dataToSign=" + dataToSign +
+                ", signatureType=" + signatureType + ", attributesToReturn=" + attributesToReturn + '}';
     }
 
 }

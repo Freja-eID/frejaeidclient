@@ -3,6 +3,7 @@ package com.verisec.frejaeid.client.beans.sign.get;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.verisec.frejaeid.client.beans.common.FrejaHttpResponse;
+
 import java.util.List;
 import java.util.Objects;
 

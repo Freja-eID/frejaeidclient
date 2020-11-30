@@ -1,13 +1,12 @@
 package com.verisec.frejaeid.client.http;
 
-import com.verisec.frejaeid.client.exceptions.FrejaEidClientInternalException;
 import org.junit.Assert;
 import org.junit.Test;
 
 public class LibVersionTest {
 
     @Test
-    public void getLibVersionTest() throws FrejaEidClientInternalException {
+    public void getLibVersionTest() {
         HttpService httpService = new HttpService(null, 0, 0);
         String libVersion = httpService.getLibVersion();
         Assert.assertNotNull(libVersion);

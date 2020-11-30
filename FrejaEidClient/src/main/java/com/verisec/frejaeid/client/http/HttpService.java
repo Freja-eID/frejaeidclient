@@ -8,12 +8,14 @@ import com.verisec.frejaeid.client.exceptions.FrejaEidClientInternalException;
 import com.verisec.frejaeid.client.exceptions.FrejaEidException;
 import com.verisec.frejaeid.client.util.JsonService;
 import com.verisec.frejaeid.client.util.RequestTemplate;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.text.MessageFormat;
 import javax.net.ssl.SSLContext;
+
 import org.apache.commons.codec.binary.Base64;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpHeaders;
@@ -74,7 +76,8 @@ public class HttpService implements HttpServiceApi {
         if (sslContext != null) {
             SSLConnectionSocketFactory sslConFactory;
             sslConFactory = new SSLConnectionSocketFactory(sslContext);
-            final RegistryBuilder<ConnectionSocketFactory> registryBuilder = RegistryBuilder.<ConnectionSocketFactory>create();
+            final RegistryBuilder<ConnectionSocketFactory> registryBuilder =
+                    RegistryBuilder.<ConnectionSocketFactory>create();
             registryBuilder.register("http", PlainConnectionSocketFactory.getSocketFactory());
             registryBuilder.register("https", sslConFactory);
             poolingHttpConnectionManager = new PoolingHttpClientConnectionManager(registryBuilder.build());
@@ -84,12 +87,16 @@ public class HttpService implements HttpServiceApi {
         poolingHttpConnectionManager.setMaxTotal(20);
         poolingHttpConnectionManager.setDefaultMaxPerRoute(20);
         httpClient = httpClientBuilder.setConnectionManager(poolingHttpConnectionManager).build();
-        LOG.debug("Successfully created HTTP client with SSL context, connection timeout {}ms and read timeout {}ms.", connectionTimeout, readTimeout);
+        LOG.debug("Successfully created HTTP client with SSL context, connection timeout {}ms and read timeout {}ms.",
+                  connectionTimeout, readTimeout);
         userAgentHeader = makeUserAgentHeader();
     }
 
     @Override
-    public final <Response extends FrejaHttpResponse> Response send(String methodUrl, RequestTemplate requestTemplate, RelyingPartyRequest relyingPartyRequest, Class<Response> responseType, String relyingPartyId) throws FrejaEidClientInternalException, FrejaEidException {
+    public final <Response extends FrejaHttpResponse> Response send(String methodUrl, RequestTemplate requestTemplate,
+                                                                    RelyingPartyRequest relyingPartyRequest,
+                                                                    Class<Response> responseType, String relyingPartyId)
+            throws FrejaEidClientInternalException, FrejaEidException {
 
         HttpResponse httpResponse = null;
         HttpPost request = null;
@@ -106,8 +113,10 @@ public class HttpService implements HttpServiceApi {
             }
 
             if (relyingPartyId != null) {
-                String relyingPartyIdRequest = MessageFormat.format(RequestTemplate.RELYING_PARTY_ID.getTemplate(), relyingPartyId);
-                requestBody += requestTemplate != null ? POST_PARAMS_DELIMITER + relyingPartyIdRequest : relyingPartyIdRequest;
+                String relyingPartyIdRequest = MessageFormat.format(RequestTemplate.RELYING_PARTY_ID.getTemplate(),
+                                                                    relyingPartyId);
+                requestBody += requestTemplate != null ? POST_PARAMS_DELIMITER + relyingPartyIdRequest :
+                        relyingPartyIdRequest;
             }
 
             StringEntity params = new StringEntity(requestBody, StandardCharsets.UTF_8);
@@ -124,20 +133,27 @@ public class HttpService implements HttpServiceApi {
                 responseString = EntityUtils.toString(entity, StandardCharsets.UTF_8);
             }
             if (httpStatusCode == null) {
-                throw new FrejaEidException(String.format("Received unsupported HTTP status code %s. Received HTTP message: %s.", httpResponse.getStatusLine().getStatusCode(), responseString));
+                throw new FrejaEidException(
+                        String.format("Received unsupported HTTP status code %s. Received HTTP message: %s.",
+                                      httpResponse.getStatusLine().getStatusCode(), responseString));
             }
             switch (httpStatusCode) {
                 case OK:
-                    return jsonService.deserializeFromJson(responseString.getBytes(StandardCharsets.UTF_8), responseType);
+                    return jsonService.deserializeFromJson(responseString.getBytes(StandardCharsets.UTF_8),
+                                                           responseType);
                 case NO_CONTENT:
                     return (Response) new FrejaHttpResponse() {
                     };
                 case BAD_REQUEST:
                 case UNPROCESSABLE_ENTITY:
-                    FrejaHttpErrorResponse errorResponse = jsonService.deserializeFromJson(responseString.getBytes(StandardCharsets.UTF_8), FrejaHttpErrorResponse.class);
+                    FrejaHttpErrorResponse errorResponse =
+                            jsonService.deserializeFromJson(responseString.getBytes(StandardCharsets.UTF_8),
+                                                            FrejaHttpErrorResponse.class);
                     throw new FrejaEidException(errorResponse.getMessage(), errorResponse.getCode());
                 default:
-                    throw new FrejaEidException(String.format("HTTP code %s message: %s", httpResponse.getStatusLine().getStatusCode(), responseString));
+                    throw new FrejaEidException(String.format("HTTP code %s message: %s",
+                                                              httpResponse.getStatusLine().getStatusCode(),
+                                                              responseString));
             }
         } catch (IOException e) {
             throw new FrejaEidClientInternalException("Failed to send HTTP request.", e);
@@ -162,7 +178,8 @@ public class HttpService implements HttpServiceApi {
 
     final String getLibVersion() {
         ClassLoader classLoader = this.getClass().getClassLoader();
-        try (InputStreamReader is = new InputStreamReader(classLoader.getResourceAsStream("version.txt")); BufferedReader bufferedReader = new BufferedReader(is)) {
+        try (InputStreamReader is = new InputStreamReader(classLoader.getResourceAsStream("version.txt"));
+             BufferedReader bufferedReader = new BufferedReader(is)) {
             String line = bufferedReader.readLine();
             return line != null ? line : "N/A";
         } catch (IOException e) {

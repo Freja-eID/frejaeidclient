@@ -6,7 +6,6 @@ package com.verisec.frejaeid.client.enums;
  * <br> - {@linkplain #BASIC}
  * <br> - {@linkplain #EXTENDED}
  * <br> - {@linkplain #PLUS}
- *
  */
 public enum MinRegistrationLevel {
 
@@ -34,8 +33,8 @@ public enum MinRegistrationLevel {
      * state.
      *
      * @param state The state must match exactly an identifier used to declare
-     * an MinRegistrationLevel constant in this type. (Extraneous whitespace
-     * characters are not permitted.)
+     *              an MinRegistrationLevel constant in this type. (Extraneous whitespace
+     *              characters are not permitted.)
      * @return The MinRegistrationLevel constant with the specified name and
      * {@code null} if there is no constant with the specified name.
      */

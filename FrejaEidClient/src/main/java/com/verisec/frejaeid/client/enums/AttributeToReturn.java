@@ -105,8 +105,8 @@ public enum AttributeToReturn {
      * name.
      *
      * @param name The name must match exactly an identifier used to declare an
-     * AttributeToReturn constant in this type. (Extraneous whitespace
-     * characters are not permitted.)
+     *             AttributeToReturn constant in this type. (Extraneous whitespace
+     *             characters are not permitted.)
      * @return The AttributeToReturn constant with the specified name and
      * {@code null} if there is no constant with the specified name.
      */

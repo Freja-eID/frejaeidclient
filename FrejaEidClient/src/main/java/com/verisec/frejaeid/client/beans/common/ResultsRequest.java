@@ -3,6 +3,7 @@ package com.verisec.frejaeid.client.beans.common;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.Objects;
 
 public abstract class ResultsRequest implements RelyingPartyRequest {

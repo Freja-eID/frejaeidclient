@@ -3,6 +3,7 @@ package com.verisec.frejaeid.client.beans.sign.init;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.verisec.frejaeid.client.beans.common.FrejaHttpResponse;
+
 import java.util.Objects;
 
 public class InitiateSignResponse implements FrejaHttpResponse {
