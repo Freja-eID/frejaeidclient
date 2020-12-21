@@ -2,7 +2,7 @@ package com.verisec.frejaeid.client.beans.general;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.verisec.frejaeid.client.enums.MinRegistrationLevel;
+import com.verisec.frejaeid.client.enums.RegistrationLevel;
 
 import java.util.List;
 import java.util.Objects;
@@ -25,7 +25,7 @@ public class RequestedAttributes {
     private final List<AddressInfo> addresses;
     private final List<Email> allEmailAddresses;
     private final List<PhoneNumberInfo> allPhoneNumbers;
-    private final MinRegistrationLevel registrationLevel;
+    private final RegistrationLevel registrationLevel;
 
     @JsonCreator
     public RequestedAttributes(@JsonProperty(value = "basicUserInfo") BasicUserInfo basicUserInfo,
@@ -39,7 +39,7 @@ public class RequestedAttributes {
                                @JsonProperty(value = "addresses") List<AddressInfo> addresses,
                                @JsonProperty(value = "allEmailAddresses") List<Email> allEmailAddresses,
                                @JsonProperty(value = "allPhoneNumbers") List<PhoneNumberInfo> allPhoneNumbers,
-                               @JsonProperty(value = "registrationLevel") MinRegistrationLevel registrationLevel) {
+                               @JsonProperty(value = "registrationLevel") RegistrationLevel registrationLevel) {
         this.basicUserInfo = basicUserInfo;
         this.customIdentifier = customIdentifier;
         this.ssn = ssn;
@@ -98,7 +98,7 @@ public class RequestedAttributes {
         return allPhoneNumbers;
     }
 
-    public MinRegistrationLevel getRegistrationLevel() {
+    public RegistrationLevel getRegistrationLevel() {
         return registrationLevel;
     }
 

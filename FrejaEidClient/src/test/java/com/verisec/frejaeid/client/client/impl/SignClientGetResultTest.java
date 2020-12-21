@@ -44,7 +44,7 @@ public class SignClientGetResultTest {
             new RequestedAttributes(new BasicUserInfo("name", "surname"), "customIdentifier",
                                     SsnUserInfo.create(Country.SWEDEN, "ssn"), "integratorSpecificId", "1987-10-18",
                                     RELYING_PARTY_USER_ID, EMAIL_ADDRESS, ORGANISATION_ID, ADDRESSES,
-                                    ALL_EMAIL_ADDRESSES, ALL_PHONE_NUMBERS, MinRegistrationLevel.BASIC);
+                                    ALL_EMAIL_ADDRESSES, ALL_PHONE_NUMBERS, RegistrationLevel.BASIC);
     private SignClientApi signClient;
 
     @Before
