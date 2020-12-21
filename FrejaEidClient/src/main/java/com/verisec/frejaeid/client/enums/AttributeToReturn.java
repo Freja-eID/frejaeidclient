@@ -86,7 +86,12 @@ public enum AttributeToReturn {
      * contains all user's phone numbers registered in Freja eID will be
      * returned.
      */
-    ALL_PHONE_NUMBERS("ALL_PHONE_NUMBERS");
+    ALL_PHONE_NUMBERS("ALL_PHONE_NUMBERS"),
+    /**
+     * Current registration level of user.
+     * Corresponds to one of the values of {@linkplain MinRegistrationLevel}.
+     */
+    REGISTRATION_LEVEL("REGISTRATION_LEVEL");
 
     private final String name;
 
