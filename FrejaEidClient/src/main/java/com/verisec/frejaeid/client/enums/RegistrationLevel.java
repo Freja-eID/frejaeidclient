@@ -16,7 +16,7 @@ public enum RegistrationLevel {
 
     private final String level;
 
-    RegistrationLevel(String level) {
+    private RegistrationLevel(String level) {
         this.level = level;
     }
 
