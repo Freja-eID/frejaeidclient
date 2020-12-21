@@ -9,6 +9,7 @@ import com.verisec.frejaeid.client.enums.TransactionContext;
 import com.verisec.frejaeid.client.enums.UserInfoType;
 import com.verisec.frejaeid.client.exceptions.FrejaEidClientInternalException;
 import com.verisec.frejaeid.client.util.UserInfoUtil;
+
 import java.util.Arrays;
 import java.util.Set;
 import java.util.TreeSet;
@@ -22,7 +23,7 @@ public class InitiateSignRequestBuilders {
          * {@linkplain UserInfoType} for initiating transaction.
          *
          * @param email user's email that will be used to identify the end user.
-         * Maximum length is 256 characters.
+         *              Maximum length is 256 characters.
          * @return request builder
          */
         public SetOptionalParamsBuilder setEmail(String email) {
@@ -34,11 +35,11 @@ public class InitiateSignRequestBuilders {
          * {@linkplain UserInfoType} for initiating transaction.
          *
          * @param ssnUserInfo instance of {@linkplain SsnUserInfo} contains
-         * personal number and country of user that will be used to identify the
-         * end user.
+         *                    personal number and country of user that will be used to identify the
+         *                    end user.
          * @return request builder
          * @throws FrejaEidClientInternalException if error occurs when
-         * generating JSON content from ssnUserInfo
+         *                                         generating JSON content from ssnUserInfo
          */
         public SetOptionalParamsBuilder setSsn(SsnUserInfo ssnUserInfo) throws FrejaEidClientInternalException {
             return new SetOptionalParamsBuilder(UserInfoType.SSN, UserInfoUtil.convertSsnUserInfo(ssnUserInfo));
@@ -49,7 +50,7 @@ public class InitiateSignRequestBuilders {
          * {@linkplain UserInfoType} for initiating transaction.
          *
          * @param phoneNumber user's phone number that will be used to identify
-         * the end user in format +467123456789.
+         *                    the end user in format +467123456789.
          * @return request builder
          */
         public SetOptionalParamsBuilder setPhoneNumber(String phoneNumber) {
@@ -61,8 +62,7 @@ public class InitiateSignRequestBuilders {
          * {@linkplain UserInfoType} for initiating transaction.
          *
          * @param identifier user's identifier that was previously set by
-         * organisation
-         *
+         *                   organisation
          * @return request builder
          */
         public SetOptionalParamsBuilder setOrganisationId(String identifier) {
@@ -96,7 +96,7 @@ public class InitiateSignRequestBuilders {
          * {@link MinRegistrationLevel#PLUS}.
          *
          * @param minRegistrationLevel will be set as minimum required
-         * registration level for user in order to approve/decline signing.
+         *                             registration level for user in order to approve/decline signing.
          * @return request builder
          */
         public SetOptionalParamsBuilder setMinRegistrationLevel(MinRegistrationLevel minRegistrationLevel) {
@@ -112,7 +112,7 @@ public class InitiateSignRequestBuilders {
          * share.
          *
          * @param attributesToReturn can be any value from
-         * {@linkplain AttributeToReturn}
+         *                           {@linkplain AttributeToReturn}
          * @return request builder
          */
         public SetOptionalParamsBuilder setAttributesToReturn(AttributeToReturn... attributesToReturn) {
@@ -126,7 +126,7 @@ public class InitiateSignRequestBuilders {
          * application.
          *
          * @param title optional parameter, but if set it cannot be empty.
-         * Maximum length is 128 characters.
+         *              Maximum length is 128 characters.
          * @return request builder
          */
         public SetOptionalParamsBuilder setTitle(String title) {
@@ -139,7 +139,7 @@ public class InitiateSignRequestBuilders {
          * binary data (EXTENDED signature type).
          *
          * @param dataToSign mandatory parameter. Text cannot be {@code null} or
-         * empty.
+         *                   empty.
          * @return request builder
          */
         public SetOptionalParamsBuilder setDataToSign(DataToSign dataToSign) {
@@ -163,9 +163,9 @@ public class InitiateSignRequestBuilders {
          * wait for the user to confirm the signature request.
          *
          * @param timeToExpiry optional parameter, expressed in milliseconds
-         * since January 1, 1970, 00:00 UTC. Min value is current time +2
-         * minutes, max value is current time +30 days. If not present, defaults
-         * to current time +2 minutes.
+         *                     since January 1, 1970, 00:00 UTC. Min value is current time +2
+         *                     minutes, max value is current time +30 days. If not present, defaults
+         *                     to current time +2 minutes.
          * @return request builder
          */
         public SetOptionalParamsBuilder setExpiry(Long timeToExpiry) {
@@ -178,7 +178,7 @@ public class InitiateSignRequestBuilders {
          * Recommended length is 40 characters per title and text.
          *
          * @param pushNotification optional parameter, but if set title and text
-         * cannot be {@code null} or empty.
+         *                         cannot be {@code null} or empty.
          * @return request builder
          */
         public SetOptionalParamsBuilder setPushNotification(PushNotification pushNotification) {
@@ -191,7 +191,7 @@ public class InitiateSignRequestBuilders {
          * method.</b>
          *
          * @param relyingPartyId specifies relying party id for which
-         * transaction is initiated. It cannot be {@code null} or empty.
+         *                       transaction is initiated. It cannot be {@code null} or empty.
          * @return request builder
          */
         public SetOptionalParamsBuilder setRelyingPartyId(String relyingPartyId) {
@@ -200,7 +200,9 @@ public class InitiateSignRequestBuilders {
         }
 
         public InitiateSignRequest build() {
-            return new InitiateSignRequest(userInfoType, userInfo, minRegistrationLevel, title, pushNotification, expiry, dataToSignType, dataToSign, signatureType, attributesToReturn, relyingPartyId);
+            return new InitiateSignRequest(userInfoType, userInfo, minRegistrationLevel, title, pushNotification,
+                                           expiry, dataToSignType, dataToSign, signatureType, attributesToReturn,
+                                           relyingPartyId);
         }
 
     }

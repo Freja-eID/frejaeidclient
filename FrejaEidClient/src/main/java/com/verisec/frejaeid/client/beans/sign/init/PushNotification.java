@@ -2,6 +2,7 @@ package com.verisec.frejaeid.client.beans.sign.init;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.Objects;
 
 public class PushNotification {

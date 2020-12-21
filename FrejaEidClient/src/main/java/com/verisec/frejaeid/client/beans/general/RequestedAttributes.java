@@ -2,6 +2,8 @@ package com.verisec.frejaeid.client.beans.general;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.verisec.frejaeid.client.enums.RegistrationLevel;
+
 import java.util.List;
 import java.util.Objects;
 
@@ -9,7 +11,6 @@ import java.util.Objects;
  * When retrieving results, additional information about the user can be
  * returned based on the type of attributes required through request. If
  * attribute is not required it will be {@code null}.
- *
  */
 public class RequestedAttributes {
 
@@ -24,14 +25,21 @@ public class RequestedAttributes {
     private final List<AddressInfo> addresses;
     private final List<Email> allEmailAddresses;
     private final List<PhoneNumberInfo> allPhoneNumbers;
+    private final RegistrationLevel registrationLevel;
 
     @JsonCreator
-    public RequestedAttributes(@JsonProperty(value = "basicUserInfo") BasicUserInfo basicUserInfo, @JsonProperty(value = "customIdentifier") String customIdentifier,
-            @JsonProperty(value = "ssn") SsnUserInfo ssn, @JsonProperty(value = "integratorSpecificUserId") String integratorSpecificUserId,
-            @JsonProperty(value = "dateOfBirth") String dateOfBirth, @JsonProperty(value = "relyingPartyUserId") String relyingPartyUserId, @JsonProperty(value = "emailAddress") String emailAddress,
-            @JsonProperty(value = "organisationIdIdentifier") String organisationIdIdentifier, @JsonProperty(value = "addresses") List<AddressInfo> addresses,
-            @JsonProperty(value = "allEmailAddresses") List<Email> allEmailAddresses,
-            @JsonProperty(value = "allPhoneNumbers") List<PhoneNumberInfo> allPhoneNumbers) {
+    public RequestedAttributes(@JsonProperty(value = "basicUserInfo") BasicUserInfo basicUserInfo,
+                               @JsonProperty(value = "customIdentifier") String customIdentifier,
+                               @JsonProperty(value = "ssn") SsnUserInfo ssn,
+                               @JsonProperty(value = "integratorSpecificUserId") String integratorSpecificUserId,
+                               @JsonProperty(value = "dateOfBirth") String dateOfBirth,
+                               @JsonProperty(value = "relyingPartyUserId") String relyingPartyUserId,
+                               @JsonProperty(value = "emailAddress") String emailAddress,
+                               @JsonProperty(value = "organisationIdIdentifier") String organisationIdIdentifier,
+                               @JsonProperty(value = "addresses") List<AddressInfo> addresses,
+                               @JsonProperty(value = "allEmailAddresses") List<Email> allEmailAddresses,
+                               @JsonProperty(value = "allPhoneNumbers") List<PhoneNumberInfo> allPhoneNumbers,
+                               @JsonProperty(value = "registrationLevel") RegistrationLevel registrationLevel) {
         this.basicUserInfo = basicUserInfo;
         this.customIdentifier = customIdentifier;
         this.ssn = ssn;
@@ -43,6 +51,7 @@ public class RequestedAttributes {
         this.addresses = addresses;
         this.allEmailAddresses = allEmailAddresses;
         this.allPhoneNumbers = allPhoneNumbers;
+        this.registrationLevel = registrationLevel;
     }
 
     public BasicUserInfo getBasicUserInfo() {
@@ -85,13 +94,19 @@ public class RequestedAttributes {
         return allEmailAddresses;
     }
 
-    public List<PhoneNumberInfo> getAllPhoneNumbers() { return allPhoneNumbers; }
+    public List<PhoneNumberInfo> getAllPhoneNumbers() {
+        return allPhoneNumbers;
+    }
+
+    public RegistrationLevel getRegistrationLevel() {
+        return registrationLevel;
+    }
 
     @Override
     public int hashCode() {
         return Objects.hash(basicUserInfo, customIdentifier, ssn, integratorSpecificUserId,
-                dateOfBirth, relyingPartyUserId, emailAddress, organisationIdIdentifier,
-                addresses, allEmailAddresses, allPhoneNumbers);
+                            dateOfBirth, relyingPartyUserId, emailAddress, organisationIdIdentifier,
+                            addresses, allEmailAddresses, allPhoneNumbers, registrationLevel);
     }
 
     @Override
@@ -139,6 +154,9 @@ public class RequestedAttributes {
         if (!Objects.equals(this.allPhoneNumbers, other.allPhoneNumbers)) {
             return false;
         }
+        if (!Objects.equals(this.registrationLevel, other.registrationLevel)) {
+            return false;
+        }
         return true;
     }
 
@@ -156,6 +174,7 @@ public class RequestedAttributes {
                 ", addresses=" + addresses +
                 ", allEmailAddresses=" + allEmailAddresses +
                 ", allPhoneNumbers=" + allPhoneNumbers +
+                ", registrationLevel=" + registrationLevel +
                 '}';
     }
 }

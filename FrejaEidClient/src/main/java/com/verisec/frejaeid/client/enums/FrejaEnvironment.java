@@ -5,7 +5,6 @@ package com.verisec.frejaeid.client.enums;
  * <br> - <b>PRODUCTION</b> - for sending HTTP requests to production
  * environment
  * <br> - <b>TEST</b> - for sending HTTP requests to test environment
- *
  */
 public enum FrejaEnvironment {
 

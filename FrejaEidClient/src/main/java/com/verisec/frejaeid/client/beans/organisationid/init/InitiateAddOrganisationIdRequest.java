@@ -11,6 +11,7 @@ import com.verisec.frejaeid.client.enums.MinRegistrationLevel;
 import com.verisec.frejaeid.client.enums.UserInfoType;
 import com.verisec.frejaeid.client.exceptions.FrejaEidClientInternalException;
 import com.verisec.frejaeid.client.util.UserInfoUtil;
+
 import java.util.Objects;
 
 public class InitiateAddOrganisationIdRequest implements RelyingPartyRequest {
@@ -26,34 +27,35 @@ public class InitiateAddOrganisationIdRequest implements RelyingPartyRequest {
      * Returns instance of {@linkplain InitiateAddOrganisationIdRequest} with
      * {@linkplain UserInfoType} {@code EMAIL}.
      *
-     * @param email user's email for which transaction will be initiated. It
-     * cannot be {@code null} or empty. Maximum length is 256 characters.
+     * @param email          user's email for which transaction will be initiated. It
+     *                       cannot be {@code null} or empty. Maximum length is 256 characters.
      * @param organisationId instance of {@linkplain OrganisationId} that
-     * contains information regarding organisation id.
-     *
+     *                       contains information regarding organisation id.
      * @return request
      */
     public static InitiateAddOrganisationIdRequest createDefaultWithEmail(String email, OrganisationId organisationId) {
-        return new InitiateAddOrganisationIdRequest(UserInfoType.EMAIL, email, organisationId, MinRegistrationLevel.EXTENDED, null, null);
+        return new InitiateAddOrganisationIdRequest(UserInfoType.EMAIL, email, organisationId,
+                                                    MinRegistrationLevel.EXTENDED, null, null);
     }
 
     /**
      * Returns instance of {@linkplain InitiateAddOrganisationIdRequest} with
      * {@linkplain UserInfoType} {@code SSN}.
      *
-     * @param ssnUserInfo instance of {@linkplain SsnUserInfo} that contains
-     * personal number and country for which transaction will be initiated. It
-     * cannot be {@code null}.
+     * @param ssnUserInfo    instance of {@linkplain SsnUserInfo} that contains
+     *                       personal number and country for which transaction will be initiated. It
+     *                       cannot be {@code null}.
      * @param organisationId instance of {@linkplain OrganisationId} that
-     * contains information regarding organisation id.
-     *
+     *                       contains information regarding organisation id.
      * @return request
      * @throws FrejaEidClientInternalException if error occurs when generating
-     * JSON content from ssnUserInfo
-     *
+     *                                         JSON content from ssnUserInfo
      */
-    public static InitiateAddOrganisationIdRequest createDefaultWithSsn(SsnUserInfo ssnUserInfo, OrganisationId organisationId) throws FrejaEidClientInternalException {
-        return new InitiateAddOrganisationIdRequest(UserInfoType.SSN, UserInfoUtil.convertSsnUserInfo(ssnUserInfo), organisationId, MinRegistrationLevel.EXTENDED, null, null);
+    public static InitiateAddOrganisationIdRequest createDefaultWithSsn(SsnUserInfo ssnUserInfo,
+                                                                        OrganisationId organisationId)
+            throws FrejaEidClientInternalException {
+        return new InitiateAddOrganisationIdRequest(UserInfoType.SSN, UserInfoUtil.convertSsnUserInfo(ssnUserInfo),
+                                                    organisationId, MinRegistrationLevel.EXTENDED, null, null);
     }
 
     /**
@@ -68,15 +70,18 @@ public class InitiateAddOrganisationIdRequest implements RelyingPartyRequest {
     }
 
     @JsonCreator
-    private InitiateAddOrganisationIdRequest(@JsonProperty(value = "userInfoType") UserInfoType userInfoType, @JsonProperty(value = "userInfo") String userInfo,
+    private InitiateAddOrganisationIdRequest(
+            @JsonProperty(value = "userInfoType") UserInfoType userInfoType,
+            @JsonProperty(value = "userInfo") String userInfo,
             @JsonProperty(value = "organisationId") OrganisationId organisationId,
-            @JsonProperty(value = "minRegistrationLevel") MinRegistrationLevel minRegistrationLevel, @JsonProperty(value = "expiry") Long expiry) {
+            @JsonProperty(value = "minRegistrationLevel") MinRegistrationLevel minRegistrationLevel,
+            @JsonProperty(value = "expiry") Long expiry) {
         this(userInfoType, userInfo, organisationId, minRegistrationLevel, expiry, null);
     }
 
     InitiateAddOrganisationIdRequest(UserInfoType userInfoType, String userInfo,
-            OrganisationId organisationId, MinRegistrationLevel minRegistrationLevel,
-            Long expiry, String relyingPartyId) {
+                                     OrganisationId organisationId, MinRegistrationLevel minRegistrationLevel,
+                                     Long expiry, String relyingPartyId) {
         this.userInfoType = userInfoType;
         this.userInfo = userInfo;
         this.organisationId = organisationId;
@@ -150,7 +155,9 @@ public class InitiateAddOrganisationIdRequest implements RelyingPartyRequest {
 
     @Override
     public String toString() {
-        return "InitiateAddOrganisationIdRequest{" + "userInfoType=" + userInfoType + ", userInfo=" + userInfo + ", organisationId=" + organisationId + ", minRegistrationLevel=" + minRegistrationLevel + ", expiry=" + expiry + ", relyingPartyId=" + relyingPartyId + '}';
+        return "InitiateAddOrganisationIdRequest{" + "userInfoType=" + userInfoType + ", userInfo=" + userInfo + ", " +
+                "organisationId=" + organisationId + ", minRegistrationLevel=" + minRegistrationLevel + ", expiry=" +
+                expiry + ", relyingPartyId=" + relyingPartyId + '}';
     }
 
 }

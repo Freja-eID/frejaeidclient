@@ -4,7 +4,6 @@ package com.verisec.frejaeid.client.enums;
  * When a transaction is started on behalf of the organisation,
  * {@linkplain #ORGANISATIONAL} context is used, when a transaction is started
  * on personal behalf, {@linkplain #PERSONAL} context is used.
- *
  */
 public enum TransactionContext {
     PERSONAL("PERSONAL"),
@@ -30,8 +29,8 @@ public enum TransactionContext {
      * context.
      *
      * @param context The context must match exactly an identifier used to
-     * declare a TransactionContext constant in this type. (Extraneous
-     * whitespace characters are not permitted.)
+     *                declare a TransactionContext constant in this type. (Extraneous
+     *                whitespace characters are not permitted.)
      * @return The TransactionContext constant with the specified context and
      * {@code null} if there is no constant with the specified context.
      */

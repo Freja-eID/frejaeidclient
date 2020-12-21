@@ -11,8 +11,7 @@ public class DeleteOrganisationIdRequest extends DeleteIdentifierRequest {
      * unique identifier per relying party.
      *
      * @param identifier identifier to be deleted for the end user. It cannot be
-     * {@code null} or empty.
-     *
+     *                   {@code null} or empty.
      * @return request
      */
     public static DeleteOrganisationIdRequest create(String identifier) {
@@ -25,11 +24,10 @@ public class DeleteOrganisationIdRequest extends DeleteIdentifierRequest {
      *
      * <b>Only relying parties that are integrators should use this method.</b>
      *
-     * @param identifier identifier to be deleted for the end user. It cannot be
-     * {@code null} or empty.
+     * @param identifier     identifier to be deleted for the end user. It cannot be
+     *                       {@code null} or empty.
      * @param relyingPartyId specifies relying party id for which transaction is
-     * initiated. It cannot be {@code null} or empty.
-     *
+     *                       initiated. It cannot be {@code null} or empty.
      * @return request
      */
     public static DeleteOrganisationIdRequest create(String identifier, String relyingPartyId) {

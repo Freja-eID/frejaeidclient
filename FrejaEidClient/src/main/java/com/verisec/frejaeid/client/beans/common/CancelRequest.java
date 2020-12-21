@@ -1,6 +1,7 @@
 package com.verisec.frejaeid.client.beans.common;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.Objects;
 
 public abstract class CancelRequest implements RelyingPartyRequest {

@@ -3,6 +3,7 @@ package com.verisec.frejaeid.client.beans.organisationid.getall;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.verisec.frejaeid.client.beans.common.RelyingPartyRequest;
+
 import java.util.Objects;
 
 public class GetAllOrganisationIdUsersRequest implements RelyingPartyRequest {
@@ -29,9 +30,8 @@ public class GetAllOrganisationIdUsersRequest implements RelyingPartyRequest {
      * <b>Only relying parties that are integrators should use this method.</b>
      *
      * @param relyingPartyId specifies relying party id for which users'
-     * information with Organisation ID should be returned. It cannot be
-     * {@code null} or empty.
-     *
+     *                       information with Organisation ID should be returned. It cannot be
+     *                       {@code null} or empty.
      * @return request
      */
     public static GetAllOrganisationIdUsersRequest create(String relyingPartyId) {

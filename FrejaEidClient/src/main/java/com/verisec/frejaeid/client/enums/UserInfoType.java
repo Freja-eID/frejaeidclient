@@ -7,7 +7,6 @@ package com.verisec.frejaeid.client.enums;
  * <br> - {@link #SSN}
  * <br> - {@link #PHONE}
  * <br> - {@link #INFERRED}
- *
  */
 public enum UserInfoType {
 

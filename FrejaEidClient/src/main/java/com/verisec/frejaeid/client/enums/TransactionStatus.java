@@ -9,7 +9,6 @@ package com.verisec.frejaeid.client.enums;
  * <br> - {@link #EXPIRED} - final state
  * <br> - {@link #APPROVED} - final state
  * <br> - {@link #REJECTED} - final state
- *
  */
 public enum TransactionStatus {
 

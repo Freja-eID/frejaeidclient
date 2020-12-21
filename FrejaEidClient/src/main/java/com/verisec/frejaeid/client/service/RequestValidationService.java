@@ -16,48 +16,60 @@ import com.verisec.frejaeid.client.enums.MinRegistrationLevel;
 import com.verisec.frejaeid.client.enums.TransactionContext;
 import com.verisec.frejaeid.client.enums.UserInfoType;
 import com.verisec.frejaeid.client.exceptions.FrejaEidClientInternalException;
+
 import java.util.Set;
+
 import org.apache.commons.lang3.StringUtils;
 
 public class RequestValidationService {
 
-    public void validateInitAuthRequest(InitiateAuthenticationRequest initiateAuthenticationRequest, TransactionContext transactionContext) throws FrejaEidClientInternalException {
+    public void validateInitAuthRequest(InitiateAuthenticationRequest initiateAuthenticationRequest,
+                                        TransactionContext transactionContext)
+            throws FrejaEidClientInternalException {
         validateRequest(initiateAuthenticationRequest);
-        validateUserInfoTypeAndUserInfo(initiateAuthenticationRequest.getUserInfoType(), initiateAuthenticationRequest.getUserInfo(), transactionContext);
+        validateUserInfoTypeAndUserInfo(initiateAuthenticationRequest.getUserInfoType(),
+                                        initiateAuthenticationRequest.getUserInfo(), transactionContext);
         validateRequestedAttributes(initiateAuthenticationRequest.getAttributesToReturn());
         validateRegistrationState(initiateAuthenticationRequest.getMinRegistrationLevel(), transactionContext);
         validateRelyingPartyIdIsEmpty(initiateAuthenticationRequest.getRelyingPartyId());
     }
 
-    public <T extends ResultRequest> void validateResultRequest(T getOneResultRequest) throws FrejaEidClientInternalException {
+    public <T extends ResultRequest> void validateResultRequest(T getOneResultRequest)
+            throws FrejaEidClientInternalException {
         validateRequest(getOneResultRequest);
         validateReference(getOneResultRequest.getReference());
         validateRelyingPartyIdIsEmpty(getOneResultRequest.getRelyingPartyId());
     }
 
-    public <T extends ResultsRequest> void validateResultsRequest(T getResultsRequest) throws FrejaEidClientInternalException {
+    public <T extends ResultsRequest> void validateResultsRequest(T getResultsRequest)
+            throws FrejaEidClientInternalException {
         validateRequest(getResultsRequest);
         validateRelyingPartyIdIsEmpty(getResultsRequest.getRelyingPartyId());
     }
 
-    public <T extends CancelRequest> void validateCancelRequest(T cancelRequest) throws FrejaEidClientInternalException {
+    public <T extends CancelRequest> void validateCancelRequest(T cancelRequest)
+            throws FrejaEidClientInternalException {
         validateRequest(cancelRequest);
         validateReference(cancelRequest.getReference());
         validateRelyingPartyIdIsEmpty(cancelRequest.getRelyingPartyId());
     }
 
-    public void validateInitSignRequest(InitiateSignRequest initiateSignRequest, TransactionContext transactionContext) throws FrejaEidClientInternalException {
+    public void validateInitSignRequest(InitiateSignRequest initiateSignRequest, TransactionContext transactionContext)
+            throws FrejaEidClientInternalException {
         validateRequest(initiateSignRequest);
-        validateUserInfoTypeAndUserInfo(initiateSignRequest.getUserInfoType(), initiateSignRequest.getUserInfo(), transactionContext);
+        validateUserInfoTypeAndUserInfo(initiateSignRequest.getUserInfoType(), initiateSignRequest.getUserInfo(),
+                                        transactionContext);
         validateRequestedAttributes(initiateSignRequest.getAttributesToReturn());
         if (initiateSignRequest.getTitle() != null && initiateSignRequest.getTitle().isEmpty()) {
             throw new FrejaEidClientInternalException("Title cannot be empty.");
         }
-        if (initiateSignRequest.getDataToSign() == null || initiateSignRequest.getDataToSign().getText() == null || initiateSignRequest.getDataToSign().getText().isEmpty()) {
+        if (initiateSignRequest.getDataToSign() == null || initiateSignRequest.getDataToSign().getText() == null
+                || initiateSignRequest.getDataToSign().getText().isEmpty()) {
             throw new FrejaEidClientInternalException("DataToSign cannot be null or empty.");
         }
         if (initiateSignRequest.getPushNotification() != null) {
-            if (StringUtils.isBlank(initiateSignRequest.getPushNotification().getText()) || StringUtils.isBlank(initiateSignRequest.getPushNotification().getTitle())) {
+            if (StringUtils.isBlank(initiateSignRequest.getPushNotification().getText())
+                    || StringUtils.isBlank(initiateSignRequest.getPushNotification().getTitle())) {
                 throw new FrejaEidClientInternalException("PushNotification title or text cannot be null or empty.");
             }
         }
@@ -65,36 +77,46 @@ public class RequestValidationService {
         validateRelyingPartyIdIsEmpty(initiateSignRequest.getRelyingPartyId());
     }
 
-    public void validateSetCustomIDentifierRequest(SetCustomIdentifierRequest setCustomIdentifierRequest) throws FrejaEidClientInternalException {
+    public void validateSetCustomIDentifierRequest(SetCustomIdentifierRequest setCustomIdentifierRequest)
+            throws FrejaEidClientInternalException {
         validateRequest(setCustomIdentifierRequest);
-        validateUserInfoTypeAndUserInfo(setCustomIdentifierRequest.getUserInfoType(), setCustomIdentifierRequest.getUserInfo(), TransactionContext.PERSONAL);
+        validateUserInfoTypeAndUserInfo(setCustomIdentifierRequest.getUserInfoType(),
+                                        setCustomIdentifierRequest.getUserInfo(), TransactionContext.PERSONAL);
         validateIdentifier(setCustomIdentifierRequest.getCustomIdentifier());
         validateRelyingPartyIdIsEmpty(setCustomIdentifierRequest.getRelyingPartyId());
     }
 
-    public void validateDeleteCustomIdentifierRequest(DeleteCustomIdentifierRequest deleteCustomIdentifierRequest) throws FrejaEidClientInternalException {
+    public void validateDeleteCustomIdentifierRequest(DeleteCustomIdentifierRequest deleteCustomIdentifierRequest)
+            throws FrejaEidClientInternalException {
         validateRequest(deleteCustomIdentifierRequest);
         validateIdentifier(deleteCustomIdentifierRequest.getCustomIdentifier());
         validateRelyingPartyIdIsEmpty(deleteCustomIdentifierRequest.getRelyingPartyId());
     }
 
-    public void validateInitAddOrganisationIdRequest(InitiateAddOrganisationIdRequest initiateAddOrganisationIdRequest) throws FrejaEidClientInternalException {
+    public void validateInitAddOrganisationIdRequest(InitiateAddOrganisationIdRequest initiateAddOrganisationIdRequest)
+            throws FrejaEidClientInternalException {
         validateRequest(initiateAddOrganisationIdRequest);
-        validateUserInfoTypeAndUserInfo(initiateAddOrganisationIdRequest.getUserInfoType(), initiateAddOrganisationIdRequest.getUserInfo(), TransactionContext.ORGANISATIONAL);
+        validateUserInfoTypeAndUserInfo(initiateAddOrganisationIdRequest.getUserInfoType(),
+                                        initiateAddOrganisationIdRequest.getUserInfo(),
+                                        TransactionContext.ORGANISATIONAL);
         validateOrganisationIdTitle(initiateAddOrganisationIdRequest.getOrganisationId().getTitle());
         validateIdentifierName(initiateAddOrganisationIdRequest.getOrganisationId().getIdentifierName());
         validateIdentifier(initiateAddOrganisationIdRequest.getOrganisationId().getIdentifier());
-        validateRegistrationState(initiateAddOrganisationIdRequest.getMinRegistrationLevel(), TransactionContext.ORGANISATIONAL);
+        validateRegistrationState(initiateAddOrganisationIdRequest.getMinRegistrationLevel(),
+                                  TransactionContext.ORGANISATIONAL);
         validateRelyingPartyIdIsEmpty(initiateAddOrganisationIdRequest.getRelyingPartyId());
     }
 
-    public void validateDeleteOrganisationIdRequest(DeleteOrganisationIdRequest deleteOrganisationIdRequest) throws FrejaEidClientInternalException {
+    public void validateDeleteOrganisationIdRequest(DeleteOrganisationIdRequest deleteOrganisationIdRequest)
+            throws FrejaEidClientInternalException {
         validateRequest(deleteOrganisationIdRequest);
         validateIdentifier(deleteOrganisationIdRequest.getIdentifier());
         validateRelyingPartyIdIsEmpty(deleteOrganisationIdRequest.getRelyingPartyId());
     }
-    
-    public void validateGetAllOrganisationIdUsersRequest(GetAllOrganisationIdUsersRequest getAllOrganisationIdUsersRequest) throws FrejaEidClientInternalException {
+
+    public void validateGetAllOrganisationIdUsersRequest(
+            GetAllOrganisationIdUsersRequest getAllOrganisationIdUsersRequest)
+            throws FrejaEidClientInternalException {
         validateRequest(getAllOrganisationIdUsersRequest);
         validateRelyingPartyIdIsEmpty(getAllOrganisationIdUsersRequest.getRelyingPartyId());
     }
@@ -113,7 +135,9 @@ public class RequestValidationService {
         }
     }
 
-    private void validateUserInfoTypeAndUserInfo(UserInfoType userInfoType, String userInfo, TransactionContext transactionContext) throws FrejaEidClientInternalException {
+    private void validateUserInfoTypeAndUserInfo(UserInfoType userInfoType, String userInfo,
+                                                 TransactionContext transactionContext)
+            throws FrejaEidClientInternalException {
         if (userInfoType == null) {
             throw new FrejaEidClientInternalException("UserInfoType cannot be null.");
         }
@@ -125,13 +149,16 @@ public class RequestValidationService {
         }
     }
 
-    private void validateRequestedAttributes(Set<AttributeToReturn> requestedAttributes) throws FrejaEidClientInternalException {
+    private void validateRequestedAttributes(Set<AttributeToReturn> requestedAttributes)
+            throws FrejaEidClientInternalException {
         if (requestedAttributes != null && requestedAttributes.isEmpty()) {
             throw new FrejaEidClientInternalException("RequestedAttributes cannot be empty.");
         }
     }
 
-    private void validateRegistrationState(MinRegistrationLevel minRegistrationLevel, TransactionContext transactionContext) throws FrejaEidClientInternalException {
+    private void validateRegistrationState(MinRegistrationLevel minRegistrationLevel,
+                                           TransactionContext transactionContext)
+            throws FrejaEidClientInternalException {
         if (minRegistrationLevel == null && TransactionContext.PERSONAL == transactionContext) {
             throw new FrejaEidClientInternalException("RegistrationState cannot be null.");
         }

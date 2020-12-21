@@ -11,6 +11,7 @@ import com.verisec.frejaeid.client.enums.MinRegistrationLevel;
 import com.verisec.frejaeid.client.enums.UserInfoType;
 import com.verisec.frejaeid.client.exceptions.FrejaEidClientInternalException;
 import com.verisec.frejaeid.client.util.UserInfoUtil;
+
 import java.util.Objects;
 import java.util.Set;
 
@@ -29,7 +30,7 @@ public class InitiateAuthenticationRequest implements RelyingPartyRequest {
      * {@linkplain AttributeToReturn}.
      *
      * @param email user's email for which transaction will be initiated. It
-     * cannot be {@code null} or empty. Maximum length is 256 characters.
+     *              cannot be {@code null} or empty. Maximum length is 256 characters.
      * @return request
      */
     public static InitiateAuthenticationRequest createDefaultWithEmail(String email) {
@@ -43,16 +44,16 @@ public class InitiateAuthenticationRequest implements RelyingPartyRequest {
      * {@linkplain AttributeToReturn}.
      *
      * @param ssnUserInfo instance of {@linkplain SsnUserInfo} that contains
-     * personal number and country for which transaction will be initiated. It
-     * cannot be {@code null}.
-     *
+     *                    personal number and country for which transaction will be initiated. It
+     *                    cannot be {@code null}.
      * @return request
      * @throws FrejaEidClientInternalException if error occurs when generating
-     * JSON content from ssnUserInfo
-     *
+     *                                         JSON content from ssnUserInfo
      */
-    public static InitiateAuthenticationRequest createDefaultWithSsn(SsnUserInfo ssnUserInfo) throws FrejaEidClientInternalException {
-        return new InitiateAuthenticationRequest(UserInfoType.SSN, UserInfoUtil.convertSsnUserInfo(ssnUserInfo), MinRegistrationLevel.BASIC, null, null);
+    public static InitiateAuthenticationRequest createDefaultWithSsn(SsnUserInfo ssnUserInfo)
+            throws FrejaEidClientInternalException {
+        return new InitiateAuthenticationRequest(UserInfoType.SSN, UserInfoUtil.convertSsnUserInfo(ssnUserInfo),
+                                                 MinRegistrationLevel.BASIC, null, null);
     }
 
     /**
@@ -67,13 +68,17 @@ public class InitiateAuthenticationRequest implements RelyingPartyRequest {
     }
 
     @JsonCreator
-    private InitiateAuthenticationRequest(@JsonProperty(value = "userInfoType") UserInfoType userInfoType, @JsonProperty(value = "userInfo") String userInfo,
-            @JsonProperty(value = "minRegistrationLevel") MinRegistrationLevel minRegistrationLevel, @JsonProperty(value = "attributesToReturn") Set<AttributeToReturn> attributesToReturn) {
+    private InitiateAuthenticationRequest(
+            @JsonProperty(value = "userInfoType") UserInfoType userInfoType,
+            @JsonProperty(value = "userInfo") String userInfo,
+            @JsonProperty(value = "minRegistrationLevel") MinRegistrationLevel minRegistrationLevel,
+            @JsonProperty(value = "attributesToReturn") Set<AttributeToReturn> attributesToReturn) {
         this(userInfoType, userInfo, minRegistrationLevel, attributesToReturn, null);
     }
 
     InitiateAuthenticationRequest(UserInfoType userInfoType, String userInfo,
-            MinRegistrationLevel minRegistrationLevel, Set<AttributeToReturn> attributesToReturn, String relyingPartyId) {
+                                  MinRegistrationLevel minRegistrationLevel,
+                                  Set<AttributeToReturn> attributesToReturn, String relyingPartyId) {
         this.userInfoType = userInfoType;
         this.userInfo = userInfo;
         this.minRegistrationLevel = minRegistrationLevel;
@@ -139,7 +144,8 @@ public class InitiateAuthenticationRequest implements RelyingPartyRequest {
 
     @Override
     public String toString() {
-        return "InitiateAuthenticationRequest{" + "userInfoType=" + userInfoType + ", userInfo=" + userInfo + ", minRegistrationLevel=" + minRegistrationLevel + ", attributesToReturn=" + attributesToReturn + '}';
+        return "InitiateAuthenticationRequest{" + "userInfoType=" + userInfoType + ", userInfo=" + userInfo + ", " +
+                "minRegistrationLevel=" + minRegistrationLevel + ", attributesToReturn=" + attributesToReturn + '}';
     }
 
 }

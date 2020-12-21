@@ -7,16 +7,16 @@ import com.verisec.frejaeid.client.beans.common.Result;
 import com.verisec.frejaeid.client.enums.TransactionStatus;
 
 /**
- *
  * Contains transaction reference, transaction status, details and requested
  * attributes.
- *
  */
 public class AuthenticationResult extends Result {
 
     @JsonCreator
-    public AuthenticationResult(@JsonProperty(value = "authRef") String reference, @JsonProperty(value = "status") TransactionStatus status,
-            @JsonProperty(value = "details") String details, @JsonProperty(value = "requestedAttributes") RequestedAttributes requestedAttributes) {
+    public AuthenticationResult(@JsonProperty(value = "authRef") String reference,
+                                @JsonProperty(value = "status") TransactionStatus status,
+                                @JsonProperty(value = "details") String details,
+                                @JsonProperty(value = "requestedAttributes") RequestedAttributes requestedAttributes) {
         super(reference, status, details, requestedAttributes);
     }
 

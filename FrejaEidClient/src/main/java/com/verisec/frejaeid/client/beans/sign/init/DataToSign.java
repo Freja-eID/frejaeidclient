@@ -12,7 +12,6 @@ import java.util.Objects;
  * DataToSign can contain text data and binary data. Text data will be shown to
  * user and has to be set for every sign transaction and binary data is
  * optional.
- *
  */
 public class DataToSign {
 
@@ -34,7 +33,8 @@ public class DataToSign {
     }
 
     @JsonCreator
-    private DataToSign(@JsonProperty(value = "text") String text, @JsonProperty(value = "binaryData") String binaryData) {
+    private DataToSign(@JsonProperty(value = "text") String text,
+                       @JsonProperty(value = "binaryData") String binaryData) {
         this.text = text;
         this.binaryData = binaryData;
     }

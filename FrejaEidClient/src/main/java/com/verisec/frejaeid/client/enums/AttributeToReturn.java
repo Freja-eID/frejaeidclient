@@ -86,7 +86,12 @@ public enum AttributeToReturn {
      * contains all user's phone numbers registered in Freja eID will be
      * returned.
      */
-    ALL_PHONE_NUMBERS("ALL_PHONE_NUMBERS");
+    ALL_PHONE_NUMBERS("ALL_PHONE_NUMBERS"),
+    /**
+     * Current registration level of the user.
+     * Corresponds to one of the values of {@linkplain RegistrationLevel}.
+     */
+    REGISTRATION_LEVEL("REGISTRATION_LEVEL");
 
     private final String name;
 
@@ -105,8 +110,8 @@ public enum AttributeToReturn {
      * name.
      *
      * @param name The name must match exactly an identifier used to declare an
-     * AttributeToReturn constant in this type. (Extraneous whitespace
-     * characters are not permitted.)
+     *             AttributeToReturn constant in this type. (Extraneous whitespace
+     *             characters are not permitted.)
      * @return The AttributeToReturn constant with the specified name and
      * {@code null} if there is no constant with the specified name.
      */

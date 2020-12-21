@@ -13,11 +13,10 @@ public class SetCustomIdentifierRequestBuilder {
          * Sets email as userInfo and {@linkplain UserInfoType#EMAIL} as
          * {@linkplain UserInfoType} for initiating transaction.
          *
-         * @param email will be used to identify the end user. Maximum length is
-         * 256 characters.
+         * @param email            will be used to identify the end user. Maximum length is
+         *                         256 characters.
          * @param customIdentifier will be set for user. Maximum length is 128
-         * characters. It cannot be {@code null} or empty.
-         *
+         *                         characters. It cannot be {@code null} or empty.
          * @return request builder
          */
         public SetOptionalParamsBuilder setEmailAndCustomIdentifier(String email, String customIdentifier) {
@@ -28,29 +27,29 @@ public class SetCustomIdentifierRequestBuilder {
          * Sets ssnUserInfo as userInfo and {@linkplain UserInfoType#SSN} as
          * {@linkplain UserInfoType} for initiating transaction.
          *
-         * @param ssnUserInfo instance of {@linkplain SsnUserInfo} that contains
-         * personal number and country of user that will be used to identify the
-         * end user.
+         * @param ssnUserInfo      instance of {@linkplain SsnUserInfo} that contains
+         *                         personal number and country of user that will be used to identify the
+         *                         end user.
          * @param customIdentifier will be set for user. Maximum length is 128
-         * characters. It cannot be {@code null} or empty.
-         *
+         *                         characters. It cannot be {@code null} or empty.
          * @return request builder
          * @throws FrejaEidClientInternalException if error occurs when
-         * generating JSON content from ssnUserInfo
+         *                                         generating JSON content from ssnUserInfo
          */
-        public SetOptionalParamsBuilder setSsnAndCustomIdentifier(SsnUserInfo ssnUserInfo, String customIdentifier) throws FrejaEidClientInternalException {
-            return new SetOptionalParamsBuilder(UserInfoType.SSN, UserInfoUtil.convertSsnUserInfo(ssnUserInfo), customIdentifier);
+        public SetOptionalParamsBuilder setSsnAndCustomIdentifier(SsnUserInfo ssnUserInfo, String customIdentifier)
+                throws FrejaEidClientInternalException {
+            return new SetOptionalParamsBuilder(UserInfoType.SSN, UserInfoUtil.convertSsnUserInfo(ssnUserInfo),
+                                                customIdentifier);
         }
 
         /**
          * Sets phoneNumber as userInfo and {@link UserInfoType#PHONE} as
          * {@linkplain UserInfoType} for initiating transaction.
          *
-         * @param phoneNumber user's phone number that will be used to identify
-         * the end user in format +467123456789.
+         * @param phoneNumber      user's phone number that will be used to identify
+         *                         the end user in format +467123456789.
          * @param customIdentifier will be set for user. Maximum length is 128
-         * characters. It cannot be {@code null} or empty.
-         *
+         *                         characters. It cannot be {@code null} or empty.
          * @return request builder
          */
         public SetOptionalParamsBuilder setPhoneNumberAndCustomIdentifier(String phoneNumber, String customIdentifier) {
@@ -77,7 +76,7 @@ public class SetCustomIdentifierRequestBuilder {
          * method.</b>
          *
          * @param relyingPartyId specifies relying party id by which custom
-         * identifier will be set. It cannot be {@code null} or empty.
+         *                       identifier will be set. It cannot be {@code null} or empty.
          * @return request builder
          */
         public SetOptionalParamsBuilder setRelyingPartyId(String relyingPartyId) {
