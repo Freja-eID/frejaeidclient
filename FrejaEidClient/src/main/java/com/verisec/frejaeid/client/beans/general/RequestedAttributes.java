@@ -2,6 +2,7 @@ package com.verisec.frejaeid.client.beans.general;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.verisec.frejaeid.client.enums.RegistrationLevel;
 
 import java.util.List;
 import java.util.Objects;
@@ -24,6 +25,7 @@ public class RequestedAttributes {
     private final List<AddressInfo> addresses;
     private final List<Email> allEmailAddresses;
     private final List<PhoneNumberInfo> allPhoneNumbers;
+    private final RegistrationLevel registrationLevel;
 
     @JsonCreator
     public RequestedAttributes(@JsonProperty(value = "basicUserInfo") BasicUserInfo basicUserInfo,
@@ -36,7 +38,8 @@ public class RequestedAttributes {
                                @JsonProperty(value = "organisationIdIdentifier") String organisationIdIdentifier,
                                @JsonProperty(value = "addresses") List<AddressInfo> addresses,
                                @JsonProperty(value = "allEmailAddresses") List<Email> allEmailAddresses,
-                               @JsonProperty(value = "allPhoneNumbers") List<PhoneNumberInfo> allPhoneNumbers) {
+                               @JsonProperty(value = "allPhoneNumbers") List<PhoneNumberInfo> allPhoneNumbers,
+                               @JsonProperty(value = "registrationLevel") RegistrationLevel registrationLevel) {
         this.basicUserInfo = basicUserInfo;
         this.customIdentifier = customIdentifier;
         this.ssn = ssn;
@@ -48,6 +51,7 @@ public class RequestedAttributes {
         this.addresses = addresses;
         this.allEmailAddresses = allEmailAddresses;
         this.allPhoneNumbers = allPhoneNumbers;
+        this.registrationLevel = registrationLevel;
     }
 
     public BasicUserInfo getBasicUserInfo() {
@@ -94,11 +98,15 @@ public class RequestedAttributes {
         return allPhoneNumbers;
     }
 
+    public RegistrationLevel getRegistrationLevel() {
+        return registrationLevel;
+    }
+
     @Override
     public int hashCode() {
         return Objects.hash(basicUserInfo, customIdentifier, ssn, integratorSpecificUserId,
                             dateOfBirth, relyingPartyUserId, emailAddress, organisationIdIdentifier,
-                            addresses, allEmailAddresses, allPhoneNumbers);
+                            addresses, allEmailAddresses, allPhoneNumbers, registrationLevel);
     }
 
     @Override
@@ -146,6 +154,9 @@ public class RequestedAttributes {
         if (!Objects.equals(this.allPhoneNumbers, other.allPhoneNumbers)) {
             return false;
         }
+        if (!Objects.equals(this.registrationLevel, other.registrationLevel)) {
+            return false;
+        }
         return true;
     }
 
@@ -163,6 +174,7 @@ public class RequestedAttributes {
                 ", addresses=" + addresses +
                 ", allEmailAddresses=" + allEmailAddresses +
                 ", allPhoneNumbers=" + allPhoneNumbers +
+                ", registrationLevel=" + registrationLevel +
                 '}';
     }
 }

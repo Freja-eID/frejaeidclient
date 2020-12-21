@@ -5,9 +5,7 @@ import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
 import com.verisec.frejaeid.client.beans.common.RelyingPartyRequest;
 import com.verisec.frejaeid.client.beans.general.*;
-import com.verisec.frejaeid.client.enums.AddressSourceType;
-import com.verisec.frejaeid.client.enums.AddressType;
-import com.verisec.frejaeid.client.enums.Country;
+import com.verisec.frejaeid.client.enums.*;
 import com.verisec.frejaeid.client.util.JsonService;
 import com.verisec.frejaeid.client.util.RequestTemplate;
 
@@ -47,7 +45,7 @@ public abstract class CommonHttpTest {
     protected static final RequestedAttributes REQUESTED_ATTRIBUTES =
             new RequestedAttributes(BASIC_USER_INFO, CUSTOM_IDENTIFIER, SSN_USER_INFO, null, DATE_OF_BIRTH,
                                     RELYING_PARTY_USER_ID, EMAIL_ADDRESS, ORGANISATION_ID, ADDRESSES,
-                                    ALL_EMAIL_ADDRESSES, ALL_PHONE_NUMBERS);
+                                    ALL_EMAIL_ADDRESSES, ALL_PHONE_NUMBERS, RegistrationLevel.BASIC);
     protected static final String POST_PARAMS_DELIMITER = "&";
     protected static final String KEY_VALUE_DELIMITER = "=";
     protected static final int MOCK_SERVICE_PORT = 30665;

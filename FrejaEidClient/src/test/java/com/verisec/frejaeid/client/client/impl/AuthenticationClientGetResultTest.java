@@ -8,13 +8,7 @@ import com.verisec.frejaeid.client.beans.authentication.get.AuthenticationResult
 import com.verisec.frejaeid.client.beans.authentication.get.AuthenticationResult;
 import com.verisec.frejaeid.client.client.api.AuthenticationClientApi;
 import com.verisec.frejaeid.client.client.util.TestUtil;
-import com.verisec.frejaeid.client.enums.AddressSourceType;
-import com.verisec.frejaeid.client.enums.AddressType;
-import com.verisec.frejaeid.client.enums.TransactionStatus;
-import com.verisec.frejaeid.client.enums.Country;
-import com.verisec.frejaeid.client.enums.FrejaEnvironment;
-import com.verisec.frejaeid.client.enums.FrejaEidErrorCode;
-import com.verisec.frejaeid.client.enums.TransactionContext;
+import com.verisec.frejaeid.client.enums.*;
 import com.verisec.frejaeid.client.exceptions.FrejaEidClientInternalException;
 import com.verisec.frejaeid.client.exceptions.FrejaEidException;
 import com.verisec.frejaeid.client.exceptions.FrejaEidClientPollingException;
@@ -54,7 +48,7 @@ public class AuthenticationClientGetResultTest {
     private static final RequestedAttributes REQUESTED_ATTRIBUTES =
             new RequestedAttributes(BASIC_USER_INFO, CUSTOM_IDENTIFIER, SSN, null, DATE_OF_BIRTH,
                                     RELYING_PARTY_USER_ID, EMAIL_ADDRESS, ORGANISATION_ID, ADDRESSES,
-                                    ALL_EMAIL_ADDRESSES, ALL_PHONE_NUMBERS);
+                                    ALL_EMAIL_ADDRESSES, ALL_PHONE_NUMBERS, RegistrationLevel.BASIC);
     private AuthenticationClientApi authenticationClient;
 
     @Before
@@ -247,11 +241,11 @@ public class AuthenticationClientGetResultTest {
         RequestedAttributes attributes1 =
                 new RequestedAttributes(BASIC_USER_INFO, CUSTOM_IDENTIFIER, SSN, null, DATE_OF_BIRTH,
                                         RELYING_PARTY_USER_ID, EMAIL_ADDRESS, ORGANISATION_ID, ADDRESSES,
-                                        ALL_EMAIL_ADDRESSES, ALL_PHONE_NUMBERS);
+                                        ALL_EMAIL_ADDRESSES, ALL_PHONE_NUMBERS, RegistrationLevel.BASIC);
         AuthenticationResult firstResponse =
                 new AuthenticationResult(REFERENCE, TransactionStatus.STARTED, DETAILS, attributes1);
         RequestedAttributes attributes2 =
-                new RequestedAttributes(null, "test", null, null, null, null, null, null, null, null, null);
+                new RequestedAttributes(null, "test", null, null, null, null, null, null, null, null, null, null);
         AuthenticationResult secondResponse =
                 new AuthenticationResult(REFERENCE, TransactionStatus.DELIVERED_TO_MOBILE, "test", attributes2);
         List<AuthenticationResult> responses = new ArrayList<>();
