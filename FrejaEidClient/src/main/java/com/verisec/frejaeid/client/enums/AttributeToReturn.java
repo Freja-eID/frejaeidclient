@@ -88,7 +88,7 @@ public enum AttributeToReturn {
      */
     ALL_PHONE_NUMBERS("ALL_PHONE_NUMBERS"),
     /**
-     * Current registration level of user.
+     * Current registration level of the user.
      * Corresponds to one of the values of {@linkplain RegistrationLevel}.
      */
     REGISTRATION_LEVEL("REGISTRATION_LEVEL");
