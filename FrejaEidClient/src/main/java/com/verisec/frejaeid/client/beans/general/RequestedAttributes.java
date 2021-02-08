@@ -26,6 +26,8 @@ public class RequestedAttributes {
     private final List<Email> allEmailAddresses;
     private final List<PhoneNumberInfo> allPhoneNumbers;
     private final RegistrationLevel registrationLevel;
+    private final Integer age;
+    private final String personImage;
 
     @JsonCreator
     public RequestedAttributes(@JsonProperty(value = "basicUserInfo") BasicUserInfo basicUserInfo,
@@ -39,7 +41,9 @@ public class RequestedAttributes {
                                @JsonProperty(value = "addresses") List<AddressInfo> addresses,
                                @JsonProperty(value = "allEmailAddresses") List<Email> allEmailAddresses,
                                @JsonProperty(value = "allPhoneNumbers") List<PhoneNumberInfo> allPhoneNumbers,
-                               @JsonProperty(value = "registrationLevel") RegistrationLevel registrationLevel) {
+                               @JsonProperty(value = "registrationLevel") RegistrationLevel registrationLevel,
+                               @JsonProperty(value = "age") Integer age,
+                               @JsonProperty(value = "personImage") String personImage) {
         this.basicUserInfo = basicUserInfo;
         this.customIdentifier = customIdentifier;
         this.ssn = ssn;
@@ -52,6 +56,8 @@ public class RequestedAttributes {
         this.allEmailAddresses = allEmailAddresses;
         this.allPhoneNumbers = allPhoneNumbers;
         this.registrationLevel = registrationLevel;
+        this.age = age;
+        this.personImage = personImage;
     }
 
     public BasicUserInfo getBasicUserInfo() {
@@ -100,6 +106,14 @@ public class RequestedAttributes {
 
     public RegistrationLevel getRegistrationLevel() {
         return registrationLevel;
+    }
+
+    public Integer getAge() {
+        return age;
+    }
+
+    public String getPersonImage() {
+        return personImage;
     }
 
     @Override
@@ -157,6 +171,12 @@ public class RequestedAttributes {
         if (!Objects.equals(this.registrationLevel, other.registrationLevel)) {
             return false;
         }
+        if (!Objects.equals(this.age, other.age)) {
+            return false;
+        }
+        if (!Objects.equals(this.personImage, other.personImage)) {
+            return false;
+        }
         return true;
     }
 
@@ -175,6 +195,8 @@ public class RequestedAttributes {
                 ", allEmailAddresses=" + allEmailAddresses +
                 ", allPhoneNumbers=" + allPhoneNumbers +
                 ", registrationLevel=" + registrationLevel +
+                ", age=" + age +
+                ", personImage=" + personImage +
                 '}';
     }
 }

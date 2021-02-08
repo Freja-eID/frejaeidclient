@@ -23,6 +23,9 @@ import java.util.Map;
  * <br> - {@link #ADDRESSES}
  * <br> - {@link #ALL_EMAIL_ADDRESSES}
  * <br> - {@link #ALL_PHONE_NUMBERS}
+ * <br> - {@link #REGISTRATION_LEVEL}
+ * <br> - {@link #AGE}
+ * <br> - {@link #PERSON_IMAGE}
  */
 public enum AttributeToReturn {
 
@@ -91,7 +94,21 @@ public enum AttributeToReturn {
      * Current registration level of the user.
      * Corresponds to one of the values of {@linkplain RegistrationLevel}.
      */
-    REGISTRATION_LEVEL("REGISTRATION_LEVEL");
+    REGISTRATION_LEVEL("REGISTRATION_LEVEL"),
+    /**
+     * User's age returned as an integer.
+     * Age can be requested only for
+     * {@linkplain MinRegistrationLevel#EXTENDED} and
+     * {@linkplain MinRegistrationLevel#PLUS}.
+     */
+    AGE("AGE"),
+    /**
+     * User's image returned as a Base64 encoded string.
+     * Person image can be requested only for
+     * {@linkplain MinRegistrationLevel#EXTENDED} and
+     * {@linkplain MinRegistrationLevel#PLUS}.
+     */
+    PERSON_IMAGE("PERSON_IMAGE");
 
     private final String name;
 
