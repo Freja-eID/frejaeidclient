@@ -40,6 +40,7 @@ public class InitiateAuthenticationRequestBuildersTest {
         REQUESTED_ATTRIBUTES.add(AttributeToReturn.ALL_EMAIL_ADDRESSES);
         REQUESTED_ATTRIBUTES.add(AttributeToReturn.ALL_PHONE_NUMBERS);
         REQUESTED_ATTRIBUTES.add(AttributeToReturn.REGISTRATION_LEVEL);
+        REQUESTED_ATTRIBUTES.add(AttributeToReturn.AGE);
     }
 
     @Test

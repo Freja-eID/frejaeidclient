@@ -40,11 +40,13 @@ public class SignClientGetResultTest {
                             AddressType.RESIDENTIAL, AddressSourceType.GOVERNMENT_REGISTRY));
     private static final List<Email> ALL_EMAIL_ADDRESSES = Arrays.asList(new Email(EMAIL_ADDRESS));
     private static final List<PhoneNumberInfo> ALL_PHONE_NUMBERS = Arrays.asList(new PhoneNumberInfo(PHONE_NUMBER));
+    private static final Integer AGE = 35;
     private static final RequestedAttributes REQUESTED_ATTRIBUTES =
             new RequestedAttributes(new BasicUserInfo("name", "surname"), "customIdentifier",
                                     SsnUserInfo.create(Country.SWEDEN, "ssn"), "integratorSpecificId", "1987-10-18",
                                     RELYING_PARTY_USER_ID, EMAIL_ADDRESS, ORGANISATION_ID, ADDRESSES,
-                                    ALL_EMAIL_ADDRESSES, ALL_PHONE_NUMBERS, RegistrationLevel.BASIC);
+                                    ALL_EMAIL_ADDRESSES, ALL_PHONE_NUMBERS, RegistrationLevel.EXTENDED, AGE
+            );
     private SignClientApi signClient;
 
     @Before

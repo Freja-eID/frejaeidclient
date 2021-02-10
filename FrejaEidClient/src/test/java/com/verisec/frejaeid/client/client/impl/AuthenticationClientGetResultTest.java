@@ -45,10 +45,12 @@ public class AuthenticationClientGetResultTest {
                             AddressType.RESIDENTIAL, AddressSourceType.GOVERNMENT_REGISTRY));
     private static final List<Email> ALL_EMAIL_ADDRESSES = Arrays.asList(new Email(EMAIL_ADDRESS));
     private static final List<PhoneNumberInfo> ALL_PHONE_NUMBERS = Arrays.asList(new PhoneNumberInfo(PHONE_NUMBER));
+    private static final Integer AGE = 35;
     private static final RequestedAttributes REQUESTED_ATTRIBUTES =
             new RequestedAttributes(BASIC_USER_INFO, CUSTOM_IDENTIFIER, SSN, null, DATE_OF_BIRTH,
                                     RELYING_PARTY_USER_ID, EMAIL_ADDRESS, ORGANISATION_ID, ADDRESSES,
-                                    ALL_EMAIL_ADDRESSES, ALL_PHONE_NUMBERS, RegistrationLevel.BASIC);
+                                    ALL_EMAIL_ADDRESSES, ALL_PHONE_NUMBERS, RegistrationLevel.EXTENDED, AGE
+            );
     private AuthenticationClientApi authenticationClient;
 
     @Before
@@ -241,11 +243,13 @@ public class AuthenticationClientGetResultTest {
         RequestedAttributes attributes1 =
                 new RequestedAttributes(BASIC_USER_INFO, CUSTOM_IDENTIFIER, SSN, null, DATE_OF_BIRTH,
                                         RELYING_PARTY_USER_ID, EMAIL_ADDRESS, ORGANISATION_ID, ADDRESSES,
-                                        ALL_EMAIL_ADDRESSES, ALL_PHONE_NUMBERS, RegistrationLevel.BASIC);
+                                        ALL_EMAIL_ADDRESSES, ALL_PHONE_NUMBERS, RegistrationLevel.EXTENDED, AGE
+                );
         AuthenticationResult firstResponse =
                 new AuthenticationResult(REFERENCE, TransactionStatus.STARTED, DETAILS, attributes1);
         RequestedAttributes attributes2 =
-                new RequestedAttributes(null, "test", null, null, null, null, null, null, null, null, null, null);
+                new RequestedAttributes(null, "test", null, null, null, null, null, null, null, null, null, null,
+                                        null);
         AuthenticationResult secondResponse =
                 new AuthenticationResult(REFERENCE, TransactionStatus.DELIVERED_TO_MOBILE, "test", attributes2);
         List<AuthenticationResult> responses = new ArrayList<>();
