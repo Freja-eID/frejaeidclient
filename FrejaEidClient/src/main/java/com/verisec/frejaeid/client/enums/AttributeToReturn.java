@@ -23,6 +23,8 @@ import java.util.Map;
  * <br> - {@link #ADDRESSES}
  * <br> - {@link #ALL_EMAIL_ADDRESSES}
  * <br> - {@link #ALL_PHONE_NUMBERS}
+ * <br> - {@link #REGISTRATION_LEVEL}
+ * <br> - {@link #AGE}
  */
 public enum AttributeToReturn {
 
@@ -61,7 +63,9 @@ public enum AttributeToReturn {
      */
     RELYING_PARTY_USER_ID("RELYING_PARTY_USER_ID"),
     /**
-     * Primary email address of user.
+     * If relying party has one or more email domains connected to it,
+     * an email address belonging to one of those domains is returned.
+     * Otherwise, the user’s primary email address is returned by default.
      */
     EMAIL_ADDRESS("EMAIL_ADDRESS"),
     /**
@@ -91,7 +95,14 @@ public enum AttributeToReturn {
      * Current registration level of the user.
      * Corresponds to one of the values of {@linkplain RegistrationLevel}.
      */
-    REGISTRATION_LEVEL("REGISTRATION_LEVEL");
+    REGISTRATION_LEVEL("REGISTRATION_LEVEL"),
+    /**
+     * User's age returned as an integer.
+     * Age can be requested only for
+     * {@linkplain MinRegistrationLevel#EXTENDED} and
+     * {@linkplain MinRegistrationLevel#PLUS}.
+     */
+    AGE("AGE");
 
     private final String name;
 
