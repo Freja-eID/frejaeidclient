@@ -63,7 +63,9 @@ public enum AttributeToReturn {
      */
     RELYING_PARTY_USER_ID("RELYING_PARTY_USER_ID"),
     /**
-     * Primary email address of user.
+     * If relying party has one or more email domains connected to it,
+     * an email address belonging to one of those domains is returned.
+     * Otherwise, primary email address of user is returned by default.
      */
     EMAIL_ADDRESS("EMAIL_ADDRESS"),
     /**
