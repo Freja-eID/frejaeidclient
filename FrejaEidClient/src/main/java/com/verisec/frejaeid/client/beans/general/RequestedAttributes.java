@@ -26,6 +26,7 @@ public class RequestedAttributes {
     private final List<Email> allEmailAddresses;
     private final List<PhoneNumberInfo> allPhoneNumbers;
     private final RegistrationLevel registrationLevel;
+    private final Integer age;
 
     @JsonCreator
     public RequestedAttributes(@JsonProperty(value = "basicUserInfo") BasicUserInfo basicUserInfo,
@@ -39,7 +40,8 @@ public class RequestedAttributes {
                                @JsonProperty(value = "addresses") List<AddressInfo> addresses,
                                @JsonProperty(value = "allEmailAddresses") List<Email> allEmailAddresses,
                                @JsonProperty(value = "allPhoneNumbers") List<PhoneNumberInfo> allPhoneNumbers,
-                               @JsonProperty(value = "registrationLevel") RegistrationLevel registrationLevel) {
+                               @JsonProperty(value = "registrationLevel") RegistrationLevel registrationLevel,
+                               @JsonProperty(value = "age") Integer age) {
         this.basicUserInfo = basicUserInfo;
         this.customIdentifier = customIdentifier;
         this.ssn = ssn;
@@ -52,6 +54,7 @@ public class RequestedAttributes {
         this.allEmailAddresses = allEmailAddresses;
         this.allPhoneNumbers = allPhoneNumbers;
         this.registrationLevel = registrationLevel;
+        this.age = age;
     }
 
     public BasicUserInfo getBasicUserInfo() {
@@ -100,6 +103,10 @@ public class RequestedAttributes {
 
     public RegistrationLevel getRegistrationLevel() {
         return registrationLevel;
+    }
+
+    public Integer getAge() {
+        return age;
     }
 
     @Override
@@ -157,6 +164,9 @@ public class RequestedAttributes {
         if (!Objects.equals(this.registrationLevel, other.registrationLevel)) {
             return false;
         }
+        if (!Objects.equals(this.age, other.age)) {
+            return false;
+        }
         return true;
     }
 
@@ -175,6 +185,7 @@ public class RequestedAttributes {
                 ", allEmailAddresses=" + allEmailAddresses +
                 ", allPhoneNumbers=" + allPhoneNumbers +
                 ", registrationLevel=" + registrationLevel +
+                ", age=" + age +
                 '}';
     }
 }
