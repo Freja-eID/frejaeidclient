@@ -27,6 +27,7 @@ public class RequestedAttributes {
     private final List<PhoneNumberInfo> allPhoneNumbers;
     private final RegistrationLevel registrationLevel;
     private final Integer age;
+    private final String greenCertificate;
 
     @JsonCreator
     public RequestedAttributes(@JsonProperty(value = "basicUserInfo") BasicUserInfo basicUserInfo,
@@ -41,7 +42,8 @@ public class RequestedAttributes {
                                @JsonProperty(value = "allEmailAddresses") List<Email> allEmailAddresses,
                                @JsonProperty(value = "allPhoneNumbers") List<PhoneNumberInfo> allPhoneNumbers,
                                @JsonProperty(value = "registrationLevel") RegistrationLevel registrationLevel,
-                               @JsonProperty(value = "age") Integer age) {
+                               @JsonProperty(value = "age") Integer age,
+                               @JsonProperty(value = "greenCertificate") String greenCertificate) {
         this.basicUserInfo = basicUserInfo;
         this.customIdentifier = customIdentifier;
         this.ssn = ssn;
@@ -55,6 +57,7 @@ public class RequestedAttributes {
         this.allPhoneNumbers = allPhoneNumbers;
         this.registrationLevel = registrationLevel;
         this.age = age;
+        this.greenCertificate = greenCertificate;
     }
 
     public BasicUserInfo getBasicUserInfo() {
@@ -109,11 +112,15 @@ public class RequestedAttributes {
         return age;
     }
 
+    public String getGreenCertificate() {
+        return greenCertificate;
+    }
+
     @Override
     public int hashCode() {
         return Objects.hash(basicUserInfo, customIdentifier, ssn, integratorSpecificUserId,
                             dateOfBirth, relyingPartyUserId, emailAddress, organisationIdIdentifier,
-                            addresses, allEmailAddresses, allPhoneNumbers, registrationLevel);
+                            addresses, allEmailAddresses, allPhoneNumbers, registrationLevel, greenCertificate);
     }
 
     @Override
@@ -167,6 +174,9 @@ public class RequestedAttributes {
         if (!Objects.equals(this.age, other.age)) {
             return false;
         }
+        if (!Objects.equals(this.greenCertificate, other.greenCertificate)) {
+            return false;
+        }
         return true;
     }
 
@@ -186,6 +196,7 @@ public class RequestedAttributes {
                 ", allPhoneNumbers=" + allPhoneNumbers +
                 ", registrationLevel=" + registrationLevel +
                 ", age=" + age +
+                ", greenCertificate=" + greenCertificate +
                 '}';
     }
 }

@@ -25,6 +25,7 @@ import java.util.Map;
  * <br> - {@link #ALL_PHONE_NUMBERS}
  * <br> - {@link #REGISTRATION_LEVEL}
  * <br> - {@link #AGE}
+ * <br> - {@link #GREEN_CERTIFICATE}
  */
 public enum AttributeToReturn {
 
@@ -102,7 +103,15 @@ public enum AttributeToReturn {
      * {@linkplain MinRegistrationLevel#EXTENDED} and
      * {@linkplain MinRegistrationLevel#PLUS}.
      */
-    AGE("AGE");
+    AGE("AGE"),
+    /**
+     * Green Certificate (proof that the user has been vaccinated against COVID-19)
+     * returned as a Base45-encoded String
+     * Green Certificate can be requested only for
+     * {@linkplain MinRegistrationLevel#EXTENDED} and
+     * {@linkplain MinRegistrationLevel#PLUS}.
+     */
+    GREEN_CERTIFICATE("GREEN_CERTIFICATE");
 
     private final String name;
 
