@@ -6,8 +6,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Objects;
 
 /**
- * @author veiszec
- **/
+ * GreenCertificate contains proof that the user has been vaccinated against COVID-19,
+ * consisting of the certificate itself given as a Base45-encoded String
+ * and a boolean value which indicates whether it is valid.
+ * It can be requested as attribute.
+ */
 public class GreenCertificate {
 
     private final String certificate;
