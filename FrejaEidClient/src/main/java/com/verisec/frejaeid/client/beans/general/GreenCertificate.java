@@ -27,6 +27,10 @@ public class GreenCertificate {
         return certificate;
     }
 
+    public boolean isValid() {
+        return valid;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
