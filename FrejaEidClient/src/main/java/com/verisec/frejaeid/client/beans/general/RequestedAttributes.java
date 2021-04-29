@@ -27,7 +27,7 @@ public class RequestedAttributes {
     private final List<PhoneNumberInfo> allPhoneNumbers;
     private final RegistrationLevel registrationLevel;
     private final Integer age;
-    private final String greenCertificate;
+    private final GreenCertificate greenCertificate;
 
     @JsonCreator
     public RequestedAttributes(@JsonProperty(value = "basicUserInfo") BasicUserInfo basicUserInfo,
@@ -43,7 +43,7 @@ public class RequestedAttributes {
                                @JsonProperty(value = "allPhoneNumbers") List<PhoneNumberInfo> allPhoneNumbers,
                                @JsonProperty(value = "registrationLevel") RegistrationLevel registrationLevel,
                                @JsonProperty(value = "age") Integer age,
-                               @JsonProperty(value = "greenCertificate") String greenCertificate) {
+                               @JsonProperty(value = "greenCertificate") GreenCertificate greenCertificate) {
         this.basicUserInfo = basicUserInfo;
         this.customIdentifier = customIdentifier;
         this.ssn = ssn;
@@ -112,7 +112,7 @@ public class RequestedAttributes {
         return age;
     }
 
-    public String getGreenCertificate() {
+    public GreenCertificate getGreenCertificate() {
         return greenCertificate;
     }
 

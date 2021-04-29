@@ -43,7 +43,7 @@ public abstract class CommonHttpTest {
     private static final List<Email> ALL_EMAIL_ADDRESSES = Arrays.asList(new Email(EMAIL_ADDRESS));
     private static final List<PhoneNumberInfo> ALL_PHONE_NUMBERS = Arrays.asList(new PhoneNumberInfo(PHONE_NUMBER));
     private static final Integer AGE = 35;
-    protected static final String GREEN_CERTIFICATE = "greenCertificate";
+    protected static final GreenCertificate GREEN_CERTIFICATE = new GreenCertificate("greenCertificate", true);
     protected static final RequestedAttributes REQUESTED_ATTRIBUTES =
             new RequestedAttributes(BASIC_USER_INFO, CUSTOM_IDENTIFIER, SSN_USER_INFO, null, DATE_OF_BIRTH,
                                     RELYING_PARTY_USER_ID, EMAIL_ADDRESS, ORGANISATION_ID, ADDRESSES,

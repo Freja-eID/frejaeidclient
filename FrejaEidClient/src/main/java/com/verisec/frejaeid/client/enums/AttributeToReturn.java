@@ -5,6 +5,7 @@ import com.verisec.frejaeid.client.beans.general.SsnUserInfo;
 import com.verisec.frejaeid.client.beans.general.AddressInfo;
 import com.verisec.frejaeid.client.beans.general.Email;
 import com.verisec.frejaeid.client.beans.general.PhoneNumberInfo;
+import com.verisec.frejaeid.client.beans.general.GreenCertificate;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -106,7 +107,7 @@ public enum AttributeToReturn {
     AGE("AGE"),
     /**
      * Green Certificate (proof that the user has been vaccinated against COVID-19)
-     * returned as a Base45-encoded String
+     * returned as {@linkplain GreenCertificate}
      * Green Certificate can be requested only for
      * {@linkplain MinRegistrationLevel#EXTENDED} and
      * {@linkplain MinRegistrationLevel#PLUS}.
