@@ -43,4 +43,12 @@ public class GreenCertificate {
     public int hashCode() {
         return Objects.hash(certificate, valid);
     }
+
+    @Override
+    public String toString() {
+        return "GreenCertificate{" +
+                "certificate='" + certificate + '\'' +
+                ", valid=" + valid +
+                '}';
+    }
 }
