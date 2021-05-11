@@ -6,6 +6,8 @@ import com.verisec.frejaeid.client.beans.common.RelyingPartyRequest;
 import com.verisec.frejaeid.client.beans.authentication.get.AuthenticationResults;
 import com.verisec.frejaeid.client.beans.authentication.get.AuthenticationResultRequest;
 import com.verisec.frejaeid.client.beans.authentication.get.AuthenticationResult;
+import com.verisec.frejaeid.client.beans.greencertificate.GreenCertificates;
+import com.verisec.frejaeid.client.beans.greencertificate.Vaccine;
 import com.verisec.frejaeid.client.client.api.AuthenticationClientApi;
 import com.verisec.frejaeid.client.client.util.TestUtil;
 import com.verisec.frejaeid.client.enums.*;
@@ -46,12 +48,12 @@ public class AuthenticationClientGetResultTest {
     private static final List<Email> ALL_EMAIL_ADDRESSES = Arrays.asList(new Email(EMAIL_ADDRESS));
     private static final List<PhoneNumberInfo> ALL_PHONE_NUMBERS = Arrays.asList(new PhoneNumberInfo(PHONE_NUMBER));
     private static final Integer AGE = 35;
-    protected static final String GREEN_CERTIFICATE = "greenCertificate";
+    private static final GreenCertificates GREEN_CERTIFICATES =
+            new GreenCertificates(new Vaccine("greenCertificate"), null, null, true);
     private static final RequestedAttributes REQUESTED_ATTRIBUTES =
             new RequestedAttributes(BASIC_USER_INFO, CUSTOM_IDENTIFIER, SSN, null, DATE_OF_BIRTH,
-                                    RELYING_PARTY_USER_ID, EMAIL_ADDRESS, ORGANISATION_ID, ADDRESSES,
-                                    ALL_EMAIL_ADDRESSES, ALL_PHONE_NUMBERS, RegistrationLevel.EXTENDED, AGE,
-                                    GREEN_CERTIFICATE);
+                    RELYING_PARTY_USER_ID, EMAIL_ADDRESS, ORGANISATION_ID, ADDRESSES,
+                    ALL_EMAIL_ADDRESSES, ALL_PHONE_NUMBERS, RegistrationLevel.EXTENDED, AGE, GREEN_CERTIFICATES);
     private AuthenticationClientApi authenticationClient;
 
     @Before
@@ -245,7 +247,7 @@ public class AuthenticationClientGetResultTest {
                 new RequestedAttributes(BASIC_USER_INFO, CUSTOM_IDENTIFIER, SSN, null, DATE_OF_BIRTH,
                                         RELYING_PARTY_USER_ID, EMAIL_ADDRESS, ORGANISATION_ID, ADDRESSES,
                                         ALL_EMAIL_ADDRESSES, ALL_PHONE_NUMBERS, RegistrationLevel.EXTENDED, AGE,
-                                        GREEN_CERTIFICATE);
+                        GREEN_CERTIFICATES);
         AuthenticationResult firstResponse =
                 new AuthenticationResult(REFERENCE, TransactionStatus.STARTED, DETAILS, attributes1);
         RequestedAttributes attributes2 =
