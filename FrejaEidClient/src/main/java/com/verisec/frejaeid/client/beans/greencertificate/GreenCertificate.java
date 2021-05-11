@@ -4,14 +4,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.Objects;
 
-public class Vaccine {
+public abstract class GreenCertificate {
 
     private final String certificate;
 
-    public Vaccine(@JsonProperty(value = "certificate") String certificate) {
+    public GreenCertificate(@JsonProperty(value = "certificate") String certificate) {
         this.certificate = certificate;
     }
-
 
     public String getCertificate() {
         return certificate;
@@ -21,8 +20,8 @@ public class Vaccine {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Vaccine vaccine = (Vaccine) o;
-        return Objects.equals(certificate, vaccine.certificate);
+        GreenCertificate that = (GreenCertificate) o;
+        return Objects.equals(certificate, that.certificate);
     }
 
     @Override
@@ -32,7 +31,7 @@ public class Vaccine {
 
     @Override
     public String toString() {
-        return "Vaccine{" +
+        return "GreenCertificate{" +
                 "certificate='" + certificate + '\'' +
                 '}';
     }

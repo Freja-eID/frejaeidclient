@@ -197,7 +197,7 @@ public class RequestedAttributes {
                 ", allPhoneNumbers=" + allPhoneNumbers +
                 ", registrationLevel=" + registrationLevel +
                 ", age=" + age +
-                ", greenCertificate=" + greenCertificates +
+                ", greenCertificates=" + greenCertificates +
                 '}';
     }
 }

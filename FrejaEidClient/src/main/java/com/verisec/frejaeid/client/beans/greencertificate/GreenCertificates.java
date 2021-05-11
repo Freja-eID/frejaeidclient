@@ -6,23 +6,23 @@ import java.util.Objects;
 
 public class GreenCertificates {
 
-    private final Vaccine vaccine;
+    private final Vaccines vaccines;
     private final Tests tests;
     private final Recovery recovery;
     private final boolean allowed;
 
-    public GreenCertificates(@JsonProperty(value = "vaccine") Vaccine vaccine,
+    public GreenCertificates(@JsonProperty(value = "vaccines") Vaccines vaccines,
                              @JsonProperty(value = "tests") Tests tests,
                              @JsonProperty(value = "recovery") Recovery recovery,
                              @JsonProperty(value = "allowed") boolean allowed) {
-        this.vaccine = vaccine;
+        this.vaccines = vaccines;
         this.tests = tests;
         this.recovery = recovery;
         this.allowed = allowed;
     }
 
-    public Vaccine getVaccine() {
-        return vaccine;
+    public Vaccines getVaccine() {
+        return vaccines;
     }
 
     public Tests getTests() {
@@ -42,19 +42,19 @@ public class GreenCertificates {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         GreenCertificates that = (GreenCertificates) o;
-        return allowed == that.allowed && Objects.equals(vaccine, that.vaccine)
+        return allowed == that.allowed && Objects.equals(vaccines, that.vaccines)
                 && Objects.equals(tests, that.tests) && Objects.equals(recovery, that.recovery);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(vaccine, tests, recovery, allowed);
+        return Objects.hash(vaccines, tests, recovery, allowed);
     }
 
     @Override
     public String toString() {
         return "GreenCertificates{" +
-                "vaccine=" + vaccine +
+                "vaccines=" + vaccines +
                 ", tests=" + tests +
                 ", recovery=" + recovery +
                 ", allowed=" + allowed +

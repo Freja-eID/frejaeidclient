@@ -7,7 +7,7 @@ import com.verisec.frejaeid.client.beans.authentication.get.AuthenticationResult
 import com.verisec.frejaeid.client.beans.authentication.get.AuthenticationResultRequest;
 import com.verisec.frejaeid.client.beans.authentication.get.AuthenticationResult;
 import com.verisec.frejaeid.client.beans.greencertificate.GreenCertificates;
-import com.verisec.frejaeid.client.beans.greencertificate.Vaccine;
+import com.verisec.frejaeid.client.beans.greencertificate.Vaccines;
 import com.verisec.frejaeid.client.client.api.AuthenticationClientApi;
 import com.verisec.frejaeid.client.client.util.TestUtil;
 import com.verisec.frejaeid.client.enums.*;
@@ -49,7 +49,7 @@ public class AuthenticationClientGetResultTest {
     private static final List<PhoneNumberInfo> ALL_PHONE_NUMBERS = Arrays.asList(new PhoneNumberInfo(PHONE_NUMBER));
     private static final Integer AGE = 35;
     private static final GreenCertificates GREEN_CERTIFICATES =
-            new GreenCertificates(new Vaccine("greenCertificate"), null, null, true);
+            new GreenCertificates(new Vaccines("greenCertificate"), null, null, true);
     private static final RequestedAttributes REQUESTED_ATTRIBUTES =
             new RequestedAttributes(BASIC_USER_INFO, CUSTOM_IDENTIFIER, SSN, null, DATE_OF_BIRTH,
                     RELYING_PARTY_USER_ID, EMAIL_ADDRESS, ORGANISATION_ID, ADDRESSES,
