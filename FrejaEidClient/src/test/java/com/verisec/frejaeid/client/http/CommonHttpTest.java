@@ -5,6 +5,8 @@ import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
 import com.verisec.frejaeid.client.beans.common.RelyingPartyRequest;
 import com.verisec.frejaeid.client.beans.general.*;
+import com.verisec.frejaeid.client.beans.greencertificate.GreenCertificates;
+import com.verisec.frejaeid.client.beans.greencertificate.Vaccines;
 import com.verisec.frejaeid.client.enums.*;
 import com.verisec.frejaeid.client.util.JsonService;
 import com.verisec.frejaeid.client.util.RequestTemplate;
@@ -43,12 +45,12 @@ public abstract class CommonHttpTest {
     private static final List<Email> ALL_EMAIL_ADDRESSES = Arrays.asList(new Email(EMAIL_ADDRESS));
     private static final List<PhoneNumberInfo> ALL_PHONE_NUMBERS = Arrays.asList(new PhoneNumberInfo(PHONE_NUMBER));
     private static final Integer AGE = 35;
-    protected static final String GREEN_CERTIFICATE = "greenCertificate";
+    private static final GreenCertificates GREEN_CERTIFICATES =
+            new GreenCertificates(new Vaccines("greenCertificate"), null, null, true);
     protected static final RequestedAttributes REQUESTED_ATTRIBUTES =
             new RequestedAttributes(BASIC_USER_INFO, CUSTOM_IDENTIFIER, SSN_USER_INFO, null, DATE_OF_BIRTH,
-                                    RELYING_PARTY_USER_ID, EMAIL_ADDRESS, ORGANISATION_ID, ADDRESSES,
-                                    ALL_EMAIL_ADDRESSES, ALL_PHONE_NUMBERS, RegistrationLevel.EXTENDED, AGE,
-                                    GREEN_CERTIFICATE);
+                    RELYING_PARTY_USER_ID, EMAIL_ADDRESS, ORGANISATION_ID, ADDRESSES, ALL_EMAIL_ADDRESSES,
+                    ALL_PHONE_NUMBERS, RegistrationLevel.EXTENDED, AGE, GREEN_CERTIFICATES);
     protected static final String POST_PARAMS_DELIMITER = "&";
     protected static final String KEY_VALUE_DELIMITER = "=";
     protected static final int MOCK_SERVICE_PORT = 30665;

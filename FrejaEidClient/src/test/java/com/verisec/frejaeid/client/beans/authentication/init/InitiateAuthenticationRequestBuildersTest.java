@@ -41,7 +41,7 @@ public class InitiateAuthenticationRequestBuildersTest {
         REQUESTED_ATTRIBUTES.add(AttributeToReturn.ALL_PHONE_NUMBERS);
         REQUESTED_ATTRIBUTES.add(AttributeToReturn.REGISTRATION_LEVEL);
         REQUESTED_ATTRIBUTES.add(AttributeToReturn.AGE);
-        REQUESTED_ATTRIBUTES.add(AttributeToReturn.GREEN_CERTIFICATE);
+        REQUESTED_ATTRIBUTES.add(AttributeToReturn.GREEN_CERTIFICATES);
     }
 
     @Test
