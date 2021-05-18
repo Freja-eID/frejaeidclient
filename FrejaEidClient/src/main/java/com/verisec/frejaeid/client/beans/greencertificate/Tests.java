@@ -1,5 +1,8 @@
 package com.verisec.frejaeid.client.beans.greencertificate;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class Tests extends GreenCertificate {
 
     /**
@@ -7,7 +10,8 @@ public class Tests extends GreenCertificate {
      *
      * @param certificate Base45-encoded value of the user's green certificate
      */
-    public Tests(String certificate) {
+    @JsonCreator
+    public Tests(@JsonProperty(value = "certificate") String certificate) {
         super(certificate);
     }
 }
