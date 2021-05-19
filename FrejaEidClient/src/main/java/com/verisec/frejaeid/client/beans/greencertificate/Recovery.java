@@ -14,4 +14,9 @@ public class Recovery extends GreenCertificate {
     public Recovery(@JsonProperty(value = "certificate") String certificate) {
         super(certificate);
     }
+
+    @Override
+    public String toString() {
+        return "Recovery{" + super.toString() + "}";
+    }
 }

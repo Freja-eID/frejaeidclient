@@ -14,4 +14,9 @@ public class Vaccines extends GreenCertificate {
     public Vaccines(@JsonProperty(value = "certificate") String certificate) {
         super(certificate);
     }
+
+    @Override
+    public String toString() {
+        return "Vaccines{" + super.toString() + "}";
+    }
 }

@@ -14,4 +14,9 @@ public class Tests extends GreenCertificate {
     public Tests(@JsonProperty(value = "certificate") String certificate) {
         super(certificate);
     }
+
+    @Override
+    public String toString() {
+        return "Tests{" + super.toString() + "}";
+    }
 }
