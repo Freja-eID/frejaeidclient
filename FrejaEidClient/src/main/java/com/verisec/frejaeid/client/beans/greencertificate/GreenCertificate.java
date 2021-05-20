@@ -1,5 +1,6 @@
 package com.verisec.frejaeid.client.beans.greencertificate;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.Objects;
@@ -8,6 +9,7 @@ public abstract class GreenCertificate {
 
     private final String certificate;
 
+    @JsonCreator
     public GreenCertificate(@JsonProperty(value = "certificate") String certificate) {
         this.certificate = certificate;
     }
