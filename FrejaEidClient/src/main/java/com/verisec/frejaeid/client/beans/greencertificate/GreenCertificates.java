@@ -1,5 +1,6 @@
 package com.verisec.frejaeid.client.beans.greencertificate;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.Objects;
@@ -11,6 +12,7 @@ public class GreenCertificates {
     private final Recovery recovery;
     private final boolean allowed;
 
+    @JsonCreator
     public GreenCertificates(@JsonProperty(value = "vaccines") Vaccines vaccines,
                              @JsonProperty(value = "tests") Tests tests,
                              @JsonProperty(value = "recovery") Recovery recovery,
