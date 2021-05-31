@@ -5,7 +5,7 @@ import com.verisec.frejaeid.client.beans.general.SsnUserInfo;
 import com.verisec.frejaeid.client.beans.general.AddressInfo;
 import com.verisec.frejaeid.client.beans.general.Email;
 import com.verisec.frejaeid.client.beans.general.PhoneNumberInfo;
-import com.verisec.frejaeid.client.beans.greencertificate.GreenCertificates;
+import com.verisec.frejaeid.client.beans.covidcertificate.CovidCertificates;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -26,7 +26,7 @@ import java.util.Map;
  * <br> - {@link #ALL_PHONE_NUMBERS}
  * <br> - {@link #REGISTRATION_LEVEL}
  * <br> - {@link #AGE}
- * <br> - {@link #GREEN_CERTIFICATES}
+ * <br> - {@link #COVID_CERTIFICATES}
  */
 public enum AttributeToReturn {
 
@@ -108,12 +108,12 @@ public enum AttributeToReturn {
     /**
      * Proof that the user has been vaccinated against COVID-19,
      * received a negative test result or recovered from COVID-19,
-     * returned as {@linkplain GreenCertificates}.
-     * Green Certificate can be requested only for
+     * returned as {@linkplain CovidCertificates}.
+     * Covid Certificates can be requested only for
      * {@linkplain MinRegistrationLevel#EXTENDED} and
      * {@linkplain MinRegistrationLevel#PLUS}.
      */
-    GREEN_CERTIFICATES("GREEN_CERTIFICATES");
+    COVID_CERTIFICATES("COVID_CERTIFICATES");
 
     private final String name;
 

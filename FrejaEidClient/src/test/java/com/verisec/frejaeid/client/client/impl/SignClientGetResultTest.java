@@ -1,9 +1,9 @@
 package com.verisec.frejaeid.client.client.impl;
 
+import com.verisec.frejaeid.client.beans.covidcertificate.CovidCertificates;
 import com.verisec.frejaeid.client.beans.general.*;
 import com.verisec.frejaeid.client.beans.common.RelyingPartyRequest;
-import com.verisec.frejaeid.client.beans.greencertificate.GreenCertificates;
-import com.verisec.frejaeid.client.beans.greencertificate.Vaccines;
+import com.verisec.frejaeid.client.beans.covidcertificate.Vaccines;
 import com.verisec.frejaeid.client.beans.sign.get.SignResult;
 import com.verisec.frejaeid.client.beans.sign.get.SignResultRequest;
 import com.verisec.frejaeid.client.beans.sign.get.SignResultsRequest;
@@ -43,13 +43,13 @@ public class SignClientGetResultTest {
     private static final List<Email> ALL_EMAIL_ADDRESSES = Arrays.asList(new Email(EMAIL_ADDRESS));
     private static final List<PhoneNumberInfo> ALL_PHONE_NUMBERS = Arrays.asList(new PhoneNumberInfo(PHONE_NUMBER));
     private static final Integer AGE = 35;
-    protected static final GreenCertificates GREEN_CERTIFICATES =
-            new GreenCertificates(new Vaccines("greenCertificate"), null, null, true);
+    protected static final CovidCertificates COVID_CERTIFICATES =
+            new CovidCertificates(new Vaccines("covidCertificate"), null, null, true);
     private static final RequestedAttributes REQUESTED_ATTRIBUTES =
             new RequestedAttributes(new BasicUserInfo("name", "surname"), "customIdentifier",
                     SsnUserInfo.create(Country.SWEDEN, "ssn"), "integratorSpecificId", "1987-10-18",
                     RELYING_PARTY_USER_ID, EMAIL_ADDRESS, ORGANISATION_ID, ADDRESSES, ALL_EMAIL_ADDRESSES,
-                    ALL_PHONE_NUMBERS, RegistrationLevel.EXTENDED, AGE, GREEN_CERTIFICATES);
+                    ALL_PHONE_NUMBERS, RegistrationLevel.EXTENDED, AGE, COVID_CERTIFICATES);
     private SignClientApi signClient;
 
     @Before

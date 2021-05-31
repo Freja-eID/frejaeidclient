@@ -2,7 +2,7 @@ package com.verisec.frejaeid.client.beans.general;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.verisec.frejaeid.client.beans.greencertificate.GreenCertificates;
+import com.verisec.frejaeid.client.beans.covidcertificate.CovidCertificates;
 import com.verisec.frejaeid.client.enums.RegistrationLevel;
 
 import java.util.List;
@@ -28,7 +28,7 @@ public class RequestedAttributes {
     private final List<PhoneNumberInfo> allPhoneNumbers;
     private final RegistrationLevel registrationLevel;
     private final Integer age;
-    private final GreenCertificates greenCertificates;
+    private final CovidCertificates covidCertificates;
 
     @JsonCreator
     public RequestedAttributes(@JsonProperty(value = "basicUserInfo") BasicUserInfo basicUserInfo,
@@ -44,7 +44,7 @@ public class RequestedAttributes {
                                @JsonProperty(value = "allPhoneNumbers") List<PhoneNumberInfo> allPhoneNumbers,
                                @JsonProperty(value = "registrationLevel") RegistrationLevel registrationLevel,
                                @JsonProperty(value = "age") Integer age,
-                               @JsonProperty(value = "greenCertificates") GreenCertificates greenCertificates) {
+                               @JsonProperty(value = "covidCertificates") CovidCertificates covidCertificates) {
         this.basicUserInfo = basicUserInfo;
         this.customIdentifier = customIdentifier;
         this.ssn = ssn;
@@ -58,7 +58,7 @@ public class RequestedAttributes {
         this.allPhoneNumbers = allPhoneNumbers;
         this.registrationLevel = registrationLevel;
         this.age = age;
-        this.greenCertificates = greenCertificates;
+        this.covidCertificates = covidCertificates;
     }
 
     public BasicUserInfo getBasicUserInfo() {
@@ -113,15 +113,15 @@ public class RequestedAttributes {
         return age;
     }
 
-    public GreenCertificates getGreenCertificates() {
-        return greenCertificates;
+    public CovidCertificates getCovidCertificates() {
+        return covidCertificates;
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(basicUserInfo, customIdentifier, ssn, integratorSpecificUserId,
                             dateOfBirth, relyingPartyUserId, emailAddress, organisationIdIdentifier,
-                            addresses, allEmailAddresses, allPhoneNumbers, registrationLevel, greenCertificates);
+                            addresses, allEmailAddresses, allPhoneNumbers, registrationLevel, covidCertificates);
     }
 
     @Override
@@ -175,7 +175,7 @@ public class RequestedAttributes {
         if (!Objects.equals(this.age, other.age)) {
             return false;
         }
-        if (!Objects.equals(this.greenCertificates, other.greenCertificates)) {
+        if (!Objects.equals(this.covidCertificates, other.covidCertificates)) {
             return false;
         }
         return true;
@@ -197,7 +197,7 @@ public class RequestedAttributes {
                 ", allPhoneNumbers=" + allPhoneNumbers +
                 ", registrationLevel=" + registrationLevel +
                 ", age=" + age +
-                ", greenCertificates=" + greenCertificates +
+                ", covidCertificates=" + covidCertificates +
                 '}';
     }
 }
