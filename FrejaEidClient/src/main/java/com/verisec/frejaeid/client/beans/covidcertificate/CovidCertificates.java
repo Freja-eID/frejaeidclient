@@ -1,11 +1,11 @@
-package com.verisec.frejaeid.client.beans.greencertificate;
+package com.verisec.frejaeid.client.beans.covidcertificate;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.Objects;
 
-public class GreenCertificates {
+public class CovidCertificates {
 
     private final Vaccines vaccines;
     private final Tests tests;
@@ -13,7 +13,7 @@ public class GreenCertificates {
     private final boolean allowed;
 
     @JsonCreator
-    public GreenCertificates(@JsonProperty(value = "vaccines") Vaccines vaccines,
+    public CovidCertificates(@JsonProperty(value = "vaccines") Vaccines vaccines,
                              @JsonProperty(value = "tests") Tests tests,
                              @JsonProperty(value = "recovery") Recovery recovery,
                              @JsonProperty(value = "allowed") boolean allowed) {
@@ -23,7 +23,7 @@ public class GreenCertificates {
         this.allowed = allowed;
     }
 
-    public Vaccines getVaccine() {
+    public Vaccines getVaccines() {
         return vaccines;
     }
 
@@ -43,7 +43,7 @@ public class GreenCertificates {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        GreenCertificates that = (GreenCertificates) o;
+        CovidCertificates that = (CovidCertificates) o;
         return allowed == that.allowed && Objects.equals(vaccines, that.vaccines)
                 && Objects.equals(tests, that.tests) && Objects.equals(recovery, that.recovery);
     }
@@ -55,7 +55,7 @@ public class GreenCertificates {
 
     @Override
     public String toString() {
-        return "GreenCertificates{" +
+        return "CovidCertificates{" +
                 "vaccines=" + vaccines +
                 ", tests=" + tests +
                 ", recovery=" + recovery +

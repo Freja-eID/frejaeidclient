@@ -1,16 +1,16 @@
-package com.verisec.frejaeid.client.beans.greencertificate;
+package com.verisec.frejaeid.client.beans.covidcertificate;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.Objects;
 
-public abstract class GreenCertificate {
+public abstract class CovidCertificate {
 
     private final String certificate;
 
     @JsonCreator
-    public GreenCertificate(@JsonProperty(value = "certificate") String certificate) {
+    public CovidCertificate(@JsonProperty(value = "certificate") String certificate) {
         this.certificate = certificate;
     }
 
@@ -22,7 +22,7 @@ public abstract class GreenCertificate {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        GreenCertificate that = (GreenCertificate) o;
+        CovidCertificate that = (CovidCertificate) o;
         return Objects.equals(certificate, that.certificate);
     }
 
@@ -33,7 +33,7 @@ public abstract class GreenCertificate {
 
     @Override
     public String toString() {
-        return "GreenCertificate{" +
+        return "CovidCertificate{" +
                 "certificate='" + certificate + '\'' +
                 '}';
     }
