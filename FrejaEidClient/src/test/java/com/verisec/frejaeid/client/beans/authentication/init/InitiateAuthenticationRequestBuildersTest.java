@@ -24,6 +24,7 @@ public class InitiateAuthenticationRequestBuildersTest {
     private static final MinRegistrationLevel REGISTRATION_STATE = MinRegistrationLevel.EXTENDED;
     private static final String RELYING_PARTY_ID = "relyingPartyId";
     private static final String ORGANISATION_ID = "orgId";
+    private static final String ORG_ID_ISSUER = "orgIdIssuer";
     private static final Set<AttributeToReturn> REQUESTED_ATTRIBUTES = new TreeSet<>();
 
     @BeforeClass
@@ -47,7 +48,7 @@ public class InitiateAuthenticationRequestBuildersTest {
     @Test
     public void createDefaultEmailRequest() {
         InitiateAuthenticationRequest expectedInitiateAuthenticationRequest =
-                new InitiateAuthenticationRequest(UserInfoType.EMAIL, EMAIL, MinRegistrationLevel.BASIC, null, null);
+                new InitiateAuthenticationRequest(UserInfoType.EMAIL, EMAIL, MinRegistrationLevel.BASIC, null, null, null);
         InitiateAuthenticationRequest initiateAuthenticationRequest =
                 InitiateAuthenticationRequest.createDefaultWithEmail(EMAIL);
         Assert.assertEquals(expectedInitiateAuthenticationRequest, initiateAuthenticationRequest);
@@ -57,7 +58,7 @@ public class InitiateAuthenticationRequestBuildersTest {
     public void createDefaultSsnRequest() throws FrejaEidClientInternalException {
         InitiateAuthenticationRequest expectedInitiateAuthenticationRequest =
                 new InitiateAuthenticationRequest(UserInfoType.SSN, UserInfoUtil.convertSsnUserInfo(SSN_USER_INFO),
-                                                  MinRegistrationLevel.BASIC, null, null);
+                                                  MinRegistrationLevel.BASIC, null, null, null);
         InitiateAuthenticationRequest initiateAuthenticationRequest =
                 InitiateAuthenticationRequest.createDefaultWithSsn(SSN_USER_INFO);
         Assert.assertEquals(expectedInitiateAuthenticationRequest, initiateAuthenticationRequest);
@@ -67,12 +68,13 @@ public class InitiateAuthenticationRequestBuildersTest {
     public void createCustomRequest_userInfoTypeEmail() {
         InitiateAuthenticationRequest expectedInitiateAuthenticationRequest =
                 new InitiateAuthenticationRequest(UserInfoType.EMAIL, EMAIL, MinRegistrationLevel.EXTENDED,
-                                                  REQUESTED_ATTRIBUTES, RELYING_PARTY_ID);
+                                                  REQUESTED_ATTRIBUTES, RELYING_PARTY_ID, ORG_ID_ISSUER);
         InitiateAuthenticationRequest initiateAuthenticationRequest = InitiateAuthenticationRequest.createCustom()
                 .setEmail(EMAIL)
                 .setMinRegistrationLevel(REGISTRATION_STATE)
                 .setAttributesToReturn(AttributeToReturn.values())
                 .setRelyingPartyId(RELYING_PARTY_ID)
+                .setOrgIdIssuer(ORG_ID_ISSUER)
                 .build();
         Assert.assertEquals(expectedInitiateAuthenticationRequest, initiateAuthenticationRequest);
     }
@@ -81,11 +83,12 @@ public class InitiateAuthenticationRequestBuildersTest {
     public void createCustomRequest_userInfoTypeEmail_defaultRegistrationState() {
         InitiateAuthenticationRequest expectedInitiateAuthenticationRequest =
                 new InitiateAuthenticationRequest(UserInfoType.EMAIL, EMAIL, MinRegistrationLevel.BASIC,
-                                                  REQUESTED_ATTRIBUTES, RELYING_PARTY_ID);
+                                                  REQUESTED_ATTRIBUTES, RELYING_PARTY_ID, ORG_ID_ISSUER);
         InitiateAuthenticationRequest initiateAuthenticationRequest = InitiateAuthenticationRequest.createCustom()
                 .setEmail(EMAIL)
                 .setAttributesToReturn(AttributeToReturn.values())
                 .setRelyingPartyId(RELYING_PARTY_ID)
+                .setOrgIdIssuer(ORG_ID_ISSUER)
                 .build();
         Assert.assertEquals(expectedInitiateAuthenticationRequest, initiateAuthenticationRequest);
     }
@@ -95,12 +98,13 @@ public class InitiateAuthenticationRequestBuildersTest {
         InitiateAuthenticationRequest expectedInitiateAuthenticationRequest =
                 new InitiateAuthenticationRequest(UserInfoType.SSN, UserInfoUtil.convertSsnUserInfo(SSN_USER_INFO),
                                                   MinRegistrationLevel.EXTENDED, REQUESTED_ATTRIBUTES,
-                                                  RELYING_PARTY_ID);
+                                                  RELYING_PARTY_ID, ORG_ID_ISSUER);
         InitiateAuthenticationRequest initiateAuthenticationRequest = InitiateAuthenticationRequest.createCustom()
                 .setSsn(SSN_USER_INFO)
                 .setAttributesToReturn(AttributeToReturn.values())
                 .setMinRegistrationLevel(REGISTRATION_STATE)
                 .setRelyingPartyId(RELYING_PARTY_ID)
+                .setOrgIdIssuer(ORG_ID_ISSUER)
                 .build();
         Assert.assertEquals(expectedInitiateAuthenticationRequest, initiateAuthenticationRequest);
     }
@@ -109,12 +113,13 @@ public class InitiateAuthenticationRequestBuildersTest {
     public void createCustomRequest_userInfoTypePhoneNumber() {
         InitiateAuthenticationRequest expectedInitiateAuthenticationRequest =
                 new InitiateAuthenticationRequest(UserInfoType.PHONE, PHONE_NUMBER, REGISTRATION_STATE,
-                                                  REQUESTED_ATTRIBUTES, RELYING_PARTY_ID);
+                                                  REQUESTED_ATTRIBUTES, RELYING_PARTY_ID, ORG_ID_ISSUER);
         InitiateAuthenticationRequest initiateAuthenticationRequest = InitiateAuthenticationRequest.createCustom()
                 .setPhoneNumber(PHONE_NUMBER)
                 .setAttributesToReturn(AttributeToReturn.values())
                 .setMinRegistrationLevel(REGISTRATION_STATE)
                 .setRelyingPartyId(RELYING_PARTY_ID)
+                .setOrgIdIssuer(ORG_ID_ISSUER)
                 .build();
         Assert.assertEquals(expectedInitiateAuthenticationRequest, initiateAuthenticationRequest);
     }
@@ -123,12 +128,13 @@ public class InitiateAuthenticationRequestBuildersTest {
     public void createCustomRequest_userInfoTypeInferred() {
         InitiateAuthenticationRequest expectedInitiateAuthenticationRequest =
                 new InitiateAuthenticationRequest(UserInfoType.INFERRED, INFERRED_USER_INFO, REGISTRATION_STATE,
-                                                  REQUESTED_ATTRIBUTES, RELYING_PARTY_ID);
+                                                  REQUESTED_ATTRIBUTES, RELYING_PARTY_ID, ORG_ID_ISSUER);
         InitiateAuthenticationRequest initiateAuthenticationRequest = InitiateAuthenticationRequest.createCustom()
                 .setInferred()
                 .setAttributesToReturn(AttributeToReturn.values())
                 .setMinRegistrationLevel(REGISTRATION_STATE)
                 .setRelyingPartyId(RELYING_PARTY_ID)
+                .setOrgIdIssuer(ORG_ID_ISSUER)
                 .build();
         Assert.assertEquals(expectedInitiateAuthenticationRequest, initiateAuthenticationRequest);
     }
@@ -137,12 +143,14 @@ public class InitiateAuthenticationRequestBuildersTest {
     public void createCustomRequest_minRegistrationLevelAndRelyingPartyIdNull() {
         InitiateAuthenticationRequest expectedInitiateAuthenticationRequest =
                 new InitiateAuthenticationRequest(UserInfoType.INFERRED, INFERRED_USER_INFO,
-                                                  MinRegistrationLevel.BASIC, REQUESTED_ATTRIBUTES, null);
+                                                  MinRegistrationLevel.BASIC, REQUESTED_ATTRIBUTES, null,
+                                                  ORG_ID_ISSUER);
         InitiateAuthenticationRequest initiateAuthenticationRequest = InitiateAuthenticationRequest.createCustom()
                 .setInferred()
                 .setAttributesToReturn(AttributeToReturn.values())
                 .setMinRegistrationLevel(null)
                 .setRelyingPartyId(null)
+                .setOrgIdIssuer(ORG_ID_ISSUER)
                 .build();
         Assert.assertEquals(expectedInitiateAuthenticationRequest, initiateAuthenticationRequest);
     }
@@ -151,12 +159,29 @@ public class InitiateAuthenticationRequestBuildersTest {
     public void createCustomRequest_userInfoOrganisationId() {
         InitiateAuthenticationRequest expectedInitiateAuthenticationRequest =
                 new InitiateAuthenticationRequest(UserInfoType.ORG_ID, ORGANISATION_ID, MinRegistrationLevel.EXTENDED,
-                                                  REQUESTED_ATTRIBUTES, RELYING_PARTY_ID);
+                                                  REQUESTED_ATTRIBUTES, RELYING_PARTY_ID, ORG_ID_ISSUER);
         InitiateAuthenticationRequest initiateAuthenticationRequest = InitiateAuthenticationRequest.createCustom()
                 .setOrganisationId(ORGANISATION_ID)
                 .setAttributesToReturn(AttributeToReturn.values())
                 .setMinRegistrationLevel(REGISTRATION_STATE)
                 .setRelyingPartyId(RELYING_PARTY_ID)
+                .setOrgIdIssuer(ORG_ID_ISSUER)
+                .build();
+        Assert.assertEquals(expectedInitiateAuthenticationRequest, initiateAuthenticationRequest);
+    }
+
+    @Test
+    public void createCustomRequest_orgIdIssuerNull() {
+        InitiateAuthenticationRequest expectedInitiateAuthenticationRequest =
+                new InitiateAuthenticationRequest(UserInfoType.INFERRED, INFERRED_USER_INFO,
+                                                  MinRegistrationLevel.BASIC, REQUESTED_ATTRIBUTES, null,
+                                                  null);
+        InitiateAuthenticationRequest initiateAuthenticationRequest = InitiateAuthenticationRequest.createCustom()
+                .setInferred()
+                .setAttributesToReturn(AttributeToReturn.values())
+                .setMinRegistrationLevel(null)
+                .setRelyingPartyId(null)
+                .setOrgIdIssuer(null)
                 .build();
         Assert.assertEquals(expectedInitiateAuthenticationRequest, initiateAuthenticationRequest);
     }

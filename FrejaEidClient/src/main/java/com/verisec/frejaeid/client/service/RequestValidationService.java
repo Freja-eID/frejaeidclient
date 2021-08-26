@@ -11,10 +11,7 @@ import com.verisec.frejaeid.client.beans.organisationid.init.InitiateAddOrganisa
 import com.verisec.frejaeid.client.beans.sign.init.InitiateSignRequest;
 import com.verisec.frejaeid.client.beans.usermanagement.customidentifier.delete.DeleteCustomIdentifierRequest;
 import com.verisec.frejaeid.client.beans.usermanagement.customidentifier.set.SetCustomIdentifierRequest;
-import com.verisec.frejaeid.client.enums.AttributeToReturn;
-import com.verisec.frejaeid.client.enums.MinRegistrationLevel;
-import com.verisec.frejaeid.client.enums.TransactionContext;
-import com.verisec.frejaeid.client.enums.UserInfoType;
+import com.verisec.frejaeid.client.enums.*;
 import com.verisec.frejaeid.client.exceptions.FrejaEidClientInternalException;
 
 import java.util.Set;
@@ -32,6 +29,7 @@ public class RequestValidationService {
         validateRequestedAttributes(initiateAuthenticationRequest.getAttributesToReturn());
         validateRegistrationState(initiateAuthenticationRequest.getMinRegistrationLevel(), transactionContext);
         validateRelyingPartyIdIsEmpty(initiateAuthenticationRequest.getRelyingPartyId());
+        validateOrgIdIssuer(initiateAuthenticationRequest.getOrgIdIssuer());
     }
 
     public <T extends ResultRequest> void validateResultRequest(T getOneResultRequest)
@@ -75,6 +73,7 @@ public class RequestValidationService {
         }
         validateRegistrationState(initiateSignRequest.getMinRegistrationLevel(), transactionContext);
         validateRelyingPartyIdIsEmpty(initiateSignRequest.getRelyingPartyId());
+        validateOrgIdIssuer(initiateSignRequest.getOrgIdIssuer());
     }
 
     public void validateSetCustomIDentifierRequest(SetCustomIdentifierRequest setCustomIdentifierRequest)
@@ -185,6 +184,14 @@ public class RequestValidationService {
     private void validateIdentifier(String identifier) throws FrejaEidClientInternalException {
         if (StringUtils.isBlank(identifier)) {
             throw new FrejaEidClientInternalException("Identifier cannot be null or empty.");
+        }
+    }
+
+    private void validateOrgIdIssuer(String orgIdIssuer) throws FrejaEidClientInternalException {
+        if(!StringUtils.isEmpty(orgIdIssuer) && !orgIdIssuer.equalsIgnoreCase(OrgIdIssuer.ANY.getName())){
+            //@STOP check error message
+            throw new FrejaEidClientInternalException("OrgIdIssuer unsupported value. " +
+                                                              "OrgIdIssuer must be null/empty or <ANY>");
         }
     }
 
