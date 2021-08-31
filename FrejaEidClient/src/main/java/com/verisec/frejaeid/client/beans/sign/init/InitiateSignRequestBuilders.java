@@ -205,7 +205,7 @@ public class InitiateSignRequestBuilders {
          * another Relying Party</b>
          *
          * @param orgIdIssuer specifies the relying party ID of the
-         *                    organisation which issued the organization ID.
+         *                    organisation which issued the organisation ID.
          *
          * @return request builder
          */
