@@ -30,6 +30,7 @@ public class InitiateSignRequest implements RelyingPartyRequest {
     private final SignatureType signatureType;
     private final Set<AttributeToReturn> attributesToReturn;
     private final String relyingPartyId;
+    private final String orgIdIssuer;
 
     /**
      * Returns instance of {@linkplain InitiateSignRequest} with:
@@ -49,7 +50,7 @@ public class InitiateSignRequest implements RelyingPartyRequest {
     public static InitiateSignRequest createDefaultWithEmail(String email, String title, String text) {
         return new InitiateSignRequest(UserInfoType.EMAIL, email, MinRegistrationLevel.PLUS, title, null, null,
                                        DataToSignType.SIMPLE_UTF8_TEXT, DataToSign.create(text), SignatureType.SIMPLE,
-                                       null, null);
+                                       null, null, null);
     }
 
     /**
@@ -74,7 +75,7 @@ public class InitiateSignRequest implements RelyingPartyRequest {
             throws FrejaEidClientInternalException {
         return new InitiateSignRequest(UserInfoType.SSN, UserInfoUtil.convertSsnUserInfo(ssnUserInfo),
                                        MinRegistrationLevel.PLUS, title, null, null, DataToSignType.SIMPLE_UTF8_TEXT,
-                                       DataToSign.create(text), SignatureType.SIMPLE, null, null);
+                                       DataToSign.create(text), SignatureType.SIMPLE, null, null, null);
     }
 
     /**
@@ -98,7 +99,8 @@ public class InitiateSignRequest implements RelyingPartyRequest {
                         @JsonProperty(value = "dataToSign") DataToSign dataToSign,
                         @JsonProperty(value = "signatureType") SignatureType signatureType,
                         @JsonProperty(value = "attributesToReturn") Set<AttributeToReturn> attributesToReturn,
-                        @JsonProperty(value = "relyingPartyId") String relyingPartyId) {
+                        @JsonProperty(value = "relyingPartyId") String relyingPartyId,
+                        @JsonProperty(value = "orgIdIssuer") String orgIdIssuer) {
         this.userInfoType = userInfoType;
         this.userInfo = userInfo;
         this.title = title;
@@ -110,6 +112,7 @@ public class InitiateSignRequest implements RelyingPartyRequest {
         this.signatureType = signatureType;
         this.attributesToReturn = attributesToReturn;
         this.relyingPartyId = relyingPartyId;
+        this.orgIdIssuer = orgIdIssuer;
     }
 
     public UserInfoType getUserInfoType() {
@@ -157,10 +160,12 @@ public class InitiateSignRequest implements RelyingPartyRequest {
         return attributesToReturn;
     }
 
+    public String getOrgIdIssuer() { return orgIdIssuer; }
+
     @Override
     public int hashCode() {
         return Objects.hash(userInfoType, userInfo, title, minRegistrationLevel, pushNotification, expiry,
-                            dataToSignType, dataToSign, signatureType, relyingPartyId);
+                            dataToSignType, dataToSign, signatureType, relyingPartyId, orgIdIssuer);
     }
 
     @Override
@@ -208,6 +213,9 @@ public class InitiateSignRequest implements RelyingPartyRequest {
         if (!Objects.equals(this.attributesToReturn, other.attributesToReturn)) {
             return false;
         }
+        if (!Objects.equals(this.orgIdIssuer, other.orgIdIssuer)) {
+            return false;
+        }
         return true;
     }
 
@@ -216,7 +224,8 @@ public class InitiateSignRequest implements RelyingPartyRequest {
         return "InitiateSignRequest{" + "userInfoType=" + userInfoType + ", userInfo=" + userInfo + ", title=" + title
                 + ", minRegistrationLevel=" + minRegistrationLevel + ", pushNotification=" + pushNotification +
                 ", expiry=" + expiry + ", dataToSignType=" + dataToSignType + ", dataToSign=" + dataToSign +
-                ", signatureType=" + signatureType + ", attributesToReturn=" + attributesToReturn + '}';
+                ", signatureType=" + signatureType + ", attributesToReturn=" + attributesToReturn +
+                ", orgIdIssuer=" + orgIdIssuer + '}';
     }
 
 }
