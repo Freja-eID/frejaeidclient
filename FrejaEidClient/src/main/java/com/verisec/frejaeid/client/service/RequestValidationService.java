@@ -189,7 +189,6 @@ public class RequestValidationService {
 
     private void validateOrgIdIssuer(String orgIdIssuer) throws FrejaEidClientInternalException {
         if(!StringUtils.isEmpty(orgIdIssuer) && !orgIdIssuer.equalsIgnoreCase(OrgIdIssuer.ANY.getName())){
-            //@STOP check error message
             throw new FrejaEidClientInternalException("OrgIdIssuer unsupported value. " +
                                                               "OrgIdIssuer must be null/empty or <ANY>");
         }
