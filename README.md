@@ -38,7 +38,7 @@ To add a dependency on Freja eID Client using Maven, use the following:
 <dependency>
     <groupId>com.verisec.frejaeid</groupId>
     <artifactId>FrejaEidClient</artifactId>
-    <version>2.8.0</version>
+    <version>2.9.3</version>
 </dependency>
 ```
 

@@ -86,6 +86,7 @@ public class InitiateAuthenticationRequestBuilders {
         private MinRegistrationLevel minRegistrationLevel = MinRegistrationLevel.BASIC;
         private Set<AttributeToReturn> attributesToReturn = null;
         private String relyingPartyId = null;
+        private String orgIdIssuer = null;
 
         private SetOptionalParamsBuilder(UserInfoType userInfoType, String userInfo) {
             this.userInfoType = userInfoType;
@@ -137,9 +138,24 @@ public class InitiateAuthenticationRequestBuilders {
             return this;
         }
 
+        /**
+         * <b>OrgIdIssuer is used when requesting an Organisation ID set by
+         * another Relying Party</b>
+         *
+         * @param orgIdIssuer specifies the relying party ID of the
+         *                    organisation which issued the organisation ID.
+         *
+         * @return request builder
+         */
+        public SetOptionalParamsBuilder setOrgIdIssuer(String orgIdIssuer) {
+            this.orgIdIssuer = orgIdIssuer;
+            return this;
+        }
+
+
         public InitiateAuthenticationRequest build() {
             return new InitiateAuthenticationRequest(userInfoType, userInfo, minRegistrationLevel, attributesToReturn,
-                                                     relyingPartyId);
+                                                     relyingPartyId, orgIdIssuer);
         }
 
     }

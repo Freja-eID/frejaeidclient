@@ -45,6 +45,7 @@ public class RequestValidationServiceTest {
     private static final String EMAIL = "email";
     private static final String PHONE_NUM = "phoneNum";
     private static final String REFERENCE = "reference";
+    private static final String ORG_ID_ISSUER = "orgIdIssuer";
 
     private static AuthenticationClientApi authenticationClient;
     private static SignClientApi signClient;
@@ -223,6 +224,18 @@ public class RequestValidationServiceTest {
             Assert.fail("Test should throw exception!");
         } catch (FrejaEidClientInternalException ex) {
             Assert.assertEquals("UserInfoType ORG ID cannot be used in personal context.", ex.getLocalizedMessage());
+        }
+    }
+
+    @Test
+    public void initAuth_orgIdIssuerWrongValue() throws FrejaEidException {
+        try {
+            authenticationClient.initiate(InitiateAuthenticationRequest.createCustom().setEmail(EMAIL)
+                                                  .setOrgIdIssuer(ORG_ID_ISSUER).build());
+            Assert.fail("Test should throw exception!");
+        } catch (FrejaEidClientInternalException ex) {
+            Assert.assertEquals("OrgIdIssuer unsupported value. OrgIdIssuer must be null/empty or <ANY>",
+                                ex.getLocalizedMessage());
         }
     }
 
@@ -548,6 +561,19 @@ public class RequestValidationServiceTest {
             Assert.fail("Test should throw exception!");
         } catch (FrejaEidClientInternalException ex) {
             Assert.assertEquals("Title cannot be empty.", ex.getLocalizedMessage());
+        }
+    }
+
+    @Test
+    public void initSign_orgIdIssuerWrongValue() throws FrejaEidException {
+        try {
+            signClient.initiate(InitiateSignRequest.createCustom().setEmail(EMAIL)
+                                        .setDataToSign(DataToSign.create(TEXT))
+                                        .setOrgIdIssuer(ORG_ID_ISSUER).build());
+            Assert.fail("Test should throw exception!");
+        } catch (FrejaEidClientInternalException ex) {
+            Assert.assertEquals("OrgIdIssuer unsupported value. OrgIdIssuer must be null/empty or <ANY>",
+                                ex.getLocalizedMessage());
         }
     }
 

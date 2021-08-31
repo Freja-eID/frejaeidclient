@@ -84,6 +84,7 @@ public class InitiateSignRequestBuilders {
         private SignatureType signatureType = SignatureType.SIMPLE;
         private Set<AttributeToReturn> attributesToReturn = null;
         private String relyingPartyId = null;
+        private String orgIdIssuer = null;
 
         private SetOptionalParamsBuilder(UserInfoType userInfoType, String userInfo) {
             this.userInfoType = userInfoType;
@@ -199,10 +200,24 @@ public class InitiateSignRequestBuilders {
             return this;
         }
 
+        /**
+         * <b>OrgIdIssuer is used when requesting an Organisation ID set by
+         * another Relying Party</b>
+         *
+         * @param orgIdIssuer specifies the relying party ID of the
+         *                    organisation which issued the organisation ID.
+         *
+         * @return request builder
+         */
+        public SetOptionalParamsBuilder setOrgIdIssuer(String orgIdIssuer) {
+            this.orgIdIssuer = orgIdIssuer;
+            return this;
+        }
+
         public InitiateSignRequest build() {
             return new InitiateSignRequest(userInfoType, userInfo, minRegistrationLevel, title, pushNotification,
                                            expiry, dataToSignType, dataToSign, signatureType, attributesToReturn,
-                                           relyingPartyId);
+                                           relyingPartyId, orgIdIssuer);
         }
 
     }
