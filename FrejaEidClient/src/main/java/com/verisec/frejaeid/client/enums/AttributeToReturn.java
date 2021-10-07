@@ -26,6 +26,7 @@ import java.util.Map;
  * <br> - {@link #ALL_PHONE_NUMBERS}
  * <br> - {@link #REGISTRATION_LEVEL}
  * <br> - {@link #AGE}
+ * <br> - {@link #IMAGE}
  * <br> - {@link #COVID_CERTIFICATES}
  */
 public enum AttributeToReturn {
@@ -105,6 +106,13 @@ public enum AttributeToReturn {
      * {@linkplain MinRegistrationLevel#PLUS}.
      */
     AGE("AGE"),
+    /**
+     * User's image returned as String in format of the URL.
+     * Image can be requested only for
+     * {@linkplain MinRegistrationLevel#EXTENDED} and
+     * {@linkplain MinRegistrationLevel#PLUS}.
+     */
+    IMAGE("IMAGE"),
     /**
      * Proof that the user has been vaccinated against COVID-19,
      * received a negative test result or recovered from COVID-19,
