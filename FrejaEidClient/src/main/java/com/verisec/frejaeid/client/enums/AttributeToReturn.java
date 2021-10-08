@@ -109,7 +109,7 @@ public enum AttributeToReturn {
     /**
      * User's photo returned as String in format of the URL. 
      * URL can be used only once to download a photo and 
-     * it will be available as long as transaction exists.
+     * it will be available for as long as transaction result can be fetched.
      * Photo can be requested only for
      * {@linkplain MinRegistrationLevel#EXTENDED} and
      * {@linkplain MinRegistrationLevel#PLUS}.
