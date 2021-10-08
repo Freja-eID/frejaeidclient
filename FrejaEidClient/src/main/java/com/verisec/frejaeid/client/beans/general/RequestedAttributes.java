@@ -28,7 +28,7 @@ public class RequestedAttributes {
     private final List<PhoneNumberInfo> allPhoneNumbers;
     private final RegistrationLevel registrationLevel;
     private final Integer age;
-    private final String image;
+    private final String photo;
     private final CovidCertificates covidCertificates;
 
     @JsonCreator
@@ -45,7 +45,7 @@ public class RequestedAttributes {
                                @JsonProperty(value = "allPhoneNumbers") List<PhoneNumberInfo> allPhoneNumbers,
                                @JsonProperty(value = "registrationLevel") RegistrationLevel registrationLevel,
                                @JsonProperty(value = "age") Integer age,
-                               @JsonProperty(value = "image") String image,
+                               @JsonProperty(value = "photo") String photo,
                                @JsonProperty(value = "covidCertificates") CovidCertificates covidCertificates) {
         this.basicUserInfo = basicUserInfo;
         this.customIdentifier = customIdentifier;
@@ -60,7 +60,7 @@ public class RequestedAttributes {
         this.allPhoneNumbers = allPhoneNumbers;
         this.registrationLevel = registrationLevel;
         this.age = age;
-        this.image = image;
+        this.photo = photo;
         this.covidCertificates = covidCertificates;
     }
 
@@ -116,8 +116,8 @@ public class RequestedAttributes {
         return age;
     }
 
-    public String getImage() {
-        return image;
+    public String getPhoto() {
+        return photo;
     }
 
     public CovidCertificates getCovidCertificates() {
@@ -128,7 +128,7 @@ public class RequestedAttributes {
     public int hashCode() {
         return Objects.hash(basicUserInfo, customIdentifier, ssn, integratorSpecificUserId,
                             dateOfBirth, relyingPartyUserId, emailAddress, organisationIdIdentifier,
-                            addresses, allEmailAddresses, allPhoneNumbers, registrationLevel, age, image, 
+                            addresses, allEmailAddresses, allPhoneNumbers, registrationLevel, age, photo, 
                             covidCertificates);
     }
 
@@ -183,7 +183,7 @@ public class RequestedAttributes {
         if (!Objects.equals(this.age, other.age)) {
             return false;
         }
-        if (!Objects.equals(this.image, other.image)) {
+        if (!Objects.equals(this.photo, other.photo)) {
             return false;
         }
         if (!Objects.equals(this.covidCertificates, other.covidCertificates)) {
@@ -208,7 +208,7 @@ public class RequestedAttributes {
                 ", allPhoneNumbers=" + allPhoneNumbers +
                 ", registrationLevel=" + registrationLevel +
                 ", age=" + age +
-                ", image=" + image +
+                ", photo=" + photo +
                 ", covidCertificates=" + covidCertificates +
                 '}';
     }
