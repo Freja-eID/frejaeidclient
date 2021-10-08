@@ -107,7 +107,8 @@ public enum AttributeToReturn {
      */
     AGE("AGE"),
     /**
-     * User's image returned as String in format of the URL.
+     * User's image returned as String in format of the URL. 
+     * Image should be downloaded. URL will expire after 10 minutes.
      * Image can be requested only for
      * {@linkplain MinRegistrationLevel#EXTENDED} and
      * {@linkplain MinRegistrationLevel#PLUS}.
