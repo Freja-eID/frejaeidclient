@@ -26,7 +26,7 @@ import java.util.Map;
  * <br> - {@link #ALL_PHONE_NUMBERS}
  * <br> - {@link #REGISTRATION_LEVEL}
  * <br> - {@link #AGE}
- * <br> - {@link #IMAGE}
+ * <br> - {@link #PHOTO}
  * <br> - {@link #COVID_CERTIFICATES}
  */
 public enum AttributeToReturn {
@@ -107,13 +107,14 @@ public enum AttributeToReturn {
      */
     AGE("AGE"),
     /**
-     * User's image returned as String in format of the URL. 
-     * Image should be downloaded. URL will expire after 10 minutes.
+     * User's photo returned as String in format of the URL. 
+     * Photo should be downloaded. 
+     * URL will be available as long as transaction exists.
      * Image can be requested only for
      * {@linkplain MinRegistrationLevel#EXTENDED} and
      * {@linkplain MinRegistrationLevel#PLUS}.
      */
-    IMAGE("IMAGE"),
+    PHOTO("PHOTO"),
     /**
      * Proof that the user has been vaccinated against COVID-19,
      * received a negative test result or recovered from COVID-19,
