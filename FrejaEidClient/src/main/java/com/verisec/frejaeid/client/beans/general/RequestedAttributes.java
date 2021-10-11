@@ -28,6 +28,7 @@ public class RequestedAttributes {
     private final List<PhoneNumberInfo> allPhoneNumbers;
     private final RegistrationLevel registrationLevel;
     private final Integer age;
+    private final String photo;
     private final CovidCertificates covidCertificates;
 
     @JsonCreator
@@ -44,6 +45,7 @@ public class RequestedAttributes {
                                @JsonProperty(value = "allPhoneNumbers") List<PhoneNumberInfo> allPhoneNumbers,
                                @JsonProperty(value = "registrationLevel") RegistrationLevel registrationLevel,
                                @JsonProperty(value = "age") Integer age,
+                               @JsonProperty(value = "photo") String photo,
                                @JsonProperty(value = "covidCertificates") CovidCertificates covidCertificates) {
         this.basicUserInfo = basicUserInfo;
         this.customIdentifier = customIdentifier;
@@ -58,6 +60,7 @@ public class RequestedAttributes {
         this.allPhoneNumbers = allPhoneNumbers;
         this.registrationLevel = registrationLevel;
         this.age = age;
+        this.photo = photo;
         this.covidCertificates = covidCertificates;
     }
 
@@ -113,6 +116,10 @@ public class RequestedAttributes {
         return age;
     }
 
+    public String getPhoto() {
+        return photo;
+    }
+
     public CovidCertificates getCovidCertificates() {
         return covidCertificates;
     }
@@ -121,7 +128,8 @@ public class RequestedAttributes {
     public int hashCode() {
         return Objects.hash(basicUserInfo, customIdentifier, ssn, integratorSpecificUserId,
                             dateOfBirth, relyingPartyUserId, emailAddress, organisationIdIdentifier,
-                            addresses, allEmailAddresses, allPhoneNumbers, registrationLevel, covidCertificates);
+                            addresses, allEmailAddresses, allPhoneNumbers, registrationLevel, age, photo, 
+                            covidCertificates);
     }
 
     @Override
@@ -175,13 +183,16 @@ public class RequestedAttributes {
         if (!Objects.equals(this.age, other.age)) {
             return false;
         }
+        if (!Objects.equals(this.photo, other.photo)) {
+            return false;
+        }
         if (!Objects.equals(this.covidCertificates, other.covidCertificates)) {
             return false;
         }
         return true;
     }
 
-    @java.lang.Override
+    @Override
     public java.lang.String toString() {
         return "RequestedAttributes{" +
                 "basicUserInfo=" + basicUserInfo +
@@ -197,6 +208,7 @@ public class RequestedAttributes {
                 ", allPhoneNumbers=" + allPhoneNumbers +
                 ", registrationLevel=" + registrationLevel +
                 ", age=" + age +
+                ", photo=" + photo +
                 ", covidCertificates=" + covidCertificates +
                 '}';
     }

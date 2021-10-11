@@ -46,6 +46,7 @@ public class InitiateSignRequestBuildersTest {
         REQUESTED_ATTRIBUTES.add(AttributeToReturn.ALL_PHONE_NUMBERS);
         REQUESTED_ATTRIBUTES.add(AttributeToReturn.REGISTRATION_LEVEL);
         REQUESTED_ATTRIBUTES.add(AttributeToReturn.AGE);
+        REQUESTED_ATTRIBUTES.add(AttributeToReturn.PHOTO);
         REQUESTED_ATTRIBUTES.add(AttributeToReturn.COVID_CERTIFICATES);
     }
 
