@@ -45,7 +45,7 @@ public abstract class CommonHttpTest {
     private static final List<Email> ALL_EMAIL_ADDRESSES = Arrays.asList(new Email(EMAIL_ADDRESS));
     private static final List<PhoneNumberInfo> ALL_PHONE_NUMBERS = Arrays.asList(new PhoneNumberInfo(PHONE_NUMBER));
     private static final Integer AGE = 35;
-    private static final String PHOTO = "https://image-hashId/test";
+    private static final String PHOTO = "photo";
     private static final CovidCertificates COVID_CERTIFICATES =
             new CovidCertificates(new Vaccines("covidCertificate"), null, null, true);
     protected static final RequestedAttributes REQUESTED_ATTRIBUTES =
