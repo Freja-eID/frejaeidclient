@@ -107,9 +107,7 @@ public enum AttributeToReturn {
      */
     AGE("AGE"),
     /**
-     * User's photo returned as String in format of the URL. 
-     * URL can be used only once to download a photo and 
-     * it will be available for as long as transaction result can be fetched.
+     * User's photo returned as a Base64-encoded String
      * Photo can be requested only for
      * {@linkplain MinRegistrationLevel#EXTENDED} and
      * {@linkplain MinRegistrationLevel#PLUS}.
