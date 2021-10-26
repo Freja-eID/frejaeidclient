@@ -157,9 +157,6 @@
                     <goals>deploy</goals>
                     <tagBase>https://github.com/Verisec/frejaeidclient.git</tagBase>
                     <tagNameFormat>@{project.artifactId}/@{project.version}</tagNameFormat>
-                    <providerImplementations>
-                        <git>jgit</git>
-                    </providerImplementations>
                 </configuration>
                 <dependencies>     
                     <dependency>
