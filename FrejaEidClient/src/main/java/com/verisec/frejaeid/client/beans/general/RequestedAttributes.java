@@ -29,6 +29,7 @@ public class RequestedAttributes {
     private final RegistrationLevel registrationLevel;
     private final Integer age;
     private final String photo;
+    private final DocumentInfo documentInfo;
     private final CovidCertificates covidCertificates;
 
     @JsonCreator
@@ -46,6 +47,7 @@ public class RequestedAttributes {
                                @JsonProperty(value = "registrationLevel") RegistrationLevel registrationLevel,
                                @JsonProperty(value = "age") Integer age,
                                @JsonProperty(value = "photo") String photo,
+                               @JsonProperty(value = "documentInfo") DocumentInfo documentInfo,
                                @JsonProperty(value = "covidCertificates") CovidCertificates covidCertificates) {
         this.basicUserInfo = basicUserInfo;
         this.customIdentifier = customIdentifier;
@@ -61,6 +63,7 @@ public class RequestedAttributes {
         this.registrationLevel = registrationLevel;
         this.age = age;
         this.photo = photo;
+        this.documentInfo = documentInfo;
         this.covidCertificates = covidCertificates;
     }
 
