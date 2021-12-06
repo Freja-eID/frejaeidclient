@@ -60,4 +60,14 @@ public class DocumentInfo {
     public int hashCode() {
         return Objects.hash(documentType, serialNumber, country, expirationDate);
     }
+
+    @Override
+    public String toString() {
+        return "DocumentInfo{" +
+                "documentType=" + documentType +
+                ", serialNumber='" + serialNumber + '\'' +
+                ", country=" + country +
+                ", expirationDate='" + expirationDate + '\'' +
+                '}';
+    }
 }

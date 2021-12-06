@@ -123,6 +123,10 @@ public class RequestedAttributes {
         return photo;
     }
 
+    public DocumentInfo getDocumentInfo() {
+        return documentInfo;
+    }
+
     public CovidCertificates getCovidCertificates() {
         return covidCertificates;
     }
@@ -132,7 +136,7 @@ public class RequestedAttributes {
         return Objects.hash(basicUserInfo, customIdentifier, ssn, integratorSpecificUserId,
                             dateOfBirth, relyingPartyUserId, emailAddress, organisationIdIdentifier,
                             addresses, allEmailAddresses, allPhoneNumbers, registrationLevel, age, photo, 
-                            covidCertificates);
+                            documentInfo, covidCertificates);
     }
 
     @Override
@@ -189,6 +193,9 @@ public class RequestedAttributes {
         if (!Objects.equals(this.photo, other.photo)) {
             return false;
         }
+        if (!Objects.equals(this.documentInfo, other.documentInfo)) {
+            return false;
+        }
         if (!Objects.equals(this.covidCertificates, other.covidCertificates)) {
             return false;
         }
@@ -212,6 +219,7 @@ public class RequestedAttributes {
                 ", registrationLevel=" + registrationLevel +
                 ", age=" + age +
                 ", photo=" + photo +
+                ", documentInfo=" + documentInfo +
                 ", covidCertificates=" + covidCertificates +
                 '}';
     }
