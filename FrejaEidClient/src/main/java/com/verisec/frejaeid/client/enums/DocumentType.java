@@ -1,5 +1,6 @@
 package com.verisec.frejaeid.client.enums;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 /**
@@ -29,6 +30,15 @@ public enum DocumentType {
 
     public String getDescription() {
         return description;
+    }
+
+    @JsonCreator
+    public static DocumentType createFromJson(String value) {
+        try {
+            return getByAcronym(value);
+        } catch (IllegalArgumentException ex) {
+            return null;
+        }
     }
 
     public static DocumentType getByAcronym(String docTypeAcronym) {

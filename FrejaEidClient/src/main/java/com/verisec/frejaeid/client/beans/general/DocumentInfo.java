@@ -13,7 +13,7 @@ import java.util.Objects;
  */
 public class DocumentInfo {
 
-    private final DocumentType documentType;
+    private final DocumentType type;
     private final String serialNumber;
     private final Country country;
     /**
@@ -22,18 +22,18 @@ public class DocumentInfo {
     private final String expirationDate;
 
     @JsonCreator
-    public DocumentInfo(@JsonProperty("documentType") DocumentType documentType,
+    public DocumentInfo(@JsonProperty("type") DocumentType type,
                         @JsonProperty("serialNumber") String serialNumber,
                         @JsonProperty("country") Country country,
                         @JsonProperty("expirationDate") String expirationDate) {
-        this.documentType = documentType;
+        this.type = type;
         this.serialNumber = serialNumber;
         this.country = country;
         this.expirationDate = expirationDate;
     }
 
-    public DocumentType getDocumentType() {
-        return documentType;
+    public DocumentType getType() {
+        return type;
     }
 
     public String getSerialNumber() {
@@ -53,18 +53,18 @@ public class DocumentInfo {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         DocumentInfo that = (DocumentInfo) o;
-        return documentType == that.documentType && Objects.equals(serialNumber, that.serialNumber) && country == that.country && Objects.equals(expirationDate, that.expirationDate);
+        return type == that.type && Objects.equals(serialNumber, that.serialNumber) && country == that.country && Objects.equals(expirationDate, that.expirationDate);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(documentType, serialNumber, country, expirationDate);
+        return Objects.hash(type, serialNumber, country, expirationDate);
     }
 
     @Override
     public String toString() {
         return "DocumentInfo{" +
-                "documentType=" + documentType +
+                "documentType=" + type +
                 ", serialNumber='" + serialNumber + '\'' +
                 ", country=" + country +
                 ", expirationDate='" + expirationDate + '\'' +

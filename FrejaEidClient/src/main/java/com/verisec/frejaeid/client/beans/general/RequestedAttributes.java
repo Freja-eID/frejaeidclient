@@ -29,7 +29,7 @@ public class RequestedAttributes {
     private final RegistrationLevel registrationLevel;
     private final Integer age;
     private final String photo;
-    private final DocumentInfo documentInfo;
+    private final DocumentInfo document;
     private final CovidCertificates covidCertificates;
 
     @JsonCreator
@@ -47,7 +47,7 @@ public class RequestedAttributes {
                                @JsonProperty(value = "registrationLevel") RegistrationLevel registrationLevel,
                                @JsonProperty(value = "age") Integer age,
                                @JsonProperty(value = "photo") String photo,
-                               @JsonProperty(value = "documentInfo") DocumentInfo documentInfo,
+                               @JsonProperty(value = "document") DocumentInfo document,
                                @JsonProperty(value = "covidCertificates") CovidCertificates covidCertificates) {
         this.basicUserInfo = basicUserInfo;
         this.customIdentifier = customIdentifier;
@@ -63,7 +63,7 @@ public class RequestedAttributes {
         this.registrationLevel = registrationLevel;
         this.age = age;
         this.photo = photo;
-        this.documentInfo = documentInfo;
+        this.document = document;
         this.covidCertificates = covidCertificates;
     }
 
@@ -123,8 +123,8 @@ public class RequestedAttributes {
         return photo;
     }
 
-    public DocumentInfo getDocumentInfo() {
-        return documentInfo;
+    public DocumentInfo getDocument() {
+        return document;
     }
 
     public CovidCertificates getCovidCertificates() {
@@ -135,8 +135,8 @@ public class RequestedAttributes {
     public int hashCode() {
         return Objects.hash(basicUserInfo, customIdentifier, ssn, integratorSpecificUserId,
                             dateOfBirth, relyingPartyUserId, emailAddress, organisationIdIdentifier,
-                            addresses, allEmailAddresses, allPhoneNumbers, registrationLevel, age, photo, 
-                            documentInfo, covidCertificates);
+                            addresses, allEmailAddresses, allPhoneNumbers, registrationLevel, age, photo,
+                            document, covidCertificates);
     }
 
     @Override
@@ -193,7 +193,7 @@ public class RequestedAttributes {
         if (!Objects.equals(this.photo, other.photo)) {
             return false;
         }
-        if (!Objects.equals(this.documentInfo, other.documentInfo)) {
+        if (!Objects.equals(this.document, other.document)) {
             return false;
         }
         if (!Objects.equals(this.covidCertificates, other.covidCertificates)) {
@@ -219,7 +219,7 @@ public class RequestedAttributes {
                 ", registrationLevel=" + registrationLevel +
                 ", age=" + age +
                 ", photo=" + photo +
-                ", documentInfo=" + documentInfo +
+                ", documentInfo=" + document +
                 ", covidCertificates=" + covidCertificates +
                 '}';
     }
