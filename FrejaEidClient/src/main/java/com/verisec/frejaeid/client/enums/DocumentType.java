@@ -13,7 +13,8 @@ public enum DocumentType {
     NATIONAL_ID("NATID","National ID"),
     ID_SIS("IDSIS", "SiS certified ID document"),
     TAX_AGENCY_ID("TAXID","Tax Agency ID card"),
-    OTHERID("OTHERID","Other ID");
+    OTHERID("OTHERID","Other ID"),
+    UNKNOWN("UNKNOWN","Unknown document");
 
     private final String acronym;
     private final String description;
@@ -37,7 +38,7 @@ public enum DocumentType {
         try {
             return getByAcronym(value);
         } catch (IllegalArgumentException ex) {
-            return null;
+            return UNKNOWN;
         }
     }
 
