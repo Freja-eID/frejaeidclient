@@ -1,5 +1,7 @@
 package com.verisec.frejaeid.client.enums;
 
+import com.fasterxml.jackson.annotation.JsonValue;
+
 /**
  * @author veiszec
  **/
@@ -20,6 +22,7 @@ public enum DocumentType {
         this.description = description;
     }
 
+    @JsonValue
     public String getAcronym() {
         return acronym;
     }
