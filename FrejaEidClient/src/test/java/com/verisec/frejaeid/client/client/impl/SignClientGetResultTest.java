@@ -44,13 +44,16 @@ public class SignClientGetResultTest {
     private static final List<PhoneNumberInfo> ALL_PHONE_NUMBERS = Arrays.asList(new PhoneNumberInfo(PHONE_NUMBER));
     private static final Integer AGE = 35;
     private static final String PHOTO = "https://image-hashId/test";
+    private static final DocumentInfo DOCUMENT_INFO =
+            new DocumentInfo(DocumentType.PASSPORT, "123456789", Country.SWEDEN, "2050-01-01");
     protected static final CovidCertificates COVID_CERTIFICATES =
             new CovidCertificates(new Vaccines("covidCertificate"), null, null, true);
     private static final RequestedAttributes REQUESTED_ATTRIBUTES =
             new RequestedAttributes(new BasicUserInfo("name", "surname"), "customIdentifier",
-                    SsnUserInfo.create(Country.SWEDEN, "ssn"), "integratorSpecificId", "1987-10-18",
-                    RELYING_PARTY_USER_ID, EMAIL_ADDRESS, ORGANISATION_ID, ADDRESSES, ALL_EMAIL_ADDRESSES,
-                    ALL_PHONE_NUMBERS, RegistrationLevel.EXTENDED, AGE, PHOTO, COVID_CERTIFICATES);
+                                    SsnUserInfo.create(Country.SWEDEN, "ssn"), "integratorSpecificId", "1987-10-18",
+                                    RELYING_PARTY_USER_ID, EMAIL_ADDRESS, ORGANISATION_ID, ADDRESSES,
+                                    ALL_EMAIL_ADDRESSES, ALL_PHONE_NUMBERS, RegistrationLevel.EXTENDED, AGE, PHOTO,
+                                    DOCUMENT_INFO, COVID_CERTIFICATES);
     private SignClientApi signClient;
 
     @Before

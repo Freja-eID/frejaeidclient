@@ -5,6 +5,7 @@ import com.verisec.frejaeid.client.beans.general.SsnUserInfo;
 import com.verisec.frejaeid.client.beans.general.AddressInfo;
 import com.verisec.frejaeid.client.beans.general.Email;
 import com.verisec.frejaeid.client.beans.general.PhoneNumberInfo;
+import com.verisec.frejaeid.client.beans.general.DocumentInfo;
 import com.verisec.frejaeid.client.beans.covidcertificate.CovidCertificates;
 
 import java.util.HashMap;
@@ -113,6 +114,13 @@ public enum AttributeToReturn {
      * {@linkplain MinRegistrationLevel#PLUS}.
      */
     PHOTO("PHOTO"),
+    /**
+     * Data about the user's document returned as {@linkplain DocumentInfo}
+     * Document can be requested only for
+     * {@linkplain MinRegistrationLevel#EXTENDED} and
+     * {@linkplain MinRegistrationLevel#PLUS}.
+     */
+    DOCUMENT("DOCUMENT"),
     /**
      * Proof that the user has been vaccinated against COVID-19,
      * received a negative test result or recovered from COVID-19,
