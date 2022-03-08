@@ -22,7 +22,6 @@ public class OrganisationIdInfo {
      *                           cannot be {@code null} or empty.
      * @param issuerCode         Unique identifier of the organisation which issued the user's Organisation ID. It
      *                           cannot be {@code null} or empty.
-     * @return details about Organisation ID and its issuer
      */
     @JsonCreator
     public OrganisationIdInfo(@JsonProperty("identifier") String identifier,
