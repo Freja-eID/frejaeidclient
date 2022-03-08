@@ -37,6 +37,8 @@ public class SignClientGetResultTest {
     private static final String EMAIL_ADDRESS = "test@frejaeid.com";
     private static final String PHONE_NUMBER = "+46123456789";
     private static final String ORGANISATION_ID = "orgId";
+    private static final OrganisationIdInfo ORGANISATION_ID_INFO =
+            new OrganisationIdInfo("org_id", "Org ID issuer", "org_id_issuer");
     private static final List<AddressInfo> ADDRESSES = Arrays.asList(
             new AddressInfo(Country.SWEDEN, "city", "postCode", "address1", "address2", "address3", "1993-12-30",
                             AddressType.RESIDENTIAL, AddressSourceType.GOVERNMENT_REGISTRY));
@@ -51,9 +53,9 @@ public class SignClientGetResultTest {
     private static final RequestedAttributes REQUESTED_ATTRIBUTES =
             new RequestedAttributes(new BasicUserInfo("name", "surname"), "customIdentifier",
                                     SsnUserInfo.create(Country.SWEDEN, "ssn"), "integratorSpecificId", "1987-10-18",
-                                    RELYING_PARTY_USER_ID, EMAIL_ADDRESS, ORGANISATION_ID, ADDRESSES,
-                                    ALL_EMAIL_ADDRESSES, ALL_PHONE_NUMBERS, RegistrationLevel.EXTENDED, AGE, PHOTO,
-                                    DOCUMENT_INFO, COVID_CERTIFICATES);
+                                    RELYING_PARTY_USER_ID, EMAIL_ADDRESS, ORGANISATION_ID, ORGANISATION_ID_INFO,
+                                    ADDRESSES, ALL_EMAIL_ADDRESSES, ALL_PHONE_NUMBERS, RegistrationLevel.EXTENDED, AGE,
+                                    PHOTO, DOCUMENT_INFO, COVID_CERTIFICATES);
     private SignClientApi signClient;
 
     @Before

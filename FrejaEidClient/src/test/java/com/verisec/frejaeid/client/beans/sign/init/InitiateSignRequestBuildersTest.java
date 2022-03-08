@@ -41,6 +41,7 @@ public class InitiateSignRequestBuildersTest {
         REQUESTED_ATTRIBUTES.add(AttributeToReturn.INTEGRATOR_SPECIFIC_USER_ID);
         REQUESTED_ATTRIBUTES.add(AttributeToReturn.RELYING_PARTY_USER_ID);
         REQUESTED_ATTRIBUTES.add(AttributeToReturn.ORGANISATION_ID_IDENTIFIER);
+        REQUESTED_ATTRIBUTES.add(AttributeToReturn.ORGANISATION_ID);
         REQUESTED_ATTRIBUTES.add(AttributeToReturn.ADDRESSES);
         REQUESTED_ATTRIBUTES.add(AttributeToReturn.ALL_EMAIL_ADDRESSES);
         REQUESTED_ATTRIBUTES.add(AttributeToReturn.ALL_PHONE_NUMBERS);

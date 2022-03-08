@@ -39,6 +39,8 @@ public abstract class CommonHttpTest {
     protected static final String EMAIL_ADDRESS = "test@frejaeid.com";
     protected static final String PHONE_NUMBER = "+46123456789";
     protected static final String ORGANISATION_ID = "vealrad";
+    private static final OrganisationIdInfo ORGANISATION_ID_INFO =
+            new OrganisationIdInfo("org_id", "Org ID issuer", "org_id_issuer");
     protected static final List<AddressInfo> ADDRESSES = Arrays.asList(
             new AddressInfo(Country.SWEDEN, "city", "postCode", "address1", "address2", "address3", "1993-12-30",
                             AddressType.RESIDENTIAL, AddressSourceType.GOVERNMENT_REGISTRY));
@@ -52,8 +54,9 @@ public abstract class CommonHttpTest {
             new CovidCertificates(new Vaccines("covidCertificate"), null, null, true);
     protected static final RequestedAttributes REQUESTED_ATTRIBUTES =
             new RequestedAttributes(BASIC_USER_INFO, CUSTOM_IDENTIFIER, SSN_USER_INFO, null, DATE_OF_BIRTH,
-                    RELYING_PARTY_USER_ID, EMAIL_ADDRESS, ORGANISATION_ID, ADDRESSES, ALL_EMAIL_ADDRESSES,
-                    ALL_PHONE_NUMBERS, RegistrationLevel.EXTENDED, AGE, PHOTO, DOCUMENT_INFO, COVID_CERTIFICATES);
+                                    RELYING_PARTY_USER_ID, EMAIL_ADDRESS, ORGANISATION_ID, ORGANISATION_ID_INFO,
+                                    ADDRESSES, ALL_EMAIL_ADDRESSES, ALL_PHONE_NUMBERS, RegistrationLevel.EXTENDED, AGE,
+                                    PHOTO, DOCUMENT_INFO, COVID_CERTIFICATES);
     protected static final String POST_PARAMS_DELIMITER = "&";
     protected static final String KEY_VALUE_DELIMITER = "=";
     protected static final int MOCK_SERVICE_PORT = 30665;
