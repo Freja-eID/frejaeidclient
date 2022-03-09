@@ -64,9 +64,8 @@ public class SignClientGetResultTest {
         REQUESTED_ATTRIBUTES =
                 new RequestedAttributes(new BasicUserInfo("name", "surname"), "customIdentifier",
                                         SsnUserInfo.create(Country.SWEDEN, "ssn"), "integratorSpecificId", "1987-10-18",
-                                        RELYING_PARTY_USER_ID, EMAIL_ADDRESS, ORGANISATION_ID, ORGANISATION_ID_INFO,
-                                        ADDRESSES, ALL_EMAIL_ADDRESSES, ALL_PHONE_NUMBERS, RegistrationLevel.EXTENDED, AGE,
-                                        PHOTO, DOCUMENT_INFO, COVID_CERTIFICATES);
+                                        RELYING_PARTY_USER_ID, EMAIL_ADDRESS, ORGANISATION_ID, ADDRESSES, ALL_EMAIL_ADDRESSES, ALL_PHONE_NUMBERS, RegistrationLevel.EXTENDED, AGE, PHOTO, DOCUMENT_INFO, COVID_CERTIFICATES, ORGANISATION_ID_INFO
+                );
     }
 
     @Before

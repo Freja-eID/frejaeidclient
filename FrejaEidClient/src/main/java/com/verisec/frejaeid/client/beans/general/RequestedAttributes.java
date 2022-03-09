@@ -42,15 +42,14 @@ public class RequestedAttributes {
                                @JsonProperty(value = "relyingPartyUserId") String relyingPartyUserId,
                                @JsonProperty(value = "emailAddress") String emailAddress,
                                @JsonProperty(value = "organisationIdIdentifier") String organisationIdIdentifier,
-                               @JsonProperty(value = "organisationIdInfo") OrganisationIdInfo organisationIdInfo,
                                @JsonProperty(value = "addresses") List<AddressInfo> addresses,
                                @JsonProperty(value = "allEmailAddresses") List<Email> allEmailAddresses,
                                @JsonProperty(value = "allPhoneNumbers") List<PhoneNumberInfo> allPhoneNumbers,
                                @JsonProperty(value = "registrationLevel") RegistrationLevel registrationLevel,
-                               @JsonProperty(value = "age") Integer age,
-                               @JsonProperty(value = "photo") String photo,
+                               @JsonProperty(value = "age") Integer age, @JsonProperty(value = "photo") String photo,
                                @JsonProperty(value = "document") DocumentInfo document,
-                               @JsonProperty(value = "covidCertificates") CovidCertificates covidCertificates) {
+                               @JsonProperty(value = "covidCertificates") CovidCertificates covidCertificates,
+                               @JsonProperty(value = "organisationIdInfo") OrganisationIdInfo organisationIdInfo) {
         this.basicUserInfo = basicUserInfo;
         this.customIdentifier = customIdentifier;
         this.ssn = ssn;
