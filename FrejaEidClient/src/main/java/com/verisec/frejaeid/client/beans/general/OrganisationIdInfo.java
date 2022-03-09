@@ -3,6 +3,7 @@ package com.verisec.frejaeid.client.beans.general;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -11,21 +12,21 @@ import java.util.Objects;
 public class OrganisationIdInfo {
 
     private final String identifier;
-    private final String issuerFriendlyName;
+    private final Map<String, String> issuerFriendlyName;
     private final String issuerCode;
 
     /**
      * Creates instance of {@linkplain OrganisationIdInfo}.
      *
      * @param identifier         User's Organisation ID. It cannot be {@code null} or empty.
-     * @param issuerFriendlyName Friendly name of the organisation which issued the user's Organisation ID. It
-     *                           cannot be {@code null} or empty.
+     * @param issuerFriendlyName Friendly name of the organisation which issued the user's Organisation ID
+     *                           in Swedish and English. It cannot be {@code null} or empty.
      * @param issuerCode         Unique identifier of the organisation which issued the user's Organisation ID. It
      *                           cannot be {@code null} or empty.
      */
     @JsonCreator
     public OrganisationIdInfo(@JsonProperty("identifier") String identifier,
-                              @JsonProperty("issuerFriendlyName") String issuerFriendlyName,
+                              @JsonProperty("issuerFriendlyName") Map<String, String> issuerFriendlyName,
                               @JsonProperty("issuerCode") String issuerCode) {
         this.identifier = identifier;
         this.issuerFriendlyName = issuerFriendlyName;
@@ -36,7 +37,7 @@ public class OrganisationIdInfo {
         return identifier;
     }
 
-    public String getIssuerFriendlyName() {
+    public Map<String, String> getIssuerFriendlyName() {
         return issuerFriendlyName;
     }
 
@@ -63,7 +64,7 @@ public class OrganisationIdInfo {
     public String toString() {
         return "OrganisationIdInfo{" +
                 "identifier='" + identifier + '\'' +
-                ", issuerFriendlyName='" + issuerFriendlyName + '\'' +
+                ", issuerFriendlyName=" + issuerFriendlyName +
                 ", issuerCode='" + issuerCode + '\'' +
                 '}';
     }

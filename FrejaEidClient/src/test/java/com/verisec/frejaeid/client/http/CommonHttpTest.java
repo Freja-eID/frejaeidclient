@@ -18,11 +18,15 @@ import java.io.OutputStream;
 import java.net.InetSocketAddress;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.codec.binary.Base64;
 import org.junit.After;
 import org.junit.Assert;
+import org.junit.Before;
+import org.junit.BeforeClass;
 
 public abstract class CommonHttpTest {
 
@@ -39,8 +43,7 @@ public abstract class CommonHttpTest {
     protected static final String EMAIL_ADDRESS = "test@frejaeid.com";
     protected static final String PHONE_NUMBER = "+46123456789";
     protected static final String ORGANISATION_ID = "vealrad";
-    private static final OrganisationIdInfo ORGANISATION_ID_INFO =
-            new OrganisationIdInfo("org_id", "Org ID issuer", "org_id_issuer");
+    private static OrganisationIdInfo ORGANISATION_ID_INFO;
     protected static final List<AddressInfo> ADDRESSES = Arrays.asList(
             new AddressInfo(Country.SWEDEN, "city", "postCode", "address1", "address2", "address3", "1993-12-30",
                             AddressType.RESIDENTIAL, AddressSourceType.GOVERNMENT_REGISTRY));
@@ -62,6 +65,15 @@ public abstract class CommonHttpTest {
     protected static final int MOCK_SERVICE_PORT = 30665;
     private HttpServer server;
     protected static JsonService jsonService;
+
+    @BeforeClass
+    public static void initTestData() {
+        HashMap<String,String> organisationIdIssuerNames = new HashMap<>();
+        organisationIdIssuerNames.put("EN", "Org ID issuer");
+        organisationIdIssuerNames.put("SV", "Org ID issuer Swedish");
+        ORGANISATION_ID_INFO =
+                new OrganisationIdInfo("org_id", organisationIdIssuerNames, "org_id_issuer");
+    }
 
     protected void startMockServer(final RelyingPartyRequest expectedRequest, final int statusCodeToReturn,
                                    final String responseToReturn)
