@@ -22,7 +22,7 @@ public class OrganisationIdInfo {
      * @param issuerFriendlyName Friendly name of the organisation which issued the user's Organisation ID
      *                           in Swedish and English. It cannot be {@code null} or empty.
      * @param issuerCode         Unique identifier of the organisation which issued the user's Organisation ID. It
-     *                           cannot be {@code null} or empty.
+     *                           can be {@code null} or empty.
      */
     @JsonCreator
     public OrganisationIdInfo(@JsonProperty("identifier") String identifier,
