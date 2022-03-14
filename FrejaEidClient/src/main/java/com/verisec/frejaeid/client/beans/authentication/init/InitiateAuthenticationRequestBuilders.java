@@ -1,5 +1,6 @@
 package com.verisec.frejaeid.client.beans.authentication.init;
 
+import com.verisec.frejaeid.client.beans.general.AttributeToReturnInfo;
 import com.verisec.frejaeid.client.beans.general.SsnUserInfo;
 import com.verisec.frejaeid.client.enums.AttributeToReturn;
 import com.verisec.frejaeid.client.enums.MinRegistrationLevel;
@@ -7,10 +8,9 @@ import com.verisec.frejaeid.client.enums.TransactionContext;
 import com.verisec.frejaeid.client.enums.UserInfoType;
 import com.verisec.frejaeid.client.exceptions.FrejaEidClientInternalException;
 import com.verisec.frejaeid.client.util.UserInfoUtil;
+import java.util.HashSet;
 
-import java.util.Arrays;
 import java.util.Set;
-import java.util.TreeSet;
 
 public class InitiateAuthenticationRequestBuilders {
 
@@ -84,7 +84,7 @@ public class InitiateAuthenticationRequestBuilders {
         private final UserInfoType userInfoType;
         private final String userInfo;
         private MinRegistrationLevel minRegistrationLevel = MinRegistrationLevel.BASIC;
-        private Set<AttributeToReturn> attributesToReturn = null;
+        private Set<AttributeToReturnInfo> attributesToReturn = null;
         private String relyingPartyId = null;
         private String orgIdIssuer = null;
 
@@ -120,8 +120,11 @@ public class InitiateAuthenticationRequestBuilders {
          * @return request builder
          */
         public SetOptionalParamsBuilder setAttributesToReturn(AttributeToReturn... attributesToReturn) {
-            this.attributesToReturn = new TreeSet();
-            this.attributesToReturn.addAll(Arrays.asList(attributesToReturn));
+            this.attributesToReturn = new HashSet();
+            for (AttributeToReturn attributeToReturn : attributesToReturn) {
+                this.attributesToReturn.add(
+                        new AttributeToReturnInfo(attributeToReturn.getName()));
+            }
             return this;
         }
 
