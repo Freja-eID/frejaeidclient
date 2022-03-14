@@ -5,8 +5,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.verisec.frejaeid.client.beans.authentication.init.InitiateAuthenticationRequestBuilders.UserInfoBuilder;
 import com.verisec.frejaeid.client.beans.common.RelyingPartyRequest;
+import com.verisec.frejaeid.client.beans.general.AttributeToReturnInfo;
 import com.verisec.frejaeid.client.beans.general.SsnUserInfo;
-import com.verisec.frejaeid.client.enums.AttributeToReturn;
 import com.verisec.frejaeid.client.enums.MinRegistrationLevel;
 import com.verisec.frejaeid.client.enums.UserInfoType;
 import com.verisec.frejaeid.client.exceptions.FrejaEidClientInternalException;
@@ -20,18 +20,17 @@ public class InitiateAuthenticationRequest implements RelyingPartyRequest {
     private final UserInfoType userInfoType;
     private final String userInfo;
     private final MinRegistrationLevel minRegistrationLevel;
-    private final Set<AttributeToReturn> attributesToReturn;
+    private final Set<AttributeToReturnInfo> attributesToReturn;
     private final String relyingPartyId;
     private final String orgIdIssuer;
 
     /**
      * Returns instance of {@linkplain InitiateAuthenticationRequest} with:
-     * <br> {@linkplain UserInfoType} {@code EMAIL},
-     * {@link MinRegistrationLevel} {@code BASIC} and without
-     * {@linkplain AttributeToReturn}.
+     * <br> {@linkplain UserInfoType} {@code EMAIL}, {@link MinRegistrationLevel} {@code BASIC} and without
+     * {@link AttributeToReturnInfo}.
      *
-     * @param email user's email for which transaction will be initiated. It
-     *              cannot be {@code null} or empty. Maximum length is 256 characters.
+     * @param email user's email for which transaction will be initiated. It cannot be {@code null} or empty. Maximum
+     * length is 256 characters.
      * @return request
      */
     public static InitiateAuthenticationRequest createDefaultWithEmail(String email) {
@@ -41,16 +40,13 @@ public class InitiateAuthenticationRequest implements RelyingPartyRequest {
 
     /**
      * Returns instance of {@linkplain InitiateAuthenticationRequest} with:
-     * <br> {@linkplain UserInfoType} {@code SSN},
-     * {@link MinRegistrationLevel} {@code BASIC} and without
-     * {@linkplain AttributeToReturn}.
+     * <br> {@linkplain UserInfoType} {@code SSN}, {@link MinRegistrationLevel} {@code BASIC} and without
+     * {@link AttributeToReturnInfo}.
      *
-     * @param ssnUserInfo instance of {@linkplain SsnUserInfo} that contains
-     *                    personal number and country for which transaction will be initiated. It
-     *                    cannot be {@code null}.
+     * @param ssnUserInfo instance of {@linkplain SsnUserInfo} that contains personal number and country for which
+     * transaction will be initiated. It cannot be {@code null}.
      * @return request
-     * @throws FrejaEidClientInternalException if error occurs when generating
-     *                                         JSON content from ssnUserInfo
+     * @throws FrejaEidClientInternalException if error occurs when generating JSON content from ssnUserInfo
      */
     public static InitiateAuthenticationRequest createDefaultWithSsn(SsnUserInfo ssnUserInfo)
             throws FrejaEidClientInternalException {
@@ -59,9 +55,8 @@ public class InitiateAuthenticationRequest implements RelyingPartyRequest {
     }
 
     /**
-     * Returns instance of builder that is used for creating
-     * {@linkplain InitiateAuthenticationRequest} with custom request
-     * parameters.
+     * Returns instance of builder that is used for creating {@linkplain InitiateAuthenticationRequest} with custom
+     * request parameters.
      *
      * @return request builder
      */
@@ -74,14 +69,14 @@ public class InitiateAuthenticationRequest implements RelyingPartyRequest {
             @JsonProperty(value = "userInfoType") UserInfoType userInfoType,
             @JsonProperty(value = "userInfo") String userInfo,
             @JsonProperty(value = "minRegistrationLevel") MinRegistrationLevel minRegistrationLevel,
-            @JsonProperty(value = "attributesToReturn") Set<AttributeToReturn> attributesToReturn,
+            @JsonProperty(value = "attributesToReturn") Set<AttributeToReturnInfo> attributesToReturn,
             @JsonProperty(value = "orgIdIssuer") String orgIdIssuer) {
         this(userInfoType, userInfo, minRegistrationLevel, attributesToReturn, null, orgIdIssuer);
     }
 
     InitiateAuthenticationRequest(UserInfoType userInfoType, String userInfo,
                                   MinRegistrationLevel minRegistrationLevel,
-                                  Set<AttributeToReturn> attributesToReturn, String relyingPartyId, String orgIdIssuer) {
+                                  Set<AttributeToReturnInfo> attributesToReturn, String relyingPartyId, String orgIdIssuer) {
         this.userInfoType = userInfoType;
         this.userInfo = userInfo;
         this.minRegistrationLevel = minRegistrationLevel;
@@ -107,11 +102,13 @@ public class InitiateAuthenticationRequest implements RelyingPartyRequest {
         return minRegistrationLevel;
     }
 
-    public Set<AttributeToReturn> getAttributesToReturn() {
+    public Set<AttributeToReturnInfo> getAttributesToReturn() {
         return attributesToReturn;
     }
 
-    public String getOrgIdIssuer() { return orgIdIssuer; }
+    public String getOrgIdIssuer() {
+        return orgIdIssuer;
+    }
 
     @Override
     public int hashCode() {
@@ -137,16 +134,23 @@ public class InitiateAuthenticationRequest implements RelyingPartyRequest {
         if (!Objects.equals(this.relyingPartyId, other.relyingPartyId)) {
             return false;
         }
+        if (!Objects.equals(this.orgIdIssuer, other.orgIdIssuer)) {
+            return false;
+        }
         if (this.userInfoType != other.userInfoType) {
             return false;
         }
         if (this.minRegistrationLevel != other.minRegistrationLevel) {
             return false;
         }
-        if (!Objects.equals(this.attributesToReturn, other.attributesToReturn)) {
-            return false;
-        }
-        if (!Objects.equals(this.orgIdIssuer, other.orgIdIssuer)) {
+        if (this.attributesToReturn != null && other.attributesToReturn != null) {
+            if (this.attributesToReturn.size() != other.attributesToReturn.size()) {
+                return false;
+            }
+            if (!this.attributesToReturn.containsAll(other.attributesToReturn)) {
+                return false;
+            }
+        } else if (this.attributesToReturn != null || other.attributesToReturn != null) {
             return false;
         }
         return true;
@@ -154,9 +158,9 @@ public class InitiateAuthenticationRequest implements RelyingPartyRequest {
 
     @Override
     public String toString() {
-        return "InitiateAuthenticationRequest{" + "userInfoType=" + userInfoType + ", userInfo=" + userInfo + ", " +
-                "minRegistrationLevel=" + minRegistrationLevel + ", attributesToReturn=" + attributesToReturn +
-                ", orgIdIssuer=" + orgIdIssuer + '}';
+        return "InitiateAuthenticationRequest{" + "userInfoType=" + userInfoType + ", userInfo=" + userInfo + ", "
+                + "minRegistrationLevel=" + minRegistrationLevel + ", attributesToReturn=" + attributesToReturn
+                + ", orgIdIssuer=" + orgIdIssuer + '}';
     }
 
 }
