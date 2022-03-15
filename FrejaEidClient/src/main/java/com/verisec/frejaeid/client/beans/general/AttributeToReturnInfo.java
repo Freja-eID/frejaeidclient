@@ -46,7 +46,7 @@ public class AttributeToReturnInfo {
 
     @Override
     public String toString() {
-        return "AttributeToReturn{" + "attribute=" + attribute + '}';
+        return "AttributeToReturnInfo{" + "attribute=" + attribute + '}';
     }
 
 }
