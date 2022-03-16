@@ -26,7 +26,7 @@ public class OrganisationId {
      * @param identifier     will be set for user. Can be used for initiating
      *                       transaction. Maximum length is 128 characters. It cannot be {@code null}
      *                       or empty.
-     * @return informations for organisation id
+     * @return information for organisation id
      */
     public static OrganisationId create(String title, String identifierName, String identifier) {
         return new OrganisationId(title, identifierName, identifier);

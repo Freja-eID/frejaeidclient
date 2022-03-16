@@ -23,6 +23,7 @@ public class RequestedAttributes {
     private final String relyingPartyUserId;
     private final String emailAddress;
     private final String organisationIdIdentifier;
+    private final OrganisationIdInfo organisationId;
     private final List<AddressInfo> addresses;
     private final List<Email> allEmailAddresses;
     private final List<PhoneNumberInfo> allPhoneNumbers;
@@ -48,7 +49,8 @@ public class RequestedAttributes {
                                @JsonProperty(value = "age") Integer age,
                                @JsonProperty(value = "photo") String photo,
                                @JsonProperty(value = "document") DocumentInfo document,
-                               @JsonProperty(value = "covidCertificates") CovidCertificates covidCertificates) {
+                               @JsonProperty(value = "covidCertificates") CovidCertificates covidCertificates,
+                               @JsonProperty(value = "organisationId") OrganisationIdInfo organisationId) {
         this.basicUserInfo = basicUserInfo;
         this.customIdentifier = customIdentifier;
         this.ssn = ssn;
@@ -57,6 +59,7 @@ public class RequestedAttributes {
         this.relyingPartyUserId = relyingPartyUserId;
         this.emailAddress = emailAddress;
         this.organisationIdIdentifier = organisationIdIdentifier;
+        this.organisationId = organisationId;
         this.addresses = addresses;
         this.allEmailAddresses = allEmailAddresses;
         this.allPhoneNumbers = allPhoneNumbers;
@@ -99,6 +102,10 @@ public class RequestedAttributes {
         return organisationIdIdentifier;
     }
 
+    public OrganisationIdInfo getOrganisationId() {
+        return organisationId;
+    }
+
     public List<AddressInfo> getAddresses() {
         return addresses;
     }
@@ -135,8 +142,8 @@ public class RequestedAttributes {
     public int hashCode() {
         return Objects.hash(basicUserInfo, customIdentifier, ssn, integratorSpecificUserId,
                             dateOfBirth, relyingPartyUserId, emailAddress, organisationIdIdentifier,
-                            addresses, allEmailAddresses, allPhoneNumbers, registrationLevel, age, photo,
-                            document, covidCertificates);
+                            organisationId, addresses, allEmailAddresses, allPhoneNumbers, registrationLevel, age,
+                            photo, document, covidCertificates);
     }
 
     @Override
@@ -167,6 +174,9 @@ public class RequestedAttributes {
             return false;
         }
         if (!Objects.equals(this.organisationIdIdentifier, other.organisationIdIdentifier)) {
+            return false;
+        }
+        if (!Objects.equals(this.organisationId, other.organisationId)) {
             return false;
         }
         if (!Objects.equals(this.basicUserInfo, other.basicUserInfo)) {
@@ -213,6 +223,7 @@ public class RequestedAttributes {
                 ", relyingPartyUserId='" + relyingPartyUserId + '\'' +
                 ", emailAddress='" + emailAddress + '\'' +
                 ", organisationIdIdentifier='" + organisationIdIdentifier + '\'' +
+                ", organisationId='" + organisationId + '\'' +
                 ", addresses=" + addresses +
                 ", allEmailAddresses=" + allEmailAddresses +
                 ", allPhoneNumbers=" + allPhoneNumbers +

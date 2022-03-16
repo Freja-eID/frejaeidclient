@@ -20,10 +20,12 @@ import com.verisec.frejaeid.client.util.RequestTemplate;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.mockito.Mockito;
 
@@ -42,6 +44,7 @@ public class AuthenticationClientGetResultTest {
     private static final String EMAIL_ADDRESS = "test@frejaeid.com";
     private static final String PHONE_NUMBER = "+46123456789";
     private static final String ORGANISATION_ID = "vealrad";
+    private static OrganisationIdInfo ORGANISATION_ID_INFO;
     private static final List<AddressInfo> ADDRESSES = Arrays.asList(
             new AddressInfo(Country.SWEDEN, "city", "postCode", "address1", "address2", "address3", "1993-12-30",
                             AddressType.RESIDENTIAL, AddressSourceType.GOVERNMENT_REGISTRY));
@@ -53,12 +56,21 @@ public class AuthenticationClientGetResultTest {
             new DocumentInfo(DocumentType.PASSPORT, "123456789", Country.SWEDEN, "2050-01-01");
     private static final CovidCertificates COVID_CERTIFICATES =
             new CovidCertificates(new Vaccines("covidCertificate"), null, null, true);
-    private static final RequestedAttributes REQUESTED_ATTRIBUTES =
-            new RequestedAttributes(BASIC_USER_INFO, CUSTOM_IDENTIFIER, SSN, null, DATE_OF_BIRTH,
-                                    RELYING_PARTY_USER_ID, EMAIL_ADDRESS, ORGANISATION_ID, ADDRESSES,
-                                    ALL_EMAIL_ADDRESSES, ALL_PHONE_NUMBERS, RegistrationLevel.EXTENDED, AGE, PHOTO,
-                                    DOCUMENT_INFO, COVID_CERTIFICATES);
+    private static RequestedAttributes REQUESTED_ATTRIBUTES;
     private AuthenticationClientApi authenticationClient;
+
+    @BeforeClass
+    public static void initTestData() {
+        HashMap<String,String> organisationIdIssuerNames = new HashMap<>();
+        organisationIdIssuerNames.put("EN", "Org ID issuer");
+        organisationIdIssuerNames.put("SV", "Org ID issuer Swedish");
+        ORGANISATION_ID_INFO =
+                new OrganisationIdInfo("org_id", organisationIdIssuerNames, "org_id_issuer");
+        REQUESTED_ATTRIBUTES =
+                new RequestedAttributes(BASIC_USER_INFO, CUSTOM_IDENTIFIER, SSN, null, DATE_OF_BIRTH, RELYING_PARTY_USER_ID,
+                                        EMAIL_ADDRESS, ORGANISATION_ID, ADDRESSES, ALL_EMAIL_ADDRESSES, ALL_PHONE_NUMBERS, RegistrationLevel.EXTENDED, AGE, PHOTO, DOCUMENT_INFO, COVID_CERTIFICATES, ORGANISATION_ID_INFO
+                );
+    }
 
     @Before
     public void initialiseClient() throws FrejaEidClientInternalException {
@@ -249,14 +261,13 @@ public class AuthenticationClientGetResultTest {
     private AuthenticationResults prepareResponse() {
         RequestedAttributes attributes1 =
                 new RequestedAttributes(BASIC_USER_INFO, CUSTOM_IDENTIFIER, SSN, null, DATE_OF_BIRTH,
-                                        RELYING_PARTY_USER_ID, EMAIL_ADDRESS, ORGANISATION_ID, ADDRESSES,
-                                        ALL_EMAIL_ADDRESSES, ALL_PHONE_NUMBERS, RegistrationLevel.EXTENDED, AGE,
-                                        PHOTO, DOCUMENT_INFO, COVID_CERTIFICATES);
+                                        RELYING_PARTY_USER_ID, EMAIL_ADDRESS, ORGANISATION_ID, ADDRESSES, ALL_EMAIL_ADDRESSES, ALL_PHONE_NUMBERS, RegistrationLevel.EXTENDED, AGE, PHOTO, DOCUMENT_INFO, COVID_CERTIFICATES, ORGANISATION_ID_INFO
+                );
         AuthenticationResult firstResponse =
                 new AuthenticationResult(REFERENCE, TransactionStatus.STARTED, DETAILS, attributes1);
         RequestedAttributes attributes2 =
-                new RequestedAttributes(null, "test", null, null, null, null, null, null, null, null, null, null, null,
-                                        null, null, null);
+                new RequestedAttributes(null, "test", null, null, null, null, null, null, null, null, null, null, null, null, null, null, null
+                );
         AuthenticationResult secondResponse =
                 new AuthenticationResult(REFERENCE, TransactionStatus.DELIVERED_TO_MOBILE, "test", attributes2);
         List<AuthenticationResult> responses = new ArrayList<>();

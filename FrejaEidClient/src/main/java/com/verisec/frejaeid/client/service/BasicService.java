@@ -1,7 +1,6 @@
 package com.verisec.frejaeid.client.service;
 
 import com.verisec.frejaeid.client.enums.TransactionStatus;
-import com.verisec.frejaeid.client.exceptions.FrejaEidClientInternalException;
 import com.verisec.frejaeid.client.http.HttpServiceApi;
 import com.verisec.frejaeid.client.util.MethodUrl;
 

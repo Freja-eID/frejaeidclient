@@ -1,5 +1,6 @@
 package com.verisec.frejaeid.client.beans.sign.init;
 
+import com.verisec.frejaeid.client.beans.general.AttributeToReturnInfo;
 import com.verisec.frejaeid.client.beans.general.SsnUserInfo;
 import com.verisec.frejaeid.client.enums.AttributeToReturn;
 import com.verisec.frejaeid.client.enums.Country;
@@ -14,7 +15,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.util.Set;
-import java.util.TreeSet;
+import java.util.HashSet;
 
 public class InitiateSignRequestBuildersTest {
 
@@ -29,26 +30,27 @@ public class InitiateSignRequestBuildersTest {
     private static final String ORGANISATION_ID = "orgId";
     private static final String ORG_ID_ISSUER = "orgIdIssuer";
     private static final PushNotification PUSH_NOTIFICATION = PushNotification.create(TITLE, TEXT);
-    private static final Set<AttributeToReturn> REQUESTED_ATTRIBUTES = new TreeSet<>();
+    private static final Set<AttributeToReturnInfo> REQUESTED_ATTRIBUTES = new HashSet<>();
 
     @BeforeClass
     public static void createRequestedAttributes() {
-        REQUESTED_ATTRIBUTES.add(AttributeToReturn.SSN);
-        REQUESTED_ATTRIBUTES.add(AttributeToReturn.BASIC_USER_INFO);
-        REQUESTED_ATTRIBUTES.add(AttributeToReturn.CUSTOM_IDENTIFIER);
-        REQUESTED_ATTRIBUTES.add(AttributeToReturn.DATE_OF_BIRTH);
-        REQUESTED_ATTRIBUTES.add(AttributeToReturn.EMAIL_ADDRESS);
-        REQUESTED_ATTRIBUTES.add(AttributeToReturn.INTEGRATOR_SPECIFIC_USER_ID);
-        REQUESTED_ATTRIBUTES.add(AttributeToReturn.RELYING_PARTY_USER_ID);
-        REQUESTED_ATTRIBUTES.add(AttributeToReturn.ORGANISATION_ID_IDENTIFIER);
-        REQUESTED_ATTRIBUTES.add(AttributeToReturn.ADDRESSES);
-        REQUESTED_ATTRIBUTES.add(AttributeToReturn.ALL_EMAIL_ADDRESSES);
-        REQUESTED_ATTRIBUTES.add(AttributeToReturn.ALL_PHONE_NUMBERS);
-        REQUESTED_ATTRIBUTES.add(AttributeToReturn.REGISTRATION_LEVEL);
-        REQUESTED_ATTRIBUTES.add(AttributeToReturn.AGE);
-        REQUESTED_ATTRIBUTES.add(AttributeToReturn.PHOTO);
-        REQUESTED_ATTRIBUTES.add(AttributeToReturn.DOCUMENT);
-        REQUESTED_ATTRIBUTES.add(AttributeToReturn.COVID_CERTIFICATES);
+        REQUESTED_ATTRIBUTES.add(new AttributeToReturnInfo(AttributeToReturn.SSN.getName()));
+        REQUESTED_ATTRIBUTES.add(new AttributeToReturnInfo(AttributeToReturn.BASIC_USER_INFO.getName()));
+        REQUESTED_ATTRIBUTES.add(new AttributeToReturnInfo(AttributeToReturn.CUSTOM_IDENTIFIER.getName()));
+        REQUESTED_ATTRIBUTES.add(new AttributeToReturnInfo(AttributeToReturn.DATE_OF_BIRTH.getName()));
+        REQUESTED_ATTRIBUTES.add(new AttributeToReturnInfo(AttributeToReturn.EMAIL_ADDRESS.getName()));
+        REQUESTED_ATTRIBUTES.add(new AttributeToReturnInfo(AttributeToReturn.INTEGRATOR_SPECIFIC_USER_ID.getName()));
+        REQUESTED_ATTRIBUTES.add(new AttributeToReturnInfo(AttributeToReturn.RELYING_PARTY_USER_ID.getName()));
+        REQUESTED_ATTRIBUTES.add(new AttributeToReturnInfo(AttributeToReturn.ORGANISATION_ID_IDENTIFIER.getName()));
+        REQUESTED_ATTRIBUTES.add(new AttributeToReturnInfo(AttributeToReturn.ORGANISATION_ID.getName()));
+        REQUESTED_ATTRIBUTES.add(new AttributeToReturnInfo(AttributeToReturn.ADDRESSES.getName()));
+        REQUESTED_ATTRIBUTES.add(new AttributeToReturnInfo(AttributeToReturn.ALL_EMAIL_ADDRESSES.getName()));
+        REQUESTED_ATTRIBUTES.add(new AttributeToReturnInfo(AttributeToReturn.ALL_PHONE_NUMBERS.getName()));
+        REQUESTED_ATTRIBUTES.add(new AttributeToReturnInfo(AttributeToReturn.REGISTRATION_LEVEL.getName()));
+        REQUESTED_ATTRIBUTES.add(new AttributeToReturnInfo(AttributeToReturn.AGE.getName()));
+        REQUESTED_ATTRIBUTES.add(new AttributeToReturnInfo(AttributeToReturn.PHOTO.getName()));
+        REQUESTED_ATTRIBUTES.add(new AttributeToReturnInfo(AttributeToReturn.DOCUMENT.getName()));
+        REQUESTED_ATTRIBUTES.add(new AttributeToReturnInfo(AttributeToReturn.COVID_CERTIFICATES.getName()));
     }
 
     @Test
