@@ -77,6 +77,11 @@ public enum AttributeToReturn {
      */
     ORGANISATION_ID_IDENTIFIER("ORGANISATION_ID_IDENTIFIER"),
     /**
+     * Contains Organisation ID identifier and additional information about Organisation ID.
+     * Organisation ID can be requested only if it is set previously.
+     */
+    ORGANISATION_ID("ORGANISATION_ID"),
+    /**
      * If ADDRESSES is requested, list of {@linkplain AddressInfo} which
      * contains user's current physical addresses will be returned and it can be
      * requested only for {@linkplain MinRegistrationLevel#EXTENDED} and

@@ -20,10 +20,12 @@ import com.verisec.frejaeid.client.util.RequestTemplate;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.mockito.Mockito;
 
@@ -37,6 +39,7 @@ public class SignClientGetResultTest {
     private static final String EMAIL_ADDRESS = "test@frejaeid.com";
     private static final String PHONE_NUMBER = "+46123456789";
     private static final String ORGANISATION_ID = "orgId";
+    private static OrganisationIdInfo ORGANISATION_ID_INFO;
     private static final List<AddressInfo> ADDRESSES = Arrays.asList(
             new AddressInfo(Country.SWEDEN, "city", "postCode", "address1", "address2", "address3", "1993-12-30",
                             AddressType.RESIDENTIAL, AddressSourceType.GOVERNMENT_REGISTRY));
@@ -48,13 +51,22 @@ public class SignClientGetResultTest {
             new DocumentInfo(DocumentType.PASSPORT, "123456789", Country.SWEDEN, "2050-01-01");
     protected static final CovidCertificates COVID_CERTIFICATES =
             new CovidCertificates(new Vaccines("covidCertificate"), null, null, true);
-    private static final RequestedAttributes REQUESTED_ATTRIBUTES =
-            new RequestedAttributes(new BasicUserInfo("name", "surname"), "customIdentifier",
-                                    SsnUserInfo.create(Country.SWEDEN, "ssn"), "integratorSpecificId", "1987-10-18",
-                                    RELYING_PARTY_USER_ID, EMAIL_ADDRESS, ORGANISATION_ID, ADDRESSES,
-                                    ALL_EMAIL_ADDRESSES, ALL_PHONE_NUMBERS, RegistrationLevel.EXTENDED, AGE, PHOTO,
-                                    DOCUMENT_INFO, COVID_CERTIFICATES);
+    private static RequestedAttributes REQUESTED_ATTRIBUTES;
     private SignClientApi signClient;
+
+    @BeforeClass
+    public static void initTestData() {
+        HashMap<String,String> organisationIdIssuerNames = new HashMap<>();
+        organisationIdIssuerNames.put("EN", "Org ID issuer");
+        organisationIdIssuerNames.put("SV", "Org ID issuer Swedish");
+        ORGANISATION_ID_INFO =
+                new OrganisationIdInfo("org_id", organisationIdIssuerNames, "org_id_issuer");
+        REQUESTED_ATTRIBUTES =
+                new RequestedAttributes(new BasicUserInfo("name", "surname"), "customIdentifier",
+                                        SsnUserInfo.create(Country.SWEDEN, "ssn"), "integratorSpecificId", "1987-10-18",
+                                        RELYING_PARTY_USER_ID, EMAIL_ADDRESS, ORGANISATION_ID, ADDRESSES, ALL_EMAIL_ADDRESSES, ALL_PHONE_NUMBERS, RegistrationLevel.EXTENDED, AGE, PHOTO, DOCUMENT_INFO, COVID_CERTIFICATES, ORGANISATION_ID_INFO
+                );
+    }
 
     @Before
     public void initialiseClient() throws FrejaEidClientInternalException {

@@ -4,9 +4,9 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.verisec.frejaeid.client.beans.common.RelyingPartyRequest;
+import com.verisec.frejaeid.client.beans.general.AttributeToReturnInfo;
 import com.verisec.frejaeid.client.beans.general.SsnUserInfo;
 import com.verisec.frejaeid.client.beans.sign.init.InitiateSignRequestBuilders.UserInfoBuilder;
-import com.verisec.frejaeid.client.enums.AttributeToReturn;
 import com.verisec.frejaeid.client.enums.DataToSignType;
 import com.verisec.frejaeid.client.enums.MinRegistrationLevel;
 import com.verisec.frejaeid.client.enums.SignatureType;
@@ -28,7 +28,7 @@ public class InitiateSignRequest implements RelyingPartyRequest {
     private final DataToSignType dataToSignType;
     private final DataToSign dataToSign;
     private final SignatureType signatureType;
-    private final Set<AttributeToReturn> attributesToReturn;
+    private final Set<AttributeToReturnInfo> attributesToReturn;
     private final String relyingPartyId;
     private final String orgIdIssuer;
 
@@ -37,7 +37,7 @@ public class InitiateSignRequest implements RelyingPartyRequest {
      * <br> {@linkplain UserInfoType} {@code EMAIL},
      * {@link MinRegistrationLevel} {@code PLUS}, default push notification,
      * default expiry time of two minutes and without binary data to sign and
-     * {@linkplain AttributeToReturn}.
+     * {@link AttributeToReturnInfo}.
      *
      * @param email user's email for which transaction will be initiated. It
      *              cannot be {@code null} or empty.
@@ -58,7 +58,7 @@ public class InitiateSignRequest implements RelyingPartyRequest {
      * <br> {@linkplain UserInfoType} {@code SSN},
      * {@link MinRegistrationLevel} {@code PLUS} , default push notification,
      * default expiry time of two minutes and without binary data to sign and
-     * {@linkplain AttributeToReturn}.
+     * {@link AttributeToReturnInfo}.
      *
      * @param ssnUserInfo instance of {@linkplain SsnUserInfo} that contains
      *                    with personal number and country for which transaction will be initiated.
@@ -98,7 +98,7 @@ public class InitiateSignRequest implements RelyingPartyRequest {
                         @JsonProperty(value = "dataToSignType") DataToSignType dataToSignType,
                         @JsonProperty(value = "dataToSign") DataToSign dataToSign,
                         @JsonProperty(value = "signatureType") SignatureType signatureType,
-                        @JsonProperty(value = "attributesToReturn") Set<AttributeToReturn> attributesToReturn,
+                        @JsonProperty(value = "attributesToReturn") Set<AttributeToReturnInfo> attributesToReturn,
                         @JsonProperty(value = "relyingPartyId") String relyingPartyId,
                         @JsonProperty(value = "orgIdIssuer") String orgIdIssuer) {
         this.userInfoType = userInfoType;
@@ -156,7 +156,7 @@ public class InitiateSignRequest implements RelyingPartyRequest {
         return minRegistrationLevel;
     }
 
-    public Set<AttributeToReturn> getAttributesToReturn() {
+    public Set<AttributeToReturnInfo> getAttributesToReturn() {
         return attributesToReturn;
     }
 
@@ -186,19 +186,16 @@ public class InitiateSignRequest implements RelyingPartyRequest {
         if (!Objects.equals(this.title, other.title)) {
             return false;
         }
-        if (!Objects.equals(this.minRegistrationLevel, other.minRegistrationLevel)) {
-            return false;
-        }
-        if (!Objects.equals(this.dataToSignType, other.dataToSignType)) {
-            return false;
-        }
-        if (!Objects.equals(this.signatureType, other.signatureType)) {
-            return false;
-        }
         if (!Objects.equals(this.relyingPartyId, other.relyingPartyId)) {
             return false;
         }
+        if (!Objects.equals(this.orgIdIssuer, other.orgIdIssuer)) {
+            return false;
+        }
         if (this.userInfoType != other.userInfoType) {
+            return false;
+        }
+        if (this.minRegistrationLevel != other.minRegistrationLevel) {
             return false;
         }
         if (!Objects.equals(this.pushNotification, other.pushNotification)) {
@@ -207,17 +204,29 @@ public class InitiateSignRequest implements RelyingPartyRequest {
         if (!Objects.equals(this.expiry, other.expiry)) {
             return false;
         }
+        if (this.dataToSignType != other.dataToSignType) {
+            return false;
+        }
         if (!Objects.equals(this.dataToSign, other.dataToSign)) {
             return false;
         }
-        if (!Objects.equals(this.attributesToReturn, other.attributesToReturn)) {
+        if (this.signatureType != other.signatureType) {
             return false;
         }
-        if (!Objects.equals(this.orgIdIssuer, other.orgIdIssuer)) {
+        if (this.attributesToReturn != null && other.attributesToReturn != null) {
+            if (this.attributesToReturn.size() != other.attributesToReturn.size()) {
+                return false;
+            }
+            if (!this.attributesToReturn.containsAll(other.attributesToReturn)) {
+                return false;
+            }
+        } else if (this.attributesToReturn != null || other.attributesToReturn != null) {
             return false;
         }
         return true;
     }
+
+    
 
     @Override
     public String toString() {

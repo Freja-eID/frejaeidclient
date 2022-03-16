@@ -5,6 +5,7 @@ import com.verisec.frejaeid.client.beans.common.CancelRequest;
 import com.verisec.frejaeid.client.beans.common.ResultRequest;
 import com.verisec.frejaeid.client.beans.common.ResultsRequest;
 import com.verisec.frejaeid.client.beans.common.RelyingPartyRequest;
+import com.verisec.frejaeid.client.beans.general.AttributeToReturnInfo;
 import com.verisec.frejaeid.client.beans.organisationid.delete.DeleteOrganisationIdRequest;
 import com.verisec.frejaeid.client.beans.organisationid.getall.GetAllOrganisationIdUsersRequest;
 import com.verisec.frejaeid.client.beans.organisationid.init.InitiateAddOrganisationIdRequest;
@@ -148,7 +149,7 @@ public class RequestValidationService {
         }
     }
 
-    private void validateRequestedAttributes(Set<AttributeToReturn> requestedAttributes)
+    private void validateRequestedAttributes(Set<AttributeToReturnInfo> requestedAttributes)
             throws FrejaEidClientInternalException {
         if (requestedAttributes != null && requestedAttributes.isEmpty()) {
             throw new FrejaEidClientInternalException("RequestedAttributes cannot be empty.");
