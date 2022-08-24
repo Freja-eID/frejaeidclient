@@ -2,6 +2,7 @@ package com.verisec.frejaeid.client.beans.general;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.verisec.frejaeid.client.enums.DisplayType;
 
 import java.util.Objects;
 
@@ -13,6 +14,8 @@ public class OrganisationId {
     private final String title;
     private final String identifierName;
     private final String identifier;
+    private final DisplayType[] displayType;
+    private final OrganisationIdAttribute[] attributes;
 
     /**
      * Creates instance of {@linkplain OrganisationId}.
@@ -26,19 +29,31 @@ public class OrganisationId {
      * @param identifier     will be set for user. Can be used for initiating
      *                       transaction. Maximum length is 128 characters. It cannot be {@code null}
      *                       or empty.
+     * @param displayType    determines in what ways the identifier is displayed to the end user. It can be {@code null}
+     *                       or empty. TEXT is used by default.
+     * @param attributes     additional attributes related to the identifier. It can be {@code null} or empty.
      * @return information for organisation id
      */
+    public static OrganisationId create(String title, String identifierName, String identifier,
+                                        DisplayType[] displayType, OrganisationIdAttribute[] attributes) {
+        return new OrganisationId(title, identifierName, identifier, displayType, attributes);
+    }
+
     public static OrganisationId create(String title, String identifierName, String identifier) {
-        return new OrganisationId(title, identifierName, identifier);
+        return new OrganisationId(title, identifierName, identifier, null, null);
     }
 
     @JsonCreator
     private OrganisationId(@JsonProperty("title") String title,
                            @JsonProperty("identifierName") String identifierName,
-                           @JsonProperty("identifier") String identifier) {
+                           @JsonProperty("identifier") String identifier,
+                           @JsonProperty("displayType") DisplayType[] displayType,
+                           @JsonProperty("attributes") OrganisationIdAttribute[] attributes) {
         this.title = title;
         this.identifierName = identifierName;
         this.identifier = identifier;
+        this.displayType = displayType;
+        this.attributes = attributes;
     }
 
     public String getTitle() {
