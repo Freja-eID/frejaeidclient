@@ -69,7 +69,7 @@ public abstract class CommonHttpTest {
         organisationIdIssuerNames.put("EN", "Org ID issuer");
         organisationIdIssuerNames.put("SV", "Org ID issuer Swedish");
         ORGANISATION_ID_INFO =
-                new OrganisationIdInfo("org_id", organisationIdIssuerNames, "org_id_issuer");
+                new OrganisationIdInfo("org_id", organisationIdIssuerNames, "org_id_issuer", null);
     }
 
     protected void startMockServer(final RelyingPartyRequest expectedRequest, final int statusCodeToReturn,
