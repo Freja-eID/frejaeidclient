@@ -15,6 +15,7 @@ public class OrganisationIdAttribute {
      * Creates instance of {@linkplain OrganisationIdAttribute}.
      *
      * @param key            identifier of the attribute. It is not displayed to the end user.
+     *                       It cannot be {@code null} or empty.
      *
      * @param friendlyName   name of attribute that will be set to user (for
      *                       example "employee number"). Maximum length is 30 characters. It cannot be

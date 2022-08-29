@@ -21,22 +21,22 @@ public class OrganisationId {
     /**
      * Creates instance of {@linkplain OrganisationId}.
      *
-     * @param title                     will be shown to user on organisation id card (for example
-     *                                  "Developers"). Maximum length is 22 characters. It cannot be {@code null}
-     *                                  or empty.
-     * @param identifierName            name of identifier that will be set to user (for
-     *                                  example "employee number"). Maximum length is 30 characters. It cannot be
-     *                                  {@code null} or empty.
-     * @param identifier                will be set for user. Can be used for initiating
-     *                                  transaction. Maximum length is 128 characters. It cannot be {@code null}
-     *                                  or empty.
-     * @param identifierDisplayTypes    determines in what ways the identifier is displayed to the end user. It can be
-     *                                  {@code null} or empty. TEXT is used by default.
-     * @param additionalAttributes      additional attributes related to the identifier. It can be {@code null} or empty.
+     * @param title                  will be shown to user on organisation id card (for example
+     *                               "Developers"). Maximum length is 22 characters. It cannot be {@code null}
+     *                               or empty.
+     * @param identifierName         name of identifier that will be set to user (for
+     *                               example "employee number"). Maximum length is 30 characters. It cannot be
+     *                               {@code null} or empty.
+     * @param identifier             will be set for user. Can be used for initiating
+     *                               transaction. Maximum length is 128 characters. It cannot be {@code null}
+     *                               or empty.
+     * @param identifierDisplayTypes determines in what ways the identifier is displayed to the end user. It can be
+     *                               {@code null} or empty. TEXT is used by default.
+     * @param additionalAttributes   additional attributes related to the identifier. It can be {@code null} or empty.
      * @return information for organisation id
      */
     public static OrganisationId create(String title, String identifierName, String identifier,
-                                        List<DisplayType>  identifierDisplayTypes,
+                                        List<DisplayType> identifierDisplayTypes,
                                         List<OrganisationIdAttribute> additionalAttributes) {
         return new OrganisationId(title, identifierName, identifier, identifierDisplayTypes, additionalAttributes);
     }
@@ -83,11 +83,11 @@ public class OrganisationId {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         OrganisationId that = (OrganisationId) o;
-        return Objects.equals(title, that.title) && Objects.equals(identifierName,
-                                                                   that.identifierName) && Objects.equals(
-                identifier, that.identifier) && Objects.equals(identifierDisplayTypes,
-                                                               that.identifierDisplayTypes) && Objects.equals(
-                additionalAttributes, that.additionalAttributes);
+        return Objects.equals(title, that.title)
+                && Objects.equals(identifierName, that.identifierName)
+                && Objects.equals(identifier, that.identifier)
+                && Objects.equals(identifierDisplayTypes, that.identifierDisplayTypes)
+                && Objects.equals(additionalAttributes, that.additionalAttributes);
     }
 
     @Override
