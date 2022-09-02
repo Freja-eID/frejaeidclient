@@ -45,6 +45,7 @@ public class AuthenticationClientGetResultTest {
     private static final String PHONE_NUMBER = "+46123456789";
     private static final String ORGANISATION_ID = "vealrad";
     private static OrganisationIdInfo ORGANISATION_ID_INFO;
+    private static OrganisationIdInfo ORGANISATION_ID_INFO_WITH_ADDITIONAL_ATTRIBUTES;
     private static final List<AddressInfo> ADDRESSES = Arrays.asList(
             new AddressInfo(Country.SWEDEN, "city", "postCode", "address1", "address2", "address3", "1993-12-30",
                             AddressType.RESIDENTIAL, AddressSourceType.GOVERNMENT_REGISTRY));
@@ -65,7 +66,12 @@ public class AuthenticationClientGetResultTest {
         organisationIdIssuerNames.put("EN", "Org ID issuer");
         organisationIdIssuerNames.put("SV", "Org ID issuer Swedish");
         ORGANISATION_ID_INFO =
-                new OrganisationIdInfo("org_id", organisationIdIssuerNames, "org_id_issuer");
+                new OrganisationIdInfo("org_id", organisationIdIssuerNames, "org_id_issuer", null);
+        OrganisationIdAttribute additionalOrgIdAttribute =
+                OrganisationIdAttribute.create("key", "friendly name", "value");
+        ORGANISATION_ID_INFO_WITH_ADDITIONAL_ATTRIBUTES =
+                new OrganisationIdInfo("org_id_with_attributes", organisationIdIssuerNames, "org_id_issuer",
+                                       Arrays.asList(additionalOrgIdAttribute));
         REQUESTED_ATTRIBUTES =
                 new RequestedAttributes(BASIC_USER_INFO, CUSTOM_IDENTIFIER, SSN, null, DATE_OF_BIRTH, RELYING_PARTY_USER_ID,
                                         EMAIL_ADDRESS, ORGANISATION_ID, ADDRESSES, ALL_EMAIL_ADDRESSES, ALL_PHONE_NUMBERS, RegistrationLevel.EXTENDED, AGE, PHOTO, DOCUMENT_INFO, COVID_CERTIFICATES, ORGANISATION_ID_INFO
@@ -129,7 +135,7 @@ public class AuthenticationClientGetResultTest {
         Mockito.when(httpServiceMock.send(Mockito.anyString(), Mockito.any(RequestTemplate.class),
                                           Mockito.any(RelyingPartyRequest.class),
                                           Mockito.eq(AuthenticationResult.class), Mockito.anyString()))
-                .thenReturn(new AuthenticationResult(REFERENCE, TransactionStatus.STARTED, DETAILS,
+                .thenReturn(new AuthenticationResult(REFERENCE, TransactionStatus.APPROVED, DETAILS,
                                                      REQUESTED_ATTRIBUTES));
         AuthenticationResult response = authenticationClient.getResult(authenticationResultRequest);
         Mockito.verify(httpServiceMock)
@@ -137,9 +143,42 @@ public class AuthenticationClientGetResultTest {
                       RequestTemplate.AUTHENTICATION_RESULT_TEMPLATE, authenticationResultRequest,
                       AuthenticationResult.class, RELYING_PARTY_ID);
         Assert.assertEquals(REFERENCE, response.getAuthRef());
-        Assert.assertEquals(TransactionStatus.STARTED, response.getStatus());
+        Assert.assertEquals(TransactionStatus.APPROVED, response.getStatus());
         Assert.assertEquals(DETAILS, response.getDetails());
         Assert.assertEquals(REQUESTED_ATTRIBUTES, response.getRequestedAttributes());
+    }
+
+    @Test
+    public void getAuthenticationResultOrganisational_withAdditionalAttributes_success()
+            throws FrejaEidClientInternalException, FrejaEidException {
+        RequestedAttributes requestedAttributes =
+                new RequestedAttributes(BASIC_USER_INFO, CUSTOM_IDENTIFIER, SSN, null,
+                                        DATE_OF_BIRTH, RELYING_PARTY_USER_ID,
+                                        EMAIL_ADDRESS, ORGANISATION_ID, ADDRESSES,
+                                        ALL_EMAIL_ADDRESSES, ALL_PHONE_NUMBERS,
+                                        RegistrationLevel.EXTENDED, AGE, PHOTO,
+                                        DOCUMENT_INFO, COVID_CERTIFICATES,
+                                        ORGANISATION_ID_INFO_WITH_ADDITIONAL_ATTRIBUTES);
+        AuthenticationClientApi authenticationClient =
+                AuthenticationClient.create(TestUtil.getDefaultSslSettings(), FrejaEnvironment.TEST)
+                        .setHttpService(httpServiceMock)
+                        .setTransactionContext(TransactionContext.ORGANISATIONAL).build();
+        AuthenticationResultRequest authenticationResultRequest =
+                AuthenticationResultRequest.create(REFERENCE, RELYING_PARTY_ID);
+        Mockito.when(httpServiceMock.send(Mockito.anyString(), Mockito.any(RequestTemplate.class),
+                                          Mockito.any(RelyingPartyRequest.class),
+                                          Mockito.eq(AuthenticationResult.class), Mockito.anyString()))
+                .thenReturn(new AuthenticationResult(REFERENCE, TransactionStatus.APPROVED, DETAILS,
+                                                     requestedAttributes));
+        AuthenticationResult response = authenticationClient.getResult(authenticationResultRequest);
+        Mockito.verify(httpServiceMock)
+                .send(FrejaEnvironment.TEST.getUrl() + MethodUrl.ORGANISATION_AUTHENTICATION_GET_ONE_RESULT,
+                      RequestTemplate.AUTHENTICATION_RESULT_TEMPLATE, authenticationResultRequest,
+                      AuthenticationResult.class, RELYING_PARTY_ID);
+        Assert.assertEquals(REFERENCE, response.getAuthRef());
+        Assert.assertEquals(TransactionStatus.APPROVED, response.getStatus());
+        Assert.assertEquals(DETAILS, response.getDetails());
+        Assert.assertEquals(requestedAttributes, response.getRequestedAttributes());
     }
 
     @Test

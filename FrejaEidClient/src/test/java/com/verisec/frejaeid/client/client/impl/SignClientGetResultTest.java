@@ -40,6 +40,7 @@ public class SignClientGetResultTest {
     private static final String PHONE_NUMBER = "+46123456789";
     private static final String ORGANISATION_ID = "orgId";
     private static OrganisationIdInfo ORGANISATION_ID_INFO;
+    private static OrganisationIdInfo ORGANISATION_ID_INFO_WITH_ADDITIONAL_ATTRIBUTES;
     private static final List<AddressInfo> ADDRESSES = Arrays.asList(
             new AddressInfo(Country.SWEDEN, "city", "postCode", "address1", "address2", "address3", "1993-12-30",
                             AddressType.RESIDENTIAL, AddressSourceType.GOVERNMENT_REGISTRY));
@@ -60,7 +61,12 @@ public class SignClientGetResultTest {
         organisationIdIssuerNames.put("EN", "Org ID issuer");
         organisationIdIssuerNames.put("SV", "Org ID issuer Swedish");
         ORGANISATION_ID_INFO =
-                new OrganisationIdInfo("org_id", organisationIdIssuerNames, "org_id_issuer");
+                new OrganisationIdInfo("org_id", organisationIdIssuerNames, "org_id_issuer", null);
+        OrganisationIdAttribute additionalOrgIdAttribute =
+                OrganisationIdAttribute.create("key", "friendly name", "value");
+        ORGANISATION_ID_INFO_WITH_ADDITIONAL_ATTRIBUTES =
+                new OrganisationIdInfo("org_id_with_attributes", organisationIdIssuerNames, "org_id_issuer",
+                                       Arrays.asList(additionalOrgIdAttribute));
         REQUESTED_ATTRIBUTES =
                 new RequestedAttributes(new BasicUserInfo("name", "surname"), "customIdentifier",
                                         SsnUserInfo.create(Country.SWEDEN, "ssn"), "integratorSpecificId", "1987-10-18",
@@ -116,7 +122,7 @@ public class SignClientGetResultTest {
     public void getSignResultOrganisational_expectSuccess() throws FrejaEidClientInternalException, FrejaEidException {
         SignResultRequest signResultRequest = SignResultRequest.create(SIGN_REFERENCE, RELYING_PARTY_ID);
         SignResult expectedResponse =
-                new SignResult(SIGN_REFERENCE, TransactionStatus.STARTED, SIGN_DETAILS, REQUESTED_ATTRIBUTES);
+                new SignResult(SIGN_REFERENCE, TransactionStatus.APPROVED, SIGN_DETAILS, REQUESTED_ATTRIBUTES);
         SignClientApi signClient = SignClient.create(TestUtil.getDefaultSslSettings(), FrejaEnvironment.TEST)
                 .setHttpService(httpServiceMock)
                 .setTransactionContext(TransactionContext.ORGANISATIONAL).build();
@@ -128,9 +134,39 @@ public class SignClientGetResultTest {
                 .send(FrejaEnvironment.TEST.getUrl() + MethodUrl.ORGANISATION_SIGN_GET_ONE_RESULT,
                       RequestTemplate.SIGN_RESULT_TEMPLATE, signResultRequest, SignResult.class, RELYING_PARTY_ID);
         Assert.assertEquals(SIGN_REFERENCE, response.getSignRef());
-        Assert.assertEquals(TransactionStatus.STARTED, response.getStatus());
+        Assert.assertEquals(TransactionStatus.APPROVED, response.getStatus());
         Assert.assertEquals(SIGN_DETAILS, response.getDetails());
         Assert.assertEquals(REQUESTED_ATTRIBUTES, response.getRequestedAttributes());
+    }
+
+    @Test
+    public void getSignResultOrganisational_withAdditionalAttributes_expectSuccess() throws FrejaEidClientInternalException, FrejaEidException {
+        RequestedAttributes requestedAttributes =
+                new RequestedAttributes(new BasicUserInfo("name", "surname"), "customIdentifier",
+                                        SsnUserInfo.create(Country.SWEDEN, "ssn"), null,
+                                        "1987-10-18", RELYING_PARTY_USER_ID,
+                                        EMAIL_ADDRESS, ORGANISATION_ID, ADDRESSES,
+                                        ALL_EMAIL_ADDRESSES, ALL_PHONE_NUMBERS,
+                                        RegistrationLevel.EXTENDED, AGE, PHOTO,
+                                        DOCUMENT_INFO, COVID_CERTIFICATES,
+                                        ORGANISATION_ID_INFO_WITH_ADDITIONAL_ATTRIBUTES);
+        SignResultRequest signResultRequest = SignResultRequest.create(SIGN_REFERENCE, RELYING_PARTY_ID);
+        SignResult expectedResponse =
+                new SignResult(SIGN_REFERENCE, TransactionStatus.APPROVED, SIGN_DETAILS, requestedAttributes);
+        SignClientApi signClient = SignClient.create(TestUtil.getDefaultSslSettings(), FrejaEnvironment.TEST)
+                .setHttpService(httpServiceMock)
+                .setTransactionContext(TransactionContext.ORGANISATIONAL).build();
+        Mockito.when(httpServiceMock.send(Mockito.anyString(), Mockito.any(RequestTemplate.class),
+                                          Mockito.any(RelyingPartyRequest.class), Mockito.eq(SignResult.class),
+                                          Mockito.anyString())).thenReturn(expectedResponse);
+        SignResult response = signClient.getResult(signResultRequest);
+        Mockito.verify(httpServiceMock)
+                .send(FrejaEnvironment.TEST.getUrl() + MethodUrl.ORGANISATION_SIGN_GET_ONE_RESULT,
+                      RequestTemplate.SIGN_RESULT_TEMPLATE, signResultRequest, SignResult.class, RELYING_PARTY_ID);
+        Assert.assertEquals(SIGN_REFERENCE, response.getSignRef());
+        Assert.assertEquals(TransactionStatus.APPROVED, response.getStatus());
+        Assert.assertEquals(SIGN_DETAILS, response.getDetails());
+        Assert.assertEquals(requestedAttributes, response.getRequestedAttributes());
     }
 
     @Test
