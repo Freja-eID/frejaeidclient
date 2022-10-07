@@ -196,5 +196,31 @@ public class SignClientInitSignTest {
             Assert.assertEquals("Invalid or missing userInfo.", rpEx.getLocalizedMessage());
         }
     }
+    
+    @Test
+    public void initSign_userInfoTypeInferred_success()
+            throws FrejaEidClientInternalException, FrejaEidException {
+        InitiateSignResponse expectedResponse = new InitiateSignResponse(SIGN_REFERENCE);
+        Mockito.when(httpServiceMock.send(Mockito.anyString(), Mockito.any(RequestTemplate.class),
+                                          Mockito.any(RelyingPartyRequest.class),
+                                          Mockito.eq(InitiateSignResponse.class), Mockito.anyString()))
+                .thenReturn(expectedResponse);
+
+
+        InitiateSignRequest initiateSignRequest = InitiateSignRequest.createCustom()
+                .setInferred()
+                .setDataToSign(dataToSign)
+                .setExpiry(expiry)
+                .setMinRegistrationLevel(minRegistrationLevel)
+                .setPushNotification(PushNotification.create(pushNotificationTitle, pushNotificationText))
+                .setTitle(title)
+                .setRelyingPartyId(RELYING_PARTY_ID)
+                .build();
+        String reference = signClient.initiate(initiateSignRequest);
+        Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getUrl() + MethodUrl.SIGN_INIT,
+                                             RequestTemplate.INIT_SIGN_TEMPLATE, initiateSignRequest,
+                                             InitiateSignResponse.class, RELYING_PARTY_ID);
+        Assert.assertEquals(SIGN_REFERENCE, reference);
+    }
 
 }
