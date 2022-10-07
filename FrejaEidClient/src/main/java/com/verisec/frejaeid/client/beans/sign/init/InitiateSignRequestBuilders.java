@@ -56,6 +56,16 @@ public class InitiateSignRequestBuilders {
         public SetOptionalParamsBuilder setPhoneNumber(String phoneNumber) {
             return new SetOptionalParamsBuilder(UserInfoType.PHONE, phoneNumber);
         }
+        
+        /**
+         * Sets {@linkplain UserInfoType#INFERRED} as {@linkplain UserInfoType}
+         * for initiating transaction.
+         *
+         * @return request builder
+         */
+        public SetOptionalParamsBuilder setInferred() {
+            return new SetOptionalParamsBuilder(UserInfoType.INFERRED, "N/A");
+        }
 
         /**
          * Sets organisation id as userInfo and {@link UserInfoType#ORG_ID} as
