@@ -9,6 +9,7 @@ import com.verisec.frejaeid.client.beans.general.AttributeToReturnInfo;
 import com.verisec.frejaeid.client.beans.organisationid.delete.DeleteOrganisationIdRequest;
 import com.verisec.frejaeid.client.beans.organisationid.getall.GetAllOrganisationIdUsersRequest;
 import com.verisec.frejaeid.client.beans.organisationid.init.InitiateAddOrganisationIdRequest;
+import com.verisec.frejaeid.client.beans.sign.init.DataToSign;
 import com.verisec.frejaeid.client.beans.sign.init.InitiateSignRequest;
 import com.verisec.frejaeid.client.beans.usermanagement.customidentifier.delete.DeleteCustomIdentifierRequest;
 import com.verisec.frejaeid.client.beans.usermanagement.customidentifier.set.SetCustomIdentifierRequest;
@@ -75,6 +76,10 @@ public class RequestValidationService {
         validateRegistrationState(initiateSignRequest.getMinRegistrationLevel(), transactionContext);
         validateRelyingPartyIdIsEmpty(initiateSignRequest.getRelyingPartyId());
         validateOrgIdIssuer(initiateSignRequest.getOrgIdIssuer());
+        validateSignatureTypeWithDataType(initiateSignRequest.getDataToSignType(),
+                                          initiateSignRequest.getSignatureType());
+        validateAdvancedSignatureTypeAndMinimumRegistrationLevel(initiateSignRequest.getSignatureType(),
+                                                                 initiateSignRequest.getMinRegistrationLevel());
     }
 
     public void validateSetCustomIDentifierRequest(SetCustomIdentifierRequest setCustomIdentifierRequest)
@@ -192,6 +197,23 @@ public class RequestValidationService {
         if(!StringUtils.isEmpty(orgIdIssuer) && !orgIdIssuer.equalsIgnoreCase(OrgIdIssuer.ANY.getName())){
             throw new FrejaEidClientInternalException("OrgIdIssuer unsupported value. " +
                                                               "OrgIdIssuer must be null/empty or <ANY>");
+        }
+    }
+
+    private void validateSignatureTypeWithDataType(DataToSignType dataToSignType, SignatureType signatureType)
+            throws FrejaEidClientInternalException {
+        if((dataToSignType.equals(DataToSignType.SIMPLE_UTF8_TEXT) && signatureType.equals(SignatureType.EXTENDED)) ||
+                ((dataToSignType.equals(DataToSignType.EXTENDED_UTF8_TEXT) && signatureType.equals(SignatureType.SIMPLE)))) {
+            throw new FrejaEidClientInternalException("DataToSignType and SignatureType mismatch.");
+        }
+    }
+
+    private void validateAdvancedSignatureTypeAndMinimumRegistrationLevel(SignatureType signatureType,
+                                                                          MinRegistrationLevel minRegistrationLevel)
+            throws FrejaEidClientInternalException {
+        if(signatureType.equals(SignatureType.CMS_EXPLICIT) && minRegistrationLevel.equals(MinRegistrationLevel.BASIC)) {
+            throw new FrejaEidClientInternalException("Advanced signature type request requires registration levels "
+                                                              + "above BASIC.");
         }
     }
 

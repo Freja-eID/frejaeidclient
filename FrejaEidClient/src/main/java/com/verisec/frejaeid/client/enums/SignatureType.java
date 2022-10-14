@@ -3,7 +3,8 @@ package com.verisec.frejaeid.client.enums;
 public enum SignatureType {
 
     SIMPLE("SIMPLE"),
-    EXTENDED("EXTENDED");
+    EXTENDED("EXTENDED"),
+    CMS_EXPLICIT("CMS_EXPLICIT");
 
     private final String name;
 

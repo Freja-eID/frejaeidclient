@@ -132,6 +132,13 @@ public class SignClientHttpTest extends CommonHttpTest {
         sendInitiateSignRequestAndAssertResponse(expectedInitSignCustomRequestWithRelyingPartyId,
                                                  initSignCustomRequestWithRelyingPartyId);
 
+        InitiateSignRequest initSignCustomRequestWithAdvancedSignatureType = InitiateSignRequest.createCustom()
+                .setEmail(EMAIL)
+                .setDataToSign(DataToSign.create(dataToSignText, binaryData), SignatureType.CMS_EXPLICIT)
+                .setMinRegistrationLevel(MinRegistrationLevel.PLUS)
+                .build();
+        sendInitiateSignRequestAndAssertResponse(initSignCustomRequestWithAdvancedSignatureType);
+
     }
 
     @Test

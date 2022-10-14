@@ -223,4 +223,32 @@ public class SignClientInitSignTest {
         Assert.assertEquals(SIGN_REFERENCE, reference);
     }
 
+    @Test
+    public void initSign_customRequests_cmsExplicit_expectSuccess() throws FrejaEidClientInternalException,
+            FrejaEidException {
+        InitiateSignResponse expectedResponse = new InitiateSignResponse(SIGN_REFERENCE);
+        Mockito.when(httpServiceMock.send(Mockito.anyString(), Mockito.any(RequestTemplate.class),
+                                          Mockito.any(RelyingPartyRequest.class),
+                                          Mockito.eq(InitiateSignResponse.class), Mockito.anyString()))
+                .thenReturn(expectedResponse);
+
+        InitiateSignRequest initiateSignRequest = InitiateSignRequest.createCustom()
+                .setEmail(EMAIL)
+                .setDataToSign(dataToSign, SignatureType.CMS_EXPLICIT)
+                .setExpiry(expiry)
+                .setMinRegistrationLevel(MinRegistrationLevel.PLUS)
+                .setPushNotification(pushNotification)
+                .setAttributesToReturn(AttributeToReturn.values())
+                .setTitle(title)
+                .setRelyingPartyId(RELYING_PARTY_ID)
+                .build();
+
+        String reference = signClient.initiate(initiateSignRequest);
+        Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getUrl() + MethodUrl.SIGN_INIT,
+                                             RequestTemplate.INIT_SIGN_TEMPLATE, initiateSignRequest,
+                                             InitiateSignResponse.class, RELYING_PARTY_ID);
+        Assert.assertEquals(SIGN_REFERENCE, reference);
+
+    }
+
 }
