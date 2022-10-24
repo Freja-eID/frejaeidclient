@@ -4,7 +4,7 @@ public enum SignatureType {
 
     SIMPLE("SIMPLE"),
     EXTENDED("EXTENDED"),
-    CMS_EXPLICIT("CMS_EXPLICIT");
+    CMS_IMPLICIT("CMS_IMPLICIT");
 
     private final String name;
 

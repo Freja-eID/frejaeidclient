@@ -9,7 +9,6 @@ import com.verisec.frejaeid.client.beans.general.AttributeToReturnInfo;
 import com.verisec.frejaeid.client.beans.organisationid.delete.DeleteOrganisationIdRequest;
 import com.verisec.frejaeid.client.beans.organisationid.getall.GetAllOrganisationIdUsersRequest;
 import com.verisec.frejaeid.client.beans.organisationid.init.InitiateAddOrganisationIdRequest;
-import com.verisec.frejaeid.client.beans.sign.init.DataToSign;
 import com.verisec.frejaeid.client.beans.sign.init.InitiateSignRequest;
 import com.verisec.frejaeid.client.beans.usermanagement.customidentifier.delete.DeleteCustomIdentifierRequest;
 import com.verisec.frejaeid.client.beans.usermanagement.customidentifier.set.SetCustomIdentifierRequest;
@@ -80,6 +79,7 @@ public class RequestValidationService {
                                           initiateSignRequest.getSignatureType());
         validateAdvancedSignatureTypeAndMinimumRegistrationLevel(initiateSignRequest.getSignatureType(),
                                                                  initiateSignRequest.getMinRegistrationLevel());
+        validateAdvancedSignRequestedAttributes(initiateSignRequest.getSignatureType(), initiateSignRequest.getAttributesToReturn());
     }
 
     public void validateSetCustomIDentifierRequest(SetCustomIdentifierRequest setCustomIdentifierRequest)
@@ -203,7 +203,7 @@ public class RequestValidationService {
     private void validateSignatureTypeWithDataType(DataToSignType dataToSignType, SignatureType signatureType)
             throws FrejaEidClientInternalException {
         if((dataToSignType.equals(DataToSignType.SIMPLE_UTF8_TEXT) && signatureType.equals(SignatureType.EXTENDED)) ||
-                ((dataToSignType.equals(DataToSignType.EXTENDED_UTF8_TEXT) && signatureType.equals(SignatureType.SIMPLE)))) {
+                ((dataToSignType.equals(DataToSignType.EXTENDED_UTF8_TEXT) && !signatureType.equals(SignatureType.EXTENDED)))) {
             throw new FrejaEidClientInternalException("DataToSignType and SignatureType mismatch.");
         }
     }
@@ -211,9 +211,23 @@ public class RequestValidationService {
     private void validateAdvancedSignatureTypeAndMinimumRegistrationLevel(SignatureType signatureType,
                                                                           MinRegistrationLevel minRegistrationLevel)
             throws FrejaEidClientInternalException {
-        if(signatureType.equals(SignatureType.CMS_EXPLICIT) && minRegistrationLevel.equals(MinRegistrationLevel.BASIC)) {
+        if(signatureType.equals(SignatureType.CMS_IMPLICIT) && minRegistrationLevel.equals(MinRegistrationLevel.BASIC)) {
             throw new FrejaEidClientInternalException("Advanced signature type request requires registration levels "
                                                               + "above BASIC.");
+        }
+    }
+
+    private void validateAdvancedSignRequestedAttributes(SignatureType signatureType,
+                                                         Set<AttributeToReturnInfo>  requestedAttributes)
+            throws FrejaEidClientInternalException {
+        if(signatureType.equals(SignatureType.SIMPLE) || signatureType.equals(SignatureType.EXTENDED)) {
+            return;
+        }
+
+        if(requestedAttributes == null || !(requestedAttributes.contains(new AttributeToReturnInfo(AttributeToReturn.SSN.getName()))
+                && requestedAttributes.contains(new AttributeToReturnInfo(AttributeToReturn.BASIC_USER_INFO.getName())))) {
+            throw new FrejaEidClientInternalException("Sign transaction with an advanced signature type requires SSN "
+                                                              + "and Basic user info in it's RequestedAttributes.");
         }
     }
 

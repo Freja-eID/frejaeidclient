@@ -179,10 +179,10 @@ public class InitiateSignRequestBuilders {
          * @param dataToSign mandatory parameter. Text cannot be {@code null} or
          *                   empty.
          *
-         * Signature type can be SIMPLE, EXTENDED or CMS_EXPLICIT. SIMPLE signature type can only be used with
+         * Signature type can be SIMPLE, EXTENDED or CMS_IMPLICIT. SIMPLE signature type can only be used with
          *                   SIMPLE_UTF8_TEXT data type, EXTENDED signature type can only be used with
          *                   EXTENDED_UTF8_TEXT data type,
-         *                   while the CMS_EXPLICIT signature type can be used with both.
+         *                   while the CMS_IMPLICIT signature type can be used with both.
          *
          * @return request builder
          */

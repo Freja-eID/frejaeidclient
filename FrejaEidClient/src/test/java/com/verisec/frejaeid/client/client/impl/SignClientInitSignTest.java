@@ -224,7 +224,7 @@ public class SignClientInitSignTest {
     }
 
     @Test
-    public void initSign_customRequests_cmsExplicit_expectSuccess() throws FrejaEidClientInternalException,
+    public void initSign_customRequests_cmsImplicit_expectSuccess() throws FrejaEidClientInternalException,
             FrejaEidException {
         InitiateSignResponse expectedResponse = new InitiateSignResponse(SIGN_REFERENCE);
         Mockito.when(httpServiceMock.send(Mockito.anyString(), Mockito.any(RequestTemplate.class),
@@ -234,7 +234,7 @@ public class SignClientInitSignTest {
 
         InitiateSignRequest initiateSignRequest = InitiateSignRequest.createCustom()
                 .setEmail(EMAIL)
-                .setDataToSign(dataToSign, SignatureType.CMS_EXPLICIT)
+                .setDataToSign(dataToSign, SignatureType.CMS_IMPLICIT)
                 .setExpiry(expiry)
                 .setMinRegistrationLevel(MinRegistrationLevel.PLUS)
                 .setPushNotification(pushNotification)

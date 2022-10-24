@@ -570,7 +570,7 @@ public class RequestValidationServiceTest {
     public void initSign_advancedSignatureTypeBasicRegistration_expectFail() throws FrejaEidException {
         try {
             signClient.initiate(InitiateSignRequest.createCustom().setEmail(EMAIL)
-                                        .setDataToSign(DataToSign.create(TEXT), SignatureType.CMS_EXPLICIT)
+                                        .setDataToSign(DataToSign.create(TEXT), SignatureType.CMS_IMPLICIT)
                                         .setMinRegistrationLevel(MinRegistrationLevel.BASIC).build());
             Assert.fail("Test should throw exception!");
         } catch (FrejaEidClientInternalException ex) {
@@ -590,6 +590,21 @@ public class RequestValidationServiceTest {
             Assert.assertEquals("DataToSignType and SignatureType mismatch.", ex.getLocalizedMessage());
         }
     }
+
+    @Test
+    public void initSign_advancedSignatureTypeBadRequestedAttributes_expectFail() throws FrejaEidException {
+        try {
+            signClient.initiate(InitiateSignRequest.createCustom().setEmail(EMAIL)
+                                        .setDataToSign(DataToSign.create(TEXT), SignatureType.CMS_IMPLICIT)
+                                        .setMinRegistrationLevel(MinRegistrationLevel.PLUS).build());
+            Assert.fail("Test should throw exception!");
+        } catch (FrejaEidClientInternalException ex) {
+            Assert.assertEquals("Sign transaction with an advanced signature type requires SSN and Basic user info in it's RequestedAttributes.",
+                                ex.getLocalizedMessage());
+        }
+    }
+
+
 
     @Test
     public void initSign_orgIdIssuerWrongValue() throws FrejaEidException {
