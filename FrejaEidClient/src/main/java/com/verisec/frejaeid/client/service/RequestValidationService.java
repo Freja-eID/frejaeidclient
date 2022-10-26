@@ -227,7 +227,7 @@ public class RequestValidationService {
         if(requestedAttributes == null || !(requestedAttributes.contains(new AttributeToReturnInfo(AttributeToReturn.SSN.getName()))
                 && requestedAttributes.contains(new AttributeToReturnInfo(AttributeToReturn.BASIC_USER_INFO.getName())))) {
             throw new FrejaEidClientInternalException("Sign transaction with an advanced signature type requires SSN "
-                                                              + "and Basic user info in it's RequestedAttributes.");
+                                                              + "and BasicUserInfo in its RequestedAttributes.");
         }
     }
 
