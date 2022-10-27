@@ -599,7 +599,7 @@ public class RequestValidationServiceTest {
                                         .setMinRegistrationLevel(MinRegistrationLevel.PLUS).build());
             Assert.fail("Test should throw exception!");
         } catch (FrejaEidClientInternalException ex) {
-            Assert.assertEquals("Sign transaction with an advanced signature type requires SSN and Basic user info in it's RequestedAttributes.",
+            Assert.assertEquals("Sign transaction with an advanced signature type requires SSN and BasicUserInfo in its RequestedAttributes.",
                                 ex.getLocalizedMessage());
         }
     }
