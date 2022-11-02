@@ -283,11 +283,11 @@ public class InitiateSignRequestBuildersTest {
                 new InitiateSignRequest(UserInfoType.SSN, UserInfoUtil.convertSsnUserInfo(SSN_USER_INFO),
                                         MinRegistrationLevel.PLUS, TITLE, null, EXPIRY,
                                         DataToSignType.SIMPLE_UTF8_TEXT, DataToSign.create(TEXT),
-                                        SignatureType.CMS_IMPLICIT, REQUESTED_ATTRIBUTES, RELYING_PARTY_ID, ORG_ID_ISSUER);
+                                        SignatureType.XML_MINAMEDDELANDEN, REQUESTED_ATTRIBUTES, RELYING_PARTY_ID, ORG_ID_ISSUER);
         InitiateSignRequest initiateSignRequest = InitiateSignRequest.createCustom()
                 .setSsn(SSN_USER_INFO)
                 .setTitle(TITLE)
-                .setDataToSign(DataToSign.create(TEXT), SignatureType.CMS_IMPLICIT)
+                .setDataToSign(DataToSign.create(TEXT), SignatureType.XML_MINAMEDDELANDEN)
                 .setMinRegistrationLevel(MinRegistrationLevel.PLUS)
                 .setAttributesToReturn(AttributeToReturn.values())
                 .setExpiry(EXPIRY)

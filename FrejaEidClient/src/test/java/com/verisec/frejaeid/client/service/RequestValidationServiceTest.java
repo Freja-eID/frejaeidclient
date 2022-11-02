@@ -570,7 +570,7 @@ public class RequestValidationServiceTest {
     public void initSign_advancedSignatureTypeBasicRegistration_expectFail() throws FrejaEidException {
         try {
             signClient.initiate(InitiateSignRequest.createCustom().setEmail(EMAIL)
-                                        .setDataToSign(DataToSign.create(TEXT), SignatureType.CMS_IMPLICIT)
+                                        .setDataToSign(DataToSign.create(TEXT), SignatureType.XML_MINAMEDDELANDEN)
                                         .setMinRegistrationLevel(MinRegistrationLevel.BASIC).build());
             Assert.fail("Test should throw exception!");
         } catch (FrejaEidClientInternalException ex) {
@@ -595,7 +595,7 @@ public class RequestValidationServiceTest {
     public void initSign_advancedSignatureTypeBadRequestedAttributes_expectFail() throws FrejaEidException {
         try {
             signClient.initiate(InitiateSignRequest.createCustom().setEmail(EMAIL)
-                                        .setDataToSign(DataToSign.create(TEXT), SignatureType.CMS_IMPLICIT)
+                                        .setDataToSign(DataToSign.create(TEXT), SignatureType.XML_MINAMEDDELANDEN)
                                         .setMinRegistrationLevel(MinRegistrationLevel.PLUS).build());
             Assert.fail("Test should throw exception!");
         } catch (FrejaEidClientInternalException ex) {

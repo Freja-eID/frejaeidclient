@@ -211,7 +211,7 @@ public class RequestValidationService {
     private void validateAdvancedSignatureTypeAndMinimumRegistrationLevel(SignatureType signatureType,
                                                                           MinRegistrationLevel minRegistrationLevel)
             throws FrejaEidClientInternalException {
-        if(signatureType.equals(SignatureType.CMS_IMPLICIT) && minRegistrationLevel.equals(MinRegistrationLevel.BASIC)) {
+        if(signatureType.equals(SignatureType.XML_MINAMEDDELANDEN) && minRegistrationLevel.equals(MinRegistrationLevel.BASIC)) {
             throw new FrejaEidClientInternalException("Advanced signature type request requires registration levels "
                                                               + "above BASIC.");
         }

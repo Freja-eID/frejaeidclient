@@ -234,7 +234,7 @@ public class SignClientInitSignTest {
 
         InitiateSignRequest initiateSignRequest = InitiateSignRequest.createCustom()
                 .setEmail(EMAIL)
-                .setDataToSign(dataToSign, SignatureType.CMS_IMPLICIT)
+                .setDataToSign(dataToSign, SignatureType.XML_MINAMEDDELANDEN)
                 .setExpiry(expiry)
                 .setMinRegistrationLevel(MinRegistrationLevel.PLUS)
                 .setPushNotification(pushNotification)
