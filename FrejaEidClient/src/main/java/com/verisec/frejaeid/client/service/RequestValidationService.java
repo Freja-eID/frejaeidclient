@@ -75,6 +75,11 @@ public class RequestValidationService {
         validateRegistrationState(initiateSignRequest.getMinRegistrationLevel(), transactionContext);
         validateRelyingPartyIdIsEmpty(initiateSignRequest.getRelyingPartyId());
         validateOrgIdIssuer(initiateSignRequest.getOrgIdIssuer());
+        validateSignatureTypeWithDataType(initiateSignRequest.getDataToSignType(),
+                                          initiateSignRequest.getSignatureType());
+        validateAdvancedSignatureTypeAndMinimumRegistrationLevel(initiateSignRequest.getSignatureType(),
+                                                                 initiateSignRequest.getMinRegistrationLevel());
+        validateAdvancedSignRequestedAttributes(initiateSignRequest.getSignatureType(), initiateSignRequest.getAttributesToReturn());
     }
 
     public void validateSetCustomIDentifierRequest(SetCustomIdentifierRequest setCustomIdentifierRequest)
@@ -192,6 +197,37 @@ public class RequestValidationService {
         if(!StringUtils.isEmpty(orgIdIssuer) && !orgIdIssuer.equalsIgnoreCase(OrgIdIssuer.ANY.getName())){
             throw new FrejaEidClientInternalException("OrgIdIssuer unsupported value. " +
                                                               "OrgIdIssuer must be null/empty or <ANY>");
+        }
+    }
+
+    private void validateSignatureTypeWithDataType(DataToSignType dataToSignType, SignatureType signatureType)
+            throws FrejaEidClientInternalException {
+        if((dataToSignType.equals(DataToSignType.SIMPLE_UTF8_TEXT) && signatureType.equals(SignatureType.EXTENDED)) ||
+                ((dataToSignType.equals(DataToSignType.EXTENDED_UTF8_TEXT) && !signatureType.equals(SignatureType.EXTENDED)))) {
+            throw new FrejaEidClientInternalException("DataToSignType and SignatureType mismatch.");
+        }
+    }
+
+    private void validateAdvancedSignatureTypeAndMinimumRegistrationLevel(SignatureType signatureType,
+                                                                          MinRegistrationLevel minRegistrationLevel)
+            throws FrejaEidClientInternalException {
+        if(signatureType.equals(SignatureType.XML_MINAMEDDELANDEN) && minRegistrationLevel.equals(MinRegistrationLevel.BASIC)) {
+            throw new FrejaEidClientInternalException("Advanced signature type request requires registration levels "
+                                                              + "above BASIC.");
+        }
+    }
+
+    private void validateAdvancedSignRequestedAttributes(SignatureType signatureType,
+                                                         Set<AttributeToReturnInfo>  requestedAttributes)
+            throws FrejaEidClientInternalException {
+        if(signatureType.equals(SignatureType.SIMPLE) || signatureType.equals(SignatureType.EXTENDED)) {
+            return;
+        }
+
+        if(requestedAttributes == null || !(requestedAttributes.contains(new AttributeToReturnInfo(AttributeToReturn.SSN.getName()))
+                && requestedAttributes.contains(new AttributeToReturnInfo(AttributeToReturn.BASIC_USER_INFO.getName())))) {
+            throw new FrejaEidClientInternalException("Sign transaction with an advanced signature type requires SSN "
+                                                              + "and BasicUserInfo in its RequestedAttributes.");
         }
     }
 

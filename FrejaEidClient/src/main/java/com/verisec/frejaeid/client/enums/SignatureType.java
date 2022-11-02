@@ -3,7 +3,8 @@ package com.verisec.frejaeid.client.enums;
 public enum SignatureType {
 
     SIMPLE("SIMPLE"),
-    EXTENDED("EXTENDED");
+    EXTENDED("EXTENDED"),
+    XML_MINAMEDDELANDEN("XML_MINAMEDDELANDEN");
 
     private final String name;
 

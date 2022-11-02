@@ -173,6 +173,39 @@ public class InitiateSignRequestBuilders {
         }
 
         /**
+         * Data to sign can be only text (SIMPLE signature type) or text and
+         * binary data (EXTENDED signature type).
+         *
+         * @param dataToSign mandatory parameter. Text cannot be {@code null} or
+         *                   empty.
+         *
+         * @param signatureType can be SIMPLE, EXTENDED or XML_MINAMEDDELANDEN. SIMPLE signature type can only be used with
+         *                   SIMPLE_UTF8_TEXT data type, EXTENDED signature type can only be used with
+         *                   EXTENDED_UTF8_TEXT data type,
+         *                   while the XML_MINAMEDDELANDEN  signature type can be used with both.
+         *
+         * @return request builder
+         */
+        public SetOptionalParamsBuilder setDataToSign(DataToSign dataToSign, SignatureType signatureType) {
+            if (dataToSign == null) {
+                return this;
+            }
+            if (signatureType == null) {
+                return setDataToSign(dataToSign);
+            }
+            if (dataToSign.getBinaryData() == null || dataToSign.getBinaryData().isEmpty()) {
+                this.dataToSignType = DataToSignType.SIMPLE_UTF8_TEXT;
+            }
+            else {
+                this.dataToSignType = DataToSignType.EXTENDED_UTF8_TEXT;
+            }
+            this.signatureType = signatureType;
+            this.dataToSign = dataToSign;
+
+            return this;
+        }
+
+        /**
          * Expiry describes the time until which the relying party is ready to
          * wait for the user to confirm the signature request.
          *
