@@ -28,6 +28,8 @@ import com.verisec.frejaeid.client.client.impl.OrganisationIdClient;
 import com.verisec.frejaeid.client.client.impl.SignClient;
 import com.verisec.frejaeid.client.client.util.TestUtil;
 import com.verisec.frejaeid.client.enums.FrejaEnvironment;
+import com.verisec.frejaeid.client.enums.MinRegistrationLevel;
+import com.verisec.frejaeid.client.enums.SignatureType;
 import com.verisec.frejaeid.client.enums.TransactionContext;
 import com.verisec.frejaeid.client.exceptions.FrejaEidClientInternalException;
 import com.verisec.frejaeid.client.exceptions.FrejaEidException;
@@ -563,6 +565,46 @@ public class RequestValidationServiceTest {
             Assert.assertEquals("Title cannot be empty.", ex.getLocalizedMessage());
         }
     }
+
+    @Test
+    public void initSign_advancedSignatureTypeBasicRegistration_expectFail() throws FrejaEidException {
+        try {
+            signClient.initiate(InitiateSignRequest.createCustom().setEmail(EMAIL)
+                                        .setDataToSign(DataToSign.create(TEXT), SignatureType.XML_MINAMEDDELANDEN)
+                                        .setMinRegistrationLevel(MinRegistrationLevel.BASIC).build());
+            Assert.fail("Test should throw exception!");
+        } catch (FrejaEidClientInternalException ex) {
+            Assert.assertEquals("Advanced signature type request requires registration levels above BASIC.",
+                                ex.getLocalizedMessage());
+        }
+    }
+
+    @Test
+    public void initSign_signatureTypeAndDataTypeMismatch_expectFail() throws FrejaEidException {
+        try {
+            signClient.initiate(InitiateSignRequest.createCustom().setEmail(EMAIL)
+                                        .setDataToSign(DataToSign.create(TEXT), SignatureType.EXTENDED)
+                                        .setMinRegistrationLevel(MinRegistrationLevel.PLUS).build());
+            Assert.fail("Test should throw exception!");
+        } catch (FrejaEidClientInternalException ex) {
+            Assert.assertEquals("DataToSignType and SignatureType mismatch.", ex.getLocalizedMessage());
+        }
+    }
+
+    @Test
+    public void initSign_advancedSignatureTypeBadRequestedAttributes_expectFail() throws FrejaEidException {
+        try {
+            signClient.initiate(InitiateSignRequest.createCustom().setEmail(EMAIL)
+                                        .setDataToSign(DataToSign.create(TEXT), SignatureType.XML_MINAMEDDELANDEN)
+                                        .setMinRegistrationLevel(MinRegistrationLevel.PLUS).build());
+            Assert.fail("Test should throw exception!");
+        } catch (FrejaEidClientInternalException ex) {
+            Assert.assertEquals("Sign transaction with an advanced signature type requires SSN and BasicUserInfo in its RequestedAttributes.",
+                                ex.getLocalizedMessage());
+        }
+    }
+
+
 
     @Test
     public void initSign_orgIdIssuerWrongValue() throws FrejaEidException {

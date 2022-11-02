@@ -276,4 +276,24 @@ public class InitiateSignRequestBuildersTest {
                 .build();
         Assert.assertEquals(expectedInitiateSignRequest, initiateSignRequest);
     }
+
+    @Test
+    public void createCustomRequest_CMSImplicitSignature() throws FrejaEidClientInternalException {
+        InitiateSignRequest expectedInitiateSignRequest =
+                new InitiateSignRequest(UserInfoType.SSN, UserInfoUtil.convertSsnUserInfo(SSN_USER_INFO),
+                                        MinRegistrationLevel.PLUS, TITLE, null, EXPIRY,
+                                        DataToSignType.SIMPLE_UTF8_TEXT, DataToSign.create(TEXT),
+                                        SignatureType.XML_MINAMEDDELANDEN, REQUESTED_ATTRIBUTES, RELYING_PARTY_ID, ORG_ID_ISSUER);
+        InitiateSignRequest initiateSignRequest = InitiateSignRequest.createCustom()
+                .setSsn(SSN_USER_INFO)
+                .setTitle(TITLE)
+                .setDataToSign(DataToSign.create(TEXT), SignatureType.XML_MINAMEDDELANDEN)
+                .setMinRegistrationLevel(MinRegistrationLevel.PLUS)
+                .setAttributesToReturn(AttributeToReturn.values())
+                .setExpiry(EXPIRY)
+                .setRelyingPartyId(RELYING_PARTY_ID)
+                .setOrgIdIssuer(ORG_ID_ISSUER)
+                .build();
+        Assert.assertEquals(expectedInitiateSignRequest, initiateSignRequest);
+    }
 }
