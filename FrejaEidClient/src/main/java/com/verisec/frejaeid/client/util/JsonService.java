@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.verisec.frejaeid.client.exceptions.FrejaEidClientInternalException;
 
 import java.io.IOException;
@@ -16,7 +17,8 @@ public class JsonService implements Serializable {
 
     public JsonService() {
         mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false)
-                .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+                .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+                .registerModule(new JavaTimeModule());
     }
 
     public <T> String serializeToJson(T jsonSerializable) throws FrejaEidClientInternalException {
