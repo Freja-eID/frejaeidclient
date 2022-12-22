@@ -12,9 +12,14 @@ import com.verisec.frejaeid.client.exceptions.FrejaEidException;
 import com.verisec.frejaeid.client.http.HttpServiceApi;
 import com.verisec.frejaeid.client.util.MethodUrl;
 import com.verisec.frejaeid.client.util.RequestTemplate;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
 import org.junit.Assert;
 import org.junit.Test;
 import org.mockito.Mockito;
+
+import java.io.*;
+import java.util.Arrays;
 
 public class AuthenticationClientInitAuthenticationTest {
 
@@ -34,6 +39,28 @@ public class AuthenticationClientInitAuthenticationTest {
         initAuth_relyingPartyNull_success(initiateAuthenticationRequest);
     }
 
+
+    @Test
+    public void qrCodeTest() throws FrejaEidClientInternalException, FrejaEidException, IOException {
+        byte[] byteArray = null;
+        ByteArrayInputStream inputStream = new ByteArrayInputStream(REFERENCE.getBytes());
+        ByteArrayInputStream expectedBytesResult = new ByteArrayInputStream(REFERENCE.getBytes());
+        byte[] text = readAllBytes(expectedBytesResult);
+        AuthenticationClientApi authenticationClient =
+                AuthenticationClient.create(TestUtil.getDefaultSslSettings(), FrejaEnvironment.TEST)
+                        .setHttpService(httpServiceMock)
+                        .setTransactionContext(TransactionContext.PERSONAL).build();
+        HttpResponse expectedResponse = Mockito.mock(HttpResponse.class);
+        HttpEntity httpResponseEntity = Mockito.mock(HttpEntity.class);
+        Mockito.when(expectedResponse.getEntity()).thenReturn(httpResponseEntity);
+        Mockito.when(httpResponseEntity.getContent()).thenReturn(inputStream);
+        String expectedUrl = "https://resources.test.frejaeid.com/qrcode/generate";
+        Mockito.when(httpServiceMock.httpGet(Mockito.matches(expectedUrl), Mockito.<String, String>anyMap()))
+                .thenReturn(expectedResponse);
+
+        byteArray = authenticationClient.initiateQRCodeAuthentication(REFERENCE);
+        Assert.assertEquals(Arrays.toString(byteArray), Arrays.toString(text));
+    }
     @Test
     public void initAuth_expectError() throws FrejaEidClientInternalException, FrejaEidException {
         InitiateAuthenticationRequest initiateAuthenticationRequest =
@@ -177,5 +204,31 @@ public class AuthenticationClientInitAuthenticationTest {
         }
 
         Assert.assertEquals(REFERENCE, reference);
+    }
+
+    public static byte[] readAllBytes(InputStream inputStream) throws IOException {
+        final int bufLen = 4 * 0x400; // 4KB
+        byte[] buf = new byte[bufLen];
+        int readLen;
+        IOException exception = null;
+
+        try {
+            try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
+                while ((readLen = inputStream.read(buf, 0, bufLen)) != -1)
+                    outputStream.write(buf, 0, readLen);
+
+                return outputStream.toByteArray();
+            }
+        } catch (IOException e) {
+            exception = e;
+            throw e;
+        } finally {
+            if (exception == null) inputStream.close();
+            else try {
+                inputStream.close();
+            } catch (IOException e) {
+                exception.addSuppressed(e);
+            }
+        }
     }
 }

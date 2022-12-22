@@ -1,6 +1,7 @@
 package com.verisec.frejaeid.client.client.impl;
 
 import com.verisec.frejaeid.client.enums.FrejaEnvironment;
+import com.verisec.frejaeid.client.enums.FrejaResourceEnvironment;
 import com.verisec.frejaeid.client.enums.KeyStoreType;
 import com.verisec.frejaeid.client.enums.TransactionContext;
 import com.verisec.frejaeid.client.exceptions.FrejaEidClientInternalException;
@@ -46,14 +47,14 @@ public class BasicClient {
     protected RequestValidationService requestValidationService;
 
     protected BasicClient(String serverCustomUrl, int pollingTimeoutInMillseconds,
-                          TransactionContext transactionContext, HttpServiceApi httpService)
+                          TransactionContext transactionContext, HttpServiceApi httpService, String resourceServerUrl)
             throws FrejaEidClientInternalException {
         jsonService = new JsonService();
         signService = new SignService(serverCustomUrl, pollingTimeoutInMillseconds, transactionContext, httpService);
         organisationIdService = new OrganisationIdService(serverCustomUrl, pollingTimeoutInMillseconds, httpService);
         customIdentifierService = new CustomIdentifierService(serverCustomUrl, httpService);
         authenticationService = new AuthenticationService(serverCustomUrl, httpService, pollingTimeoutInMillseconds,
-                                                          transactionContext);
+                                                          transactionContext, resourceServerUrl);
         requestValidationService = new RequestValidationService();
     }
 
@@ -70,6 +71,7 @@ public class BasicClient {
         protected HttpServiceApi httpService;
         protected SSLContext sslContext;
         protected TransactionContext transactionContext;
+        protected String resourceServiceUrl = null;
 
         public GenericBuilder(SSLContext sslContext, FrejaEnvironment frejaEnvironment) {
             if (sslContext != null) {
@@ -110,8 +112,10 @@ public class BasicClient {
             LOG.debug("Setting Freja environment {}", frejaEnvironment == FrejaEnvironment.TEST ?
                     FREJA_ENVIRONMENT_TEST : FREJA_ENVIRONMENT_PROD);
             serverCustomUrl = FrejaEnvironment.PRODUCTION.getUrl();
+            resourceServiceUrl = FrejaResourceEnvironment.PRODUCTION.getUrl();
             if (frejaEnvironment == FrejaEnvironment.TEST) {
                 serverCustomUrl = FrejaEnvironment.TEST.getUrl();
+                resourceServiceUrl = FrejaResourceEnvironment.TEST.getUrl();
             }
         }
 

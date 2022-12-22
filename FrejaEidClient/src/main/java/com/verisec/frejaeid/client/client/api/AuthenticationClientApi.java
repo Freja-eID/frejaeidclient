@@ -10,6 +10,7 @@ import com.verisec.frejaeid.client.exceptions.FrejaEidClientInternalException;
 import com.verisec.frejaeid.client.exceptions.FrejaEidClientPollingException;
 import com.verisec.frejaeid.client.exceptions.FrejaEidException;
 
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -85,4 +86,12 @@ public interface AuthenticationClientApi {
      */
     public void cancel(CancelAuthenticationRequest cancelAuthenticationRequest)
             throws FrejaEidClientInternalException, FrejaEidException;
+
+    /**
+     * Return QR code for authentication in a byte array.
+     *
+     * @param reference contains transaction reference.
+     */
+    public byte[] initiateQRCodeAuthentication(String reference)
+            throws FrejaEidClientInternalException, FrejaEidException, IOException;
 }

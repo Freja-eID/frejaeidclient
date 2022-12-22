@@ -12,8 +12,12 @@ import com.verisec.frejaeid.client.util.RequestTemplate;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
+import java.net.URISyntaxException;
+import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.text.MessageFormat;
+import java.util.Map;
 import javax.net.ssl.SSLContext;
 
 import org.apache.commons.codec.binary.Base64;
@@ -23,7 +27,9 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.HttpRequestRetryHandler;
 import org.apache.http.client.config.RequestConfig;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.config.RegistryBuilder;
 import org.apache.http.conn.socket.ConnectionSocketFactory;
 import org.apache.http.conn.socket.PlainConnectionSocketFactory;
@@ -156,6 +162,63 @@ public class HttpService implements HttpServiceApi {
                                                               responseString));
             }
         } catch (IOException e) {
+            throw new FrejaEidClientInternalException("Failed to send HTTP request.", e);
+        } finally {
+            if (httpResponse != null && httpStatusCode != HttpStatusCode.NO_CONTENT) {
+                try {
+                    httpResponse.getEntity().getContent().close();
+                } catch (IOException | IllegalStateException ex) {
+                    throw new FrejaEidClientInternalException("Failed to close HTTP connection.", ex);
+                }
+            }
+        }
+    }
+
+    @Override
+    public final HttpResponse httpGet(String methodUrl, Map<String, String> parameters)
+            throws FrejaEidClientInternalException, FrejaEidException, UnsupportedEncodingException {
+
+        HttpResponse httpResponse = null;
+        HttpGet request = null;
+        HttpStatusCode httpStatusCode = null;
+
+        URIBuilder uriBuilder = new URIBuilder();
+        uriBuilder.setPath(methodUrl);
+        for (Map.Entry<String, String> parameter : parameters.entrySet()) {
+            uriBuilder.addParameter(parameter.getKey(), URLEncoder.encode(parameter.getValue(),
+                                                                          StandardCharsets.UTF_8.toString()));
+        }
+
+        try {
+            request = new HttpGet(uriBuilder.build());
+            request.addHeader("Content-Type", "application/json");
+            request.addHeader(HttpHeaders.USER_AGENT, userAgentHeader);
+            httpResponse = httpClient.execute(request);
+            LOG.debug("Successfully sent HttpGet request to address {}.", methodUrl);
+            int httpStatusCodeValue = httpResponse.getStatusLine().getStatusCode();
+            String responseString =  EntityUtils.toString(httpResponse.getEntity(), StandardCharsets.UTF_8);
+            httpStatusCode = HttpStatusCode.getHttpStatusCode(httpStatusCodeValue);
+            if (httpStatusCode == null) {
+                throw new FrejaEidException(
+                        String.format("Received unsupported HTTP status code %s. Received HTTP message: %s.",
+                                      httpResponse.getStatusLine().getStatusCode(), responseString));
+            }
+            switch (httpStatusCode) {
+                case OK:
+                case NO_CONTENT:
+                    return httpResponse;
+                case BAD_REQUEST:
+                case UNPROCESSABLE_ENTITY:
+                    FrejaHttpErrorResponse errorResponse =
+                            jsonService.deserializeFromJson(responseString.getBytes(StandardCharsets.UTF_8),
+                                                            FrejaHttpErrorResponse.class);
+                    throw new FrejaEidException(errorResponse.getMessage(), errorResponse.getCode());
+                default:
+                    throw new FrejaEidException(String.format("HTTP code %s message: %s",
+                                                              httpResponse.getStatusLine().getStatusCode(),
+                                                              responseString));
+            }
+        } catch (IOException | URISyntaxException e) {
             throw new FrejaEidClientInternalException("Failed to send HTTP request.", e);
         } finally {
             if (httpResponse != null && httpStatusCode != HttpStatusCode.NO_CONTENT) {

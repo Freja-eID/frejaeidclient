@@ -24,7 +24,8 @@ public enum MethodUrl {
     ORGANISATION_ID_CANCEL_ADD("/organisation/management/orgId/1.0/cancelAdd"),
     ORGANISATION_ID_GET_ALL_USERS("/organisation/management/orgId/1.0/users/getAll"),
     CUSTOM_IDENTIFIER_SET("/user/manage/1.0/setCustomIdentifier"),
-    CUSTOM_IDENTIFIER_DELETE("/user/manage/1.0/deleteCustomIdentifier");
+    CUSTOM_IDENTIFIER_DELETE("/user/manage/1.0/deleteCustomIdentifier"),
+    QR_CODE_AUTHENTICATION_GET("/qrcode/generate");
 
     private final String url;
 

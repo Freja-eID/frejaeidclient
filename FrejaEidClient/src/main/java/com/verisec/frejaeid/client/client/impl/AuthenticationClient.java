@@ -15,6 +15,9 @@ import com.verisec.frejaeid.client.exceptions.FrejaEidException;
 import com.verisec.frejaeid.client.http.HttpService;
 import com.verisec.frejaeid.client.http.HttpServiceApi;
 
+import java.io.IOException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import javax.net.ssl.SSLContext;
 
@@ -29,9 +32,10 @@ public class AuthenticationClient extends BasicClient implements AuthenticationC
     public static final Logger LOG = LoggerFactory.getLogger(AuthenticationClient.class);
 
     private AuthenticationClient(String serverCustomUrl, int pollingTimeoutInMillseconds,
-                                 TransactionContext transactionContext, HttpServiceApi httpService)
+                                 TransactionContext transactionContext, HttpServiceApi httpService,
+                                 String resourceServerUrl)
             throws FrejaEidClientInternalException {
-        super(serverCustomUrl, pollingTimeoutInMillseconds, transactionContext, httpService);
+        super(serverCustomUrl, pollingTimeoutInMillseconds, transactionContext, httpService, resourceServerUrl);
     }
 
     /**
@@ -70,6 +74,17 @@ public class AuthenticationClient extends BasicClient implements AuthenticationC
         String reference = authenticationService.initiate(initiateAuthenticationRequest).getAuthRef();
         LOG.debug("Received authentication transaction reference {}.", reference);
         return reference;
+    }
+
+    @Override
+    public byte[] initiateQRCodeAuthentication(String reference) throws FrejaEidClientInternalException, FrejaEidException, IOException {
+        LOG.debug("Initiating generation of QR code for authentication from transaction reference {}.", reference);
+        String encodedReference = URLEncoder.encode(reference, StandardCharsets.UTF_8.toString());
+        String bindTransactionToUserUrl = "frejaeid://bindUserToTransaction?transactionReference=" + encodedReference;
+        String encodedUrl = URLEncoder.encode(bindTransactionToUserUrl, StandardCharsets.UTF_8.toString());
+        byte[] generatedQRCode = authenticationService.getAuthenticationQRCode(encodedUrl);
+        LOG.debug("Received QR authentication code.");
+        return generatedQRCode;
     }
 
     @Override
@@ -147,7 +162,7 @@ public class AuthenticationClient extends BasicClient implements AuthenticationC
                               "transaction context {}.",
                       serverCustomUrl, pollingTimeout, transactionContext.getContext());
 
-            return new AuthenticationClient(serverCustomUrl, pollingTimeout, transactionContext, httpService);
+            return new AuthenticationClient(serverCustomUrl, pollingTimeout, transactionContext, httpService, resourceServiceUrl);
         }
 
     }
