@@ -44,8 +44,8 @@ public class AuthenticationClientInitAuthenticationTest {
     public void qrCodeTest() throws FrejaEidClientInternalException, FrejaEidException, IOException {
         byte[] byteArray = null;
         ByteArrayInputStream inputStream = new ByteArrayInputStream(REFERENCE.getBytes());
-        ByteArrayInputStream expectedBytesResult = new ByteArrayInputStream(REFERENCE.getBytes());
-        byte[] text = readAllBytes(expectedBytesResult);
+        ByteArrayInputStream expectedBytesStream = new ByteArrayInputStream(REFERENCE.getBytes());
+        byte[] expectedBytesResult = readAllBytes(expectedBytesStream);
         AuthenticationClientApi authenticationClient =
                 AuthenticationClient.create(TestUtil.getDefaultSslSettings(), FrejaEnvironment.TEST)
                         .setHttpService(httpServiceMock)
@@ -59,7 +59,7 @@ public class AuthenticationClientInitAuthenticationTest {
                 .thenReturn(expectedResponse);
 
         byteArray = authenticationClient.initiateQRCodeAuthentication(REFERENCE);
-        Assert.assertEquals(Arrays.toString(byteArray), Arrays.toString(text));
+        Assert.assertEquals(Arrays.toString(byteArray), Arrays.toString(expectedBytesResult));
     }
     @Test
     public void initAuth_expectError() throws FrejaEidClientInternalException, FrejaEidException {
