@@ -8,7 +8,7 @@ import com.verisec.frejaeid.client.beans.authentication.get.AuthenticationResult
 import com.verisec.frejaeid.client.beans.authentication.get.AuthenticationResult;
 import com.verisec.frejaeid.client.beans.authentication.init.InitiateAuthenticationResponse;
 import com.verisec.frejaeid.client.beans.authentication.init.InitiateAuthenticationRequest;
-import com.verisec.frejaeid.client.enums.FrejaResourceEnvironment;
+import com.verisec.frejaeid.client.enums.FrejaEnvironment;
 import com.verisec.frejaeid.client.enums.TransactionContext;
 import com.verisec.frejaeid.client.exceptions.FrejaEidClientInternalException;
 import com.verisec.frejaeid.client.exceptions.FrejaEidClientPollingException;
@@ -43,7 +43,7 @@ public class AuthenticationService extends BasicService {
         super(serverAddress, httpService);
         this.pollingTimeoutInMilliseconds = 0;
         this.transactionContext = TransactionContext.PERSONAL;
-        this.resourceServerAddress = FrejaResourceEnvironment.TEST.getUrl();
+        this.resourceServerAddress = FrejaEnvironment.TEST.getResourceUrl();
     }
 
     public InitiateAuthenticationResponse initiate(InitiateAuthenticationRequest initiateAuthenticationRequest)
@@ -67,7 +67,7 @@ public class AuthenticationService extends BasicService {
     public byte[] getAuthenticationQRCode(String encodedUrl) throws FrejaEidClientInternalException, FrejaEidException, IOException {
         Map<String, String> parameterMap = new HashMap<>();
         parameterMap.put("qrcodedata", encodedUrl);
-        HttpResponse response = httpService.httpGet(getUrl(resourceServerAddress, MethodUrl.QR_CODE_AUTHENTICATION_GET),
+        HttpResponse response = httpService.httpGet(getUrl(resourceServerAddress, MethodUrl.QR_CODE_GENERATE),
                                                           parameterMap);
         return readAllBytes(response.getEntity().getContent());
     }
@@ -119,29 +119,17 @@ public class AuthenticationService extends BasicService {
         return (System.currentTimeMillis() + pollingTimeoutInMilliseconds) < pollingEndTime;
     }
 
-    public static byte[] readAllBytes(InputStream inputStream) throws IOException {
-        final int bufLen = 4 * 0x400; // 4KB
-        byte[] buf = new byte[bufLen];
-        int readLen;
-        IOException exception = null;
-
-        try {
-            try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
-                while ((readLen = inputStream.read(buf, 0, bufLen)) != -1)
-                    outputStream.write(buf, 0, readLen);
-
-                return outputStream.toByteArray();
+    private static byte[] readAllBytes(InputStream inputStream) throws FrejaEidClientInternalException {
+        final int bufferLengthInKB = 1024;
+        byte[] buffer = new byte[bufferLengthInKB];
+        int line;
+        try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
+            while ((line = inputStream.read(buffer)) != -1) {
+                outputStream.write(buffer, 0, line);
             }
-        } catch (IOException e) {
-            exception = e;
-            throw e;
-        } finally {
-            if (exception == null) inputStream.close();
-            else try {
-                inputStream.close();
-            } catch (IOException e) {
-                exception.addSuppressed(e);
-            }
+            return outputStream.toByteArray();
+        } catch (IOException ex) {
+            throw new FrejaEidClientInternalException("Failed to read bytes returned in http response", ex);
         }
     }
 

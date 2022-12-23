@@ -11,24 +11,29 @@ public enum FrejaEnvironment {
     /**
      * Production address.
      */
-    PRODUCTION("https://services.prod.frejaeid.com"),
+    PRODUCTION("https://services.prod.frejaeid.com", "https://resources.prod.frejaeid.com"),
     /**
      * Test address.
      */
-    TEST("https://services.test.frejaeid.com");
+    TEST("https://services.test.frejaeid.com", "https://resources.test.frejaeid.com");
 
-    private final String url;
+    private final String serviceUrl;
+    private final String resourceUrl;
 
-    private FrejaEnvironment(String url) {
-        this.url = url;
+    private FrejaEnvironment(String serviceUrl, String resourceUrl) {
+        this.serviceUrl = serviceUrl;
+        this.resourceUrl = resourceUrl;
     }
 
-    public String getUrl() {
-        return url;
-    }
+    public String getServiceUrl() { return serviceUrl; }
+
+    public String getResourceUrl() { return resourceUrl; }
 
     @Override
     public String toString() {
-        return "FrejaEnvironment{url=" + url + '}';
+        return "FrejaEnvironment{" +
+                "serviceUrl='" + serviceUrl + '\'' +
+                ", resourceUrl='" + resourceUrl + '\'' +
+                '}';
     }
 }

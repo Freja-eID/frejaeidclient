@@ -1,7 +1,6 @@
 package com.verisec.frejaeid.client.client.impl;
 
 import com.verisec.frejaeid.client.enums.FrejaEnvironment;
-import com.verisec.frejaeid.client.enums.FrejaResourceEnvironment;
 import com.verisec.frejaeid.client.enums.KeyStoreType;
 import com.verisec.frejaeid.client.enums.TransactionContext;
 import com.verisec.frejaeid.client.exceptions.FrejaEidClientInternalException;
@@ -111,11 +110,11 @@ public class BasicClient {
         private void setServerCustomUrl(FrejaEnvironment frejaEnvironment) {
             LOG.debug("Setting Freja environment {}", frejaEnvironment == FrejaEnvironment.TEST ?
                     FREJA_ENVIRONMENT_TEST : FREJA_ENVIRONMENT_PROD);
-            serverCustomUrl = FrejaEnvironment.PRODUCTION.getUrl();
-            resourceServiceUrl = FrejaResourceEnvironment.PRODUCTION.getUrl();
+            serverCustomUrl = FrejaEnvironment.PRODUCTION.getServiceUrl();
+            resourceServiceUrl = FrejaEnvironment.PRODUCTION.getResourceUrl();
             if (frejaEnvironment == FrejaEnvironment.TEST) {
-                serverCustomUrl = FrejaEnvironment.TEST.getUrl();
-                resourceServiceUrl = FrejaResourceEnvironment.TEST.getUrl();
+                serverCustomUrl = FrejaEnvironment.TEST.getServiceUrl();
+                resourceServiceUrl = FrejaEnvironment.TEST.getResourceUrl();
             }
         }
 

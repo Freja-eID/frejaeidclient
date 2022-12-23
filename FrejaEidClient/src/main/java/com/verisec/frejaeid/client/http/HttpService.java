@@ -205,14 +205,11 @@ public class HttpService implements HttpServiceApi {
             }
             switch (httpStatusCode) {
                 case OK:
-                case NO_CONTENT:
                     return httpResponse;
-                case BAD_REQUEST:
-                case UNPROCESSABLE_ENTITY:
-                    FrejaHttpErrorResponse errorResponse =
-                            jsonService.deserializeFromJson(responseString.getBytes(StandardCharsets.UTF_8),
-                                                            FrejaHttpErrorResponse.class);
-                    throw new FrejaEidException(errorResponse.getMessage(), errorResponse.getCode());
+                case NO_CONTENT:
+                    throw new FrejaEidException(String.format("HTTP code %s message: QR code generation failed, no "
+                                                                      + "content received.",
+                                                        httpResponse.getStatusLine().getStatusCode()));
                 default:
                     throw new FrejaEidException(String.format("HTTP code %s message: %s",
                                                               httpResponse.getStatusLine().getStatusCode(),

@@ -40,7 +40,7 @@ public class OrganisationIdClientCancelAddOrganisationIdTest {
                                           Mockito.eq(EmptyFrejaResponse.class), (String) Mockito.isNull()))
                 .thenReturn(EmptyFrejaResponse.INSTANCE);
         organisationIdClient.cancelAdd(cancelAddOrganisationIdRequest);
-        Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getUrl() + MethodUrl.ORGANISATION_ID_CANCEL_ADD,
+        Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getServiceUrl() + MethodUrl.ORGANISATION_ID_CANCEL_ADD,
                                              RequestTemplate.CANCEL_ADD_ORGANISATION_ID_TEMPLATE,
                                              cancelAddOrganisationIdRequest, EmptyFrejaResponse.class, null);
     }
@@ -55,7 +55,7 @@ public class OrganisationIdClientCancelAddOrganisationIdTest {
                 .thenReturn(EmptyFrejaResponse.INSTANCE);
         organisationIdClient.cancelAdd(cancelAddOrganisationIdRequest);
         Mockito.verify(httpServiceMock)
-                .send(FrejaEnvironment.TEST.getUrl() + MethodUrl.ORGANISATION_ID_CANCEL_ADD,
+                .send(FrejaEnvironment.TEST.getServiceUrl() + MethodUrl.ORGANISATION_ID_CANCEL_ADD,
                       RequestTemplate.CANCEL_ADD_ORGANISATION_ID_TEMPLATE,
                       cancelAddOrganisationIdRequest, EmptyFrejaResponse.class, RELYING_PARTY_ID);
     }
@@ -75,7 +75,7 @@ public class OrganisationIdClientCancelAddOrganisationIdTest {
             Assert.fail("Test should throw exception!");
         } catch (FrejaEidException rpEx) {
             Mockito.verify(httpServiceMock)
-                    .send(FrejaEnvironment.TEST.getUrl() + MethodUrl.ORGANISATION_ID_CANCEL_ADD,
+                    .send(FrejaEnvironment.TEST.getServiceUrl() + MethodUrl.ORGANISATION_ID_CANCEL_ADD,
                           RequestTemplate.CANCEL_ADD_ORGANISATION_ID_TEMPLATE, cancelAddOrganisationIdRequest,
                           EmptyFrejaResponse.class, RELYING_PARTY_ID);
             Assert.assertEquals(1100, rpEx.getErrorCode());

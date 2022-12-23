@@ -29,6 +29,8 @@ import org.slf4j.LoggerFactory;
  */
 public class AuthenticationClient extends BasicClient implements AuthenticationClientApi {
 
+    private static final String QR_TRANSACTION_URL = "frejaeid://bindUserToTransaction?transactionReference=";
+
     public static final Logger LOG = LoggerFactory.getLogger(AuthenticationClient.class);
 
     private AuthenticationClient(String serverCustomUrl, int pollingTimeoutInMillseconds,
@@ -77,10 +79,10 @@ public class AuthenticationClient extends BasicClient implements AuthenticationC
     }
 
     @Override
-    public byte[] initiateQRCodeAuthentication(String reference) throws FrejaEidClientInternalException, FrejaEidException, IOException {
+    public byte[] generateQRCodeForAuthentication(String reference) throws FrejaEidClientInternalException, FrejaEidException, IOException {
         LOG.debug("Initiating generation of QR code for authentication from transaction reference {}.", reference);
         String encodedReference = URLEncoder.encode(reference, StandardCharsets.UTF_8.toString());
-        String bindTransactionToUserUrl = "frejaeid://bindUserToTransaction?transactionReference=" + encodedReference;
+        String bindTransactionToUserUrl = QR_TRANSACTION_URL + encodedReference;
         String encodedUrl = URLEncoder.encode(bindTransactionToUserUrl, StandardCharsets.UTF_8.toString());
         byte[] generatedQRCode = authenticationService.getAuthenticationQRCode(encodedUrl);
         LOG.debug("Received QR authentication code.");

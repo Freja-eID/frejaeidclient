@@ -92,6 +92,6 @@ public interface AuthenticationClientApi {
      *
      * @param reference contains transaction reference.
      */
-    public byte[] initiateQRCodeAuthentication(String reference)
+    public byte[] generateQRCodeForAuthentication(String reference)
             throws FrejaEidClientInternalException, FrejaEidException, IOException;
 }

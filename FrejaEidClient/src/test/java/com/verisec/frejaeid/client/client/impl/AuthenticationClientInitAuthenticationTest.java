@@ -41,7 +41,7 @@ public class AuthenticationClientInitAuthenticationTest {
 
 
     @Test
-    public void qrCodeTest() throws FrejaEidClientInternalException, FrejaEidException, IOException {
+    public void generateQRCode_expectSuccess() throws FrejaEidClientInternalException, FrejaEidException, IOException {
         byte[] byteArray = null;
         ByteArrayInputStream inputStream = new ByteArrayInputStream(REFERENCE.getBytes());
         ByteArrayInputStream expectedBytesStream = new ByteArrayInputStream(REFERENCE.getBytes());
@@ -58,7 +58,7 @@ public class AuthenticationClientInitAuthenticationTest {
         Mockito.when(httpServiceMock.httpGet(Mockito.matches(expectedUrl), Mockito.<String, String>anyMap()))
                 .thenReturn(expectedResponse);
 
-        byteArray = authenticationClient.initiateQRCodeAuthentication(REFERENCE);
+        byteArray = authenticationClient.generateQRCodeForAuthentication(REFERENCE);
         Assert.assertEquals(Arrays.toString(byteArray), Arrays.toString(expectedBytesResult));
     }
     @Test
@@ -79,7 +79,7 @@ public class AuthenticationClientInitAuthenticationTest {
             authenticationClient.initiate(initiateAuthenticationRequest);
             Assert.fail("Test should throw exception!");
         } catch (FrejaEidException rpEx) {
-            Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getUrl() + MethodUrl.AUTHENTICATION_INIT,
+            Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getServiceUrl() + MethodUrl.AUTHENTICATION_INIT,
                                                  RequestTemplate.INIT_AUTHENTICATION, initiateAuthenticationRequest,
                                                  InitiateAuthenticationResponse.class, RELYING_PARTY_ID);
             Assert.assertEquals("Invalid error", 1002, rpEx.getErrorCode());
@@ -167,7 +167,7 @@ public class AuthenticationClientInitAuthenticationTest {
                         .setHttpService(httpServiceMock)
                         .setTransactionContext(TransactionContext.PERSONAL).build();
         String reference = authenticationClient.initiate(initiateAuthenticationRequest);
-        Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getUrl() + MethodUrl.AUTHENTICATION_INIT,
+        Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getServiceUrl() + MethodUrl.AUTHENTICATION_INIT,
                                              RequestTemplate.INIT_AUTHENTICATION, initiateAuthenticationRequest,
                                              InitiateAuthenticationResponse.class, null);
         Assert.assertEquals(REFERENCE, reference);
@@ -193,12 +193,12 @@ public class AuthenticationClientInitAuthenticationTest {
                         .setTransactionContext(transactionContext).build();
         String reference = authenticationClient.initiate(initiateAuthenticationRequest);
         if (transactionContext.equals(TransactionContext.PERSONAL)) {
-            Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getUrl() + MethodUrl.AUTHENTICATION_INIT,
+            Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getServiceUrl() + MethodUrl.AUTHENTICATION_INIT,
                                                  RequestTemplate.INIT_AUTHENTICATION, initiateAuthenticationRequest,
                                                  InitiateAuthenticationResponse.class, RELYING_PARTY_ID);
         } else {
             Mockito.verify(httpServiceMock)
-                    .send(FrejaEnvironment.TEST.getUrl() + MethodUrl.ORGANISATION_AUTHENTICATION_INIT,
+                    .send(FrejaEnvironment.TEST.getServiceUrl() + MethodUrl.ORGANISATION_AUTHENTICATION_INIT,
                           RequestTemplate.INIT_AUTHENTICATION, initiateAuthenticationRequest,
                           InitiateAuthenticationResponse.class, RELYING_PARTY_ID);
         }
@@ -206,29 +206,17 @@ public class AuthenticationClientInitAuthenticationTest {
         Assert.assertEquals(REFERENCE, reference);
     }
 
-    public static byte[] readAllBytes(InputStream inputStream) throws IOException {
-        final int bufLen = 4 * 0x400; // 4KB
-        byte[] buf = new byte[bufLen];
-        int readLen;
-        IOException exception = null;
-
-        try {
-            try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
-                while ((readLen = inputStream.read(buf, 0, bufLen)) != -1)
-                    outputStream.write(buf, 0, readLen);
-
-                return outputStream.toByteArray();
+    private static byte[] readAllBytes(InputStream inputStream) throws FrejaEidClientInternalException {
+        final int bufferLengthInKB = 1024;
+        byte[] buffer = new byte[bufferLengthInKB];
+        int line;
+        try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
+            while ((line = inputStream.read(buffer)) != -1) {
+                outputStream.write(buffer, 0, line);
             }
-        } catch (IOException e) {
-            exception = e;
-            throw e;
-        } finally {
-            if (exception == null) inputStream.close();
-            else try {
-                inputStream.close();
-            } catch (IOException e) {
-                exception.addSuppressed(e);
-            }
+            return outputStream.toByteArray();
+        } catch (IOException ex) {
+            throw new FrejaEidClientInternalException("Failed to read bytes returned in http response", ex);
         }
     }
 }
