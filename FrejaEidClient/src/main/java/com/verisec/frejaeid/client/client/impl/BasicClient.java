@@ -49,9 +49,11 @@ public class BasicClient {
                           TransactionContext transactionContext, HttpServiceApi httpService, String resourceServerUrl)
             throws FrejaEidClientInternalException {
         jsonService = new JsonService();
-        signService = new SignService(serverCustomUrl, pollingTimeoutInMillseconds, transactionContext, httpService);
-        organisationIdService = new OrganisationIdService(serverCustomUrl, pollingTimeoutInMillseconds, httpService);
-        customIdentifierService = new CustomIdentifierService(serverCustomUrl, httpService);
+        signService = new SignService(serverCustomUrl, pollingTimeoutInMillseconds, transactionContext, httpService,
+                                      resourceServerUrl);
+        organisationIdService = new OrganisationIdService(serverCustomUrl, pollingTimeoutInMillseconds, httpService,
+                                                          resourceServerUrl);
+        customIdentifierService = new CustomIdentifierService(serverCustomUrl, httpService, resourceServerUrl);
         authenticationService = new AuthenticationService(serverCustomUrl, httpService, pollingTimeoutInMillseconds,
                                                           transactionContext, resourceServerUrl);
         requestValidationService = new RequestValidationService();

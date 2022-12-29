@@ -13,6 +13,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
@@ -175,7 +177,7 @@ public class HttpService implements HttpServiceApi {
     }
 
     @Override
-    public final HttpResponse httpGet(String methodUrl, Map<String, String> parameters)
+    public final byte[] httpGet(String methodUrl, Map<String, String> parameters)
             throws FrejaEidClientInternalException, FrejaEidException, UnsupportedEncodingException {
 
         HttpResponse httpResponse = null;
@@ -198,6 +200,7 @@ public class HttpService implements HttpServiceApi {
             int httpStatusCodeValue = httpResponse.getStatusLine().getStatusCode();
             String responseString =  EntityUtils.toString(httpResponse.getEntity(), StandardCharsets.UTF_8);
             httpStatusCode = HttpStatusCode.getHttpStatusCode(httpStatusCodeValue);
+            byte[] response =  readAllBytes(httpResponse.getEntity().getContent());
             if (httpStatusCode == null) {
                 throw new FrejaEidException(
                         String.format("Received unsupported HTTP status code %s. Received HTTP message: %s.",
@@ -205,9 +208,9 @@ public class HttpService implements HttpServiceApi {
             }
             switch (httpStatusCode) {
                 case OK:
-                    return httpResponse;
+                    return response;
                 case NO_CONTENT:
-                    throw new FrejaEidException(String.format("HTTP code %s message: QR code generation failed, no "
+                    throw new FrejaEidException(String.format("HTTP code %s message: Http transaction failed, no "
                                                                       + "content received.",
                                                         httpResponse.getStatusLine().getStatusCode()));
                 default:
@@ -244,6 +247,20 @@ public class HttpService implements HttpServiceApi {
             return line != null ? line : "N/A";
         } catch (IOException e) {
             return "N/A";
+        }
+    }
+
+    private static byte[] readAllBytes(InputStream inputStream) throws FrejaEidClientInternalException {
+        final int bufferLengthInKB = 1024;
+        byte[] buffer = new byte[bufferLengthInKB];
+        int line;
+        try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
+            while ((line = inputStream.read(buffer)) != -1) {
+                outputStream.write(buffer, 0, line);
+            }
+            return outputStream.toByteArray();
+        } catch (IOException ex) {
+            throw new FrejaEidClientInternalException("Failed to read bytes returned in http response", ex);
         }
     }
 }

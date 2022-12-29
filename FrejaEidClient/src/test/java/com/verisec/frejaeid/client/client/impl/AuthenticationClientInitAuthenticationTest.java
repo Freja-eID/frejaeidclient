@@ -13,7 +13,6 @@ import com.verisec.frejaeid.client.http.HttpServiceApi;
 import com.verisec.frejaeid.client.util.MethodUrl;
 import com.verisec.frejaeid.client.util.RequestTemplate;
 import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
 import org.junit.Assert;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -31,6 +30,7 @@ public class AuthenticationClientInitAuthenticationTest {
     private static final String ORGANISATION_ID = "orgId";
     private static final Country COUNTRY = Country.SWEDEN;
     private static final AttributeToReturn[] ATTRIBUTES_TO_RETURN = AttributeToReturn.values();
+    private static final String QR_CODE_GENERATION_URL_PREFIX = "https://resources.test.frejaeid.com/qrcode/generate";
 
     @Test
     public void initAuth_userInfoTypeEmail_success() throws FrejaEidClientInternalException, FrejaEidException {
@@ -43,23 +43,22 @@ public class AuthenticationClientInitAuthenticationTest {
     @Test
     public void generateQRCode_expectSuccess() throws FrejaEidClientInternalException, FrejaEidException, IOException {
         byte[] byteArray = null;
-        ByteArrayInputStream inputStream = new ByteArrayInputStream(REFERENCE.getBytes());
-        ByteArrayInputStream expectedBytesStream = new ByteArrayInputStream(REFERENCE.getBytes());
-        byte[] expectedBytesResult = readAllBytes(expectedBytesStream);
-        AuthenticationClientApi authenticationClient =
-                AuthenticationClient.create(TestUtil.getDefaultSslSettings(), FrejaEnvironment.TEST)
-                        .setHttpService(httpServiceMock)
-                        .setTransactionContext(TransactionContext.PERSONAL).build();
-        HttpResponse expectedResponse = Mockito.mock(HttpResponse.class);
-        HttpEntity httpResponseEntity = Mockito.mock(HttpEntity.class);
-        Mockito.when(expectedResponse.getEntity()).thenReturn(httpResponseEntity);
-        Mockito.when(httpResponseEntity.getContent()).thenReturn(inputStream);
-        String expectedUrl = "https://resources.test.frejaeid.com/qrcode/generate";
-        Mockito.when(httpServiceMock.httpGet(Mockito.matches(expectedUrl), Mockito.<String, String>anyMap()))
-                .thenReturn(expectedResponse);
+        try(ByteArrayInputStream inputStream = new ByteArrayInputStream(REFERENCE.getBytes());
+            ByteArrayInputStream expectedBytesStream = new ByteArrayInputStream(REFERENCE.getBytes())
+        ) {
+            byte[] expectedBytesResult = readAllBytes(expectedBytesStream);
+            AuthenticationClientApi authenticationClient =
+                    AuthenticationClient.create(TestUtil.getDefaultSslSettings(), FrejaEnvironment.TEST)
+                            .setHttpService(httpServiceMock)
+                            .setTransactionContext(TransactionContext.PERSONAL).build();
+            HttpEntity httpResponseEntity = Mockito.mock(HttpEntity.class);
+            Mockito.when(httpResponseEntity.getContent()).thenReturn(inputStream);
+            Mockito.when(httpServiceMock.httpGet(Mockito.matches(QR_CODE_GENERATION_URL_PREFIX), Mockito.<String, String>anyMap()))
+                    .thenReturn(expectedBytesResult);
 
-        byteArray = authenticationClient.generateQRCodeForAuthentication(REFERENCE);
-        Assert.assertEquals(Arrays.toString(byteArray), Arrays.toString(expectedBytesResult));
+            byteArray = authenticationClient.generateQRCodeForAuthentication(REFERENCE);
+            Assert.assertEquals(Arrays.toString(byteArray), Arrays.toString(expectedBytesResult));
+        }
     }
     @Test
     public void initAuth_expectError() throws FrejaEidClientInternalException, FrejaEidException {

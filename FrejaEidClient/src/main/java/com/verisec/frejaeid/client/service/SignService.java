@@ -24,16 +24,17 @@ public class SignService extends BasicService {
     private final TransactionContext transactionContext;
 
     public SignService(String serverAddress, int pollingTimeoutInMilliseconds, TransactionContext transactionContext,
-                       HttpServiceApi httpService) {
-        super(serverAddress, httpService);
+                       HttpServiceApi httpService, String resourceServerAddress) {
+        super(serverAddress, httpService, resourceServerAddress);
         this.pollingTimeoutInMilliseconds = pollingTimeoutInMilliseconds;
         this.transactionContext = transactionContext;
     }
 
-    public SignService(String serverAddress, HttpServiceApi httpService) {
-        super(serverAddress, httpService);
+    public SignService(String serverAddress, HttpServiceApi httpService, String resourceServerAddress) {
+        super(serverAddress, httpService, resourceServerAddress);
         this.pollingTimeoutInMilliseconds = 0;
         this.transactionContext = TransactionContext.PERSONAL;
+
     }
 
     public InitiateSignResponse initiate(InitiateSignRequest signRequest)

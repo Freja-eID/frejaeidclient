@@ -16,8 +16,6 @@ import com.verisec.frejaeid.client.http.HttpService;
 import com.verisec.frejaeid.client.http.HttpServiceApi;
 
 import java.io.IOException;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import java.util.List;
 import javax.net.ssl.SSLContext;
 
@@ -28,8 +26,6 @@ import org.slf4j.LoggerFactory;
  * Performs authentication actions.
  */
 public class AuthenticationClient extends BasicClient implements AuthenticationClientApi {
-
-    private static final String QR_TRANSACTION_URL = "frejaeid://bindUserToTransaction?transactionReference=";
 
     public static final Logger LOG = LoggerFactory.getLogger(AuthenticationClient.class);
 
@@ -79,17 +75,6 @@ public class AuthenticationClient extends BasicClient implements AuthenticationC
     }
 
     @Override
-    public byte[] generateQRCodeForAuthentication(String reference) throws FrejaEidClientInternalException, FrejaEidException, IOException {
-        LOG.debug("Initiating generation of QR code for authentication from transaction reference {}.", reference);
-        String encodedReference = URLEncoder.encode(reference, StandardCharsets.UTF_8.toString());
-        String bindTransactionToUserUrl = QR_TRANSACTION_URL + encodedReference;
-        String encodedUrl = URLEncoder.encode(bindTransactionToUserUrl, StandardCharsets.UTF_8.toString());
-        byte[] generatedQRCode = authenticationService.getAuthenticationQRCode(encodedUrl);
-        LOG.debug("Received QR authentication code.");
-        return generatedQRCode;
-    }
-
-    @Override
     public AuthenticationResult getResult(AuthenticationResultRequest authenticationResultRequest)
             throws FrejaEidClientInternalException, FrejaEidException {
         requestValidationService.validateResultRequest(authenticationResultRequest);
@@ -134,6 +119,15 @@ public class AuthenticationClient extends BasicClient implements AuthenticationC
         authenticationService.cancel(cancelAuthenticationRequest);
         LOG.debug("Successfully canceled authentication transaction with reference {}.",
                   cancelAuthenticationRequest.getAuthRef());
+    }
+
+    @Override
+    public byte[] generateQRCodeForAuthentication(String reference) throws FrejaEidClientInternalException,
+            FrejaEidException, IOException {
+        LOG.debug("Initiating generation of byte code from transaction reference {}.", reference);
+        byte[] responseContent = authenticationService.getQRCodeContentResponse(reference);
+        LOG.debug("Received transaction response byte code.");
+        return responseContent;
     }
 
     public static class Builder extends GenericBuilder {
