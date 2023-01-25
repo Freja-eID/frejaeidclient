@@ -198,13 +198,12 @@ public class HttpService implements HttpServiceApi {
             httpResponse = httpClient.execute(request);
             LOG.debug("Successfully sent HttpGet request to address {}.", methodUrl);
             int httpStatusCodeValue = httpResponse.getStatusLine().getStatusCode();
-            String responseString =  EntityUtils.toString(httpResponse.getEntity(), StandardCharsets.UTF_8);
             httpStatusCode = HttpStatusCode.getHttpStatusCode(httpStatusCodeValue);
             byte[] response =  readAllBytes(httpResponse.getEntity().getContent());
             if (httpStatusCode == null) {
                 throw new FrejaEidException(
                         String.format("Received unsupported HTTP status code %s. Received HTTP message: %s.",
-                                      httpResponse.getStatusLine().getStatusCode(), responseString));
+                                      httpResponse.getStatusLine().getStatusCode(), response));
             }
             switch (httpStatusCode) {
                 case OK:
@@ -216,7 +215,7 @@ public class HttpService implements HttpServiceApi {
                 default:
                     throw new FrejaEidException(String.format("HTTP code %s message: %s",
                                                               httpResponse.getStatusLine().getStatusCode(),
-                                                              responseString));
+                                                              response));
             }
         } catch (IOException | URISyntaxException e) {
             throw new FrejaEidClientInternalException("Failed to send HTTP request.", e);
