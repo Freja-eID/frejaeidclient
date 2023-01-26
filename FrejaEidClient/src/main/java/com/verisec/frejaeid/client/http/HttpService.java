@@ -12,11 +12,9 @@ import com.verisec.frejaeid.client.util.RequestTemplate;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.net.URISyntaxException;
-import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.text.MessageFormat;
 import java.util.Map;
@@ -178,7 +176,7 @@ public class HttpService implements HttpServiceApi {
 
     @Override
     public final byte[] httpGet(String methodUrl, Map<String, String> parameters)
-            throws FrejaEidClientInternalException, FrejaEidException, UnsupportedEncodingException {
+            throws FrejaEidClientInternalException, FrejaEidException {
 
         HttpResponse httpResponse = null;
         HttpGet request = null;
@@ -187,8 +185,7 @@ public class HttpService implements HttpServiceApi {
         URIBuilder uriBuilder = new URIBuilder();
         uriBuilder.setPath(methodUrl);
         for (Map.Entry<String, String> parameter : parameters.entrySet()) {
-            uriBuilder.addParameter(parameter.getKey(), URLEncoder.encode(parameter.getValue(),
-                                                                          StandardCharsets.UTF_8.toString()));
+            uriBuilder.addParameter(parameter.getKey(), parameter.getValue());
         }
 
         try {
