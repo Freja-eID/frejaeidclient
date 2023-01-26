@@ -208,6 +208,11 @@ public class BasicClient {
             return this;
         }
 
+        public GenericBuilder setTestModeResourceUrl(String resourceCustomUrl) {
+            this.resourceServiceUrl = resourceCustomUrl;
+            return this;
+        }
+
         /**
          * Only used for authentication and sign clients. Otherwise, method has
          * no effect and default values are set for:
