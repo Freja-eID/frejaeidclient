@@ -41,9 +41,8 @@ public class BasicService {
             FrejaEidException, IOException {
         String encodedReference = URLEncoder.encode(reference, StandardCharsets.UTF_8.toString());
         String bindTransactionToUserUrl = BIND_USER_TRANSACTION_URL_PREFIX + encodedReference;
-        String encodedUrl = URLEncoder.encode(bindTransactionToUserUrl, StandardCharsets.UTF_8.toString());
         Map<String, String> parameterMap = new HashMap<>();
-        parameterMap.put(QR_CODE_PARAMETER_NAME, encodedUrl);
+        parameterMap.put(QR_CODE_PARAMETER_NAME, bindTransactionToUserUrl);
         return httpService.httpGet(getUrl(resourceServerAddress, MethodUrl.QR_CODE_GENERATE), parameterMap);
     }
 
