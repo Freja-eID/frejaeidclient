@@ -124,7 +124,7 @@ public class AuthenticationClient extends BasicClient implements AuthenticationC
     @Override
     public byte[] generateQRCodeForAuthentication(String reference) throws FrejaEidClientInternalException,
             FrejaEidException, IOException {
-        LOG.debug("Initiating generation of byte code from transaction reference {}.", reference);
+        LOG.debug("Initiating generation of qr code from transaction reference {}.", reference);
         byte[] qrCodeBytes = authenticationService.generateQRCode(reference);
         LOG.debug("Received qr code response from transaction reference {}.", reference);
         return qrCodeBytes;
