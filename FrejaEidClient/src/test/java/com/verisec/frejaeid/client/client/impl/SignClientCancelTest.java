@@ -40,7 +40,7 @@ public class SignClientCancelTest {
                                           Mockito.eq(EmptyFrejaResponse.class), (String) Mockito.isNull()))
                 .thenReturn(EmptyFrejaResponse.INSTANCE);
         signClient.cancel(cancelSignRequest);
-        Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getUrl() + MethodUrl.SIGN_CANCEL,
+        Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getServiceUrl() + MethodUrl.SIGN_CANCEL,
                                              RequestTemplate.CANCEL_SIGN_TEMPLATE, cancelSignRequest,
                                              EmptyFrejaResponse.class, null);
     }
@@ -53,7 +53,7 @@ public class SignClientCancelTest {
                                           Mockito.eq(EmptyFrejaResponse.class), Mockito.anyString()))
                 .thenReturn(EmptyFrejaResponse.INSTANCE);
         signClient.cancel(cancelSignRequest);
-        Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getUrl() + MethodUrl.SIGN_CANCEL,
+        Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getServiceUrl() + MethodUrl.SIGN_CANCEL,
                                              RequestTemplate.CANCEL_SIGN_TEMPLATE, cancelSignRequest,
                                              EmptyFrejaResponse.class, RELYING_PARTY_ID);
     }
@@ -69,7 +69,7 @@ public class SignClientCancelTest {
                                           Mockito.eq(EmptyFrejaResponse.class), Mockito.anyString()))
                 .thenReturn(EmptyFrejaResponse.INSTANCE);
         signClient.cancel(cancelSignRequest);
-        Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getUrl() + MethodUrl.ORGANISATION_SIGN_CANCEL,
+        Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getServiceUrl() + MethodUrl.ORGANISATION_SIGN_CANCEL,
                                              RequestTemplate.CANCEL_SIGN_TEMPLATE, cancelSignRequest,
                                              EmptyFrejaResponse.class, RELYING_PARTY_ID);
     }
@@ -89,7 +89,7 @@ public class SignClientCancelTest {
             signClient.cancel(cancelSignRequest);
             Assert.fail();
         } catch (FrejaEidException rpEx) {
-            Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getUrl() + MethodUrl.SIGN_CANCEL,
+            Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getServiceUrl() + MethodUrl.SIGN_CANCEL,
                                                  RequestTemplate.CANCEL_SIGN_TEMPLATE, cancelSignRequest,
                                                  EmptyFrejaResponse.class, null);
             Assert.assertEquals(1100, rpEx.getErrorCode());

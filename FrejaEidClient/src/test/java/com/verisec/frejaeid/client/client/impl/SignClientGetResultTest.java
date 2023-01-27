@@ -91,7 +91,7 @@ public class SignClientGetResultTest {
                                           Mockito.any(RelyingPartyRequest.class), Mockito.eq(SignResult.class),
                                           (String) Mockito.isNull())).thenReturn(expectedResponse);
         SignResult response = signClient.getResult(signResultsRequest);
-        Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getUrl() + MethodUrl.SIGN_GET_RESULT,
+        Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getServiceUrl() + MethodUrl.SIGN_GET_RESULT,
                                              RequestTemplate.SIGN_RESULT_TEMPLATE, signResultsRequest,
                                              SignResult.class, null);
         Assert.assertEquals(SIGN_REFERENCE, response.getSignRef());
@@ -109,7 +109,7 @@ public class SignClientGetResultTest {
                                           Mockito.any(RelyingPartyRequest.class), Mockito.eq(SignResult.class),
                                           Mockito.anyString())).thenReturn(expectedResponse);
         SignResult response = signClient.getResult(signResultRequest);
-        Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getUrl() + MethodUrl.SIGN_GET_RESULT,
+        Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getServiceUrl() + MethodUrl.SIGN_GET_RESULT,
                                              RequestTemplate.SIGN_RESULT_TEMPLATE, signResultRequest,
                                              SignResult.class, RELYING_PARTY_ID);
         Assert.assertEquals(SIGN_REFERENCE, response.getSignRef());
@@ -131,7 +131,7 @@ public class SignClientGetResultTest {
                                           Mockito.anyString())).thenReturn(expectedResponse);
         SignResult response = signClient.getResult(signResultRequest);
         Mockito.verify(httpServiceMock)
-                .send(FrejaEnvironment.TEST.getUrl() + MethodUrl.ORGANISATION_SIGN_GET_ONE_RESULT,
+                .send(FrejaEnvironment.TEST.getServiceUrl() + MethodUrl.ORGANISATION_SIGN_GET_ONE_RESULT,
                       RequestTemplate.SIGN_RESULT_TEMPLATE, signResultRequest, SignResult.class, RELYING_PARTY_ID);
         Assert.assertEquals(SIGN_REFERENCE, response.getSignRef());
         Assert.assertEquals(TransactionStatus.APPROVED, response.getStatus());
@@ -161,7 +161,7 @@ public class SignClientGetResultTest {
                                           Mockito.anyString())).thenReturn(expectedResponse);
         SignResult response = signClient.getResult(signResultRequest);
         Mockito.verify(httpServiceMock)
-                .send(FrejaEnvironment.TEST.getUrl() + MethodUrl.ORGANISATION_SIGN_GET_ONE_RESULT,
+                .send(FrejaEnvironment.TEST.getServiceUrl() + MethodUrl.ORGANISATION_SIGN_GET_ONE_RESULT,
                       RequestTemplate.SIGN_RESULT_TEMPLATE, signResultRequest, SignResult.class, RELYING_PARTY_ID);
         Assert.assertEquals(SIGN_REFERENCE, response.getSignRef());
         Assert.assertEquals(TransactionStatus.APPROVED, response.getStatus());
@@ -182,7 +182,7 @@ public class SignClientGetResultTest {
             signClient.getResult(signResultRequest);
             Assert.fail("Test should throw exception!");
         } catch (FrejaEidException rpEx) {
-            Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getUrl() + MethodUrl.SIGN_GET_RESULT,
+            Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getServiceUrl() + MethodUrl.SIGN_GET_RESULT,
                                                  RequestTemplate.SIGN_RESULT_TEMPLATE, signResultRequest,
                                                  SignResult.class, RELYING_PARTY_ID);
             Assert.assertEquals(1100, rpEx.getErrorCode());
@@ -199,7 +199,7 @@ public class SignClientGetResultTest {
                                           (String) Mockito.isNull())).thenReturn(expectedResponse);
         SignResultRequest signResultRequest = SignResultRequest.create(SIGN_REFERENCE);
         SignResult response = signClient.pollForResult(signResultRequest, 10000);
-        Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getUrl() + MethodUrl.SIGN_GET_RESULT,
+        Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getServiceUrl() + MethodUrl.SIGN_GET_RESULT,
                                              RequestTemplate.SIGN_RESULT_TEMPLATE, signResultRequest,
                                              SignResult.class, null);
         Assert.assertEquals(TransactionStatus.REJECTED, response.getStatus());
@@ -252,7 +252,7 @@ public class SignClientGetResultTest {
             signClient.getResults(signResultsRequest);
             Assert.fail("Test should throw exception!");
         } catch (FrejaEidException rpEx) {
-            Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getUrl() + MethodUrl.SIGN_GET_RESULTS,
+            Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getServiceUrl() + MethodUrl.SIGN_GET_RESULTS,
                                                  RequestTemplate.SIGN_RESULTS_TEMPLATE, signResultsRequest,
                                                  SignResults.class, RELYING_PARTY_ID);
             Assert.assertEquals(1008, rpEx.getErrorCode());
@@ -264,7 +264,7 @@ public class SignClientGetResultTest {
     private void getSignResults_success(SignResultsRequest signResultsRequest)
             throws FrejaEidClientInternalException, FrejaEidException {
         List<SignResult> response = signClient.getResults(signResultsRequest);
-        Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getUrl() + MethodUrl.SIGN_GET_RESULTS,
+        Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getServiceUrl() + MethodUrl.SIGN_GET_RESULTS,
                                              RequestTemplate.SIGN_RESULTS_TEMPLATE, signResultsRequest,
                                              SignResults.class, signResultsRequest.getRelyingPartyId());
 

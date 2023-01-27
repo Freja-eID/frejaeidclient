@@ -49,14 +49,14 @@ public class CustomIdentifierClientTest {
         SetCustomIdentifierRequest setCustomIdentifierRequestDefaultEmail =
                 SetCustomIdentifierRequest.createDefaultWithEmail(EMAIL, CUSTOM_IDENTIFIER);
         customIdentifierClient.set(setCustomIdentifierRequestDefaultEmail);
-        Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getUrl() + MethodUrl.CUSTOM_IDENTIFIER_SET,
+        Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getServiceUrl() + MethodUrl.CUSTOM_IDENTIFIER_SET,
                                              RequestTemplate.SET_CUSTOM_IDENITIFIER_TEMPLATE,
                                              setCustomIdentifierRequestDefaultEmail, EmptyFrejaResponse.class, null);
         SetCustomIdentifierRequest setCustomIdentifierRequestDefaultSsn =
                 SetCustomIdentifierRequest.createDefaultWithSsn(SsnUserInfo.create(Country.NORWAY, SSN),
                                                                 CUSTOM_IDENTIFIER);
         customIdentifierClient.set(setCustomIdentifierRequestDefaultSsn);
-        Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getUrl() + MethodUrl.CUSTOM_IDENTIFIER_SET,
+        Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getServiceUrl() + MethodUrl.CUSTOM_IDENTIFIER_SET,
                                              RequestTemplate.SET_CUSTOM_IDENITIFIER_TEMPLATE,
                                              setCustomIdentifierRequestDefaultSsn, EmptyFrejaResponse.class, null);
     }
@@ -83,7 +83,7 @@ public class CustomIdentifierClientTest {
                                                                   setCustomIdentifierRequestPhoneNum);
         for (SetCustomIdentifierRequest request : requests) {
             customIdentifierClient.set(request);
-            Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getUrl() + MethodUrl.CUSTOM_IDENTIFIER_SET,
+            Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getServiceUrl() + MethodUrl.CUSTOM_IDENTIFIER_SET,
                                                  RequestTemplate.SET_CUSTOM_IDENITIFIER_TEMPLATE, request,
                                                  EmptyFrejaResponse.class, RELYING_PARTY_ID);
         }
@@ -107,7 +107,7 @@ public class CustomIdentifierClientTest {
             Assert.fail("Test should throw exception!");
         } catch (FrejaEidException rpEx) {
             Mockito.verify(httpServiceMock)
-                    .send(FrejaEnvironment.TEST.getUrl() + MethodUrl.CUSTOM_IDENTIFIER_SET,
+                    .send(FrejaEnvironment.TEST.getServiceUrl() + MethodUrl.CUSTOM_IDENTIFIER_SET,
                           RequestTemplate.SET_CUSTOM_IDENITIFIER_TEMPLATE, setCustomIdentifierRequest,
                           EmptyFrejaResponse.class, null);
             Assert.assertEquals(5002, rpEx.getErrorCode());
@@ -124,7 +124,7 @@ public class CustomIdentifierClientTest {
                                           Mockito.eq(EmptyFrejaResponse.class), (String) Mockito.isNull()))
                 .thenReturn(EmptyFrejaResponse.INSTANCE);
         customIdentifierClient.delete(deleteCustomIdentifierRequest);
-        Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getUrl() + MethodUrl.CUSTOM_IDENTIFIER_DELETE,
+        Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getServiceUrl() + MethodUrl.CUSTOM_IDENTIFIER_DELETE,
                                              RequestTemplate.DELETE_CUSTOM_IDENTIFIER_TEMPLATE,
                                              deleteCustomIdentifierRequest, EmptyFrejaResponse.class, null);
     }
@@ -139,7 +139,7 @@ public class CustomIdentifierClientTest {
                                           Mockito.eq(EmptyFrejaResponse.class), Mockito.anyString()))
                 .thenReturn(EmptyFrejaResponse.INSTANCE);
         customIdentifierClient.delete(deleteCustomIdentifierRequest);
-        Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getUrl() + MethodUrl.CUSTOM_IDENTIFIER_DELETE,
+        Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getServiceUrl() + MethodUrl.CUSTOM_IDENTIFIER_DELETE,
                                              RequestTemplate.DELETE_CUSTOM_IDENTIFIER_TEMPLATE,
                                              deleteCustomIdentifierRequest, EmptyFrejaResponse.class, RELYING_PARTY_ID);
     }
@@ -160,7 +160,7 @@ public class CustomIdentifierClientTest {
             customIdentifierClient.delete(deleteCustomIdentifierRequest);
             Assert.fail("Test should throw exception!");
         } catch (FrejaEidException rpEx) {
-            Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getUrl() + MethodUrl.CUSTOM_IDENTIFIER_DELETE,
+            Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getServiceUrl() + MethodUrl.CUSTOM_IDENTIFIER_DELETE,
                                                  RequestTemplate.DELETE_CUSTOM_IDENTIFIER_TEMPLATE,
                                                  deleteCustomIdentifierRequest, EmptyFrejaResponse.class, null);
             Assert.assertEquals("Invalid error", 5001, rpEx.getErrorCode());

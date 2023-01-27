@@ -44,7 +44,7 @@ public class OrganisationIdClientGetResultTest {
                                           Mockito.eq(OrganisationIdResult.class), (String) Mockito.isNull()))
                 .thenReturn(expectedResponse);
         OrganisationIdResult response = organisationIdClient.getResult(organisationIdResultRequest);
-        Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getUrl() + MethodUrl.ORGANISATION_ID_GET_RESULT,
+        Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getServiceUrl() + MethodUrl.ORGANISATION_ID_GET_RESULT,
                                              RequestTemplate.ORGANISATION_ID_RESULT_TEMPLATE,
                                              organisationIdResultRequest, OrganisationIdResult.class, null);
         Assert.assertEquals(REFERENCE, response.getOrgIdRef());
@@ -62,7 +62,7 @@ public class OrganisationIdClientGetResultTest {
                                           Mockito.eq(OrganisationIdResult.class), Mockito.anyString()))
                 .thenReturn(expectedResponse);
         OrganisationIdResult response = organisationIdClient.getResult(organisationIdResultRequest);
-        Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getUrl() + MethodUrl.ORGANISATION_ID_GET_RESULT,
+        Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getServiceUrl() + MethodUrl.ORGANISATION_ID_GET_RESULT,
                                              RequestTemplate.ORGANISATION_ID_RESULT_TEMPLATE,
                                              organisationIdResultRequest, OrganisationIdResult.class, RELYING_PARTY_ID);
         Assert.assertEquals(REFERENCE, response.getOrgIdRef());
@@ -87,7 +87,7 @@ public class OrganisationIdClientGetResultTest {
             Assert.fail("Test should throw exception!");
         } catch (FrejaEidException rpEx) {
             Mockito.verify(httpServiceMock)
-                    .send(FrejaEnvironment.TEST.getUrl() + MethodUrl.ORGANISATION_ID_GET_RESULT,
+                    .send(FrejaEnvironment.TEST.getServiceUrl() + MethodUrl.ORGANISATION_ID_GET_RESULT,
                           RequestTemplate.ORGANISATION_ID_RESULT_TEMPLATE, organisationIdResultRequest,
                           OrganisationIdResult.class, RELYING_PARTY_ID);
             Assert.assertEquals(1100, rpEx.getErrorCode());
@@ -107,7 +107,7 @@ public class OrganisationIdClientGetResultTest {
         OrganisationIdResultRequest organisationIdResultRequest = OrganisationIdResultRequest.create(REFERENCE);
         OrganisationIdResult response = organisationIdClient.pollForResult(organisationIdResultRequest, 10000);
         Mockito.verify(httpServiceMock)
-                .send(FrejaEnvironment.TEST.getUrl() + MethodUrl.ORGANISATION_ID_GET_RESULT,
+                .send(FrejaEnvironment.TEST.getServiceUrl() + MethodUrl.ORGANISATION_ID_GET_RESULT,
                       RequestTemplate.ORGANISATION_ID_RESULT_TEMPLATE, organisationIdResultRequest,
                       OrganisationIdResult.class, null);
         Assert.assertEquals(TransactionStatus.REJECTED, response.getStatus());

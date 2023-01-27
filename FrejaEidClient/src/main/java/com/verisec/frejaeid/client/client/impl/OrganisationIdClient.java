@@ -37,7 +37,7 @@ public class OrganisationIdClient extends BasicClient implements OrganisationIdC
 
     private OrganisationIdClient(String serverCustomUrl, int pollingTimeoutInMillseconds, HttpServiceApi httpService)
             throws FrejaEidClientInternalException {
-        super(serverCustomUrl, pollingTimeoutInMillseconds, TransactionContext.ORGANISATIONAL, httpService);
+        super(serverCustomUrl, pollingTimeoutInMillseconds, TransactionContext.ORGANISATIONAL, httpService, null);
     }
 
     /**

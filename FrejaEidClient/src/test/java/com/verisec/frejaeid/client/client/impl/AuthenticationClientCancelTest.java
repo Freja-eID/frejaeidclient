@@ -41,7 +41,7 @@ public class AuthenticationClientCancelTest {
                                           Mockito.eq(EmptyFrejaResponse.class), (String) Mockito.isNull()))
                 .thenReturn(EmptyFrejaResponse.INSTANCE);
         authenticationClient.cancel(cancelAuthenticationRequest);
-        Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getUrl() + MethodUrl.AUTHENTICATION_CANCEL,
+        Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getServiceUrl() + MethodUrl.AUTHENTICATION_CANCEL,
                                              RequestTemplate.CANCEL_AUTHENTICATION_TEMPLATE,
                                              cancelAuthenticationRequest, EmptyFrejaResponse.class, null);
     }
@@ -55,7 +55,7 @@ public class AuthenticationClientCancelTest {
                                           Mockito.eq(EmptyFrejaResponse.class), Mockito.anyString()))
                 .thenReturn(EmptyFrejaResponse.INSTANCE);
         authenticationClient.cancel(cancelAuthenticationRequest);
-        Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getUrl() + MethodUrl.AUTHENTICATION_CANCEL,
+        Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getServiceUrl() + MethodUrl.AUTHENTICATION_CANCEL,
                                              RequestTemplate.CANCEL_AUTHENTICATION_TEMPLATE,
                                              cancelAuthenticationRequest, EmptyFrejaResponse.class, RELYING_PARTY_ID);
     }
@@ -75,7 +75,7 @@ public class AuthenticationClientCancelTest {
                 .thenReturn(EmptyFrejaResponse.INSTANCE);
         authenticationClient.cancel(cancelAuthenticationRequest);
         Mockito.verify(httpServiceMock)
-                .send(FrejaEnvironment.TEST.getUrl() + MethodUrl.ORGANISATION_AUTHENTICATION_CANCEL,
+                .send(FrejaEnvironment.TEST.getServiceUrl() + MethodUrl.ORGANISATION_AUTHENTICATION_CANCEL,
                       RequestTemplate.CANCEL_AUTHENTICATION_TEMPLATE, cancelAuthenticationRequest,
                       EmptyFrejaResponse.class, RELYING_PARTY_ID);
     }
@@ -94,7 +94,7 @@ public class AuthenticationClientCancelTest {
             authenticationClient.cancel(cancelAuthenticationRequest);
             Assert.fail("Test should throw exception!");
         } catch (FrejaEidException rpEx) {
-            Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getUrl() + MethodUrl.AUTHENTICATION_CANCEL,
+            Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getServiceUrl() + MethodUrl.AUTHENTICATION_CANCEL,
                                                  RequestTemplate.CANCEL_AUTHENTICATION_TEMPLATE,
                                                  cancelAuthenticationRequest, EmptyFrejaResponse.class,
                                                  RELYING_PARTY_ID);

@@ -42,7 +42,7 @@ public class AuthenticationClientHttpTest extends CommonHttpTest {
                 new AuthenticationResult(REFERENCE, TransactionStatus.APPROVED, DETAILS, REQUESTED_ATTRIBUTES);
         authenticationResults = new AuthenticationResults(Arrays.asList(authenticationResult));
         authenticationClient = AuthenticationClient.create(TestUtil.getDefaultSslSettings(), FrejaEnvironment.TEST)
-                .setTestModeCustomUrl("http://localhost:" + MOCK_SERVICE_PORT)
+                .setTestModeServerCustomUrl("http://localhost:" + MOCK_SERVICE_PORT)
                 .setTransactionContext(TransactionContext.PERSONAL).build();
     }
 
@@ -130,7 +130,7 @@ public class AuthenticationClientHttpTest extends CommonHttpTest {
             throws FrejaEidClientInternalException, IOException, InterruptedException, FrejaEidException {
         AuthenticationClient authenticationClient =
                 AuthenticationClient.create(TestUtil.getDefaultSslSettings(), FrejaEnvironment.TEST)
-                        .setTestModeCustomUrl("http://localhost:" + MOCK_SERVICE_PORT)
+                        .setTestModeServerCustomUrl("http://localhost:" + MOCK_SERVICE_PORT)
                         .setTransactionContext(TransactionContext.ORGANISATIONAL).build();
         InitiateAuthenticationRequest initAuthenticationRequestWithRequestedAttributesUserInfoOrganisationId =
                 InitiateAuthenticationRequest.createCustom()
