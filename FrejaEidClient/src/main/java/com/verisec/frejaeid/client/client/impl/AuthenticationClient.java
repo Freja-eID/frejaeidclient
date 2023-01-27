@@ -31,9 +31,9 @@ public class AuthenticationClient extends BasicClient implements AuthenticationC
 
     private AuthenticationClient(String serverCustomUrl, int pollingTimeoutInMillseconds,
                                  TransactionContext transactionContext, HttpServiceApi httpService,
-                                 String resourceServerUrl)
+                                 String resourceServiceUrl)
             throws FrejaEidClientInternalException {
-        super(serverCustomUrl, pollingTimeoutInMillseconds, transactionContext, httpService, resourceServerUrl);
+        super(serverCustomUrl, pollingTimeoutInMillseconds, transactionContext, httpService, resourceServiceUrl);
     }
 
     /**
@@ -125,9 +125,9 @@ public class AuthenticationClient extends BasicClient implements AuthenticationC
     public byte[] generateQRCodeForAuthentication(String reference) throws FrejaEidClientInternalException,
             FrejaEidException, IOException {
         LOG.debug("Initiating generation of byte code from transaction reference {}.", reference);
-        byte[] responseContent = authenticationService.getQRCodeContentResponse(reference);
-        LOG.debug("Received transaction response byte code.");
-        return responseContent;
+        byte[] qrCodeBytes = authenticationService.generateQRCode(reference);
+        LOG.debug("Received qr code response from transaction reference {}.", reference);
+        return qrCodeBytes;
     }
 
     public static class Builder extends GenericBuilder {

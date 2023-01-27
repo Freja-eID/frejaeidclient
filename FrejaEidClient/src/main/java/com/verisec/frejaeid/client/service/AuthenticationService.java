@@ -24,14 +24,14 @@ public class AuthenticationService extends BasicService {
     private final TransactionContext transactionContext;
 
     public AuthenticationService(String serverAddress, HttpServiceApi httpService, int pollingTimeoutInMilliseconds,
-                                 TransactionContext transactionContext, String resourceServerAddress) {
-        super(serverAddress, httpService, resourceServerAddress);
+                                 TransactionContext transactionContext, String resourceServiceUrl) {
+        super(serverAddress, httpService, resourceServiceUrl);
         this.pollingTimeoutInMilliseconds = pollingTimeoutInMilliseconds;
         this.transactionContext = transactionContext;
     }
 
-    public AuthenticationService(String serverAddress, HttpServiceApi httpService, String resourceServerAddress) {
-        super(serverAddress, httpService, resourceServerAddress);
+    public AuthenticationService(String serverAddress, HttpServiceApi httpService, String resourceServiceUrl) {
+        super(serverAddress, httpService, resourceServiceUrl);
         this.pollingTimeoutInMilliseconds = 0;
         this.transactionContext = TransactionContext.PERSONAL;
     }

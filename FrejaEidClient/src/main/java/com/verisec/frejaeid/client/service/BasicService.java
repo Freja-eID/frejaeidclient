@@ -16,15 +16,15 @@ public class BasicService {
 
     protected HttpServiceApi httpService;
     protected String serverAddress;
-    private final String resourceServerAddress;
+    private final String resourceServiceUrl;
     private static final String BIND_USER_TRANSACTION_URL_PREFIX = "frejaeid://bindUserToTransaction"
             + "?transactionReference=";
     private static final String QR_CODE_PARAMETER_NAME = "qrcodedata";
 
-    public BasicService(String serverAddress, HttpServiceApi httpService, String resourceServerAddress) {
+    public BasicService(String serverAddress, HttpServiceApi httpService, String resourceServiceUrl) {
         this.httpService = httpService;
         this.serverAddress = serverAddress;
-        this.resourceServerAddress = resourceServerAddress;
+        this.resourceServiceUrl = resourceServiceUrl;
     }
 
     protected String getUrl(String serverAddress, MethodUrl url) {
@@ -37,13 +37,13 @@ public class BasicService {
                 || status == TransactionStatus.REJECTED);
     }
 
-    public byte[] getQRCodeContentResponse(String reference) throws FrejaEidClientInternalException,
+    public byte[] generateQRCode(String reference) throws FrejaEidClientInternalException,
             FrejaEidException, IOException {
         String encodedReference = URLEncoder.encode(reference, StandardCharsets.UTF_8.toString());
         String bindTransactionToUserUrl = BIND_USER_TRANSACTION_URL_PREFIX + encodedReference;
         Map<String, String> parameterMap = new HashMap<>();
         parameterMap.put(QR_CODE_PARAMETER_NAME, bindTransactionToUserUrl);
-        return httpService.httpGet(getUrl(resourceServerAddress, MethodUrl.QR_CODE_GENERATE), parameterMap);
+        return httpService.httpGet(getUrl(resourceServiceUrl, MethodUrl.QR_CODE_GENERATE), parameterMap);
     }
 
 }

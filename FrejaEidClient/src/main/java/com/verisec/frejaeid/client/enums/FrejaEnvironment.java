@@ -18,22 +18,22 @@ public enum FrejaEnvironment {
     TEST("https://services.test.frejaeid.com", "https://resources.test.frejaeid.com");
 
     private final String serviceUrl;
-    private final String resourceUrl;
+    private final String resourceServiceUrl;
 
-    private FrejaEnvironment(String serviceUrl, String resourceUrl) {
+    private FrejaEnvironment(String serviceUrl, String resourceServiceUrl) {
         this.serviceUrl = serviceUrl;
-        this.resourceUrl = resourceUrl;
+        this.resourceServiceUrl = resourceServiceUrl;
     }
 
     public String getServiceUrl() { return serviceUrl; }
 
-    public String getResourceUrl() { return resourceUrl; }
+    public String getResourceServiceUrl() { return resourceServiceUrl; }
 
     @Override
     public String toString() {
         return "FrejaEnvironment{" +
                 "serviceUrl='" + serviceUrl + '\'' +
-                ", resourceUrl='" + resourceUrl + '\'' +
+                ", resourceServiceUrl='" + resourceServiceUrl + '\'' +
                 '}';
     }
 }

@@ -23,13 +23,13 @@ public class OrganisationIdService extends BasicService {
     private final int pollingTimeoutInMilliseconds;
 
     public OrganisationIdService(String serverAddress, int pollingTimeoutInMilliseconds, HttpServiceApi httpService,
-                                 String resourceServerAddress) {
-        super(serverAddress, httpService, resourceServerAddress);
+                                 String resourceServiceUrl) {
+        super(serverAddress, httpService, resourceServiceUrl);
         this.pollingTimeoutInMilliseconds = pollingTimeoutInMilliseconds;
     }
 
-    public OrganisationIdService(String serverAddress, HttpServiceApi httpService,  String resourceServerAddress) {
-        super(serverAddress, httpService, resourceServerAddress);
+    public OrganisationIdService(String serverAddress, HttpServiceApi httpService,  String resourceServiceUrl) {
+        super(serverAddress, httpService, resourceServiceUrl);
         this.pollingTimeoutInMilliseconds = 0;
     }
 

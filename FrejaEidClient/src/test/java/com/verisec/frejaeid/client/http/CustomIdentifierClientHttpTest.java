@@ -25,7 +25,7 @@ public class CustomIdentifierClientHttpTest extends CommonHttpTest {
     public static void init() throws FrejaEidClientInternalException {
         jsonService = new JsonService();
         customIdentifierClient = CustomIdentifierClient.create(TestUtil.getDefaultSslSettings(), FrejaEnvironment.TEST)
-                .setTestModeCustomUrl("http://localhost:" + MOCK_SERVICE_PORT).build();
+                .setTestModeServerCustomUrl("http://localhost:" + MOCK_SERVICE_PORT).build();
 
     }
 

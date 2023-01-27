@@ -59,7 +59,7 @@ public class SignClientHttpTest extends CommonHttpTest {
         signResults = new SignResults(Arrays.asList(signResult));
 
         signClient = SignClient.create(TestUtil.getDefaultSslSettings(), FrejaEnvironment.TEST)
-                .setTestModeCustomUrl("http://localhost:" + MOCK_SERVICE_PORT)
+                .setTestModeServerCustomUrl("http://localhost:" + MOCK_SERVICE_PORT)
                 .setTransactionContext(TransactionContext.PERSONAL).build();
 
     }
@@ -147,7 +147,7 @@ public class SignClientHttpTest extends CommonHttpTest {
             throws FrejaEidClientInternalException, IOException, InterruptedException, FrejaEidException {
         SignClient signClient =
                 SignClient.create(TestUtil.getDefaultSslSettings(), FrejaEnvironment.TEST)
-                        .setTestModeCustomUrl("http://localhost:" + MOCK_SERVICE_PORT)
+                        .setTestModeServerCustomUrl("http://localhost:" + MOCK_SERVICE_PORT)
                         .setTransactionContext(TransactionContext.ORGANISATIONAL).build();
         DataToSign dataToSign =
                 DataToSign.create(Base64.encodeBase64String(dataToSignText.getBytes(StandardCharsets.UTF_8)));

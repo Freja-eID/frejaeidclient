@@ -46,16 +46,16 @@ public class BasicClient {
     protected RequestValidationService requestValidationService;
 
     protected BasicClient(String serverCustomUrl, int pollingTimeoutInMillseconds,
-                          TransactionContext transactionContext, HttpServiceApi httpService, String resourceServerUrl)
+                          TransactionContext transactionContext, HttpServiceApi httpService, String resourceServiceUrl)
             throws FrejaEidClientInternalException {
         jsonService = new JsonService();
         signService = new SignService(serverCustomUrl, pollingTimeoutInMillseconds, transactionContext, httpService,
-                                      resourceServerUrl);
+                                      resourceServiceUrl);
         organisationIdService = new OrganisationIdService(serverCustomUrl, pollingTimeoutInMillseconds, httpService,
-                                                          resourceServerUrl);
-        customIdentifierService = new CustomIdentifierService(serverCustomUrl, httpService, resourceServerUrl);
+                                                          resourceServiceUrl);
+        customIdentifierService = new CustomIdentifierService(serverCustomUrl, httpService, resourceServiceUrl);
         authenticationService = new AuthenticationService(serverCustomUrl, httpService, pollingTimeoutInMillseconds,
-                                                          transactionContext, resourceServerUrl);
+                                                          transactionContext, resourceServiceUrl);
         requestValidationService = new RequestValidationService();
     }
 
@@ -78,7 +78,7 @@ public class BasicClient {
             if (sslContext != null) {
                 this.sslContext = sslContext;
             }
-            setServerCustomUrl(frejaEnvironment);
+            setServerUrl(frejaEnvironment);
         }
 
         public GenericBuilder(String keystorePath, String keystorePass, String certificatePath,
@@ -106,17 +106,17 @@ public class BasicClient {
                         String.format("Failed to initiate SSL context with supported keystore types %s.",
                                       KeyStoreType.getAllKeyStoreTypes()));
             }
-            setServerCustomUrl(frejaEnvironment);
+            setServerUrl(frejaEnvironment);
         }
 
-        private void setServerCustomUrl(FrejaEnvironment frejaEnvironment) {
+        private void setServerUrl(FrejaEnvironment frejaEnvironment) {
             LOG.debug("Setting Freja environment {}", frejaEnvironment == FrejaEnvironment.TEST ?
                     FREJA_ENVIRONMENT_TEST : FREJA_ENVIRONMENT_PROD);
             serverCustomUrl = FrejaEnvironment.PRODUCTION.getServiceUrl();
-            resourceServiceUrl = FrejaEnvironment.PRODUCTION.getResourceUrl();
+            resourceServiceUrl = FrejaEnvironment.PRODUCTION.getResourceServiceUrl();
             if (frejaEnvironment == FrejaEnvironment.TEST) {
                 serverCustomUrl = FrejaEnvironment.TEST.getServiceUrl();
-                resourceServiceUrl = FrejaEnvironment.TEST.getResourceUrl();
+                resourceServiceUrl = FrejaEnvironment.TEST.getResourceServiceUrl();
             }
         }
 
@@ -203,13 +203,13 @@ public class BasicClient {
             return this;
         }
 
-        public GenericBuilder setTestModeCustomUrl(String serverCustomUrl) {
+        public GenericBuilder setTestModeServerCustomUrl(String serverCustomUrl) {
             this.serverCustomUrl = serverCustomUrl;
             return this;
         }
 
-        public GenericBuilder setTestModeResourceUrl(String resourceCustomUrl) {
-            this.resourceServiceUrl = resourceCustomUrl;
+        public GenericBuilder setTestModeResourceServiceCustomUrl(String resourceServiceCustomUrl) {
+            this.resourceServiceUrl = resourceServiceCustomUrl;
             return this;
         }
 

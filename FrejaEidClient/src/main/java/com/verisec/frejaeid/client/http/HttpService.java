@@ -256,7 +256,7 @@ public class HttpService implements HttpServiceApi {
             }
             return outputStream.toByteArray();
         } catch (IOException ex) {
-            throw new FrejaEidClientInternalException("Failed to read bytes returned in http response", ex);
+            throw new FrejaEidClientInternalException("Failed to read bytes from input stream", ex);
         }
     }
 }
