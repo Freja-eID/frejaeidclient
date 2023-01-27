@@ -46,14 +46,16 @@ public class BasicClient {
     protected RequestValidationService requestValidationService;
 
     protected BasicClient(String serverCustomUrl, int pollingTimeoutInMillseconds,
-                          TransactionContext transactionContext, HttpServiceApi httpService)
+                          TransactionContext transactionContext, HttpServiceApi httpService, String resourceServiceUrl)
             throws FrejaEidClientInternalException {
         jsonService = new JsonService();
-        signService = new SignService(serverCustomUrl, pollingTimeoutInMillseconds, transactionContext, httpService);
-        organisationIdService = new OrganisationIdService(serverCustomUrl, pollingTimeoutInMillseconds, httpService);
-        customIdentifierService = new CustomIdentifierService(serverCustomUrl, httpService);
+        signService = new SignService(serverCustomUrl, pollingTimeoutInMillseconds, transactionContext, httpService,
+                                      resourceServiceUrl);
+        organisationIdService = new OrganisationIdService(serverCustomUrl, pollingTimeoutInMillseconds, httpService,
+                                                          resourceServiceUrl);
+        customIdentifierService = new CustomIdentifierService(serverCustomUrl, httpService, resourceServiceUrl);
         authenticationService = new AuthenticationService(serverCustomUrl, httpService, pollingTimeoutInMillseconds,
-                                                          transactionContext);
+                                                          transactionContext, resourceServiceUrl);
         requestValidationService = new RequestValidationService();
     }
 
@@ -70,12 +72,13 @@ public class BasicClient {
         protected HttpServiceApi httpService;
         protected SSLContext sslContext;
         protected TransactionContext transactionContext;
+        protected String resourceServiceUrl = null;
 
         public GenericBuilder(SSLContext sslContext, FrejaEnvironment frejaEnvironment) {
             if (sslContext != null) {
                 this.sslContext = sslContext;
             }
-            setServerCustomUrl(frejaEnvironment);
+            setServerUrl(frejaEnvironment);
         }
 
         public GenericBuilder(String keystorePath, String keystorePass, String certificatePath,
@@ -103,15 +106,17 @@ public class BasicClient {
                         String.format("Failed to initiate SSL context with supported keystore types %s.",
                                       KeyStoreType.getAllKeyStoreTypes()));
             }
-            setServerCustomUrl(frejaEnvironment);
+            setServerUrl(frejaEnvironment);
         }
 
-        private void setServerCustomUrl(FrejaEnvironment frejaEnvironment) {
+        private void setServerUrl(FrejaEnvironment frejaEnvironment) {
             LOG.debug("Setting Freja environment {}", frejaEnvironment == FrejaEnvironment.TEST ?
                     FREJA_ENVIRONMENT_TEST : FREJA_ENVIRONMENT_PROD);
-            serverCustomUrl = FrejaEnvironment.PRODUCTION.getUrl();
+            serverCustomUrl = FrejaEnvironment.PRODUCTION.getServiceUrl();
+            resourceServiceUrl = FrejaEnvironment.PRODUCTION.getResourceServiceUrl();
             if (frejaEnvironment == FrejaEnvironment.TEST) {
-                serverCustomUrl = FrejaEnvironment.TEST.getUrl();
+                serverCustomUrl = FrejaEnvironment.TEST.getServiceUrl();
+                resourceServiceUrl = FrejaEnvironment.TEST.getResourceServiceUrl();
             }
         }
 
@@ -198,8 +203,13 @@ public class BasicClient {
             return this;
         }
 
-        public GenericBuilder setTestModeCustomUrl(String serverCustomUrl) {
+        public GenericBuilder setTestModeServerCustomUrl(String serverCustomUrl) {
             this.serverCustomUrl = serverCustomUrl;
+            return this;
+        }
+
+        public GenericBuilder setTestModeResourceServiceCustomUrl(String resourceServiceCustomUrl) {
+            this.resourceServiceUrl = resourceServiceCustomUrl;
             return this;
         }
 

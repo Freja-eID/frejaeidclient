@@ -49,7 +49,7 @@ public class OrganisationIdClientHttpTest extends CommonHttpTest {
                 new GetAllOrganisationIdUsersResponse(Arrays.asList(organisationIdUserInfo));
 
         organisationIdClient = OrganisationIdClient.create(TestUtil.getDefaultSslSettings(), FrejaEnvironment.TEST)
-                .setTestModeCustomUrl("http://localhost:" + MOCK_SERVICE_PORT).build();
+                .setTestModeServerCustomUrl("http://localhost:" + MOCK_SERVICE_PORT).build();
 
     }
 

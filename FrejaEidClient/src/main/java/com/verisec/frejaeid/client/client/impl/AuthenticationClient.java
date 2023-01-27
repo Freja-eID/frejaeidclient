@@ -15,6 +15,7 @@ import com.verisec.frejaeid.client.exceptions.FrejaEidException;
 import com.verisec.frejaeid.client.http.HttpService;
 import com.verisec.frejaeid.client.http.HttpServiceApi;
 
+import java.io.IOException;
 import java.util.List;
 import javax.net.ssl.SSLContext;
 
@@ -29,9 +30,10 @@ public class AuthenticationClient extends BasicClient implements AuthenticationC
     public static final Logger LOG = LoggerFactory.getLogger(AuthenticationClient.class);
 
     private AuthenticationClient(String serverCustomUrl, int pollingTimeoutInMillseconds,
-                                 TransactionContext transactionContext, HttpServiceApi httpService)
+                                 TransactionContext transactionContext, HttpServiceApi httpService,
+                                 String resourceServiceUrl)
             throws FrejaEidClientInternalException {
-        super(serverCustomUrl, pollingTimeoutInMillseconds, transactionContext, httpService);
+        super(serverCustomUrl, pollingTimeoutInMillseconds, transactionContext, httpService, resourceServiceUrl);
     }
 
     /**
@@ -119,6 +121,15 @@ public class AuthenticationClient extends BasicClient implements AuthenticationC
                   cancelAuthenticationRequest.getAuthRef());
     }
 
+    @Override
+    public byte[] generateQRCodeForAuthentication(String reference) throws FrejaEidClientInternalException,
+            FrejaEidException, IOException {
+        LOG.debug("Initiating generation of qr code from transaction reference {}.", reference);
+        byte[] qrCodeBytes = authenticationService.generateQRCode(reference);
+        LOG.debug("Received qr code response from transaction reference {}.", reference);
+        return qrCodeBytes;
+    }
+
     public static class Builder extends GenericBuilder {
 
         public static final Logger LOG = LoggerFactory.getLogger(Builder.class);
@@ -147,7 +158,7 @@ public class AuthenticationClient extends BasicClient implements AuthenticationC
                               "transaction context {}.",
                       serverCustomUrl, pollingTimeout, transactionContext.getContext());
 
-            return new AuthenticationClient(serverCustomUrl, pollingTimeout, transactionContext, httpService);
+            return new AuthenticationClient(serverCustomUrl, pollingTimeout, transactionContext, httpService, resourceServiceUrl);
         }
 
     }

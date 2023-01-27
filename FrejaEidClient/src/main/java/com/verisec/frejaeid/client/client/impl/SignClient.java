@@ -34,7 +34,7 @@ public class SignClient extends BasicClient implements SignClientApi {
     private SignClient(String serverCustomUrl, int pollingTimeoutInMillseconds, TransactionContext transactionContext,
                        HttpServiceApi httpService)
             throws FrejaEidClientInternalException {
-        super(serverCustomUrl, pollingTimeoutInMillseconds, transactionContext, httpService);
+        super(serverCustomUrl, pollingTimeoutInMillseconds, transactionContext, httpService, null);
     }
 
     /**

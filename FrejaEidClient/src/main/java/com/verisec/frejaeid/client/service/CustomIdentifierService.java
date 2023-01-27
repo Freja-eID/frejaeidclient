@@ -11,8 +11,8 @@ import com.verisec.frejaeid.client.util.RequestTemplate;
 
 public class CustomIdentifierService extends BasicService {
 
-    public CustomIdentifierService(String serverAddress, HttpServiceApi httpService) {
-        super(serverAddress, httpService);
+    public CustomIdentifierService(String serverAddress, HttpServiceApi httpService, String resourceServiceUrl) {
+        super(serverAddress, httpService, resourceServiceUrl);
     }
 
     public void set(SetCustomIdentifierRequest customIdentifierRequest)

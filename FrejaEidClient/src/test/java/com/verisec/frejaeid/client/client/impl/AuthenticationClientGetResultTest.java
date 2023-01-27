@@ -95,7 +95,7 @@ public class AuthenticationClientGetResultTest {
                 .thenReturn(new AuthenticationResult(REFERENCE, TransactionStatus.STARTED, DETAILS,
                                                      REQUESTED_ATTRIBUTES));
         AuthenticationResult response = authenticationClient.getResult(authenticationResultRequest);
-        Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getUrl() + MethodUrl.AUTHENTICATION_GET_RESULT,
+        Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getServiceUrl() + MethodUrl.AUTHENTICATION_GET_RESULT,
                                              RequestTemplate.AUTHENTICATION_RESULT_TEMPLATE,
                                              authenticationResultRequest, AuthenticationResult.class, null);
         Assert.assertEquals(REFERENCE, response.getAuthRef());
@@ -114,7 +114,7 @@ public class AuthenticationClientGetResultTest {
                 .thenReturn(new AuthenticationResult(REFERENCE, TransactionStatus.STARTED, DETAILS,
                                                      REQUESTED_ATTRIBUTES));
         AuthenticationResult response = authenticationClient.getResult(authenticationResultRequest);
-        Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getUrl() + MethodUrl.AUTHENTICATION_GET_RESULT,
+        Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getServiceUrl() + MethodUrl.AUTHENTICATION_GET_RESULT,
                                              RequestTemplate.AUTHENTICATION_RESULT_TEMPLATE,
                                              authenticationResultRequest, AuthenticationResult.class, RELYING_PARTY_ID);
         Assert.assertEquals(REFERENCE, response.getAuthRef());
@@ -139,7 +139,7 @@ public class AuthenticationClientGetResultTest {
                                                      REQUESTED_ATTRIBUTES));
         AuthenticationResult response = authenticationClient.getResult(authenticationResultRequest);
         Mockito.verify(httpServiceMock)
-                .send(FrejaEnvironment.TEST.getUrl() + MethodUrl.ORGANISATION_AUTHENTICATION_GET_ONE_RESULT,
+                .send(FrejaEnvironment.TEST.getServiceUrl() + MethodUrl.ORGANISATION_AUTHENTICATION_GET_ONE_RESULT,
                       RequestTemplate.AUTHENTICATION_RESULT_TEMPLATE, authenticationResultRequest,
                       AuthenticationResult.class, RELYING_PARTY_ID);
         Assert.assertEquals(REFERENCE, response.getAuthRef());
@@ -172,7 +172,7 @@ public class AuthenticationClientGetResultTest {
                                                      requestedAttributes));
         AuthenticationResult response = authenticationClient.getResult(authenticationResultRequest);
         Mockito.verify(httpServiceMock)
-                .send(FrejaEnvironment.TEST.getUrl() + MethodUrl.ORGANISATION_AUTHENTICATION_GET_ONE_RESULT,
+                .send(FrejaEnvironment.TEST.getServiceUrl() + MethodUrl.ORGANISATION_AUTHENTICATION_GET_ONE_RESULT,
                       RequestTemplate.AUTHENTICATION_RESULT_TEMPLATE, authenticationResultRequest,
                       AuthenticationResult.class, RELYING_PARTY_ID);
         Assert.assertEquals(REFERENCE, response.getAuthRef());
@@ -195,7 +195,7 @@ public class AuthenticationClientGetResultTest {
             authenticationClient.getResult(getOneAuthenticationResultRequest);
             Assert.fail("Test should throw exception!");
         } catch (FrejaEidException rpEx) {
-            Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getUrl() + MethodUrl.AUTHENTICATION_GET_RESULT,
+            Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getServiceUrl() + MethodUrl.AUTHENTICATION_GET_RESULT,
                                                  RequestTemplate.AUTHENTICATION_RESULT_TEMPLATE,
                                                  getOneAuthenticationResultRequest, AuthenticationResult.class,
                                                  RELYING_PARTY_ID);
@@ -215,7 +215,7 @@ public class AuthenticationClientGetResultTest {
                                           Mockito.eq(AuthenticationResult.class), (String) Mockito.isNull()))
                 .thenReturn(expectedResponse);
         AuthenticationResult response = authenticationClient.pollForResult(authenticationResultRequest, 10000);
-        Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getUrl() + MethodUrl.AUTHENTICATION_GET_RESULT,
+        Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getServiceUrl() + MethodUrl.AUTHENTICATION_GET_RESULT,
                                              RequestTemplate.AUTHENTICATION_RESULT_TEMPLATE,
                                              authenticationResultRequest, AuthenticationResult.class, null);
         Assert.assertEquals(TransactionStatus.REJECTED, response.getStatus());
@@ -234,7 +234,7 @@ public class AuthenticationClientGetResultTest {
                 .thenReturn(expectedResponse);
         AuthenticationResult response = authenticationClient
                 .pollForResult(AuthenticationResultRequest.create(REFERENCE, RELYING_PARTY_ID), 10000);
-        Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getUrl() + MethodUrl.AUTHENTICATION_GET_RESULT,
+        Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getServiceUrl() + MethodUrl.AUTHENTICATION_GET_RESULT,
                                              RequestTemplate.AUTHENTICATION_RESULT_TEMPLATE,
                                              authenticationResultRequest, AuthenticationResult.class, RELYING_PARTY_ID);
         Assert.assertEquals(TransactionStatus.REJECTED, response.getStatus());
@@ -280,7 +280,7 @@ public class AuthenticationClientGetResultTest {
     private void getAuthenticationResults_success(AuthenticationResultsRequest getAuthenticationResultsRequest)
             throws FrejaEidClientInternalException, FrejaEidException {
         List<AuthenticationResult> response = authenticationClient.getResults(getAuthenticationResultsRequest);
-        Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getUrl() + MethodUrl.AUTHENTICATION_GET_RESULTS,
+        Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getServiceUrl() + MethodUrl.AUTHENTICATION_GET_RESULTS,
                                              RequestTemplate.AUTHENTICATION_RESULTS_TEMPLATE,
                                              getAuthenticationResultsRequest, AuthenticationResults.class,
                                              getAuthenticationResultsRequest.getRelyingPartyId());

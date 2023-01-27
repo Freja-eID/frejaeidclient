@@ -25,7 +25,7 @@ public class CustomIdentifierClient extends BasicClient implements CustomIdentif
 
     private CustomIdentifierClient(String serverCustomUrl, int pollingTimeout, HttpServiceApi httpService)
             throws FrejaEidClientInternalException {
-        super(serverCustomUrl, pollingTimeout, TransactionContext.PERSONAL, httpService);
+        super(serverCustomUrl, pollingTimeout, TransactionContext.PERSONAL, httpService, null);
     }
 
     /**

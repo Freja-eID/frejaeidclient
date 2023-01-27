@@ -12,8 +12,12 @@ import com.verisec.frejaeid.client.util.RequestTemplate;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
+import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.text.MessageFormat;
+import java.util.Map;
 import javax.net.ssl.SSLContext;
 
 import org.apache.commons.codec.binary.Base64;
@@ -23,7 +27,9 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.HttpRequestRetryHandler;
 import org.apache.http.client.config.RequestConfig;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.config.RegistryBuilder;
 import org.apache.http.conn.socket.ConnectionSocketFactory;
 import org.apache.http.conn.socket.PlainConnectionSocketFactory;
@@ -168,6 +174,59 @@ public class HttpService implements HttpServiceApi {
         }
     }
 
+    @Override
+    public final byte[] httpGet(String methodUrl, Map<String, String> parameters)
+            throws FrejaEidClientInternalException, FrejaEidException {
+
+        HttpResponse httpResponse = null;
+        HttpGet request = null;
+        HttpStatusCode httpStatusCode = null;
+
+        URIBuilder uriBuilder = new URIBuilder();
+        uriBuilder.setPath(methodUrl);
+        for (Map.Entry<String, String> parameter : parameters.entrySet()) {
+            uriBuilder.addParameter(parameter.getKey(), parameter.getValue());
+        }
+
+        try {
+            request = new HttpGet(uriBuilder.build());
+            request.addHeader("Content-Type", "application/json");
+            request.addHeader(HttpHeaders.USER_AGENT, userAgentHeader);
+            httpResponse = httpClient.execute(request);
+            LOG.debug("Successfully sent HttpGet request to address {}.", methodUrl);
+            int httpStatusCodeValue = httpResponse.getStatusLine().getStatusCode();
+            httpStatusCode = HttpStatusCode.getHttpStatusCode(httpStatusCodeValue);
+            byte[] response =  readAllBytes(httpResponse.getEntity().getContent());
+            if (httpStatusCode == null) {
+                throw new FrejaEidException(
+                        String.format("Received unsupported HTTP status code %s. Received HTTP message: %s.",
+                                      httpResponse.getStatusLine().getStatusCode(), response));
+            }
+            switch (httpStatusCode) {
+                case OK:
+                    return response;
+                case NO_CONTENT:
+                    throw new FrejaEidException(String.format("HTTP code %s message: Http transaction failed, no "
+                                                                      + "content received.",
+                                                        httpResponse.getStatusLine().getStatusCode()));
+                default:
+                    throw new FrejaEidException(String.format("HTTP code %s message: %s",
+                                                              httpResponse.getStatusLine().getStatusCode(),
+                                                              response));
+            }
+        } catch (IOException | URISyntaxException e) {
+            throw new FrejaEidClientInternalException("Failed to send HTTP request.", e);
+        } finally {
+            if (httpResponse != null && httpStatusCode != HttpStatusCode.NO_CONTENT) {
+                try {
+                    httpResponse.getEntity().getContent().close();
+                } catch (IOException | IllegalStateException ex) {
+                    throw new FrejaEidClientInternalException("Failed to close HTTP connection.", ex);
+                }
+            }
+        }
+    }
+
     final String makeUserAgentHeader() {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(FREJA_EID_CLIENT_VERSION_INFO.replace(VERSION_PLACEHOLDER, getLibVersion()));
@@ -184,6 +243,20 @@ public class HttpService implements HttpServiceApi {
             return line != null ? line : "N/A";
         } catch (IOException e) {
             return "N/A";
+        }
+    }
+
+    private static byte[] readAllBytes(InputStream inputStream) throws FrejaEidClientInternalException {
+        final int bufferLengthInKB = 1024;
+        byte[] buffer = new byte[bufferLengthInKB];
+        int line;
+        try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
+            while ((line = inputStream.read(buffer)) != -1) {
+                outputStream.write(buffer, 0, line);
+            }
+            return outputStream.toByteArray();
+        } catch (IOException ex) {
+            throw new FrejaEidClientInternalException("Failed to read bytes from input stream", ex);
         }
     }
 }

@@ -12,9 +12,13 @@ import com.verisec.frejaeid.client.exceptions.FrejaEidException;
 import com.verisec.frejaeid.client.http.HttpServiceApi;
 import com.verisec.frejaeid.client.util.MethodUrl;
 import com.verisec.frejaeid.client.util.RequestTemplate;
+import org.apache.http.HttpEntity;
 import org.junit.Assert;
 import org.junit.Test;
 import org.mockito.Mockito;
+
+import java.io.*;
+import java.util.Arrays;
 
 public class AuthenticationClientInitAuthenticationTest {
 
@@ -26,6 +30,7 @@ public class AuthenticationClientInitAuthenticationTest {
     private static final String ORGANISATION_ID = "orgId";
     private static final Country COUNTRY = Country.SWEDEN;
     private static final AttributeToReturn[] ATTRIBUTES_TO_RETURN = AttributeToReturn.values();
+    private static final String QR_CODE_GENERATION_URL_PREFIX = "https://resources.test.frejaeid.com/qrcode/generate";
 
     @Test
     public void initAuth_userInfoTypeEmail_success() throws FrejaEidClientInternalException, FrejaEidException {
@@ -34,6 +39,27 @@ public class AuthenticationClientInitAuthenticationTest {
         initAuth_relyingPartyNull_success(initiateAuthenticationRequest);
     }
 
+
+    @Test
+    public void generateQRCode_expectSuccess() throws FrejaEidClientInternalException, FrejaEidException, IOException {
+        byte[] byteArray = null;
+        try(ByteArrayInputStream inputStream = new ByteArrayInputStream(REFERENCE.getBytes());
+            ByteArrayInputStream expectedBytesStream = new ByteArrayInputStream(REFERENCE.getBytes())
+        ) {
+            byte[] expectedBytesResult = readAllBytes(expectedBytesStream);
+            AuthenticationClientApi authenticationClient =
+                    AuthenticationClient.create(TestUtil.getDefaultSslSettings(), FrejaEnvironment.TEST)
+                            .setHttpService(httpServiceMock)
+                            .setTransactionContext(TransactionContext.PERSONAL).build();
+            HttpEntity httpResponseEntity = Mockito.mock(HttpEntity.class);
+            Mockito.when(httpResponseEntity.getContent()).thenReturn(inputStream);
+            Mockito.when(httpServiceMock.httpGet(Mockito.matches(QR_CODE_GENERATION_URL_PREFIX), Mockito.<String, String>anyMap()))
+                    .thenReturn(expectedBytesResult);
+
+            byteArray = authenticationClient.generateQRCodeForAuthentication(REFERENCE);
+            Assert.assertEquals(Arrays.toString(byteArray), Arrays.toString(expectedBytesResult));
+        }
+    }
     @Test
     public void initAuth_expectError() throws FrejaEidClientInternalException, FrejaEidException {
         InitiateAuthenticationRequest initiateAuthenticationRequest =
@@ -52,7 +78,7 @@ public class AuthenticationClientInitAuthenticationTest {
             authenticationClient.initiate(initiateAuthenticationRequest);
             Assert.fail("Test should throw exception!");
         } catch (FrejaEidException rpEx) {
-            Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getUrl() + MethodUrl.AUTHENTICATION_INIT,
+            Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getServiceUrl() + MethodUrl.AUTHENTICATION_INIT,
                                                  RequestTemplate.INIT_AUTHENTICATION, initiateAuthenticationRequest,
                                                  InitiateAuthenticationResponse.class, RELYING_PARTY_ID);
             Assert.assertEquals("Invalid error", 1002, rpEx.getErrorCode());
@@ -140,7 +166,7 @@ public class AuthenticationClientInitAuthenticationTest {
                         .setHttpService(httpServiceMock)
                         .setTransactionContext(TransactionContext.PERSONAL).build();
         String reference = authenticationClient.initiate(initiateAuthenticationRequest);
-        Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getUrl() + MethodUrl.AUTHENTICATION_INIT,
+        Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getServiceUrl() + MethodUrl.AUTHENTICATION_INIT,
                                              RequestTemplate.INIT_AUTHENTICATION, initiateAuthenticationRequest,
                                              InitiateAuthenticationResponse.class, null);
         Assert.assertEquals(REFERENCE, reference);
@@ -166,16 +192,30 @@ public class AuthenticationClientInitAuthenticationTest {
                         .setTransactionContext(transactionContext).build();
         String reference = authenticationClient.initiate(initiateAuthenticationRequest);
         if (transactionContext.equals(TransactionContext.PERSONAL)) {
-            Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getUrl() + MethodUrl.AUTHENTICATION_INIT,
+            Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getServiceUrl() + MethodUrl.AUTHENTICATION_INIT,
                                                  RequestTemplate.INIT_AUTHENTICATION, initiateAuthenticationRequest,
                                                  InitiateAuthenticationResponse.class, RELYING_PARTY_ID);
         } else {
             Mockito.verify(httpServiceMock)
-                    .send(FrejaEnvironment.TEST.getUrl() + MethodUrl.ORGANISATION_AUTHENTICATION_INIT,
+                    .send(FrejaEnvironment.TEST.getServiceUrl() + MethodUrl.ORGANISATION_AUTHENTICATION_INIT,
                           RequestTemplate.INIT_AUTHENTICATION, initiateAuthenticationRequest,
                           InitiateAuthenticationResponse.class, RELYING_PARTY_ID);
         }
 
         Assert.assertEquals(REFERENCE, reference);
+    }
+
+    private static byte[] readAllBytes(InputStream inputStream) throws FrejaEidClientInternalException {
+        final int bufferLengthInKB = 1024;
+        byte[] buffer = new byte[bufferLengthInKB];
+        int line;
+        try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
+            while ((line = inputStream.read(buffer)) != -1) {
+                outputStream.write(buffer, 0, line);
+            }
+            return outputStream.toByteArray();
+        } catch (IOException ex) {
+            throw new FrejaEidClientInternalException("Failed to read bytes returned in http response", ex);
+        }
     }
 }

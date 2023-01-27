@@ -57,13 +57,13 @@ public class RequestValidationServiceTest {
     @BeforeClass
     public static void initialization() throws FrejaEidClientInternalException {
         authenticationClient = AuthenticationClient.create(TestUtil.getDefaultSslSettings(), FrejaEnvironment.TEST)
-                .setTestModeCustomUrl("test").setTransactionContext(TransactionContext.PERSONAL).build();
+                .setTestModeServerCustomUrl("test").setTransactionContext(TransactionContext.PERSONAL).build();
         signClient = SignClient.create(TestUtil.getDefaultSslSettings(), FrejaEnvironment.TEST)
-                .setTestModeCustomUrl("test").setTransactionContext(TransactionContext.PERSONAL).build();
+                .setTestModeServerCustomUrl("test").setTransactionContext(TransactionContext.PERSONAL).build();
         customIdentifierClient = CustomIdentifierClient.create(TestUtil.getDefaultSslSettings(), FrejaEnvironment.TEST)
-                .setTestModeCustomUrl("test").build();
+                .setTestModeServerCustomUrl("test").build();
         organisationIdClient = OrganisationIdClient.create(TestUtil.getDefaultSslSettings(), FrejaEnvironment.TEST)
-                .setTestModeCustomUrl("test").build();
+                .setTestModeServerCustomUrl("test").build();
     }
 
     @Test

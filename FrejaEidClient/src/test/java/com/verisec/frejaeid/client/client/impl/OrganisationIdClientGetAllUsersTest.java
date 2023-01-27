@@ -53,7 +53,7 @@ public class OrganisationIdClientGetAllUsersTest {
                                           Mockito.eq(GetAllOrganisationIdUsersResponse.class),
                                           (String) Mockito.isNull())).thenReturn(expectedResponse);
         List<OrganisationIdUserInfo> actualListOfOrganisationIdUserInfos = organisationIdClient.getAllUsers(request);
-        Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getUrl() + MethodUrl.ORGANISATION_ID_GET_ALL_USERS,
+        Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getServiceUrl() + MethodUrl.ORGANISATION_ID_GET_ALL_USERS,
                                              null, request, GetAllOrganisationIdUsersResponse.class, null);
         Assert.assertEquals(expectedResponse.getUserInfos(), actualListOfOrganisationIdUserInfos);
     }
@@ -67,7 +67,7 @@ public class OrganisationIdClientGetAllUsersTest {
                                           Mockito.eq(GetAllOrganisationIdUsersResponse.class), Mockito.anyString()))
                 .thenReturn(expectedResponse);
         List<OrganisationIdUserInfo> actualListOfOrgansiationIdUserInfos = organisationIdClient.getAllUsers(request);
-        Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getUrl() + MethodUrl.ORGANISATION_ID_GET_ALL_USERS,
+        Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getServiceUrl() + MethodUrl.ORGANISATION_ID_GET_ALL_USERS,
                                              null, request, GetAllOrganisationIdUsersResponse.class, RELYING_PARTY_ID);
         Assert.assertEquals(expectedResponse.getUserInfos(), actualListOfOrgansiationIdUserInfos);
     }
