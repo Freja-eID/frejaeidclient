@@ -4,6 +4,7 @@ import com.verisec.frejaeid.client.beans.authentication.cancel.CancelAuthenticat
 import com.verisec.frejaeid.client.beans.authentication.get.AuthenticationResultRequest;
 import com.verisec.frejaeid.client.beans.authentication.get.AuthenticationResultsRequest;
 import com.verisec.frejaeid.client.beans.authentication.init.InitiateAuthenticationRequest;
+import com.verisec.frejaeid.client.beans.custodianship.get.GetUserCustodianshipStatusRequest;
 import com.verisec.frejaeid.client.beans.general.OrganisationId;
 import com.verisec.frejaeid.client.beans.organisationid.cancel.CancelAddOrganisationIdRequest;
 import com.verisec.frejaeid.client.beans.organisationid.delete.DeleteOrganisationIdRequest;
@@ -22,10 +23,12 @@ import com.verisec.frejaeid.client.client.api.AuthenticationClientApi;
 import com.verisec.frejaeid.client.client.api.CustomIdentifierClientApi;
 import com.verisec.frejaeid.client.client.api.OrganisationIdClientApi;
 import com.verisec.frejaeid.client.client.api.SignClientApi;
+import com.verisec.frejaeid.client.client.api.CustodianshipClientApi;
 import com.verisec.frejaeid.client.client.impl.AuthenticationClient;
 import com.verisec.frejaeid.client.client.impl.CustomIdentifierClient;
 import com.verisec.frejaeid.client.client.impl.OrganisationIdClient;
 import com.verisec.frejaeid.client.client.impl.SignClient;
+import com.verisec.frejaeid.client.client.impl.CustodianshipClient;
 import com.verisec.frejaeid.client.client.util.TestUtil;
 import com.verisec.frejaeid.client.enums.FrejaEnvironment;
 import com.verisec.frejaeid.client.enums.MinRegistrationLevel;
@@ -48,11 +51,14 @@ public class RequestValidationServiceTest {
     private static final String PHONE_NUM = "phoneNum";
     private static final String REFERENCE = "reference";
     private static final String ORG_ID_ISSUER = "orgIdIssuer";
+    private static final String RELYING_PARTY_ID = "relyingPartyId";
+    private static final String USER_COUNTRY_ID_AND_CRN = "SE12345678";
 
     private static AuthenticationClientApi authenticationClient;
     private static SignClientApi signClient;
     private static CustomIdentifierClientApi customIdentifierClient;
     private static OrganisationIdClientApi organisationIdClient;
+    private static CustodianshipClientApi custodianshipClient;
 
     @BeforeClass
     public static void initialization() throws FrejaEidClientInternalException {
@@ -64,6 +70,8 @@ public class RequestValidationServiceTest {
                 .setTestModeServerCustomUrl("test").build();
         organisationIdClient = OrganisationIdClient.create(TestUtil.getDefaultSslSettings(), FrejaEnvironment.TEST)
                 .setTestModeServerCustomUrl("test").build();
+        custodianshipClient = CustodianshipClient.create(TestUtil.getDefaultSslSettings(), FrejaEnvironment.TEST)
+                .setTestModeServerCustomUrl("test").setTransactionContext(TransactionContext.PERSONAL).build();
     }
 
     @Test
@@ -879,6 +887,31 @@ public class RequestValidationServiceTest {
             Assert.fail("Test should throw exception!");
         } catch (FrejaEidClientInternalException ex) {
             Assert.assertEquals("RelyingPartyId cannot be empty.", ex.getLocalizedMessage());
+        }
+    }
+
+    @Test
+    public void getCustodianshipStatus_emptyRelyingPartyId_expectError() throws FrejaEidException {
+        try {
+            GetUserCustodianshipStatusRequest getUserCustodianshipStatusRequest =
+                    GetUserCustodianshipStatusRequest.create(USER_COUNTRY_ID_AND_CRN, "");
+            custodianshipClient.getUserCustodianshipStatus(getUserCustodianshipStatusRequest);
+            Assert.fail("Test should throw exception!");
+        } catch (FrejaEidClientInternalException ex) {
+            Assert.assertEquals("RelyingPartyId cannot be empty.", ex.getLocalizedMessage());
+        }
+    }
+
+    @Test
+    public void getCustodianshipStatus_emptyCountryIdAndCrn_expectError() throws FrejaEidException {
+        try {
+            GetUserCustodianshipStatusRequest getUserCustodianshipStatusRequest =
+                    new GetUserCustodianshipStatusRequest(null, RELYING_PARTY_ID);
+            custodianshipClient.getUserCustodianshipStatus(getUserCustodianshipStatusRequest);
+            Assert.fail("Test should throw exception!");
+        } catch (FrejaEidClientInternalException ex) {
+            Assert.assertEquals("Invalid user country ID and CRN. Parameter missing or country code different than SE.",
+                                ex.getLocalizedMessage());
         }
     }
 
