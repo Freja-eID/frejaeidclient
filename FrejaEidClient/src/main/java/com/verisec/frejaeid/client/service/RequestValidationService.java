@@ -240,7 +240,7 @@ public class RequestValidationService {
                 throw new FrejaEidClientInternalException("RelyingPartyId cannot be empty.");
             }
         }
-        if(StringUtils.isEmpty(getUserCustodianshipStatusRequest.getUserCountryIdAndCrn()) ||
+        if(StringUtils.isBlank(getUserCustodianshipStatusRequest.getUserCountryIdAndCrn()) ||
                 !getUserCustodianshipStatusRequest.getUserCountryIdAndCrn().startsWith("SE")) {
             throw new FrejaEidClientInternalException("Invalid user country ID and CRN. Parameter missing or country "
                                                               + "code different than SE.");
