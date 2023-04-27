@@ -236,7 +236,7 @@ public class RequestValidationService {
             GetUserCustodianshipStatusRequest getUserCustodianshipStatusRequest) throws FrejaEidClientInternalException {
         String relyingPartyId = getUserCustodianshipStatusRequest.getRelyingPartyId();
         if (relyingPartyId != null) {
-            if (StringUtils.isEmpty(relyingPartyId)) {
+            if (StringUtils.isBlank(relyingPartyId)) {
                 throw new FrejaEidClientInternalException("RelyingPartyId cannot be empty.");
             }
         }
