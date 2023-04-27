@@ -17,6 +17,7 @@ public enum FrejaEidErrorCode {
     INVALID_JSON_REQUEST(1010, "JSON request cannot be parsed."),
     INVALID_RELYING_PARTY_ID(1011, "Invalid relyingPartyId."),
     NON_EXISTING_USER(1012, "User with the specified user info does not exist in the Freja eID database."),
+    CUSTODIANSHIP_API_NOT_ALLOWED(1013,"You are not allowed to request user custodianship information."),
     INVALID_REFERENCE(1100, "Invalid reference (for example, nonexistent or expired)."),
     INVALID_INCLUDE_PREVIOUS(1200, "Invalid or missing includePrevious parameter."),
     //Authentication errors
