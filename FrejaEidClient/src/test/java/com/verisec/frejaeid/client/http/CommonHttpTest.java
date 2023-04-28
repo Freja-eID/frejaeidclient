@@ -41,6 +41,7 @@ public abstract class CommonHttpTest {
     protected static final String EMAIL_ADDRESS = "test@frejaeid.com";
     protected static final String PHONE_NUMBER = "+46123456789";
     protected static final String ORGANISATION_ID = "vealrad";
+    protected static final String USER_COUNTRY_ID_AND_CRN = "SE" + SSN_USER_INFO.getSsn();
     private static OrganisationIdInfo ORGANISATION_ID_INFO;
     protected static final List<AddressInfo> ADDRESSES = Arrays.asList(
             new AddressInfo(Country.SWEDEN, "city", "postCode", "address1", "address2", "address3", "1993-12-30",

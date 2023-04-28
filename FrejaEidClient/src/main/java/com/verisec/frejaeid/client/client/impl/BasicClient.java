@@ -10,6 +10,7 @@ import com.verisec.frejaeid.client.service.OrganisationIdService;
 import com.verisec.frejaeid.client.service.RequestValidationService;
 import com.verisec.frejaeid.client.service.SignService;
 import com.verisec.frejaeid.client.service.CustomIdentifierService;
+import com.verisec.frejaeid.client.service.CustodianshipService;
 import com.verisec.frejaeid.client.util.JsonService;
 
 import java.io.FileInputStream;
@@ -44,6 +45,7 @@ public class BasicClient {
     protected OrganisationIdService organisationIdService;
     protected CustomIdentifierService customIdentifierService;
     protected RequestValidationService requestValidationService;
+    protected CustodianshipService custodianshipService;
 
     protected BasicClient(String serverCustomUrl, int pollingTimeoutInMillseconds,
                           TransactionContext transactionContext, HttpServiceApi httpService, String resourceServiceUrl)
@@ -57,6 +59,7 @@ public class BasicClient {
         authenticationService = new AuthenticationService(serverCustomUrl, httpService, pollingTimeoutInMillseconds,
                                                           transactionContext, resourceServiceUrl);
         requestValidationService = new RequestValidationService();
+        custodianshipService = new CustodianshipService(serverCustomUrl, httpService, resourceServiceUrl);
     }
 
     public abstract static class GenericBuilder {
