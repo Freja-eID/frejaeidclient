@@ -17,7 +17,8 @@ public enum RequestTemplate {
     GET_ALL_ORGANISATION_ID_USERS_TEMPLATE("getAllOrganisationIdUsersRequest={0}"),
     RELYING_PARTY_ID("relyingPartyId={0}"),
     SET_CUSTOM_IDENITIFIER_TEMPLATE("setCustomIdentifierRequest={0}"),
-    DELETE_CUSTOM_IDENTIFIER_TEMPLATE("deleteCustomIdentifierRequest={0}");
+    DELETE_CUSTOM_IDENTIFIER_TEMPLATE("deleteCustomIdentifierRequest={0}"),
+    GET_CUSTODIANSHIP_STATUS_TEMPLATE("getCustodianshipStatusRequest={0}");
 
     private final String template;
 

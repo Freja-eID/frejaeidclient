@@ -5,6 +5,7 @@ import com.verisec.frejaeid.client.beans.common.CancelRequest;
 import com.verisec.frejaeid.client.beans.common.ResultRequest;
 import com.verisec.frejaeid.client.beans.common.ResultsRequest;
 import com.verisec.frejaeid.client.beans.common.RelyingPartyRequest;
+import com.verisec.frejaeid.client.beans.custodianship.get.GetUserCustodianshipStatusRequest;
 import com.verisec.frejaeid.client.beans.general.AttributeToReturnInfo;
 import com.verisec.frejaeid.client.beans.organisationid.delete.DeleteOrganisationIdRequest;
 import com.verisec.frejaeid.client.beans.organisationid.getall.GetAllOrganisationIdUsersRequest;
@@ -229,6 +230,22 @@ public class RequestValidationService {
             throw new FrejaEidClientInternalException("Sign transaction with an advanced signature type requires SSN "
                                                               + "and BasicUserInfo in its RequestedAttributes.");
         }
+    }
+
+    public void validateGetUserCustodianshipStatusRequest(
+            GetUserCustodianshipStatusRequest getUserCustodianshipStatusRequest) throws FrejaEidClientInternalException {
+        String relyingPartyId = getUserCustodianshipStatusRequest.getRelyingPartyId();
+        if (relyingPartyId != null) {
+            if (StringUtils.isBlank(relyingPartyId)) {
+                throw new FrejaEidClientInternalException("RelyingPartyId cannot be empty.");
+            }
+        }
+        if(StringUtils.isBlank(getUserCustodianshipStatusRequest.getUserCountryIdAndCrn()) ||
+                !getUserCustodianshipStatusRequest.getUserCountryIdAndCrn().startsWith("SE")) {
+            throw new FrejaEidClientInternalException("Invalid user country ID and CRN. Parameter missing or country "
+                                                              + "code different than SE.");
+        }
+
     }
 
 }
