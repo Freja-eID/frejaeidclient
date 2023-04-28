@@ -10,8 +10,7 @@ public enum UserCustodianshipStatusResult {
      */
     USER_HAS_CUSTODIAN("USER_HAS_CUSTODIAN"),
     /**
-     * Custodianship status when we do not have a registered custodian
-     * for the user in our database.
+     * Custodianship status when it's unknown if the user has a custodian.
      */
     UNKNOWN("UNKNOWN");
 

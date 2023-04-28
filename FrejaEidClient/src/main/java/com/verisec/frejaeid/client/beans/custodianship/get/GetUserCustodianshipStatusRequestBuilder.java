@@ -6,8 +6,8 @@ public class GetUserCustodianshipStatusRequestBuilder {
         /**
          * Sets country code ID and CRN of user
          *
-         * @param countryIdAndCrn            will be used to identify the end user. Must start with country
-         *                                   code "SE"
+         * @param countryIdAndCrn will be used to identify the end user. Must start with country code "SE"
+         *
          * @return request builder
          */
         public GetUserCustodianshipStatusRequestBuilder.SetOptionalParamsBuilder setUserCountryIdAndCrn(
