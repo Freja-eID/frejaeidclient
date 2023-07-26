@@ -13,15 +13,15 @@ import javax.net.ssl.SSLContext;
 import com.verisec.frejaeid.client.client.api.CustomIdentifierClientApi;
 import com.verisec.frejaeid.client.enums.TransactionContext;
 import com.verisec.frejaeid.client.exceptions.FrejaEidException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Performs actions with custom identifier.
  */
 public class CustomIdentifierClient extends BasicClient implements CustomIdentifierClientApi {
 
-    public static final Logger LOG = LoggerFactory.getLogger(CustomIdentifierClient.class);
+    public static final Logger LOG = LogManager.getLogger(CustomIdentifierClient.class);
 
     private CustomIdentifierClient(String serverCustomUrl, int pollingTimeout, HttpServiceApi httpService)
             throws FrejaEidClientInternalException {
@@ -74,7 +74,7 @@ public class CustomIdentifierClient extends BasicClient implements CustomIdentif
 
     public static class Builder extends GenericBuilder {
 
-        public static final Logger LOG = LoggerFactory.getLogger(Builder.class);
+        public static final Logger LOG = LogManager.getLogger(Builder.class);
 
         private Builder(SSLContext sslContext, FrejaEnvironment frejaEnvironment) {
             super(sslContext, frejaEnvironment);

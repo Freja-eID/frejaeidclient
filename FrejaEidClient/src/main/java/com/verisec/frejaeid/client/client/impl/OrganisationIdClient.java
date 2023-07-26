@@ -19,19 +19,19 @@ import javax.net.ssl.SSLContext;
 
 import com.verisec.frejaeid.client.exceptions.FrejaEidClientPollingException;
 import com.verisec.frejaeid.client.exceptions.FrejaEidException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Performs actions with organisation eID.
  */
 public class OrganisationIdClient extends BasicClient implements OrganisationIdClientApi {
 
-    public static final Logger LOG = LoggerFactory.getLogger(OrganisationIdClient.class);
+    public static final Logger LOG = LogManager.getLogger(OrganisationIdClient.class);
     private static final long DEFAULT_EXPIRY_TIME_IN_MILLIS = TimeUnit.DAYS.toMillis(7);
     private static final int DEFAULT_POLLING_TIMEOUT_IN_MILLISECONDS = 60000;
 
@@ -137,7 +137,7 @@ public class OrganisationIdClient extends BasicClient implements OrganisationIdC
 
     public static class Builder extends GenericBuilder {
 
-        public static final Logger LOG = LoggerFactory.getLogger(Builder.class);
+        public static final Logger LOG = LogManager.getLogger(Builder.class);
 
         private Builder(SSLContext sslContext, FrejaEnvironment frejaEnvironment) {
             super(sslContext, frejaEnvironment);
