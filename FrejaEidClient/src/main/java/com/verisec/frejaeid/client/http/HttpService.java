@@ -40,12 +40,12 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.http.protocol.HttpContext;
 import org.apache.http.util.EntityUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class HttpService implements HttpServiceApi {
 
-    public static final Logger LOG = LoggerFactory.getLogger(HttpService.class);
+    public static final Logger LOG = LogManager.getLogger(HttpService.class);
 
     private static final int DEFAULT_TRIES_NUMBER_HTTP_POOL = 3;
     private JsonService jsonService;
