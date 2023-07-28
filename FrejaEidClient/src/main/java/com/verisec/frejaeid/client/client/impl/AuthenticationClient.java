@@ -14,20 +14,19 @@ import com.verisec.frejaeid.client.exceptions.FrejaEidClientPollingException;
 import com.verisec.frejaeid.client.exceptions.FrejaEidException;
 import com.verisec.frejaeid.client.http.HttpService;
 import com.verisec.frejaeid.client.http.HttpServiceApi;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.util.List;
 import javax.net.ssl.SSLContext;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Performs authentication actions.
  */
 public class AuthenticationClient extends BasicClient implements AuthenticationClientApi {
 
-    public static final Logger LOG = LoggerFactory.getLogger(AuthenticationClient.class);
+    public static final Logger LOG = LogManager.getLogger(AuthenticationClient.class);
 
     private AuthenticationClient(String serverCustomUrl, int pollingTimeoutInMillseconds,
                                  TransactionContext transactionContext, HttpServiceApi httpService,
@@ -132,7 +131,7 @@ public class AuthenticationClient extends BasicClient implements AuthenticationC
 
     public static class Builder extends GenericBuilder {
 
-        public static final Logger LOG = LoggerFactory.getLogger(Builder.class);
+        public static final Logger LOG = LogManager.getLogger(Builder.class);
 
         private Builder(SSLContext sslContext, FrejaEnvironment frejaEnvironment)
                 throws FrejaEidClientInternalException {

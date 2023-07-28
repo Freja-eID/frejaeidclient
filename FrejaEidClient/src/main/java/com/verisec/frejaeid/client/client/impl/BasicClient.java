@@ -12,6 +12,8 @@ import com.verisec.frejaeid.client.service.SignService;
 import com.verisec.frejaeid.client.service.CustomIdentifierService;
 import com.verisec.frejaeid.client.service.CustodianshipService;
 import com.verisec.frejaeid.client.util.JsonService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -29,8 +31,6 @@ import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManagerFactory;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class BasicClient {
 
@@ -64,7 +64,7 @@ public class BasicClient {
 
     public abstract static class GenericBuilder {
 
-        public static final Logger LOG = LoggerFactory.getLogger(GenericBuilder.class);
+        public static final Logger LOG = LogManager.getLogger(GenericBuilder.class);
 
         protected String serverCustomUrl = null;
         protected int connectionTimeout = DEFAULT_CONNECTION_TIMEOUT_IN_MILLISECONDS;

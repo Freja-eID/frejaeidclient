@@ -10,13 +10,13 @@ import com.verisec.frejaeid.client.exceptions.FrejaEidClientInternalException;
 import com.verisec.frejaeid.client.exceptions.FrejaEidException;
 import com.verisec.frejaeid.client.http.HttpService;
 import com.verisec.frejaeid.client.http.HttpServiceApi;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.net.ssl.SSLContext;
 
 public class CustodianshipClient extends BasicClient implements CustodianshipClientApi {
-    public static final Logger LOG = LoggerFactory.getLogger(CustodianshipClient.class);
+    public static final Logger LOG = LogManager.getLogger(CustodianshipClient.class);
 
     private CustodianshipClient(String serverCustomUrl, int pollingTimeout, HttpServiceApi httpService)
             throws FrejaEidClientInternalException {
@@ -47,7 +47,7 @@ public class CustodianshipClient extends BasicClient implements CustodianshipCli
 
     public static class Builder extends GenericBuilder {
 
-        public static final Logger LOG = LoggerFactory.getLogger(CustodianshipClient.Builder.class);
+        public static final Logger LOG = LogManager.getLogger(CustodianshipClient.Builder.class);
 
         private Builder(SSLContext sslContext, FrejaEnvironment frejaEnvironment) {
             super(sslContext, frejaEnvironment);

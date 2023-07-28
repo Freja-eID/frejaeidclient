@@ -14,20 +14,20 @@ import com.verisec.frejaeid.client.exceptions.FrejaEidClientPollingException;
 import com.verisec.frejaeid.client.exceptions.FrejaEidException;
 import com.verisec.frejaeid.client.http.HttpService;
 import com.verisec.frejaeid.client.http.HttpServiceApi;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import javax.net.ssl.SSLContext;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Performs sign actions.
  */
 public class SignClient extends BasicClient implements SignClientApi {
 
-    public static final Logger LOG = LoggerFactory.getLogger(SignClient.class);
+    public static final Logger LOG = LogManager.getLogger(SignClient.class);
     private static final long DEFAULT_EXPIRY_TIME_IN_MILLIS = TimeUnit.MINUTES.toMillis(2);
     private static final int DEFAULT_POLLING_TIMEOUT_IN_MILLISECONDS = 60000;
 
@@ -120,7 +120,7 @@ public class SignClient extends BasicClient implements SignClientApi {
 
     public static class Builder extends GenericBuilder {
 
-        public static final Logger LOG = LoggerFactory.getLogger(Builder.class);
+        public static final Logger LOG = LogManager.getLogger(Builder.class);
 
         private Builder(SSLContext sslContext, FrejaEnvironment frejaEnvironment) {
             super(sslContext, frejaEnvironment);
