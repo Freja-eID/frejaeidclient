@@ -2,20 +2,15 @@ package com.verisec.frejaeid.client.beans.sign.init;
 
 import com.verisec.frejaeid.client.beans.general.AttributeToReturnInfo;
 import com.verisec.frejaeid.client.beans.general.SsnUserInfo;
-import com.verisec.frejaeid.client.enums.AttributeToReturn;
-import com.verisec.frejaeid.client.enums.Country;
-import com.verisec.frejaeid.client.enums.DataToSignType;
-import com.verisec.frejaeid.client.enums.MinRegistrationLevel;
-import com.verisec.frejaeid.client.enums.SignatureType;
-import com.verisec.frejaeid.client.enums.UserInfoType;
+import com.verisec.frejaeid.client.enums.*;
 import com.verisec.frejaeid.client.exceptions.FrejaEidClientInternalException;
 import com.verisec.frejaeid.client.util.UserInfoUtil;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import java.util.Set;
 import java.util.HashSet;
+import java.util.Set;
 
 public class InitiateSignRequestBuildersTest {
 
@@ -58,7 +53,7 @@ public class InitiateSignRequestBuildersTest {
         InitiateSignRequest expectedInitiateSignRequest =
                 new InitiateSignRequest(UserInfoType.EMAIL, EMAIL, MinRegistrationLevel.PLUS, TITLE, null, null,
                                         DataToSignType.SIMPLE_UTF8_TEXT, DataToSign.create(TEXT),
-                                        SignatureType.SIMPLE, null, null, null);
+                                        SignatureType.SIMPLE, null, null, null, null);
         InitiateSignRequest initiateSignRequest = InitiateSignRequest.createDefaultWithEmail(EMAIL, TITLE, TEXT);
         Assert.assertEquals(expectedInitiateSignRequest, initiateSignRequest);
     }
@@ -68,7 +63,7 @@ public class InitiateSignRequestBuildersTest {
         InitiateSignRequest expectedInitiateSignRequest =
                 new InitiateSignRequest(UserInfoType.SSN, UserInfoUtil.convertSsnUserInfo(SSN_USER_INFO),
                                         MinRegistrationLevel.PLUS, TITLE, null, null, DataToSignType.SIMPLE_UTF8_TEXT,
-                                        DataToSign.create(TEXT), SignatureType.SIMPLE, null, null, null);
+                                        DataToSign.create(TEXT), SignatureType.SIMPLE, null, null, null, null);
         InitiateSignRequest initiateSignRequest = InitiateSignRequest.createDefaultWithSsn(SSN_USER_INFO, TITLE, TEXT);
         Assert.assertEquals(expectedInitiateSignRequest, initiateSignRequest);
     }
@@ -78,7 +73,8 @@ public class InitiateSignRequestBuildersTest {
         InitiateSignRequest expectedInitiateSignRequest =
                 new InitiateSignRequest(UserInfoType.EMAIL, EMAIL, REGISTRATION_STATE, TITLE, PUSH_NOTIFICATION,
                                         EXPIRY, DataToSignType.SIMPLE_UTF8_TEXT, DataToSign.create(TEXT),
-                                        SignatureType.SIMPLE, REQUESTED_ATTRIBUTES, RELYING_PARTY_ID, ORG_ID_ISSUER);
+                                        SignatureType.SIMPLE, REQUESTED_ATTRIBUTES, RELYING_PARTY_ID, ORG_ID_ISSUER,
+                                        UserConfirmationMethod.DEFAULT);
         InitiateSignRequest initiateSignRequest = InitiateSignRequest.createCustom()
                 .setEmail(EMAIL)
                 .setTitle(TITLE)
@@ -89,6 +85,7 @@ public class InitiateSignRequestBuildersTest {
                 .setPushNotification(PUSH_NOTIFICATION)
                 .setRelyingPartyId(RELYING_PARTY_ID)
                 .setOrgIdIssuer(ORG_ID_ISSUER)
+                .setUserConfirmationMethod(UserConfirmationMethod.DEFAULT)
                 .build();
         Assert.assertEquals(expectedInitiateSignRequest, initiateSignRequest);
     }
@@ -96,9 +93,10 @@ public class InitiateSignRequestBuildersTest {
     @Test
     public void createCustomRequest_userInfoTypeEmail_defaultRegistrationState() {
         InitiateSignRequest expectedInitiateSignRequest =
-                new InitiateSignRequest(UserInfoType.EMAIL, EMAIL, MinRegistrationLevel.PLUS, TITLE, null, EXPIRY,
-                                        DataToSignType.SIMPLE_UTF8_TEXT, DataToSign.create(TEXT),
-                                        SignatureType.SIMPLE, REQUESTED_ATTRIBUTES, RELYING_PARTY_ID, ORG_ID_ISSUER);
+                new InitiateSignRequest(
+                        UserInfoType.EMAIL, EMAIL, MinRegistrationLevel.PLUS, TITLE, null, EXPIRY,
+                        DataToSignType.SIMPLE_UTF8_TEXT, DataToSign.create(TEXT),
+                        SignatureType.SIMPLE, REQUESTED_ATTRIBUTES, RELYING_PARTY_ID, ORG_ID_ISSUER, null);
         InitiateSignRequest initiateSignRequest = InitiateSignRequest.createCustom()
                 .setEmail(EMAIL)
                 .setTitle(TITLE)
@@ -114,10 +112,11 @@ public class InitiateSignRequestBuildersTest {
     @Test
     public void createCustomRequest_userInfoTypeSsn() throws FrejaEidClientInternalException {
         InitiateSignRequest expectedInitiateSignRequest =
-                new InitiateSignRequest(UserInfoType.SSN, UserInfoUtil.convertSsnUserInfo(SSN_USER_INFO),
-                                        REGISTRATION_STATE, TITLE, PUSH_NOTIFICATION, EXPIRY,
-                                        DataToSignType.SIMPLE_UTF8_TEXT, DataToSign.create(TEXT),
-                                        SignatureType.SIMPLE, REQUESTED_ATTRIBUTES, RELYING_PARTY_ID, ORG_ID_ISSUER);
+                new InitiateSignRequest(
+                        UserInfoType.SSN, UserInfoUtil.convertSsnUserInfo(SSN_USER_INFO),
+                        REGISTRATION_STATE, TITLE, PUSH_NOTIFICATION, EXPIRY,
+                        DataToSignType.SIMPLE_UTF8_TEXT, DataToSign.create(TEXT),
+                        SignatureType.SIMPLE, REQUESTED_ATTRIBUTES, RELYING_PARTY_ID, ORG_ID_ISSUER, null);
         InitiateSignRequest initiateSignRequest = InitiateSignRequest.createCustom()
                 .setSsn(SSN_USER_INFO)
                 .setTitle(TITLE)
@@ -137,7 +136,7 @@ public class InitiateSignRequestBuildersTest {
         InitiateSignRequest expectedInitiateSignRequest =
                 new InitiateSignRequest(UserInfoType.PHONE, PHONE_NUMBER, MinRegistrationLevel.PLUS, null, null, null,
                                         DataToSignType.SIMPLE_UTF8_TEXT, DataToSign.create(TEXT),
-                                        SignatureType.SIMPLE, null, null, null);
+                                        SignatureType.SIMPLE, null, null, null, null);
         InitiateSignRequest initiateSignRequest = InitiateSignRequest.createCustom()
                 .setPhoneNumber(PHONE_NUMBER)
                 .setTitle(null)
@@ -155,10 +154,11 @@ public class InitiateSignRequestBuildersTest {
     @Test
     public void createCustomRequest_extendedSignatureType() throws FrejaEidClientInternalException {
         InitiateSignRequest expectedInitiateSignRequest =
-                new InitiateSignRequest(UserInfoType.SSN, UserInfoUtil.convertSsnUserInfo(SSN_USER_INFO),
-                                        REGISTRATION_STATE, TITLE, PUSH_NOTIFICATION, EXPIRY,
-                                        DataToSignType.EXTENDED_UTF8_TEXT, DataToSign.create(TEXT, TEXT.getBytes()),
-                                        SignatureType.EXTENDED, REQUESTED_ATTRIBUTES, RELYING_PARTY_ID, ORG_ID_ISSUER);
+                new InitiateSignRequest(
+                        UserInfoType.SSN, UserInfoUtil.convertSsnUserInfo(SSN_USER_INFO),
+                        REGISTRATION_STATE, TITLE, PUSH_NOTIFICATION, EXPIRY,
+                        DataToSignType.EXTENDED_UTF8_TEXT, DataToSign.create(TEXT, TEXT.getBytes()),
+                        SignatureType.EXTENDED, REQUESTED_ATTRIBUTES, RELYING_PARTY_ID, ORG_ID_ISSUER, null);
         InitiateSignRequest initiateSignRequest = InitiateSignRequest.createCustom()
                 .setSsn(SSN_USER_INFO)
                 .setTitle(TITLE)
@@ -176,10 +176,11 @@ public class InitiateSignRequestBuildersTest {
     @Test
     public void createCustomRequest_binaryDataNull() throws FrejaEidClientInternalException {
         InitiateSignRequest expectedInitiateSignRequest =
-                new InitiateSignRequest(UserInfoType.SSN, UserInfoUtil.convertSsnUserInfo(SSN_USER_INFO),
-                                        REGISTRATION_STATE, TITLE, PUSH_NOTIFICATION, EXPIRY,
-                                        DataToSignType.SIMPLE_UTF8_TEXT, DataToSign.create(TEXT),
-                                        SignatureType.SIMPLE, REQUESTED_ATTRIBUTES, RELYING_PARTY_ID, ORG_ID_ISSUER);
+                new InitiateSignRequest(
+                        UserInfoType.SSN, UserInfoUtil.convertSsnUserInfo(SSN_USER_INFO),
+                        REGISTRATION_STATE, TITLE, PUSH_NOTIFICATION, EXPIRY,
+                        DataToSignType.SIMPLE_UTF8_TEXT, DataToSign.create(TEXT),
+                        SignatureType.SIMPLE, REQUESTED_ATTRIBUTES, RELYING_PARTY_ID, ORG_ID_ISSUER, null);
         InitiateSignRequest initiateSignRequest = InitiateSignRequest.createCustom()
                 .setSsn(SSN_USER_INFO)
                 .setTitle(TITLE)
@@ -197,10 +198,11 @@ public class InitiateSignRequestBuildersTest {
     @Test
     public void createCustomRequest_binaryDataEmpty() throws FrejaEidClientInternalException {
         InitiateSignRequest expectedInitiateSignRequest =
-                new InitiateSignRequest(UserInfoType.SSN, UserInfoUtil.convertSsnUserInfo(SSN_USER_INFO),
-                                        REGISTRATION_STATE, TITLE, PUSH_NOTIFICATION, EXPIRY,
-                                        DataToSignType.SIMPLE_UTF8_TEXT, DataToSign.create(TEXT, "".getBytes()),
-                                        SignatureType.SIMPLE, REQUESTED_ATTRIBUTES, RELYING_PARTY_ID, ORG_ID_ISSUER);
+                new InitiateSignRequest(
+                        UserInfoType.SSN, UserInfoUtil.convertSsnUserInfo(SSN_USER_INFO),
+                        REGISTRATION_STATE, TITLE, PUSH_NOTIFICATION, EXPIRY,
+                        DataToSignType.SIMPLE_UTF8_TEXT, DataToSign.create(TEXT, "".getBytes()),
+                        SignatureType.SIMPLE, REQUESTED_ATTRIBUTES, RELYING_PARTY_ID, ORG_ID_ISSUER, null);
         InitiateSignRequest initiateSignRequest = InitiateSignRequest.createCustom()
                 .setSsn(SSN_USER_INFO)
                 .setTitle(TITLE)
@@ -218,10 +220,11 @@ public class InitiateSignRequestBuildersTest {
     @Test
     public void createCustomRequest_minRegistrationLevelAndRelyingPartyIdNull() throws FrejaEidClientInternalException {
         InitiateSignRequest expectedInitiateSignRequest =
-                new InitiateSignRequest(UserInfoType.SSN, UserInfoUtil.convertSsnUserInfo(SSN_USER_INFO),
-                                        MinRegistrationLevel.PLUS, TITLE, PUSH_NOTIFICATION, EXPIRY,
-                                        DataToSignType.SIMPLE_UTF8_TEXT, DataToSign.create(TEXT),
-                                        SignatureType.SIMPLE, REQUESTED_ATTRIBUTES, null, ORG_ID_ISSUER);
+                new InitiateSignRequest(
+                        UserInfoType.SSN, UserInfoUtil.convertSsnUserInfo(SSN_USER_INFO),
+                        MinRegistrationLevel.PLUS, TITLE, PUSH_NOTIFICATION, EXPIRY,
+                        DataToSignType.SIMPLE_UTF8_TEXT, DataToSign.create(TEXT),
+                        SignatureType.SIMPLE, REQUESTED_ATTRIBUTES, null, ORG_ID_ISSUER, null);
         InitiateSignRequest initiateSignRequest = InitiateSignRequest.createCustom()
                 .setSsn(SSN_USER_INFO)
                 .setTitle(TITLE)
@@ -239,10 +242,11 @@ public class InitiateSignRequestBuildersTest {
     @Test
     public void createCustomRequest_userInfoTypeOrganisationId() {
         InitiateSignRequest expectedInitiateSignRequest =
-                new InitiateSignRequest(UserInfoType.ORG_ID, ORGANISATION_ID, REGISTRATION_STATE, TITLE,
-                                        PUSH_NOTIFICATION, EXPIRY, DataToSignType.SIMPLE_UTF8_TEXT,
-                                        DataToSign.create(TEXT), SignatureType.SIMPLE, REQUESTED_ATTRIBUTES,
-                                        RELYING_PARTY_ID, ORG_ID_ISSUER);
+                new InitiateSignRequest(
+                        UserInfoType.ORG_ID, ORGANISATION_ID, REGISTRATION_STATE, TITLE,
+                        PUSH_NOTIFICATION, EXPIRY, DataToSignType.SIMPLE_UTF8_TEXT,
+                        DataToSign.create(TEXT), SignatureType.SIMPLE, REQUESTED_ATTRIBUTES,
+                        RELYING_PARTY_ID, ORG_ID_ISSUER, null);
         InitiateSignRequest initiateSignRequest = InitiateSignRequest.createCustom()
                 .setOrganisationId(ORGANISATION_ID)
                 .setTitle(TITLE)
@@ -260,10 +264,11 @@ public class InitiateSignRequestBuildersTest {
     @Test
     public void createCustomRequest_orgIdIssuerNull() throws FrejaEidClientInternalException {
         InitiateSignRequest expectedInitiateSignRequest =
-                new InitiateSignRequest(UserInfoType.SSN, UserInfoUtil.convertSsnUserInfo(SSN_USER_INFO),
-                                        MinRegistrationLevel.PLUS, TITLE, PUSH_NOTIFICATION, EXPIRY,
-                                        DataToSignType.SIMPLE_UTF8_TEXT, DataToSign.create(TEXT),
-                                        SignatureType.SIMPLE, REQUESTED_ATTRIBUTES, RELYING_PARTY_ID, null);
+                new InitiateSignRequest(
+                        UserInfoType.SSN, UserInfoUtil.convertSsnUserInfo(SSN_USER_INFO),
+                        MinRegistrationLevel.PLUS, TITLE, PUSH_NOTIFICATION, EXPIRY,
+                        DataToSignType.SIMPLE_UTF8_TEXT, DataToSign.create(TEXT),
+                        SignatureType.SIMPLE, REQUESTED_ATTRIBUTES, RELYING_PARTY_ID, null, null);
         InitiateSignRequest initiateSignRequest = InitiateSignRequest.createCustom()
                 .setSsn(SSN_USER_INFO)
                 .setTitle(TITLE)
@@ -280,10 +285,11 @@ public class InitiateSignRequestBuildersTest {
     @Test
     public void createCustomRequest_CMSImplicitSignature() throws FrejaEidClientInternalException {
         InitiateSignRequest expectedInitiateSignRequest =
-                new InitiateSignRequest(UserInfoType.SSN, UserInfoUtil.convertSsnUserInfo(SSN_USER_INFO),
-                                        MinRegistrationLevel.PLUS, TITLE, null, EXPIRY,
-                                        DataToSignType.SIMPLE_UTF8_TEXT, DataToSign.create(TEXT),
-                                        SignatureType.XML_MINAMEDDELANDEN, REQUESTED_ATTRIBUTES, RELYING_PARTY_ID, ORG_ID_ISSUER);
+                new InitiateSignRequest(
+                        UserInfoType.SSN, UserInfoUtil.convertSsnUserInfo(SSN_USER_INFO),
+                        MinRegistrationLevel.PLUS, TITLE, null, EXPIRY,
+                        DataToSignType.SIMPLE_UTF8_TEXT, DataToSign.create(TEXT),
+                        SignatureType.XML_MINAMEDDELANDEN, REQUESTED_ATTRIBUTES, RELYING_PARTY_ID, ORG_ID_ISSUER, null);
         InitiateSignRequest initiateSignRequest = InitiateSignRequest.createCustom()
                 .setSsn(SSN_USER_INFO)
                 .setTitle(TITLE)
@@ -293,6 +299,28 @@ public class InitiateSignRequestBuildersTest {
                 .setExpiry(EXPIRY)
                 .setRelyingPartyId(RELYING_PARTY_ID)
                 .setOrgIdIssuer(ORG_ID_ISSUER)
+                .build();
+        Assert.assertEquals(expectedInitiateSignRequest, initiateSignRequest);
+    }
+
+    @Test
+    public void createCustomRequest_userConfirmationMethodSet() {
+        InitiateSignRequest expectedInitiateSignRequest =
+                new InitiateSignRequest(UserInfoType.EMAIL, EMAIL, REGISTRATION_STATE, TITLE, PUSH_NOTIFICATION,
+                                        EXPIRY, DataToSignType.SIMPLE_UTF8_TEXT, DataToSign.create(TEXT),
+                                        SignatureType.SIMPLE, REQUESTED_ATTRIBUTES, RELYING_PARTY_ID, ORG_ID_ISSUER,
+                                        UserConfirmationMethod.DEFAULT_AND_FACE);
+        InitiateSignRequest initiateSignRequest = InitiateSignRequest.createCustom()
+                .setEmail(EMAIL)
+                .setTitle(TITLE)
+                .setDataToSign(DataToSign.create(TEXT))
+                .setMinRegistrationLevel(REGISTRATION_STATE)
+                .setAttributesToReturn(AttributeToReturn.values())
+                .setExpiry(EXPIRY)
+                .setPushNotification(PUSH_NOTIFICATION)
+                .setRelyingPartyId(RELYING_PARTY_ID)
+                .setOrgIdIssuer(ORG_ID_ISSUER)
+                .setUserConfirmationMethod(UserConfirmationMethod.DEFAULT_AND_FACE)
                 .build();
         Assert.assertEquals(expectedInitiateSignRequest, initiateSignRequest);
     }

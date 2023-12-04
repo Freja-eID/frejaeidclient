@@ -2,9 +2,9 @@ package com.verisec.frejaeid.client.service;
 
 import com.verisec.frejaeid.client.beans.authentication.init.InitiateAuthenticationRequest;
 import com.verisec.frejaeid.client.beans.common.CancelRequest;
+import com.verisec.frejaeid.client.beans.common.RelyingPartyRequest;
 import com.verisec.frejaeid.client.beans.common.ResultRequest;
 import com.verisec.frejaeid.client.beans.common.ResultsRequest;
-import com.verisec.frejaeid.client.beans.common.RelyingPartyRequest;
 import com.verisec.frejaeid.client.beans.custodianship.get.GetUserCustodianshipStatusRequest;
 import com.verisec.frejaeid.client.beans.general.AttributeToReturnInfo;
 import com.verisec.frejaeid.client.beans.organisationid.delete.DeleteOrganisationIdRequest;
@@ -15,10 +15,9 @@ import com.verisec.frejaeid.client.beans.usermanagement.customidentifier.delete.
 import com.verisec.frejaeid.client.beans.usermanagement.customidentifier.set.SetCustomIdentifierRequest;
 import com.verisec.frejaeid.client.enums.*;
 import com.verisec.frejaeid.client.exceptions.FrejaEidClientInternalException;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.Set;
-
-import org.apache.commons.lang3.StringUtils;
 
 public class RequestValidationService {
 
@@ -32,6 +31,8 @@ public class RequestValidationService {
         validateRegistrationState(initiateAuthenticationRequest.getMinRegistrationLevel(), transactionContext);
         validateRelyingPartyIdIsEmpty(initiateAuthenticationRequest.getRelyingPartyId());
         validateOrgIdIssuer(initiateAuthenticationRequest.getOrgIdIssuer());
+        validateUserConfirmationMethod(initiateAuthenticationRequest.getUserConfirmationMethod(),
+                                       initiateAuthenticationRequest.getMinRegistrationLevel());
     }
 
     public <T extends ResultRequest> void validateResultRequest(T getOneResultRequest)
@@ -76,6 +77,8 @@ public class RequestValidationService {
         validateRegistrationState(initiateSignRequest.getMinRegistrationLevel(), transactionContext);
         validateRelyingPartyIdIsEmpty(initiateSignRequest.getRelyingPartyId());
         validateOrgIdIssuer(initiateSignRequest.getOrgIdIssuer());
+        validateUserConfirmationMethod(initiateSignRequest.getUserConfirmationMethod(),
+                                       initiateSignRequest.getMinRegistrationLevel());
         validateSignatureTypeWithDataType(initiateSignRequest.getDataToSignType(),
                                           initiateSignRequest.getSignatureType());
         validateAdvancedSignatureTypeAndMinimumRegistrationLevel(initiateSignRequest.getSignatureType(),
@@ -195,15 +198,24 @@ public class RequestValidationService {
     }
 
     private void validateOrgIdIssuer(String orgIdIssuer) throws FrejaEidClientInternalException {
-        if(!StringUtils.isEmpty(orgIdIssuer) && !orgIdIssuer.equalsIgnoreCase(OrgIdIssuer.ANY.getName())){
+        if (!StringUtils.isEmpty(orgIdIssuer) && !orgIdIssuer.equalsIgnoreCase(OrgIdIssuer.ANY.getName())) {
             throw new FrejaEidClientInternalException("OrgIdIssuer unsupported value. " +
                                                               "OrgIdIssuer must be null/empty or <ANY>");
         }
     }
 
+    private void validateUserConfirmationMethod(
+            UserConfirmationMethod userConfirmationMethod, MinRegistrationLevel minRegistrationLevel) throws FrejaEidClientInternalException {
+        if (userConfirmationMethod == UserConfirmationMethod.DEFAULT_AND_FACE
+                && minRegistrationLevel.equals(MinRegistrationLevel.BASIC)) {
+            throw new FrejaEidClientInternalException(
+                    "For the chosen userConfirmationMethod you must set minRegistrationLevel to at least EXTENDED");
+        }
+    }
+
     private void validateSignatureTypeWithDataType(DataToSignType dataToSignType, SignatureType signatureType)
             throws FrejaEidClientInternalException {
-        if((dataToSignType.equals(DataToSignType.SIMPLE_UTF8_TEXT) && signatureType.equals(SignatureType.EXTENDED)) ||
+        if ((dataToSignType.equals(DataToSignType.SIMPLE_UTF8_TEXT) && signatureType.equals(SignatureType.EXTENDED)) ||
                 ((dataToSignType.equals(DataToSignType.EXTENDED_UTF8_TEXT) && !signatureType.equals(SignatureType.EXTENDED)))) {
             throw new FrejaEidClientInternalException("DataToSignType and SignatureType mismatch.");
         }
@@ -212,20 +224,20 @@ public class RequestValidationService {
     private void validateAdvancedSignatureTypeAndMinimumRegistrationLevel(SignatureType signatureType,
                                                                           MinRegistrationLevel minRegistrationLevel)
             throws FrejaEidClientInternalException {
-        if(signatureType.equals(SignatureType.XML_MINAMEDDELANDEN) && minRegistrationLevel.equals(MinRegistrationLevel.BASIC)) {
+        if (signatureType.equals(SignatureType.XML_MINAMEDDELANDEN) && minRegistrationLevel.equals(MinRegistrationLevel.BASIC)) {
             throw new FrejaEidClientInternalException("Advanced signature type request requires registration levels "
                                                               + "above BASIC.");
         }
     }
 
     private void validateAdvancedSignRequestedAttributes(SignatureType signatureType,
-                                                         Set<AttributeToReturnInfo>  requestedAttributes)
+                                                         Set<AttributeToReturnInfo> requestedAttributes)
             throws FrejaEidClientInternalException {
-        if(signatureType.equals(SignatureType.SIMPLE) || signatureType.equals(SignatureType.EXTENDED)) {
+        if (signatureType.equals(SignatureType.SIMPLE) || signatureType.equals(SignatureType.EXTENDED)) {
             return;
         }
 
-        if(requestedAttributes == null || !(requestedAttributes.contains(new AttributeToReturnInfo(AttributeToReturn.SSN.getName()))
+        if (requestedAttributes == null || !(requestedAttributes.contains(new AttributeToReturnInfo(AttributeToReturn.SSN.getName()))
                 && requestedAttributes.contains(new AttributeToReturnInfo(AttributeToReturn.BASIC_USER_INFO.getName())))) {
             throw new FrejaEidClientInternalException("Sign transaction with an advanced signature type requires SSN "
                                                               + "and BasicUserInfo in its RequestedAttributes.");
@@ -240,7 +252,7 @@ public class RequestValidationService {
                 throw new FrejaEidClientInternalException("RelyingPartyId cannot be empty.");
             }
         }
-        if(StringUtils.isBlank(getUserCustodianshipStatusRequest.getUserCountryIdAndCrn()) ||
+        if (StringUtils.isBlank(getUserCustodianshipStatusRequest.getUserCountryIdAndCrn()) ||
                 !getUserCustodianshipStatusRequest.getUserCountryIdAndCrn().startsWith("SE")) {
             throw new FrejaEidClientInternalException("Invalid user country ID and CRN. Parameter missing or country "
                                                               + "code different than SE.");

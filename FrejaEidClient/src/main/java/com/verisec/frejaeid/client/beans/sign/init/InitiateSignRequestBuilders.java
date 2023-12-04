@@ -2,12 +2,7 @@ package com.verisec.frejaeid.client.beans.sign.init;
 
 import com.verisec.frejaeid.client.beans.general.AttributeToReturnInfo;
 import com.verisec.frejaeid.client.beans.general.SsnUserInfo;
-import com.verisec.frejaeid.client.enums.AttributeToReturn;
-import com.verisec.frejaeid.client.enums.DataToSignType;
-import com.verisec.frejaeid.client.enums.MinRegistrationLevel;
-import com.verisec.frejaeid.client.enums.SignatureType;
-import com.verisec.frejaeid.client.enums.TransactionContext;
-import com.verisec.frejaeid.client.enums.UserInfoType;
+import com.verisec.frejaeid.client.enums.*;
 import com.verisec.frejaeid.client.exceptions.FrejaEidClientInternalException;
 import com.verisec.frejaeid.client.util.UserInfoUtil;
 
@@ -56,7 +51,7 @@ public class InitiateSignRequestBuilders {
         public SetOptionalParamsBuilder setPhoneNumber(String phoneNumber) {
             return new SetOptionalParamsBuilder(UserInfoType.PHONE, phoneNumber);
         }
-        
+
         /**
          * Sets {@linkplain UserInfoType#INFERRED} as {@linkplain UserInfoType}
          * for initiating transaction.
@@ -95,6 +90,7 @@ public class InitiateSignRequestBuilders {
         private Set<AttributeToReturnInfo> attributesToReturn = null;
         private String relyingPartyId = null;
         private String orgIdIssuer = null;
+        private UserConfirmationMethod userConfirmationMethod = null;
 
         private SetOptionalParamsBuilder(UserInfoType userInfoType, String userInfo) {
             this.userInfoType = userInfoType;
@@ -176,14 +172,12 @@ public class InitiateSignRequestBuilders {
          * Data to sign can be only text (SIMPLE signature type) or text and
          * binary data (EXTENDED signature type).
          *
-         * @param dataToSign mandatory parameter. Text cannot be {@code null} or
-         *                   empty.
-         *
+         * @param dataToSign    mandatory parameter. Text cannot be {@code null} or
+         *                      empty.
          * @param signatureType can be SIMPLE, EXTENDED or XML_MINAMEDDELANDEN. SIMPLE signature type can only be used with
-         *                   SIMPLE_UTF8_TEXT data type, EXTENDED signature type can only be used with
-         *                   EXTENDED_UTF8_TEXT data type,
-         *                   while the XML_MINAMEDDELANDEN  signature type can be used with both.
-         *
+         *                      SIMPLE_UTF8_TEXT data type, EXTENDED signature type can only be used with
+         *                      EXTENDED_UTF8_TEXT data type,
+         *                      while the XML_MINAMEDDELANDEN  signature type can be used with both.
          * @return request builder
          */
         public SetOptionalParamsBuilder setDataToSign(DataToSign dataToSign, SignatureType signatureType) {
@@ -195,8 +189,7 @@ public class InitiateSignRequestBuilders {
             }
             if (dataToSign.getBinaryData() == null || dataToSign.getBinaryData().isEmpty()) {
                 this.dataToSignType = DataToSignType.SIMPLE_UTF8_TEXT;
-            }
-            else {
+            } else {
                 this.dataToSignType = DataToSignType.EXTENDED_UTF8_TEXT;
             }
             this.signatureType = signatureType;
@@ -252,7 +245,6 @@ public class InitiateSignRequestBuilders {
          *
          * @param orgIdIssuer specifies the relying party ID of the
          *                    organisation which issued the organisation ID.
-         *
          * @return request builder
          */
         public SetOptionalParamsBuilder setOrgIdIssuer(String orgIdIssuer) {
@@ -260,10 +252,23 @@ public class InitiateSignRequestBuilders {
             return this;
         }
 
+        /**
+         * <b>UserConfirmationMethod is used to specify steps(actions) that
+         * user needs to perform when confirming transaction.</b>
+         *
+         * @param userConfirmationMethod can be any value from
+         *                               {@linkplain UserConfirmationMethod}
+         * @return request builder
+         */
+        public SetOptionalParamsBuilder setUserConfirmationMethod(UserConfirmationMethod userConfirmationMethod) {
+            this.userConfirmationMethod = userConfirmationMethod;
+            return this;
+        }
+
         public InitiateSignRequest build() {
             return new InitiateSignRequest(userInfoType, userInfo, minRegistrationLevel, title, pushNotification,
                                            expiry, dataToSignType, dataToSign, signatureType, attributesToReturn,
-                                           relyingPartyId, orgIdIssuer);
+                                           relyingPartyId, orgIdIssuer, userConfirmationMethod);
         }
 
     }
