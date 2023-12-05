@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.verisec.frejaeid</groupId>
     <artifactId>FrejaEidClient</artifactId>
-    <version>2.18.2-SNAPSHOT</version>
+    <version>2.19.0-SNAPSHOT</version>
     <packaging>jar</packaging>
     
     <name>FrejaEidClient</name>
@@ -22,19 +22,9 @@
     
     <developers>
         <developer>
-            <id>MilicaJelic</id>
-            <name>Milica Jelic</name>
-            <email>milica.jelic@frejaeid.rs</email>
-            <organization>Freja eID</organization>
-            <organizationUrl>https://frejaeid.com/en/home/</organizationUrl>
-            <roles>
-                <role>developer</role>
-            </roles>
-        </developer>
-        <developer>
-            <id>DraganaPavlovic</id>
-            <name>dragana.pavlovic</name>
-            <email>dragana.pavlovic@frejaeid.rs</email>
+            <id>MirkoStojmenovic</id>
+            <name>Mirko Stojmenovic</name>
+            <email>mirko.stojmenovic@frejaeid.rs</email>
             <organization>Freja eID</organization>
             <organizationUrl>https://frejaeid.com/en/home/</organizationUrl>
             <roles>

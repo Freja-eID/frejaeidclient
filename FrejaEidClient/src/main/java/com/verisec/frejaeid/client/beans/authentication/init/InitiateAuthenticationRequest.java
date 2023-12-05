@@ -8,6 +8,7 @@ import com.verisec.frejaeid.client.beans.common.RelyingPartyRequest;
 import com.verisec.frejaeid.client.beans.general.AttributeToReturnInfo;
 import com.verisec.frejaeid.client.beans.general.SsnUserInfo;
 import com.verisec.frejaeid.client.enums.MinRegistrationLevel;
+import com.verisec.frejaeid.client.enums.UserConfirmationMethod;
 import com.verisec.frejaeid.client.enums.UserInfoType;
 import com.verisec.frejaeid.client.exceptions.FrejaEidClientInternalException;
 import com.verisec.frejaeid.client.util.UserInfoUtil;
@@ -23,6 +24,7 @@ public class InitiateAuthenticationRequest implements RelyingPartyRequest {
     private final Set<AttributeToReturnInfo> attributesToReturn;
     private final String relyingPartyId;
     private final String orgIdIssuer;
+    private final UserConfirmationMethod userConfirmationMethod;
 
     /**
      * Returns instance of {@linkplain InitiateAuthenticationRequest} with:
@@ -30,12 +32,12 @@ public class InitiateAuthenticationRequest implements RelyingPartyRequest {
      * {@link AttributeToReturnInfo}.
      *
      * @param email user's email for which transaction will be initiated. It cannot be {@code null} or empty. Maximum
-     * length is 256 characters.
+     *              length is 256 characters.
      * @return request
      */
     public static InitiateAuthenticationRequest createDefaultWithEmail(String email) {
-        return new InitiateAuthenticationRequest(UserInfoType.EMAIL, email, MinRegistrationLevel.BASIC, null, null,
-                                                 null);
+        return new InitiateAuthenticationRequest(
+                UserInfoType.EMAIL, email, MinRegistrationLevel.BASIC, null, null, null, null);
     }
 
     /**
@@ -44,14 +46,14 @@ public class InitiateAuthenticationRequest implements RelyingPartyRequest {
      * {@link AttributeToReturnInfo}.
      *
      * @param ssnUserInfo instance of {@linkplain SsnUserInfo} that contains personal number and country for which
-     * transaction will be initiated. It cannot be {@code null}.
+     *                    transaction will be initiated. It cannot be {@code null}.
      * @return request
      * @throws FrejaEidClientInternalException if error occurs when generating JSON content from ssnUserInfo
      */
     public static InitiateAuthenticationRequest createDefaultWithSsn(SsnUserInfo ssnUserInfo)
             throws FrejaEidClientInternalException {
         return new InitiateAuthenticationRequest(UserInfoType.SSN, UserInfoUtil.convertSsnUserInfo(ssnUserInfo),
-                                                 MinRegistrationLevel.BASIC, null, null, null);
+                                                 MinRegistrationLevel.BASIC, null, null, null, null);
     }
 
     /**
@@ -70,19 +72,22 @@ public class InitiateAuthenticationRequest implements RelyingPartyRequest {
             @JsonProperty(value = "userInfo") String userInfo,
             @JsonProperty(value = "minRegistrationLevel") MinRegistrationLevel minRegistrationLevel,
             @JsonProperty(value = "attributesToReturn") Set<AttributeToReturnInfo> attributesToReturn,
-            @JsonProperty(value = "orgIdIssuer") String orgIdIssuer) {
-        this(userInfoType, userInfo, minRegistrationLevel, attributesToReturn, null, orgIdIssuer);
+            @JsonProperty(value = "orgIdIssuer") String orgIdIssuer,
+            @JsonProperty(value = "userConfirmationMethod") UserConfirmationMethod userConfirmationMethod) {
+        this(userInfoType, userInfo, minRegistrationLevel, attributesToReturn, null, orgIdIssuer, userConfirmationMethod);
     }
 
-    InitiateAuthenticationRequest(UserInfoType userInfoType, String userInfo,
-                                  MinRegistrationLevel minRegistrationLevel,
-                                  Set<AttributeToReturnInfo> attributesToReturn, String relyingPartyId, String orgIdIssuer) {
+    InitiateAuthenticationRequest(
+            UserInfoType userInfoType, String userInfo, MinRegistrationLevel minRegistrationLevel,
+            Set<AttributeToReturnInfo> attributesToReturn, String relyingPartyId,
+            String orgIdIssuer, UserConfirmationMethod userConfirmationMethod) {
         this.userInfoType = userInfoType;
         this.userInfo = userInfo;
         this.minRegistrationLevel = minRegistrationLevel;
         this.attributesToReturn = attributesToReturn;
         this.relyingPartyId = relyingPartyId;
         this.orgIdIssuer = orgIdIssuer;
+        this.userConfirmationMethod = userConfirmationMethod;
     }
 
     @JsonIgnore
@@ -110,10 +115,14 @@ public class InitiateAuthenticationRequest implements RelyingPartyRequest {
         return orgIdIssuer;
     }
 
+    public UserConfirmationMethod getUserConfirmationMethod() {
+        return userConfirmationMethod;
+    }
+
     @Override
     public int hashCode() {
         return Objects.hash(userInfoType, userInfo, minRegistrationLevel, attributesToReturn, relyingPartyId,
-                            orgIdIssuer);
+                            orgIdIssuer, userConfirmationMethod);
     }
 
     @Override
@@ -153,14 +162,22 @@ public class InitiateAuthenticationRequest implements RelyingPartyRequest {
         } else if (this.attributesToReturn != null || other.attributesToReturn != null) {
             return false;
         }
+        if (this.userConfirmationMethod != other.userConfirmationMethod) {
+            return false;
+        }
         return true;
     }
 
     @Override
     public String toString() {
-        return "InitiateAuthenticationRequest{" + "userInfoType=" + userInfoType + ", userInfo=" + userInfo + ", "
-                + "minRegistrationLevel=" + minRegistrationLevel + ", attributesToReturn=" + attributesToReturn
-                + ", orgIdIssuer=" + orgIdIssuer + '}';
+        return "InitiateAuthenticationRequest{" +
+                "userInfoType=" + userInfoType +
+                ", userInfo='" + userInfo + '\'' +
+                ", minRegistrationLevel=" + minRegistrationLevel +
+                ", attributesToReturn=" + attributesToReturn +
+                ", relyingPartyId='" + relyingPartyId + '\'' +
+                ", orgIdIssuer='" + orgIdIssuer + '\'' +
+                ", userConfirmationMethod=" + userConfirmationMethod +
+                '}';
     }
-
 }

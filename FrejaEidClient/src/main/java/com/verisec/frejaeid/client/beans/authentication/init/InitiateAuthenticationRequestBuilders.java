@@ -2,14 +2,11 @@ package com.verisec.frejaeid.client.beans.authentication.init;
 
 import com.verisec.frejaeid.client.beans.general.AttributeToReturnInfo;
 import com.verisec.frejaeid.client.beans.general.SsnUserInfo;
-import com.verisec.frejaeid.client.enums.AttributeToReturn;
-import com.verisec.frejaeid.client.enums.MinRegistrationLevel;
-import com.verisec.frejaeid.client.enums.TransactionContext;
-import com.verisec.frejaeid.client.enums.UserInfoType;
+import com.verisec.frejaeid.client.enums.*;
 import com.verisec.frejaeid.client.exceptions.FrejaEidClientInternalException;
 import com.verisec.frejaeid.client.util.UserInfoUtil;
-import java.util.HashSet;
 
+import java.util.HashSet;
 import java.util.Set;
 
 public class InitiateAuthenticationRequestBuilders {
@@ -87,6 +84,7 @@ public class InitiateAuthenticationRequestBuilders {
         private Set<AttributeToReturnInfo> attributesToReturn = null;
         private String relyingPartyId = null;
         private String orgIdIssuer = null;
+        private UserConfirmationMethod userConfirmationMethod = null;
 
         private SetOptionalParamsBuilder(UserInfoType userInfoType, String userInfo) {
             this.userInfoType = userInfoType;
@@ -147,7 +145,6 @@ public class InitiateAuthenticationRequestBuilders {
          *
          * @param orgIdIssuer specifies the relying party ID of the
          *                    organisation which issued the organisation ID.
-         *
          * @return request builder
          */
         public SetOptionalParamsBuilder setOrgIdIssuer(String orgIdIssuer) {
@@ -155,10 +152,22 @@ public class InitiateAuthenticationRequestBuilders {
             return this;
         }
 
+        /**
+         * <b>UserConfirmationMethod is used to specify steps(actions) that
+         * user needs to perform when confirming transaction.</b>
+         *
+         * @param userConfirmationMethod can be any value from
+         *                               {@linkplain UserConfirmationMethod}
+         * @return request builder
+         */
+        public SetOptionalParamsBuilder setUserConfirmationMethod(UserConfirmationMethod userConfirmationMethod) {
+            this.userConfirmationMethod = userConfirmationMethod;
+            return this;
+        }
 
         public InitiateAuthenticationRequest build() {
             return new InitiateAuthenticationRequest(userInfoType, userInfo, minRegistrationLevel, attributesToReturn,
-                                                     relyingPartyId, orgIdIssuer);
+                                                     relyingPartyId, orgIdIssuer, userConfirmationMethod);
         }
 
     }

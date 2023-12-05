@@ -7,10 +7,7 @@ import com.verisec.frejaeid.client.beans.common.RelyingPartyRequest;
 import com.verisec.frejaeid.client.beans.general.AttributeToReturnInfo;
 import com.verisec.frejaeid.client.beans.general.SsnUserInfo;
 import com.verisec.frejaeid.client.beans.sign.init.InitiateSignRequestBuilders.UserInfoBuilder;
-import com.verisec.frejaeid.client.enums.DataToSignType;
-import com.verisec.frejaeid.client.enums.MinRegistrationLevel;
-import com.verisec.frejaeid.client.enums.SignatureType;
-import com.verisec.frejaeid.client.enums.UserInfoType;
+import com.verisec.frejaeid.client.enums.*;
 import com.verisec.frejaeid.client.exceptions.FrejaEidClientInternalException;
 import com.verisec.frejaeid.client.util.UserInfoUtil;
 
@@ -31,6 +28,7 @@ public class InitiateSignRequest implements RelyingPartyRequest {
     private final Set<AttributeToReturnInfo> attributesToReturn;
     private final String relyingPartyId;
     private final String orgIdIssuer;
+    private final UserConfirmationMethod userConfirmationMethod;
 
     /**
      * Returns instance of {@linkplain InitiateSignRequest} with:
@@ -50,7 +48,7 @@ public class InitiateSignRequest implements RelyingPartyRequest {
     public static InitiateSignRequest createDefaultWithEmail(String email, String title, String text) {
         return new InitiateSignRequest(UserInfoType.EMAIL, email, MinRegistrationLevel.PLUS, title, null, null,
                                        DataToSignType.SIMPLE_UTF8_TEXT, DataToSign.create(text), SignatureType.SIMPLE,
-                                       null, null, null);
+                                       null, null, null, null);
     }
 
     /**
@@ -75,7 +73,7 @@ public class InitiateSignRequest implements RelyingPartyRequest {
             throws FrejaEidClientInternalException {
         return new InitiateSignRequest(UserInfoType.SSN, UserInfoUtil.convertSsnUserInfo(ssnUserInfo),
                                        MinRegistrationLevel.PLUS, title, null, null, DataToSignType.SIMPLE_UTF8_TEXT,
-                                       DataToSign.create(text), SignatureType.SIMPLE, null, null, null);
+                                       DataToSign.create(text), SignatureType.SIMPLE, null, null, null, null);
     }
 
     /**
@@ -89,18 +87,20 @@ public class InitiateSignRequest implements RelyingPartyRequest {
     }
 
     @JsonCreator
-    InitiateSignRequest(@JsonProperty(value = "userInfoType") UserInfoType userInfoType,
-                        @JsonProperty(value = "userInfo") String userInfo,
-                        @JsonProperty(value = "minRegistrationLevel") MinRegistrationLevel minRegistrationLevel,
-                        @JsonProperty(value = "title") String title,
-                        @JsonProperty(value = "pushNotification") PushNotification pushNotification,
-                        @JsonProperty(value = "expiry") Long expiry,
-                        @JsonProperty(value = "dataToSignType") DataToSignType dataToSignType,
-                        @JsonProperty(value = "dataToSign") DataToSign dataToSign,
-                        @JsonProperty(value = "signatureType") SignatureType signatureType,
-                        @JsonProperty(value = "attributesToReturn") Set<AttributeToReturnInfo> attributesToReturn,
-                        @JsonProperty(value = "relyingPartyId") String relyingPartyId,
-                        @JsonProperty(value = "orgIdIssuer") String orgIdIssuer) {
+    InitiateSignRequest(
+            @JsonProperty(value = "userInfoType") UserInfoType userInfoType,
+            @JsonProperty(value = "userInfo") String userInfo,
+            @JsonProperty(value = "minRegistrationLevel") MinRegistrationLevel minRegistrationLevel,
+            @JsonProperty(value = "title") String title,
+            @JsonProperty(value = "pushNotification") PushNotification pushNotification,
+            @JsonProperty(value = "expiry") Long expiry,
+            @JsonProperty(value = "dataToSignType") DataToSignType dataToSignType,
+            @JsonProperty(value = "dataToSign") DataToSign dataToSign,
+            @JsonProperty(value = "signatureType") SignatureType signatureType,
+            @JsonProperty(value = "attributesToReturn") Set<AttributeToReturnInfo> attributesToReturn,
+            @JsonProperty(value = "relyingPartyId") String relyingPartyId,
+            @JsonProperty(value = "orgIdIssuer") String orgIdIssuer,
+            @JsonProperty(value = "userConfirmationMethod") UserConfirmationMethod userConfirmationMethod) {
         this.userInfoType = userInfoType;
         this.userInfo = userInfo;
         this.title = title;
@@ -113,6 +113,7 @@ public class InitiateSignRequest implements RelyingPartyRequest {
         this.attributesToReturn = attributesToReturn;
         this.relyingPartyId = relyingPartyId;
         this.orgIdIssuer = orgIdIssuer;
+        this.userConfirmationMethod = userConfirmationMethod;
     }
 
     public UserInfoType getUserInfoType() {
@@ -160,12 +161,19 @@ public class InitiateSignRequest implements RelyingPartyRequest {
         return attributesToReturn;
     }
 
-    public String getOrgIdIssuer() { return orgIdIssuer; }
+    public String getOrgIdIssuer() {
+        return orgIdIssuer;
+    }
+
+    public UserConfirmationMethod getUserConfirmationMethod() {
+        return userConfirmationMethod;
+    }
 
     @Override
     public int hashCode() {
-        return Objects.hash(userInfoType, userInfo, title, minRegistrationLevel, pushNotification, expiry,
-                            dataToSignType, dataToSign, signatureType, relyingPartyId, orgIdIssuer);
+        return Objects.hash(
+                userInfoType, userInfo, title, minRegistrationLevel, pushNotification, expiry, dataToSignType,
+                dataToSign, signatureType, relyingPartyId, orgIdIssuer, userConfirmationMethod);
     }
 
     @Override
@@ -223,18 +231,28 @@ public class InitiateSignRequest implements RelyingPartyRequest {
         } else if (this.attributesToReturn != null || other.attributesToReturn != null) {
             return false;
         }
+        if (this.userConfirmationMethod != other.userConfirmationMethod) {
+            return false;
+        }
         return true;
     }
 
-    
-
     @Override
     public String toString() {
-        return "InitiateSignRequest{" + "userInfoType=" + userInfoType + ", userInfo=" + userInfo + ", title=" + title
-                + ", minRegistrationLevel=" + minRegistrationLevel + ", pushNotification=" + pushNotification +
-                ", expiry=" + expiry + ", dataToSignType=" + dataToSignType + ", dataToSign=" + dataToSign +
-                ", signatureType=" + signatureType + ", attributesToReturn=" + attributesToReturn +
-                ", orgIdIssuer=" + orgIdIssuer + '}';
+        return "InitiateSignRequest{" +
+                "userInfoType=" + userInfoType +
+                ", userInfo='" + userInfo + '\'' +
+                ", title='" + title + '\'' +
+                ", minRegistrationLevel=" + minRegistrationLevel +
+                ", pushNotification=" + pushNotification +
+                ", expiry=" + expiry +
+                ", dataToSignType=" + dataToSignType +
+                ", dataToSign=" + dataToSign +
+                ", signatureType=" + signatureType +
+                ", attributesToReturn=" + attributesToReturn +
+                ", relyingPartyId='" + relyingPartyId + '\'' +
+                ", orgIdIssuer='" + orgIdIssuer + '\'' +
+                ", userConfirmationMethod=" + userConfirmationMethod +
+                '}';
     }
-
 }
