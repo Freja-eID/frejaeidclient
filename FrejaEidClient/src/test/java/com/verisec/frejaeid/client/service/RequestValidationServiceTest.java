@@ -19,21 +19,10 @@ import com.verisec.frejaeid.client.beans.sign.init.InitiateSignRequest;
 import com.verisec.frejaeid.client.beans.sign.init.PushNotification;
 import com.verisec.frejaeid.client.beans.usermanagement.customidentifier.delete.DeleteCustomIdentifierRequest;
 import com.verisec.frejaeid.client.beans.usermanagement.customidentifier.set.SetCustomIdentifierRequest;
-import com.verisec.frejaeid.client.client.api.AuthenticationClientApi;
-import com.verisec.frejaeid.client.client.api.CustomIdentifierClientApi;
-import com.verisec.frejaeid.client.client.api.OrganisationIdClientApi;
-import com.verisec.frejaeid.client.client.api.SignClientApi;
-import com.verisec.frejaeid.client.client.api.CustodianshipClientApi;
-import com.verisec.frejaeid.client.client.impl.AuthenticationClient;
-import com.verisec.frejaeid.client.client.impl.CustomIdentifierClient;
-import com.verisec.frejaeid.client.client.impl.OrganisationIdClient;
-import com.verisec.frejaeid.client.client.impl.SignClient;
-import com.verisec.frejaeid.client.client.impl.CustodianshipClient;
+import com.verisec.frejaeid.client.client.api.*;
+import com.verisec.frejaeid.client.client.impl.*;
 import com.verisec.frejaeid.client.client.util.TestUtil;
-import com.verisec.frejaeid.client.enums.FrejaEnvironment;
-import com.verisec.frejaeid.client.enums.MinRegistrationLevel;
-import com.verisec.frejaeid.client.enums.SignatureType;
-import com.verisec.frejaeid.client.enums.TransactionContext;
+import com.verisec.frejaeid.client.enums.*;
 import com.verisec.frejaeid.client.exceptions.FrejaEidClientInternalException;
 import com.verisec.frejaeid.client.exceptions.FrejaEidException;
 import org.junit.Assert;
@@ -246,6 +235,21 @@ public class RequestValidationServiceTest {
         } catch (FrejaEidClientInternalException ex) {
             Assert.assertEquals("OrgIdIssuer unsupported value. OrgIdIssuer must be null/empty or <ANY>",
                                 ex.getLocalizedMessage());
+        }
+    }
+
+    @Test
+    public void initAuth_userConfirmationMethod_wrongMinRegLevel() throws FrejaEidException {
+        try {
+            authenticationClient.initiate(
+                    InitiateAuthenticationRequest.createCustom().setEmail(EMAIL)
+                            .setMinRegistrationLevel(MinRegistrationLevel.BASIC)
+                            .setUserConfirmationMethod(UserConfirmationMethod.DEFAULT_AND_FACE)
+                            .build());
+            Assert.fail("Test should throw exception!");
+        } catch (FrejaEidClientInternalException ex) {
+            Assert.assertEquals("For the chosen userConfirmationMethod you must set "
+                                        + "minRegistrationLevel to at least EXTENDED", ex.getLocalizedMessage());
         }
     }
 
@@ -611,7 +615,6 @@ public class RequestValidationServiceTest {
                                 ex.getLocalizedMessage());
         }
     }
-
 
 
     @Test
