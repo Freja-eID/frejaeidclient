@@ -40,7 +40,7 @@ public class OrganisationIdClientDeleteOrganisationIdTest {
                 .thenReturn(EmptyFrejaResponse.INSTANCE);
         organisationIdClient.delete(deleteOrganisationIdRequest);
         Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getServiceUrl() + MethodUrl.ORGANISATION_ID_DELETE,
-                                             RequestTemplate.DELETE_ORGANINSATION_ID_TEMPLATE,
+                                             RequestTemplate.DELETE_ORGANISATION_ID_TEMPLATE,
                                              deleteOrganisationIdRequest, EmptyFrejaResponse.class, null);
     }
 
@@ -55,7 +55,7 @@ public class OrganisationIdClientDeleteOrganisationIdTest {
                 .thenReturn(EmptyFrejaResponse.INSTANCE);
         organisationIdClient.delete(deleteOrganisationIdRequest);
         Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getServiceUrl() + MethodUrl.ORGANISATION_ID_DELETE,
-                                             RequestTemplate.DELETE_ORGANINSATION_ID_TEMPLATE,
+                                             RequestTemplate.DELETE_ORGANISATION_ID_TEMPLATE,
                                              deleteOrganisationIdRequest, EmptyFrejaResponse.class, RELYING_PARTY_ID);
     }
 
@@ -75,7 +75,7 @@ public class OrganisationIdClientDeleteOrganisationIdTest {
             Assert.fail("Test should throw exception!");
         } catch (FrejaEidException rpEx) {
             Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getServiceUrl() + MethodUrl.ORGANISATION_ID_DELETE,
-                                                 RequestTemplate.DELETE_ORGANINSATION_ID_TEMPLATE,
+                                                 RequestTemplate.DELETE_ORGANISATION_ID_TEMPLATE,
                                                  deleteOrganisationIdRequest, EmptyFrejaResponse.class, null);
             Assert.assertEquals(5001, rpEx.getErrorCode());
             Assert.assertEquals("There is no user for given custom identifier.", rpEx.getLocalizedMessage());
