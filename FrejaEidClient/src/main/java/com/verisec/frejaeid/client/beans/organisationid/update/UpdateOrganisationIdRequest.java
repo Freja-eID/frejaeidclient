@@ -13,7 +13,6 @@ public class UpdateOrganisationIdRequest implements RelyingPartyRequest {
 
     private final String identifier;
     private final List<OrganisationIdAttribute> additionalAttributes;
-//    @JsonIgnore ???
     private final String relyingPartyId;
 
     public static UpdateOrganisationIdRequest create(String identifier, List<OrganisationIdAttribute> additionalAttributes){
