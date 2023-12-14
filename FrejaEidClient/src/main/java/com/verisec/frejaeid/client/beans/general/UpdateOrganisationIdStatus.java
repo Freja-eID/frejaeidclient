@@ -5,16 +5,16 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.Objects;
 
-public class UpdateStatus {
+public class UpdateOrganisationIdStatus {
 
     private final int added;
     private final int updated;
     private final int deleted;
 
     @JsonCreator
-    public UpdateStatus(@JsonProperty("added") int added,
-                        @JsonProperty("updated") int updated,
-                        @JsonProperty("deleted") int deleted) {
+    public UpdateOrganisationIdStatus(@JsonProperty("added") int added,
+                                      @JsonProperty("updated") int updated,
+                                      @JsonProperty("deleted") int deleted) {
         this.added = added;
         this.updated = updated;
         this.deleted = deleted;
@@ -35,8 +35,8 @@ public class UpdateStatus {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof UpdateStatus)) return false;
-        UpdateStatus that = (UpdateStatus) o;
+        if (!(o instanceof UpdateOrganisationIdStatus)) return false;
+        UpdateOrganisationIdStatus that = (UpdateOrganisationIdStatus) o;
         return added == that.added && updated == that.updated && deleted == that.deleted;
     }
 
@@ -47,7 +47,7 @@ public class UpdateStatus {
 
     @Override
     public String toString() {
-        return "UpdateStatus{" +
+        return "UpdateOrganisationIdStatus{" +
                 "added=" + added +
                 ", updated=" + updated +
                 ", deleted=" + deleted +

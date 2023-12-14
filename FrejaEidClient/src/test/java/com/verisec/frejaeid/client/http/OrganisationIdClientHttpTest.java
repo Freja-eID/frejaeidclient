@@ -255,7 +255,7 @@ public class OrganisationIdClientHttpTest extends CommonHttpTest {
             throws FrejaEidClientInternalException, IOException, FrejaEidException {
         UpdateOrganisationIdRequest updateOrganisationIdRequest =
                 UpdateOrganisationIdRequest.create(IDENTIFIER, ADDITIONAL_ATTRIBUTES);
-        UpdateOrganisationIdResponse expectedResponse = new UpdateOrganisationIdResponse(new UpdateStatus(1, 1, 0));
+        UpdateOrganisationIdResponse expectedResponse = new UpdateOrganisationIdResponse(new UpdateOrganisationIdStatus(1, 1, 0));
         String responseString = jsonService.serializeToJson(expectedResponse);
         startMockServer(updateOrganisationIdRequest, HttpStatusCode.OK.getCode(), responseString);
         UpdateOrganisationIdResponse receivedResponse = organisationIdClient.update(updateOrganisationIdRequest);
@@ -267,7 +267,7 @@ public class OrganisationIdClientHttpTest extends CommonHttpTest {
             throws FrejaEidClientInternalException, IOException, FrejaEidException {
         UpdateOrganisationIdRequest updateOrganisationIdRequest =
                 UpdateOrganisationIdRequest.create(IDENTIFIER, ADDITIONAL_ATTRIBUTES, RELYING_PARTY_ID);
-        UpdateOrganisationIdResponse expectedResponse = new UpdateOrganisationIdResponse(new UpdateStatus(0, 2, 0));
+        UpdateOrganisationIdResponse expectedResponse = new UpdateOrganisationIdResponse(new UpdateOrganisationIdStatus(0, 2, 0));
         String responseString = jsonService.serializeToJson(expectedResponse);
         startMockServer(updateOrganisationIdRequest, HttpStatusCode.OK.getCode(), responseString);
         UpdateOrganisationIdResponse receivedResponse = organisationIdClient.update(updateOrganisationIdRequest);

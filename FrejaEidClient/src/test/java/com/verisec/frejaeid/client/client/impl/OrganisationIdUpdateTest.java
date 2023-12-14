@@ -1,10 +1,8 @@
 package com.verisec.frejaeid.client.client.impl;
 
-import com.verisec.frejaeid.client.beans.common.EmptyFrejaResponse;
 import com.verisec.frejaeid.client.beans.common.RelyingPartyRequest;
 import com.verisec.frejaeid.client.beans.general.OrganisationIdAttribute;
-import com.verisec.frejaeid.client.beans.general.UpdateStatus;
-import com.verisec.frejaeid.client.beans.organisationid.delete.DeleteOrganisationIdRequest;
+import com.verisec.frejaeid.client.beans.general.UpdateOrganisationIdStatus;
 import com.verisec.frejaeid.client.beans.organisationid.update.UpdateOrganisationIdRequest;
 import com.verisec.frejaeid.client.beans.organisationid.update.UpdateOrganisationIdResponse;
 import com.verisec.frejaeid.client.client.api.OrganisationIdClientApi;
@@ -46,7 +44,7 @@ public class OrganisationIdUpdateTest {
     public void updateOrgId_withoutRelyingPartyId_success() throws FrejaEidClientInternalException, FrejaEidException {
         UpdateOrganisationIdRequest updateOrganisationIdRequest =
                 UpdateOrganisationIdRequest.create(IDENTIFIER, ADDITIONAL_ATTRIBUTES);
-        UpdateOrganisationIdResponse expectedResponse = new UpdateOrganisationIdResponse(new UpdateStatus(0, 2, 0));
+        UpdateOrganisationIdResponse expectedResponse = new UpdateOrganisationIdResponse(new UpdateOrganisationIdStatus(0, 2, 0));
         Mockito.when(httpServiceMock.send(Mockito.anyString(), Mockito.any(RequestTemplate.class),
                                           Mockito.any(RelyingPartyRequest.class),
                                           Mockito.eq(UpdateOrganisationIdResponse.class), (String) Mockito.isNull()))
@@ -62,7 +60,7 @@ public class OrganisationIdUpdateTest {
     public void updateOrgId_withRelyingPartyId_success() throws FrejaEidClientInternalException, FrejaEidException {
         UpdateOrganisationIdRequest updateOrganisationIdRequest =
                 UpdateOrganisationIdRequest.create(IDENTIFIER, ADDITIONAL_ATTRIBUTES, RELYING_PARTY_ID);
-        UpdateOrganisationIdResponse expectedResponse = new UpdateOrganisationIdResponse(new UpdateStatus(1, 0, 1));
+        UpdateOrganisationIdResponse expectedResponse = new UpdateOrganisationIdResponse(new UpdateOrganisationIdStatus(1, 0, 1));
         Mockito.when(httpServiceMock.send(Mockito.anyString(), Mockito.any(RequestTemplate.class),
                                           Mockito.any(RelyingPartyRequest.class),
                                           Mockito.eq(UpdateOrganisationIdResponse.class), Mockito.eq(RELYING_PARTY_ID)))
