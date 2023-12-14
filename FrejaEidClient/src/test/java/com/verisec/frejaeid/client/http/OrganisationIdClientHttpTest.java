@@ -1,9 +1,7 @@
 package com.verisec.frejaeid.client.http;
 
 import com.verisec.frejaeid.client.beans.common.EmptyFrejaResponse;
-import com.verisec.frejaeid.client.beans.general.OrganisationId;
-import com.verisec.frejaeid.client.beans.general.OrganisationIdUserInfo;
-import com.verisec.frejaeid.client.beans.general.SsnUserInfo;
+import com.verisec.frejaeid.client.beans.general.*;
 import com.verisec.frejaeid.client.beans.organisationid.cancel.CancelAddOrganisationIdRequest;
 import com.verisec.frejaeid.client.beans.organisationid.delete.DeleteOrganisationIdRequest;
 import com.verisec.frejaeid.client.beans.organisationid.get.OrganisationIdResult;
@@ -12,6 +10,8 @@ import com.verisec.frejaeid.client.beans.organisationid.getall.GetAllOrganisatio
 import com.verisec.frejaeid.client.beans.organisationid.getall.GetAllOrganisationIdUsersResponse;
 import com.verisec.frejaeid.client.beans.organisationid.init.InitiateAddOrganisationIdRequest;
 import com.verisec.frejaeid.client.beans.organisationid.init.InitiateAddOrganisationIdResponse;
+import com.verisec.frejaeid.client.beans.organisationid.update.UpdateOrganisationIdRequest;
+import com.verisec.frejaeid.client.beans.organisationid.update.UpdateOrganisationIdResponse;
 import com.verisec.frejaeid.client.client.api.OrganisationIdClientApi;
 import com.verisec.frejaeid.client.client.impl.OrganisationIdClient;
 import com.verisec.frejaeid.client.client.util.TestUtil;
@@ -36,6 +36,9 @@ public class OrganisationIdClientHttpTest extends CommonHttpTest {
     private static final String ORGANISATION_ID_TITLE = "OrganisationId title";
     private static final String IDENTIFIER_NAME = "Identifier name";
     private static final String IDENTIFIER = "identifier";
+    private static final List<OrganisationIdAttribute> ADDITIONAL_ATTRIBUTES =
+            Arrays.asList(OrganisationIdAttribute.create("key", "friendly name", "value"),
+                          OrganisationIdAttribute.create("attribute_id", "attribute name", "attribute value"));
 
     @BeforeClass
     public static void init() throws FrejaEidClientInternalException {
@@ -245,5 +248,29 @@ public class OrganisationIdClientHttpTest extends CommonHttpTest {
         List<OrganisationIdUserInfo> actualListOfOrganisationIdUserInfos =
                 organisationIdClient.getAllUsers(getAllOrganisationIdUsersRequest);
         Assert.assertEquals(getAllOrganisationIdUsersResponse.getUserInfos(), actualListOfOrganisationIdUserInfos);
+    }
+
+    @Test
+    public void updateOrganisationId_sendRequestWithoutRelyingPartyId_success()
+            throws FrejaEidClientInternalException, IOException, FrejaEidException {
+        UpdateOrganisationIdRequest updateOrganisationIdRequest =
+                UpdateOrganisationIdRequest.create(IDENTIFIER, ADDITIONAL_ATTRIBUTES);
+        UpdateOrganisationIdResponse expectedResponse = new UpdateOrganisationIdResponse(new UpdateOrganisationIdStatus(1, 1, 0));
+        String responseString = jsonService.serializeToJson(expectedResponse);
+        startMockServer(updateOrganisationIdRequest, HttpStatusCode.OK.getCode(), responseString);
+        UpdateOrganisationIdResponse receivedResponse = organisationIdClient.update(updateOrganisationIdRequest);
+        Assert.assertEquals(expectedResponse, receivedResponse);
+    }
+
+    @Test
+    public void updateOrganisationId_sendRequestWithRelyingPartyId_success()
+            throws FrejaEidClientInternalException, IOException, FrejaEidException {
+        UpdateOrganisationIdRequest updateOrganisationIdRequest =
+                UpdateOrganisationIdRequest.create(IDENTIFIER, ADDITIONAL_ATTRIBUTES, RELYING_PARTY_ID);
+        UpdateOrganisationIdResponse expectedResponse = new UpdateOrganisationIdResponse(new UpdateOrganisationIdStatus(0, 2, 0));
+        String responseString = jsonService.serializeToJson(expectedResponse);
+        startMockServer(updateOrganisationIdRequest, HttpStatusCode.OK.getCode(), responseString);
+        UpdateOrganisationIdResponse receivedResponse = organisationIdClient.update(updateOrganisationIdRequest);
+        Assert.assertEquals(expectedResponse, receivedResponse);
     }
 }
