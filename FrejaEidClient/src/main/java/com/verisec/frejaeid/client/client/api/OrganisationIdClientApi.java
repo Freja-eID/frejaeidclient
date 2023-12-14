@@ -103,7 +103,17 @@ public interface OrganisationIdClientApi {
     public List<OrganisationIdUserInfo> getAllUsers(GetAllOrganisationIdUsersRequest getAllOrganisationIdUsersRequest)
             throws FrejaEidClientInternalException, FrejaEidException;
 
-//@Stop
+    /**
+     * Updates issued organisation id for a specific person.
+     *
+     * @param updateOrganisationIdRequest instance of
+     *                                         {@linkplain UpdateOrganisationIdRequest} with corresponding
+     *                                         parameters
+     * @return {@linkplain UpdateOrganisationIdResponse}
+     * @throws FrejaEidClientInternalException if internal validation of request
+     *                                         fails.
+     * @throws FrejaEidException               if server returns an error.
+     */
     public UpdateOrganisationIdResponse update(UpdateOrganisationIdRequest updateOrganisationIdRequest)
             throws FrejaEidClientInternalException, FrejaEidException;
 

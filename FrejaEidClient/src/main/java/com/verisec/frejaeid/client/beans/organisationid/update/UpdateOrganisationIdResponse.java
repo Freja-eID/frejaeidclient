@@ -1,5 +1,7 @@
 package com.verisec.frejaeid.client.beans.organisationid.update;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.verisec.frejaeid.client.beans.common.FrejaHttpResponse;
 import com.verisec.frejaeid.client.beans.general.UpdateStatus;
 
@@ -9,7 +11,8 @@ public class UpdateOrganisationIdResponse implements FrejaHttpResponse {
 
     private final UpdateStatus updateStatus;
 
-    public UpdateOrganisationIdResponse(UpdateStatus updateStatus) {
+    @JsonCreator
+    public UpdateOrganisationIdResponse(@JsonProperty("updateStatus") UpdateStatus updateStatus) {
         this.updateStatus = updateStatus;
     }
 

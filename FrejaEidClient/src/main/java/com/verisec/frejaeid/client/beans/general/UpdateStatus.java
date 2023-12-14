@@ -1,5 +1,8 @@
 package com.verisec.frejaeid.client.beans.general;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.Objects;
 
 public class UpdateStatus {
@@ -8,7 +11,10 @@ public class UpdateStatus {
     private final int updated;
     private final int deleted;
 
-    public UpdateStatus(int added, int updated, int deleted) {
+    @JsonCreator
+    public UpdateStatus(@JsonProperty("added") int added,
+                        @JsonProperty("updated") int updated,
+                        @JsonProperty("deleted") int deleted) {
         this.added = added;
         this.updated = updated;
         this.deleted = deleted;
