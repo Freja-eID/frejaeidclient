@@ -8,6 +8,8 @@ import com.verisec.frejaeid.client.beans.organisationid.get.OrganisationIdResult
 import com.verisec.frejaeid.client.beans.organisationid.get.OrganisationIdResultRequest;
 import com.verisec.frejaeid.client.beans.organisationid.getall.GetAllOrganisationIdUsersRequest;
 import com.verisec.frejaeid.client.beans.organisationid.init.InitiateAddOrganisationIdRequest;
+import com.verisec.frejaeid.client.beans.organisationid.update.UpdateOrganisationIdRequest;
+import com.verisec.frejaeid.client.beans.organisationid.update.UpdateOrganisationIdResponse;
 import com.verisec.frejaeid.client.client.api.OrganisationIdClientApi;
 import com.verisec.frejaeid.client.enums.FrejaEnvironment;
 import com.verisec.frejaeid.client.enums.TransactionContext;
@@ -135,6 +137,16 @@ public class OrganisationIdClient extends BasicClient implements OrganisationIdC
         return organisationIdUserInfos;
     }
 
+    @Override
+    public UpdateOrganisationIdResponse update(UpdateOrganisationIdRequest updateOrganisationIdRequest)
+            throws FrejaEidClientInternalException, FrejaEidException {
+        requestValidationService.validateUpdateOrganisationIdRequest(updateOrganisationIdRequest);
+        LOG.debug("Updating organisation ID with identifier {}. ", updateOrganisationIdRequest.getIdentifier());
+        UpdateOrganisationIdResponse response = organisationIdService.update(updateOrganisationIdRequest);
+        LOG.debug("Successfully updated organisation ID with identifier {}.", updateOrganisationIdRequest.getIdentifier());
+        return response;
+    }
+
     public static class Builder extends GenericBuilder {
 
         public static final Logger LOG = LogManager.getLogger(Builder.class);
@@ -178,5 +190,4 @@ public class OrganisationIdClient extends BasicClient implements OrganisationIdC
         }
 
     }
-
 }

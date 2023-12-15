@@ -9,6 +9,8 @@ import com.verisec.frejaeid.client.beans.organisationid.getall.GetAllOrganisatio
 import com.verisec.frejaeid.client.beans.organisationid.getall.GetAllOrganisationIdUsersResponse;
 import com.verisec.frejaeid.client.beans.organisationid.init.InitiateAddOrganisationIdRequest;
 import com.verisec.frejaeid.client.beans.organisationid.init.InitiateAddOrganisationIdResponse;
+import com.verisec.frejaeid.client.beans.organisationid.update.UpdateOrganisationIdRequest;
+import com.verisec.frejaeid.client.beans.organisationid.update.UpdateOrganisationIdResponse;
 import com.verisec.frejaeid.client.exceptions.FrejaEidClientInternalException;
 import com.verisec.frejaeid.client.exceptions.FrejaEidClientPollingException;
 import com.verisec.frejaeid.client.exceptions.FrejaEidException;
@@ -28,7 +30,7 @@ public class OrganisationIdService extends BasicService {
         this.pollingTimeoutInMilliseconds = pollingTimeoutInMilliseconds;
     }
 
-    public OrganisationIdService(String serverAddress, HttpServiceApi httpService,  String resourceServiceUrl) {
+    public OrganisationIdService(String serverAddress, HttpServiceApi httpService, String resourceServiceUrl) {
         super(serverAddress, httpService, resourceServiceUrl);
         this.pollingTimeoutInMilliseconds = 0;
     }
@@ -73,7 +75,7 @@ public class OrganisationIdService extends BasicService {
     public EmptyFrejaResponse delete(DeleteOrganisationIdRequest deleteOrganisationIdRequest)
             throws FrejaEidClientInternalException, FrejaEidException {
         return httpService.send(getUrl(serverAddress, MethodUrl.ORGANISATION_ID_DELETE),
-                                RequestTemplate.DELETE_ORGANINSATION_ID_TEMPLATE, deleteOrganisationIdRequest,
+                                RequestTemplate.DELETE_ORGANISATION_ID_TEMPLATE, deleteOrganisationIdRequest,
                                 EmptyFrejaResponse.class, deleteOrganisationIdRequest.getRelyingPartyId());
     }
 
@@ -90,6 +92,13 @@ public class OrganisationIdService extends BasicService {
         return httpService.send(getUrl(serverAddress, MethodUrl.ORGANISATION_ID_GET_ALL_USERS), null,
                                 getAllOrganisationIdUsersRequest, GetAllOrganisationIdUsersResponse.class,
                                 getAllOrganisationIdUsersRequest.getRelyingPartyId());
+    }
+
+    public UpdateOrganisationIdResponse update(UpdateOrganisationIdRequest updateOrganisationIdRequest)
+            throws FrejaEidClientInternalException, FrejaEidException {
+        return httpService.send(getUrl(serverAddress, MethodUrl.ORGANISATION_ID_UPDATE),
+                                RequestTemplate.UPDATE_ORGANISATION_ID_TEMPLATE, updateOrganisationIdRequest,
+                                UpdateOrganisationIdResponse.class, updateOrganisationIdRequest.getRelyingPartyId());
     }
 
     private boolean isPollingTimeExpired(long pollingEndTime) {

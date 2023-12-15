@@ -50,14 +50,14 @@ public class CustomIdentifierClientTest {
                 SetCustomIdentifierRequest.createDefaultWithEmail(EMAIL, CUSTOM_IDENTIFIER);
         customIdentifierClient.set(setCustomIdentifierRequestDefaultEmail);
         Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getServiceUrl() + MethodUrl.CUSTOM_IDENTIFIER_SET,
-                                             RequestTemplate.SET_CUSTOM_IDENITIFIER_TEMPLATE,
+                                             RequestTemplate.SET_CUSTOM_IDENTIFIER_TEMPLATE,
                                              setCustomIdentifierRequestDefaultEmail, EmptyFrejaResponse.class, null);
         SetCustomIdentifierRequest setCustomIdentifierRequestDefaultSsn =
                 SetCustomIdentifierRequest.createDefaultWithSsn(SsnUserInfo.create(Country.NORWAY, SSN),
                                                                 CUSTOM_IDENTIFIER);
         customIdentifierClient.set(setCustomIdentifierRequestDefaultSsn);
         Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getServiceUrl() + MethodUrl.CUSTOM_IDENTIFIER_SET,
-                                             RequestTemplate.SET_CUSTOM_IDENITIFIER_TEMPLATE,
+                                             RequestTemplate.SET_CUSTOM_IDENTIFIER_TEMPLATE,
                                              setCustomIdentifierRequestDefaultSsn, EmptyFrejaResponse.class, null);
     }
 
@@ -84,7 +84,7 @@ public class CustomIdentifierClientTest {
         for (SetCustomIdentifierRequest request : requests) {
             customIdentifierClient.set(request);
             Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getServiceUrl() + MethodUrl.CUSTOM_IDENTIFIER_SET,
-                                                 RequestTemplate.SET_CUSTOM_IDENITIFIER_TEMPLATE, request,
+                                                 RequestTemplate.SET_CUSTOM_IDENTIFIER_TEMPLATE, request,
                                                  EmptyFrejaResponse.class, RELYING_PARTY_ID);
         }
 
@@ -108,7 +108,7 @@ public class CustomIdentifierClientTest {
         } catch (FrejaEidException rpEx) {
             Mockito.verify(httpServiceMock)
                     .send(FrejaEnvironment.TEST.getServiceUrl() + MethodUrl.CUSTOM_IDENTIFIER_SET,
-                          RequestTemplate.SET_CUSTOM_IDENITIFIER_TEMPLATE, setCustomIdentifierRequest,
+                          RequestTemplate.SET_CUSTOM_IDENTIFIER_TEMPLATE, setCustomIdentifierRequest,
                           EmptyFrejaResponse.class, null);
             Assert.assertEquals(5002, rpEx.getErrorCode());
             Assert.assertEquals("You have already used this custom identifier.", rpEx.getLocalizedMessage());

@@ -18,7 +18,7 @@ public class CustomIdentifierService extends BasicService {
     public void set(SetCustomIdentifierRequest customIdentifierRequest)
             throws FrejaEidClientInternalException, FrejaEidException {
         httpService.send(getUrl(serverAddress, MethodUrl.CUSTOM_IDENTIFIER_SET),
-                         RequestTemplate.SET_CUSTOM_IDENITIFIER_TEMPLATE, customIdentifierRequest,
+                         RequestTemplate.SET_CUSTOM_IDENTIFIER_TEMPLATE, customIdentifierRequest,
                          EmptyFrejaResponse.class, customIdentifierRequest.getRelyingPartyId());
     }
 

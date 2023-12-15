@@ -6,11 +6,13 @@ import com.verisec.frejaeid.client.beans.authentication.get.AuthenticationResult
 import com.verisec.frejaeid.client.beans.authentication.init.InitiateAuthenticationRequest;
 import com.verisec.frejaeid.client.beans.custodianship.get.GetUserCustodianshipStatusRequest;
 import com.verisec.frejaeid.client.beans.general.OrganisationId;
+import com.verisec.frejaeid.client.beans.general.OrganisationIdAttribute;
 import com.verisec.frejaeid.client.beans.organisationid.cancel.CancelAddOrganisationIdRequest;
 import com.verisec.frejaeid.client.beans.organisationid.delete.DeleteOrganisationIdRequest;
 import com.verisec.frejaeid.client.beans.organisationid.get.OrganisationIdResultRequest;
 import com.verisec.frejaeid.client.beans.organisationid.getall.GetAllOrganisationIdUsersRequest;
 import com.verisec.frejaeid.client.beans.organisationid.init.InitiateAddOrganisationIdRequest;
+import com.verisec.frejaeid.client.beans.organisationid.update.UpdateOrganisationIdRequest;
 import com.verisec.frejaeid.client.beans.sign.cancel.CancelSignRequest;
 import com.verisec.frejaeid.client.beans.sign.get.SignResultRequest;
 import com.verisec.frejaeid.client.beans.sign.get.SignResultsRequest;
@@ -29,6 +31,9 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class RequestValidationServiceTest {
 
     private static final String ORGANISATION_ID_TITLE = "OrganisationId title";
@@ -42,6 +47,9 @@ public class RequestValidationServiceTest {
     private static final String ORG_ID_ISSUER = "orgIdIssuer";
     private static final String RELYING_PARTY_ID = "relyingPartyId";
     private static final String USER_COUNTRY_ID_AND_CRN = "SE12345678";
+    private static final List<OrganisationIdAttribute> ADDITIONAL_ATTRIBUTES =
+            Arrays.asList(OrganisationIdAttribute.create("key", "friendly name", "value"),
+                          OrganisationIdAttribute.create("attribute_id", "attribute name", "attribute value"));
 
     private static AuthenticationClientApi authenticationClient;
     private static SignClientApi signClient;
@@ -915,6 +923,34 @@ public class RequestValidationServiceTest {
         } catch (FrejaEidClientInternalException ex) {
             Assert.assertEquals("Invalid user country ID and CRN. Parameter missing or country code different than SE.",
                                 ex.getLocalizedMessage());
+        }
+    }
+
+    @Test
+    public void updateOrganisationIdRequest_emptyIdentifier() {
+        try {
+            UpdateOrganisationIdRequest updateOrganisationIdRequest =
+                    UpdateOrganisationIdRequest.create("", ADDITIONAL_ATTRIBUTES);
+            organisationIdClient.update(updateOrganisationIdRequest);
+            Assert.fail("Test unexpectedly passed.");
+        } catch (FrejaEidClientInternalException ex) {
+            Assert.assertEquals("Identifier cannot be null or empty.", ex.getLocalizedMessage());
+        } catch (FrejaEidException e) {
+            Assert.fail("Unexpected error occurred.");
+        }
+    }
+
+    @Test
+    public void updateOrganisationIdRequest_emptyRelyingPartyId() {
+        try {
+            UpdateOrganisationIdRequest updateOrganisationIdRequest =
+                    UpdateOrganisationIdRequest.create(IDENTIFIER, ADDITIONAL_ATTRIBUTES, "");
+            organisationIdClient.update(updateOrganisationIdRequest);
+            Assert.fail("Test unexpectedly passed.");
+        } catch (FrejaEidClientInternalException ex) {
+            Assert.assertEquals("RelyingPartyId cannot be empty.", ex.getLocalizedMessage());
+        } catch (FrejaEidException e) {
+            Assert.fail("Unexpected error occurred.");
         }
     }
 
