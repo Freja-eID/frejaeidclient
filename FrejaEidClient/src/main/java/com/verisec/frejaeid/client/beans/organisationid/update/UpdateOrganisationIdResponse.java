@@ -9,16 +9,16 @@ import java.util.Objects;
 
 public class UpdateOrganisationIdResponse implements FrejaHttpResponse {
 
-    private final UpdateOrganisationIdStatus updateOrganisationIdStatus;
+    private final UpdateOrganisationIdStatus updateStatus;
 
     @JsonCreator
     public UpdateOrganisationIdResponse(
-            @JsonProperty("updateOrganisationIdStatus") UpdateOrganisationIdStatus updateOrganisationIdStatus) {
-        this.updateOrganisationIdStatus = updateOrganisationIdStatus;
+            @JsonProperty("updateStatus") UpdateOrganisationIdStatus updateStatus) {
+        this.updateStatus = updateStatus;
     }
 
-    public UpdateOrganisationIdStatus getUpdateOrganisationIdStatus() {
-        return updateOrganisationIdStatus;
+    public UpdateOrganisationIdStatus getUpdateStatus() {
+        return updateStatus;
     }
 
     @Override
@@ -26,18 +26,18 @@ public class UpdateOrganisationIdResponse implements FrejaHttpResponse {
         if (this == o) return true;
         if (!(o instanceof UpdateOrganisationIdResponse)) return false;
         UpdateOrganisationIdResponse that = (UpdateOrganisationIdResponse) o;
-        return Objects.equals(updateOrganisationIdStatus, that.updateOrganisationIdStatus);
+        return Objects.equals(updateStatus, that.updateStatus);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(updateOrganisationIdStatus);
+        return Objects.hash(updateStatus);
     }
 
     @Override
     public String toString() {
         return "UpdateOrganisationIdResponse{" +
-                "updateOrganisationIdStatus=" + updateOrganisationIdStatus +
+                "updateStatus=" + updateStatus +
                 '}';
     }
 }
