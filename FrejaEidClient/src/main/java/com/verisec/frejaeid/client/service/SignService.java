@@ -56,8 +56,7 @@ public class SignService extends BasicService {
     public SignResult pollForResult(SignResultRequest signResultRequest, int maxWaitingTimeInSec)
             throws FrejaEidClientInternalException, FrejaEidException, FrejaEidClientPollingException {
         long pollingEndTime = System.currentTimeMillis() + TimeUnit.SECONDS.toMillis(maxWaitingTimeInSec);
-        while (maxWaitingTimeInSec == 0
-                || ((System.currentTimeMillis() + pollingTimeoutInMilliseconds) < pollingEndTime)) {
+        while (maxWaitingTimeInSec == 0 || isPollingTimeExpired(pollingEndTime)) {
             SignResult getSignResult = getResult(signResultRequest);
             if (maxWaitingTimeInSec == 0 || isFinalStatus(getSignResult.getStatus())) {
                 return getSignResult;
@@ -92,5 +91,9 @@ public class SignService extends BasicService {
 
     public TransactionContext getTransactionContext() {
         return transactionContext;
+    }
+
+    private boolean isPollingTimeExpired(long pollingEndTime) {
+        return (System.currentTimeMillis() + pollingTimeoutInMilliseconds) < pollingEndTime;
     }
 }

@@ -55,6 +55,7 @@ public class AuthenticationClientGetResultTest {
         private static final String PHOTO = "https://image-hashId/test";
     private static final DocumentInfo DOCUMENT_INFO =
             new DocumentInfo(DocumentType.PASSPORT, "123456789", Country.SWEDEN, "2050-01-01");
+    private static final String DOCUMENT_PHOTO = "Base64EncodedDocPhoto";
     private static final CovidCertificates COVID_CERTIFICATES =
             new CovidCertificates(new Vaccines("covidCertificate"), null, null, true);
     private static RequestedAttributes REQUESTED_ATTRIBUTES;
@@ -73,9 +74,11 @@ public class AuthenticationClientGetResultTest {
                 new OrganisationIdInfo("org_id_with_attributes", organisationIdIssuerNames, "org_id_issuer",
                                        Arrays.asList(additionalOrgIdAttribute));
         REQUESTED_ATTRIBUTES =
-                new RequestedAttributes(BASIC_USER_INFO, CUSTOM_IDENTIFIER, SSN, null, DATE_OF_BIRTH, RELYING_PARTY_USER_ID,
-                                        EMAIL_ADDRESS, ORGANISATION_ID, ADDRESSES, ALL_EMAIL_ADDRESSES, ALL_PHONE_NUMBERS, RegistrationLevel.EXTENDED, AGE, PHOTO, DOCUMENT_INFO, COVID_CERTIFICATES, ORGANISATION_ID_INFO
-                );
+                new RequestedAttributes(BASIC_USER_INFO, CUSTOM_IDENTIFIER, SSN, null, DATE_OF_BIRTH,
+                                        RELYING_PARTY_USER_ID, EMAIL_ADDRESS, ORGANISATION_ID, ADDRESSES,
+                                        ALL_EMAIL_ADDRESSES, ALL_PHONE_NUMBERS, RegistrationLevel.EXTENDED,
+                                        AGE, PHOTO, DOCUMENT_INFO, DOCUMENT_PHOTO,
+                                        COVID_CERTIFICATES, ORGANISATION_ID_INFO);
     }
 
     @Before
@@ -157,7 +160,7 @@ public class AuthenticationClientGetResultTest {
                                         EMAIL_ADDRESS, ORGANISATION_ID, ADDRESSES,
                                         ALL_EMAIL_ADDRESSES, ALL_PHONE_NUMBERS,
                                         RegistrationLevel.EXTENDED, AGE, PHOTO,
-                                        DOCUMENT_INFO, COVID_CERTIFICATES,
+                                        DOCUMENT_INFO, DOCUMENT_PHOTO, COVID_CERTIFICATES,
                                         ORGANISATION_ID_INFO_WITH_ADDITIONAL_ATTRIBUTES);
         AuthenticationClientApi authenticationClient =
                 AuthenticationClient.create(TestUtil.getDefaultSslSettings(), FrejaEnvironment.TEST)
@@ -300,13 +303,14 @@ public class AuthenticationClientGetResultTest {
     private AuthenticationResults prepareResponse() {
         RequestedAttributes attributes1 =
                 new RequestedAttributes(BASIC_USER_INFO, CUSTOM_IDENTIFIER, SSN, null, DATE_OF_BIRTH,
-                                        RELYING_PARTY_USER_ID, EMAIL_ADDRESS, ORGANISATION_ID, ADDRESSES, ALL_EMAIL_ADDRESSES, ALL_PHONE_NUMBERS, RegistrationLevel.EXTENDED, AGE, PHOTO, DOCUMENT_INFO, COVID_CERTIFICATES, ORGANISATION_ID_INFO
-                );
+                                        RELYING_PARTY_USER_ID, EMAIL_ADDRESS, ORGANISATION_ID, ADDRESSES,
+                                        ALL_EMAIL_ADDRESSES, ALL_PHONE_NUMBERS, RegistrationLevel.EXTENDED, AGE,
+                                        PHOTO, DOCUMENT_INFO, DOCUMENT_PHOTO, COVID_CERTIFICATES, ORGANISATION_ID_INFO);
         AuthenticationResult firstResponse =
                 new AuthenticationResult(REFERENCE, TransactionStatus.STARTED, DETAILS, attributes1);
         RequestedAttributes attributes2 =
-                new RequestedAttributes(null, "test", null, null, null, null, null, null, null, null, null, null, null, null, null, null, null
-                );
+                new RequestedAttributes(null, "test", null, null, null, null, null, null, null, null,
+                                        null, null, null, null, null, null, null, null);
         AuthenticationResult secondResponse =
                 new AuthenticationResult(REFERENCE, TransactionStatus.DELIVERED_TO_MOBILE, "test", attributes2);
         List<AuthenticationResult> responses = new ArrayList<>();

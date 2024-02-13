@@ -31,6 +31,7 @@ public class RequestedAttributes {
     private final Integer age;
     private final String photo;
     private final DocumentInfo document;
+    private final String documentPhoto;
     private final CovidCertificates covidCertificates;
 
     @JsonCreator
@@ -49,6 +50,7 @@ public class RequestedAttributes {
                                @JsonProperty(value = "age") Integer age,
                                @JsonProperty(value = "photo") String photo,
                                @JsonProperty(value = "document") DocumentInfo document,
+                               @JsonProperty(value = "documentPhoto") String documentPhoto,
                                @JsonProperty(value = "covidCertificates") CovidCertificates covidCertificates,
                                @JsonProperty(value = "organisationId") OrganisationIdInfo organisationId) {
         this.basicUserInfo = basicUserInfo;
@@ -67,6 +69,7 @@ public class RequestedAttributes {
         this.age = age;
         this.photo = photo;
         this.document = document;
+        this.documentPhoto = documentPhoto;
         this.covidCertificates = covidCertificates;
     }
 
@@ -134,6 +137,10 @@ public class RequestedAttributes {
         return document;
     }
 
+    public String getDocumentPhoto() {
+        return documentPhoto;
+    }
+
     public CovidCertificates getCovidCertificates() {
         return covidCertificates;
     }
@@ -143,7 +150,7 @@ public class RequestedAttributes {
         return Objects.hash(basicUserInfo, customIdentifier, ssn, integratorSpecificUserId,
                             dateOfBirth, relyingPartyUserId, emailAddress, organisationIdIdentifier,
                             organisationId, addresses, allEmailAddresses, allPhoneNumbers, registrationLevel, age,
-                            photo, document, covidCertificates);
+                            photo, document, documentPhoto, covidCertificates);
     }
 
     @Override
@@ -206,6 +213,9 @@ public class RequestedAttributes {
         if (!Objects.equals(this.document, other.document)) {
             return false;
         }
+        if (!Objects.equals(this.documentPhoto, other.documentPhoto)) {
+            return false;
+        }
         if (!Objects.equals(this.covidCertificates, other.covidCertificates)) {
             return false;
         }
@@ -231,6 +241,7 @@ public class RequestedAttributes {
                 ", age=" + age +
                 ", photo=" + photo +
                 ", documentInfo=" + document +
+                ", documentPhoto=" + documentPhoto +
                 ", covidCertificates=" + covidCertificates +
                 '}';
     }
