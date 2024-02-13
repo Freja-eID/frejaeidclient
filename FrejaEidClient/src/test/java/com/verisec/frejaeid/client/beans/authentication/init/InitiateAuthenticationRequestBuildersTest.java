@@ -42,6 +42,7 @@ public class InitiateAuthenticationRequestBuildersTest {
         REQUESTED_ATTRIBUTES.add(new AttributeToReturnInfo(AttributeToReturn.AGE.getName()));
         REQUESTED_ATTRIBUTES.add(new AttributeToReturnInfo(AttributeToReturn.PHOTO.getName()));
         REQUESTED_ATTRIBUTES.add(new AttributeToReturnInfo(AttributeToReturn.DOCUMENT.getName()));
+        REQUESTED_ATTRIBUTES.add(new AttributeToReturnInfo(AttributeToReturn.DOCUMENT_PHOTO.getName()));
         REQUESTED_ATTRIBUTES.add(new AttributeToReturnInfo(AttributeToReturn.COVID_CERTIFICATES.getName()));
     }
 
