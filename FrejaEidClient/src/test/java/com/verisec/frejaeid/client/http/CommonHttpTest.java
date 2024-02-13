@@ -49,15 +49,18 @@ public abstract class CommonHttpTest {
     private static final List<Email> ALL_EMAIL_ADDRESSES = Arrays.asList(new Email(EMAIL_ADDRESS));
     private static final List<PhoneNumberInfo> ALL_PHONE_NUMBERS = Arrays.asList(new PhoneNumberInfo(PHONE_NUMBER));
     private static final Integer AGE = 35;
-    private static final String PHOTO = "photo";
+    private static final String PHOTO = "Base64EncodedAvatarPhoto";
     private static final DocumentInfo DOCUMENT_INFO =
             new DocumentInfo(DocumentType.PASSPORT, "123456789", Country.SWEDEN, "2050-01-01");
     private static final CovidCertificates COVID_CERTIFICATES =
             new CovidCertificates(new Vaccines("covidCertificate"), null, null, true);
+    private static final String DOCUMENT_PHOTO = "Base64EncodedDocPhoto";
     protected static final RequestedAttributes REQUESTED_ATTRIBUTES =
             new RequestedAttributes(BASIC_USER_INFO, CUSTOM_IDENTIFIER, SSN_USER_INFO, null, DATE_OF_BIRTH,
-                                    RELYING_PARTY_USER_ID, EMAIL_ADDRESS, ORGANISATION_ID, ADDRESSES, ALL_EMAIL_ADDRESSES, ALL_PHONE_NUMBERS, RegistrationLevel.EXTENDED, AGE, PHOTO, DOCUMENT_INFO, COVID_CERTIFICATES, ORGANISATION_ID_INFO
-            );
+                                    RELYING_PARTY_USER_ID, EMAIL_ADDRESS, ORGANISATION_ID, ADDRESSES,
+                                    ALL_EMAIL_ADDRESSES, ALL_PHONE_NUMBERS, RegistrationLevel.EXTENDED, AGE,
+                                    PHOTO, DOCUMENT_INFO, DOCUMENT_PHOTO,
+                                    COVID_CERTIFICATES, ORGANISATION_ID_INFO);
     protected static final String POST_PARAMS_DELIMITER = "&";
     protected static final String KEY_VALUE_DELIMITER = "=";
     protected static final int MOCK_SERVICE_PORT = 30665;

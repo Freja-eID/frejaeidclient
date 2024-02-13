@@ -28,6 +28,8 @@ import java.util.Map;
  * <br> - {@link #REGISTRATION_LEVEL}
  * <br> - {@link #AGE}
  * <br> - {@link #PHOTO}
+ * <br> - {@link #DOCUMENT}
+ * <br> - {@link #DOCUMENT_PHOTO}
  * <br> - {@link #COVID_CERTIFICATES}
  */
 public enum AttributeToReturn {
@@ -126,6 +128,13 @@ public enum AttributeToReturn {
      * {@linkplain MinRegistrationLevel#PLUS}.
      */
     DOCUMENT("DOCUMENT"),
+    /**
+     * ID document photo returned as a Base64-encoded String.
+     * Photo can be requested only for
+     * {@linkplain MinRegistrationLevel#EXTENDED} and
+     * {@linkplain MinRegistrationLevel#PLUS}.
+     */
+    DOCUMENT_PHOTO("DOCUMENT_PHOTO"),
     /**
      * Proof that the user has been vaccinated against COVID-19,
      * received a negative test result or recovered from COVID-19,
