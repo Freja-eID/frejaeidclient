@@ -42,6 +42,10 @@ To add a dependency on Freja eID Client using Maven, use the following:
 </dependency>
 ```
 
+## Documentation
+
+You can find an up-to-date and complete documentation on how to use the library at [Freja eID Library Wiki](https://frejaeid.atlassian.net/wiki/x/AQCE).
+
 ## Examples
 ### Init connection to API (test environment)
 ```java
