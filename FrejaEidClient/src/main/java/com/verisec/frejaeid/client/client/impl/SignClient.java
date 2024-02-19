@@ -1,5 +1,7 @@
 package com.verisec.frejaeid.client.client.impl;
 
+import com.verisec.frejaeid.client.beans.authentication.get.AuthenticationResult;
+import com.verisec.frejaeid.client.beans.authentication.get.AuthenticationResultRequest;
 import com.verisec.frejaeid.client.beans.general.SslSettings;
 import com.verisec.frejaeid.client.beans.sign.cancel.CancelSignRequest;
 import com.verisec.frejaeid.client.beans.sign.get.SignResultRequest;
