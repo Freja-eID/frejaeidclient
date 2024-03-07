@@ -28,6 +28,7 @@ This client library provides a set of classes, interfaces and utility methods de
   + deleting an organisation identifier for a user
   + fetching result of adding an organisation identifier for a user
   + cancelling adding organisation identifier for a user
+  + updating additional attributes for an issued organisation ID
 
 * Integrator Relying Party Management API Client
   + using all available services as an Integrator Relying Party
