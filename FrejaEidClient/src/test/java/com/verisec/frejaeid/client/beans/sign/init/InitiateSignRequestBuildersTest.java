@@ -29,24 +29,29 @@ public class InitiateSignRequestBuildersTest {
 
     @BeforeClass
     public static void createRequestedAttributes() {
-        REQUESTED_ATTRIBUTES.add(new AttributeToReturnInfo(AttributeToReturn.SSN.getName()));
-        REQUESTED_ATTRIBUTES.add(new AttributeToReturnInfo(AttributeToReturn.BASIC_USER_INFO.getName()));
-        REQUESTED_ATTRIBUTES.add(new AttributeToReturnInfo(AttributeToReturn.CUSTOM_IDENTIFIER.getName()));
-        REQUESTED_ATTRIBUTES.add(new AttributeToReturnInfo(AttributeToReturn.DATE_OF_BIRTH.getName()));
-        REQUESTED_ATTRIBUTES.add(new AttributeToReturnInfo(AttributeToReturn.EMAIL_ADDRESS.getName()));
-        REQUESTED_ATTRIBUTES.add(new AttributeToReturnInfo(AttributeToReturn.INTEGRATOR_SPECIFIC_USER_ID.getName()));
-        REQUESTED_ATTRIBUTES.add(new AttributeToReturnInfo(AttributeToReturn.RELYING_PARTY_USER_ID.getName()));
-        REQUESTED_ATTRIBUTES.add(new AttributeToReturnInfo(AttributeToReturn.ORGANISATION_ID_IDENTIFIER.getName()));
-        REQUESTED_ATTRIBUTES.add(new AttributeToReturnInfo(AttributeToReturn.ORGANISATION_ID.getName()));
-        REQUESTED_ATTRIBUTES.add(new AttributeToReturnInfo(AttributeToReturn.ADDRESSES.getName()));
-        REQUESTED_ATTRIBUTES.add(new AttributeToReturnInfo(AttributeToReturn.ALL_EMAIL_ADDRESSES.getName()));
-        REQUESTED_ATTRIBUTES.add(new AttributeToReturnInfo(AttributeToReturn.ALL_PHONE_NUMBERS.getName()));
-        REQUESTED_ATTRIBUTES.add(new AttributeToReturnInfo(AttributeToReturn.REGISTRATION_LEVEL.getName()));
-        REQUESTED_ATTRIBUTES.add(new AttributeToReturnInfo(AttributeToReturn.AGE.getName()));
-        REQUESTED_ATTRIBUTES.add(new AttributeToReturnInfo(AttributeToReturn.PHOTO.getName()));
-        REQUESTED_ATTRIBUTES.add(new AttributeToReturnInfo(AttributeToReturn.DOCUMENT.getName()));
-        REQUESTED_ATTRIBUTES.add(new AttributeToReturnInfo(AttributeToReturn.DOCUMENT_PHOTO.getName()));
-        REQUESTED_ATTRIBUTES.add(new AttributeToReturnInfo(AttributeToReturn.COVID_CERTIFICATES.getName()));
+        REQUESTED_ATTRIBUTES.add(attributeOf(AttributeToReturn.SSN));
+        REQUESTED_ATTRIBUTES.add(attributeOf(AttributeToReturn.BASIC_USER_INFO));
+        REQUESTED_ATTRIBUTES.add(attributeOf(AttributeToReturn.CUSTOM_IDENTIFIER));
+        REQUESTED_ATTRIBUTES.add(attributeOf(AttributeToReturn.DATE_OF_BIRTH));
+        REQUESTED_ATTRIBUTES.add(attributeOf(AttributeToReturn.EMAIL_ADDRESS));
+        REQUESTED_ATTRIBUTES.add(attributeOf(AttributeToReturn.INTEGRATOR_SPECIFIC_USER_ID));
+        REQUESTED_ATTRIBUTES.add(attributeOf(AttributeToReturn.RELYING_PARTY_USER_ID));
+        REQUESTED_ATTRIBUTES.add(attributeOf(AttributeToReturn.ORGANISATION_ID_IDENTIFIER));
+        REQUESTED_ATTRIBUTES.add(attributeOf(AttributeToReturn.ORGANISATION_ID));
+        REQUESTED_ATTRIBUTES.add(attributeOf(AttributeToReturn.ADDRESSES));
+        REQUESTED_ATTRIBUTES.add(attributeOf(AttributeToReturn.ALL_EMAIL_ADDRESSES));
+        REQUESTED_ATTRIBUTES.add(attributeOf(AttributeToReturn.ALL_PHONE_NUMBERS));
+        REQUESTED_ATTRIBUTES.add(attributeOf(AttributeToReturn.REGISTRATION_LEVEL));
+        REQUESTED_ATTRIBUTES.add(attributeOf(AttributeToReturn.AGE));
+        REQUESTED_ATTRIBUTES.add(attributeOf(AttributeToReturn.PHOTO));
+        REQUESTED_ATTRIBUTES.add(attributeOf(AttributeToReturn.DOCUMENT));
+        REQUESTED_ATTRIBUTES.add(attributeOf(AttributeToReturn.DOCUMENT_PHOTO));
+        REQUESTED_ATTRIBUTES.add(attributeOf(AttributeToReturn.COVID_CERTIFICATES));
+        REQUESTED_ATTRIBUTES.add(attributeOf(AttributeToReturn.DOCUMENT_INFO_WITH_PDF));
+    }
+
+    private static AttributeToReturnInfo attributeOf(AttributeToReturn attributeToReturn){
+        return new AttributeToReturnInfo(attributeToReturn.getName());
     }
 
     @Test

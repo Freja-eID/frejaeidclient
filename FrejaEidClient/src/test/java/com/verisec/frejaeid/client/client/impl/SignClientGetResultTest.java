@@ -29,6 +29,12 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.mockito.Mockito;
 
+import static org.junit.Assert.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 public class SignClientGetResultTest {
 
     private final HttpServiceApi httpServiceMock = Mockito.mock(HttpServiceApi.class);
@@ -50,6 +56,8 @@ public class SignClientGetResultTest {
     private static final String PHOTO = "Base64EncodedAvatarPhoto";
     private static final DocumentInfo DOCUMENT_INFO =
             new DocumentInfo(DocumentType.PASSPORT, "123456789", Country.SWEDEN, "2050-01-01");
+    private static final DocumentInfoWithPdf DOCUMENT_WITH_PDF =
+            new DocumentInfoWithPdf(DocumentType.PASSPORT, "123456789", Country.SWEDEN, "2050-01-01", "Base64Pdf");
     private static final String DOCUMENT_PHOTO = "Base64EncodedDocPhoto";
     protected static final CovidCertificates COVID_CERTIFICATES =
             new CovidCertificates(new Vaccines("covidCertificate"), null, null, true);
@@ -74,7 +82,7 @@ public class SignClientGetResultTest {
                                         RELYING_PARTY_USER_ID, EMAIL_ADDRESS, ORGANISATION_ID, ADDRESSES,
                                         ALL_EMAIL_ADDRESSES, ALL_PHONE_NUMBERS, RegistrationLevel.EXTENDED,
                                         AGE, PHOTO, DOCUMENT_INFO, DOCUMENT_PHOTO,
-                                        COVID_CERTIFICATES, ORGANISATION_ID_INFO);
+                                        COVID_CERTIFICATES, ORGANISATION_ID_INFO, DOCUMENT_WITH_PDF);
     }
 
     @Before
@@ -90,17 +98,17 @@ public class SignClientGetResultTest {
         SignResultRequest signResultsRequest = SignResultRequest.create(SIGN_REFERENCE);
         SignResult expectedResponse = new SignResult(SIGN_REFERENCE, TransactionStatus.STARTED, SIGN_DETAILS,
                                                      REQUESTED_ATTRIBUTES);
-        Mockito.when(httpServiceMock.send(Mockito.anyString(), Mockito.any(RequestTemplate.class),
-                                          Mockito.any(RelyingPartyRequest.class), Mockito.eq(SignResult.class),
+        when(httpServiceMock.send(anyString(), any(RequestTemplate.class),
+                                          any(RelyingPartyRequest.class), Mockito.eq(SignResult.class),
                                           (String) Mockito.isNull())).thenReturn(expectedResponse);
         SignResult response = signClient.getResult(signResultsRequest);
-        Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getServiceUrl() + MethodUrl.SIGN_GET_RESULT,
+        verify(httpServiceMock).send(FrejaEnvironment.TEST.getServiceUrl() + MethodUrl.SIGN_GET_RESULT,
                                              RequestTemplate.SIGN_RESULT_TEMPLATE, signResultsRequest,
                                              SignResult.class, null);
-        Assert.assertEquals(SIGN_REFERENCE, response.getSignRef());
-        Assert.assertEquals(TransactionStatus.STARTED, response.getStatus());
-        Assert.assertEquals(SIGN_DETAILS, response.getDetails());
-        Assert.assertEquals(REQUESTED_ATTRIBUTES, response.getRequestedAttributes());
+        assertEquals(SIGN_REFERENCE, response.getSignRef());
+        assertEquals(TransactionStatus.STARTED, response.getStatus());
+        assertEquals(SIGN_DETAILS, response.getDetails());
+        assertEquals(REQUESTED_ATTRIBUTES, response.getRequestedAttributes());
     }
 
     @Test
@@ -108,17 +116,17 @@ public class SignClientGetResultTest {
         SignResultRequest signResultRequest = SignResultRequest.create(SIGN_REFERENCE, RELYING_PARTY_ID);
         SignResult expectedResponse =
                 new SignResult(SIGN_REFERENCE, TransactionStatus.STARTED, SIGN_DETAILS, REQUESTED_ATTRIBUTES);
-        Mockito.when(httpServiceMock.send(Mockito.anyString(), Mockito.any(RequestTemplate.class),
-                                          Mockito.any(RelyingPartyRequest.class), Mockito.eq(SignResult.class),
-                                          Mockito.anyString())).thenReturn(expectedResponse);
+        when(httpServiceMock.send(anyString(), any(RequestTemplate.class),
+                                  any(RelyingPartyRequest.class), Mockito.eq(SignResult.class),
+                                  anyString())).thenReturn(expectedResponse);
         SignResult response = signClient.getResult(signResultRequest);
-        Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getServiceUrl() + MethodUrl.SIGN_GET_RESULT,
+        verify(httpServiceMock).send(FrejaEnvironment.TEST.getServiceUrl() + MethodUrl.SIGN_GET_RESULT,
                                              RequestTemplate.SIGN_RESULT_TEMPLATE, signResultRequest,
                                              SignResult.class, RELYING_PARTY_ID);
-        Assert.assertEquals(SIGN_REFERENCE, response.getSignRef());
-        Assert.assertEquals(TransactionStatus.STARTED, response.getStatus());
-        Assert.assertEquals(SIGN_DETAILS, response.getDetails());
-        Assert.assertEquals(REQUESTED_ATTRIBUTES, response.getRequestedAttributes());
+        assertEquals(SIGN_REFERENCE, response.getSignRef());
+        assertEquals(TransactionStatus.STARTED, response.getStatus());
+        assertEquals(SIGN_DETAILS, response.getDetails());
+        assertEquals(REQUESTED_ATTRIBUTES, response.getRequestedAttributes());
     }
 
     @Test
@@ -129,17 +137,17 @@ public class SignClientGetResultTest {
         SignClientApi signClient = SignClient.create(TestUtil.getDefaultSslSettings(), FrejaEnvironment.TEST)
                 .setHttpService(httpServiceMock)
                 .setTransactionContext(TransactionContext.ORGANISATIONAL).build();
-        Mockito.when(httpServiceMock.send(Mockito.anyString(), Mockito.any(RequestTemplate.class),
-                                          Mockito.any(RelyingPartyRequest.class), Mockito.eq(SignResult.class),
-                                          Mockito.anyString())).thenReturn(expectedResponse);
+        when(httpServiceMock.send(anyString(), any(RequestTemplate.class),
+                                  any(RelyingPartyRequest.class), Mockito.eq(SignResult.class),
+                                  anyString())).thenReturn(expectedResponse);
         SignResult response = signClient.getResult(signResultRequest);
-        Mockito.verify(httpServiceMock)
+        verify(httpServiceMock)
                 .send(FrejaEnvironment.TEST.getServiceUrl() + MethodUrl.ORGANISATION_SIGN_GET_ONE_RESULT,
                       RequestTemplate.SIGN_RESULT_TEMPLATE, signResultRequest, SignResult.class, RELYING_PARTY_ID);
-        Assert.assertEquals(SIGN_REFERENCE, response.getSignRef());
-        Assert.assertEquals(TransactionStatus.APPROVED, response.getStatus());
-        Assert.assertEquals(SIGN_DETAILS, response.getDetails());
-        Assert.assertEquals(REQUESTED_ATTRIBUTES, response.getRequestedAttributes());
+        assertEquals(SIGN_REFERENCE, response.getSignRef());
+        assertEquals(TransactionStatus.APPROVED, response.getStatus());
+        assertEquals(SIGN_DETAILS, response.getDetails());
+        assertEquals(REQUESTED_ATTRIBUTES, response.getRequestedAttributes());
     }
 
     @Test
@@ -152,24 +160,24 @@ public class SignClientGetResultTest {
                                         ALL_EMAIL_ADDRESSES, ALL_PHONE_NUMBERS,
                                         RegistrationLevel.EXTENDED, AGE, PHOTO,
                                         DOCUMENT_INFO, DOCUMENT_PHOTO, COVID_CERTIFICATES,
-                                        ORGANISATION_ID_INFO_WITH_ADDITIONAL_ATTRIBUTES);
+                                        ORGANISATION_ID_INFO_WITH_ADDITIONAL_ATTRIBUTES, DOCUMENT_WITH_PDF);
         SignResultRequest signResultRequest = SignResultRequest.create(SIGN_REFERENCE, RELYING_PARTY_ID);
         SignResult expectedResponse =
                 new SignResult(SIGN_REFERENCE, TransactionStatus.APPROVED, SIGN_DETAILS, requestedAttributes);
         SignClientApi signClient = SignClient.create(TestUtil.getDefaultSslSettings(), FrejaEnvironment.TEST)
                 .setHttpService(httpServiceMock)
                 .setTransactionContext(TransactionContext.ORGANISATIONAL).build();
-        Mockito.when(httpServiceMock.send(Mockito.anyString(), Mockito.any(RequestTemplate.class),
-                                          Mockito.any(RelyingPartyRequest.class), Mockito.eq(SignResult.class),
-                                          Mockito.anyString())).thenReturn(expectedResponse);
+        when(httpServiceMock.send(anyString(), any(RequestTemplate.class),
+                                  any(RelyingPartyRequest.class), Mockito.eq(SignResult.class),
+                                  anyString())).thenReturn(expectedResponse);
         SignResult response = signClient.getResult(signResultRequest);
-        Mockito.verify(httpServiceMock)
+        verify(httpServiceMock)
                 .send(FrejaEnvironment.TEST.getServiceUrl() + MethodUrl.ORGANISATION_SIGN_GET_ONE_RESULT,
                       RequestTemplate.SIGN_RESULT_TEMPLATE, signResultRequest, SignResult.class, RELYING_PARTY_ID);
-        Assert.assertEquals(SIGN_REFERENCE, response.getSignRef());
-        Assert.assertEquals(TransactionStatus.APPROVED, response.getStatus());
-        Assert.assertEquals(SIGN_DETAILS, response.getDetails());
-        Assert.assertEquals(requestedAttributes, response.getRequestedAttributes());
+        assertEquals(SIGN_REFERENCE, response.getSignRef());
+        assertEquals(TransactionStatus.APPROVED, response.getStatus());
+        assertEquals(SIGN_DETAILS, response.getDetails());
+        assertEquals(requestedAttributes, response.getRequestedAttributes());
     }
 
     @Test
@@ -179,17 +187,17 @@ public class SignClientGetResultTest {
         try {
             FrejaEidException frejaEidException = new FrejaEidException(
                     FrejaEidErrorCode.INVALID_REFERENCE.getMessage(), FrejaEidErrorCode.INVALID_REFERENCE.getCode());
-            Mockito.when(httpServiceMock.send(Mockito.anyString(), Mockito.any(RequestTemplate.class),
-                                              Mockito.any(RelyingPartyRequest.class), Mockito.eq(SignResult.class),
-                                              Mockito.anyString())).thenThrow(frejaEidException);
+            when(httpServiceMock.send(anyString(), any(RequestTemplate.class),
+                                      any(RelyingPartyRequest.class), Mockito.eq(SignResult.class),
+                                      anyString())).thenThrow(frejaEidException);
             signClient.getResult(signResultRequest);
             Assert.fail("Test should throw exception!");
         } catch (FrejaEidException rpEx) {
-            Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getServiceUrl() + MethodUrl.SIGN_GET_RESULT,
+            verify(httpServiceMock).send(FrejaEnvironment.TEST.getServiceUrl() + MethodUrl.SIGN_GET_RESULT,
                                                  RequestTemplate.SIGN_RESULT_TEMPLATE, signResultRequest,
                                                  SignResult.class, RELYING_PARTY_ID);
-            Assert.assertEquals(1100, rpEx.getErrorCode());
-            Assert.assertEquals("Invalid reference (for example, nonexistent or expired).", rpEx.getLocalizedMessage());
+            assertEquals(1100, rpEx.getErrorCode());
+            assertEquals("Invalid reference (for example, nonexistent or expired).", rpEx.getLocalizedMessage());
         }
     }
 
@@ -197,15 +205,15 @@ public class SignClientGetResultTest {
     public void pollForResult_finalResponseRejected_success()
             throws FrejaEidClientInternalException, FrejaEidException, FrejaEidClientPollingException {
         SignResult expectedResponse = new SignResult(SIGN_REFERENCE, TransactionStatus.REJECTED, SIGN_DETAILS, null);
-        Mockito.when(httpServiceMock.send(Mockito.anyString(), Mockito.any(RequestTemplate.class),
-                                          Mockito.any(RelyingPartyRequest.class), Mockito.eq(SignResult.class),
-                                          (String) Mockito.isNull())).thenReturn(expectedResponse);
+        when(httpServiceMock.send(anyString(), any(RequestTemplate.class),
+                                  any(RelyingPartyRequest.class), Mockito.eq(SignResult.class),
+                                  (String) Mockito.isNull())).thenReturn(expectedResponse);
         SignResultRequest signResultRequest = SignResultRequest.create(SIGN_REFERENCE);
         SignResult response = signClient.pollForResult(signResultRequest, 10000);
-        Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getServiceUrl() + MethodUrl.SIGN_GET_RESULT,
+        verify(httpServiceMock).send(FrejaEnvironment.TEST.getServiceUrl() + MethodUrl.SIGN_GET_RESULT,
                                              RequestTemplate.SIGN_RESULT_TEMPLATE, signResultRequest,
                                              SignResult.class, null);
-        Assert.assertEquals(TransactionStatus.REJECTED, response.getStatus());
+        assertEquals(TransactionStatus.REJECTED, response.getStatus());
     }
 
     @Test
@@ -215,7 +223,7 @@ public class SignClientGetResultTest {
             signClient.pollForResult(SignResultRequest.create(SIGN_REFERENCE), 2);
             Assert.fail("Test should throw exception!");
         } catch (FrejaEidClientPollingException ex) {
-            Assert.assertEquals("A timeout of 2s was reached while sending request.", ex.getLocalizedMessage());
+            assertEquals("A timeout of 2s was reached while sending request.", ex.getLocalizedMessage());
         }
     }
 
@@ -223,9 +231,9 @@ public class SignClientGetResultTest {
     public void getSignResults_relyingPartyIdNull_expectSuccess()
             throws FrejaEidClientInternalException, FrejaEidException {
         SignResults expectedResponse = prepareResponse();
-        Mockito.when(httpServiceMock.send(Mockito.anyString(), Mockito.any(RequestTemplate.class),
-                                          Mockito.any(RelyingPartyRequest.class), Mockito.eq(SignResults.class),
-                                          (String) Mockito.isNull())).thenReturn(expectedResponse);
+        when(httpServiceMock.send(anyString(), any(RequestTemplate.class),
+                                  any(RelyingPartyRequest.class), Mockito.eq(SignResults.class),
+                                  (String) Mockito.isNull())).thenReturn(expectedResponse);
         SignResultsRequest getSignResultsRequest = SignResultsRequest.create();
         getSignResults_success(getSignResultsRequest);
     }
@@ -234,9 +242,9 @@ public class SignClientGetResultTest {
     public void getSignResults_relyingPartyIdNotNull_expectSuccess()
             throws FrejaEidClientInternalException, FrejaEidException {
         SignResults expectedResponse = prepareResponse();
-        Mockito.when(httpServiceMock.send(Mockito.anyString(), Mockito.any(RequestTemplate.class),
-                                          Mockito.any(RelyingPartyRequest.class), Mockito.eq(SignResults.class),
-                                          Mockito.anyString())).thenReturn(expectedResponse);
+        when(httpServiceMock.send(anyString(), any(RequestTemplate.class),
+                                  any(RelyingPartyRequest.class), Mockito.eq(SignResults.class),
+                                  anyString())).thenReturn(expectedResponse);
         SignResultsRequest signResultsRequest = SignResultsRequest.create(RELYING_PARTY_ID);
         getSignResults_success(signResultsRequest);
     }
@@ -246,20 +254,20 @@ public class SignClientGetResultTest {
         FrejaEidException frejaEidException =
                 new FrejaEidException(FrejaEidErrorCode.UNKNOWN_RELYING_PARTY.getMessage(),
                                       FrejaEidErrorCode.UNKNOWN_RELYING_PARTY.getCode());
-        Mockito.when(httpServiceMock.send(Mockito.anyString(), Mockito.any(RequestTemplate.class),
-                                          Mockito.any(RelyingPartyRequest.class), Mockito.eq(SignResults.class),
-                                          Mockito.anyString()))
+        when(httpServiceMock.send(anyString(), any(RequestTemplate.class),
+                                  any(RelyingPartyRequest.class), Mockito.eq(SignResults.class),
+                                  anyString()))
                 .thenThrow(frejaEidException);
         SignResultsRequest signResultsRequest = SignResultsRequest.create(RELYING_PARTY_ID);
         try {
             signClient.getResults(signResultsRequest);
             Assert.fail("Test should throw exception!");
         } catch (FrejaEidException rpEx) {
-            Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getServiceUrl() + MethodUrl.SIGN_GET_RESULTS,
+            verify(httpServiceMock).send(FrejaEnvironment.TEST.getServiceUrl() + MethodUrl.SIGN_GET_RESULTS,
                                                  RequestTemplate.SIGN_RESULTS_TEMPLATE, signResultsRequest,
                                                  SignResults.class, RELYING_PARTY_ID);
-            Assert.assertEquals(1008, rpEx.getErrorCode());
-            Assert.assertEquals("Unknown Relying party.", rpEx.getLocalizedMessage());
+            assertEquals(1008, rpEx.getErrorCode());
+            assertEquals("Unknown Relying party.", rpEx.getLocalizedMessage());
         }
 
     }
@@ -267,20 +275,20 @@ public class SignClientGetResultTest {
     private void getSignResults_success(SignResultsRequest signResultsRequest)
             throws FrejaEidClientInternalException, FrejaEidException {
         List<SignResult> response = signClient.getResults(signResultsRequest);
-        Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getServiceUrl() + MethodUrl.SIGN_GET_RESULTS,
+        verify(httpServiceMock).send(FrejaEnvironment.TEST.getServiceUrl() + MethodUrl.SIGN_GET_RESULTS,
                                              RequestTemplate.SIGN_RESULTS_TEMPLATE, signResultsRequest,
                                              SignResults.class, signResultsRequest.getRelyingPartyId());
 
         SignResult firstResponse = response.get(0);
-        Assert.assertEquals(SIGN_REFERENCE, firstResponse.getSignRef());
-        Assert.assertEquals(TransactionStatus.STARTED, firstResponse.getStatus());
-        Assert.assertEquals(SIGN_DETAILS, firstResponse.getDetails());
-        Assert.assertEquals(REQUESTED_ATTRIBUTES, firstResponse.getRequestedAttributes());
+        assertEquals(SIGN_REFERENCE, firstResponse.getSignRef());
+        assertEquals(TransactionStatus.STARTED, firstResponse.getStatus());
+        assertEquals(SIGN_DETAILS, firstResponse.getDetails());
+        assertEquals(REQUESTED_ATTRIBUTES, firstResponse.getRequestedAttributes());
 
         SignResult secondResponse = response.get(1);
-        Assert.assertEquals(SIGN_REFERENCE, secondResponse.getSignRef());
-        Assert.assertEquals(TransactionStatus.DELIVERED_TO_MOBILE, secondResponse.getStatus());
-        Assert.assertEquals("test", secondResponse.getDetails());
+        assertEquals(SIGN_REFERENCE, secondResponse.getSignRef());
+        assertEquals(TransactionStatus.DELIVERED_TO_MOBILE, secondResponse.getStatus());
+        assertEquals("test", secondResponse.getDetails());
         Assert.assertNull(secondResponse.getRequestedAttributes());
     }
 
