@@ -28,6 +28,7 @@ This client library provides a set of classes, interfaces and utility methods de
   + deleting an organisation identifier for a user
   + fetching result of adding an organisation identifier for a user
   + cancelling adding organisation identifier for a user
+  + updating additional attributes for an issued organisation ID
 
 * Integrator Relying Party Management API Client
   + using all available services as an Integrator Relying Party
@@ -38,7 +39,7 @@ To add a dependency on Freja eID Client using Maven, use the following:
 <dependency>
     <groupId>com.verisec.frejaeid</groupId>
     <artifactId>FrejaEidClient</artifactId>
-    <version>2.20.1</version>
+    <version>2.21.0</version>
 </dependency>
 ```
 
