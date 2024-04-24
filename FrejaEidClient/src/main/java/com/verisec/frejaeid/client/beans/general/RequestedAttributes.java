@@ -33,6 +33,7 @@ public class RequestedAttributes {
     private final DocumentInfo document;
     private final String documentPhoto;
     private final CovidCertificates covidCertificates;
+    private final DocumentInfoWithPdf documentInfoWithPdf;
 
     @JsonCreator
     public RequestedAttributes(@JsonProperty(value = "basicUserInfo") BasicUserInfo basicUserInfo,
@@ -52,7 +53,8 @@ public class RequestedAttributes {
                                @JsonProperty(value = "document") DocumentInfo document,
                                @JsonProperty(value = "documentPhoto") String documentPhoto,
                                @JsonProperty(value = "covidCertificates") CovidCertificates covidCertificates,
-                               @JsonProperty(value = "organisationId") OrganisationIdInfo organisationId) {
+                               @JsonProperty(value = "organisationId") OrganisationIdInfo organisationId,
+                               @JsonProperty(value = "documentInfoWithPdf") DocumentInfoWithPdf documentInfoWithPdf) {
         this.basicUserInfo = basicUserInfo;
         this.customIdentifier = customIdentifier;
         this.ssn = ssn;
@@ -71,6 +73,7 @@ public class RequestedAttributes {
         this.document = document;
         this.documentPhoto = documentPhoto;
         this.covidCertificates = covidCertificates;
+        this.documentInfoWithPdf = documentInfoWithPdf;
     }
 
     public BasicUserInfo getBasicUserInfo() {
@@ -145,12 +148,16 @@ public class RequestedAttributes {
         return covidCertificates;
     }
 
+    public DocumentInfoWithPdf getDocumentInfoWithPdf() {
+        return documentInfoWithPdf;
+    }
+
     @Override
     public int hashCode() {
         return Objects.hash(basicUserInfo, customIdentifier, ssn, integratorSpecificUserId,
                             dateOfBirth, relyingPartyUserId, emailAddress, organisationIdIdentifier,
                             organisationId, addresses, allEmailAddresses, allPhoneNumbers, registrationLevel, age,
-                            photo, document, documentPhoto, covidCertificates);
+                            photo, document, documentPhoto, covidCertificates, documentInfoWithPdf);
     }
 
     @Override
@@ -219,6 +226,9 @@ public class RequestedAttributes {
         if (!Objects.equals(this.covidCertificates, other.covidCertificates)) {
             return false;
         }
+        if (!Objects.equals(this.documentInfoWithPdf, other.documentInfoWithPdf)) {
+            return false;
+        }
         return true;
     }
 
@@ -243,6 +253,7 @@ public class RequestedAttributes {
                 ", documentInfo=" + document +
                 ", documentPhoto=" + documentPhoto +
                 ", covidCertificates=" + covidCertificates +
+                ", documentInfoWithPdf=" + documentInfoWithPdf +
                 '}';
     }
 }

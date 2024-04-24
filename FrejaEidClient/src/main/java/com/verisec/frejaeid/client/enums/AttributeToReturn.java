@@ -31,6 +31,7 @@ import java.util.Map;
  * <br> - {@link #DOCUMENT}
  * <br> - {@link #DOCUMENT_PHOTO}
  * <br> - {@link #COVID_CERTIFICATES}
+ * <br> - {@link #DOCUMENT_INFO_WITH_PDF}
  */
 public enum AttributeToReturn {
 
@@ -143,7 +144,14 @@ public enum AttributeToReturn {
      * {@linkplain MinRegistrationLevel#EXTENDED} and
      * {@linkplain MinRegistrationLevel#PLUS}.
      */
-    COVID_CERTIFICATES("COVID_CERTIFICATES");
+    COVID_CERTIFICATES("COVID_CERTIFICATES"),
+    /**
+     * Data about the user's document and accompanying PDF file as a Base64-encoded String.
+     * Document with PDF can be requested only for
+     * {@linkplain MinRegistrationLevel#EXTENDED} and
+     * {@linkplain MinRegistrationLevel#PLUS}.
+     */
+    DOCUMENT_INFO_WITH_PDF("DOCUMENT_INFO_WITH_PDF");
 
     private final String name;
 

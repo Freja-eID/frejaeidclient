@@ -26,6 +26,8 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 
+import static org.junit.Assert.assertEquals;
+
 public abstract class CommonHttpTest {
 
     protected static final String REFERENCE = "123456789012345678";
@@ -52,6 +54,8 @@ public abstract class CommonHttpTest {
     private static final String PHOTO = "Base64EncodedAvatarPhoto";
     private static final DocumentInfo DOCUMENT_INFO =
             new DocumentInfo(DocumentType.PASSPORT, "123456789", Country.SWEDEN, "2050-01-01");
+    private static final DocumentInfoWithPdf DOCUMENT_WITH_PDF =
+            new DocumentInfoWithPdf(DocumentType.PASSPORT, "123456789", Country.SWEDEN, "2050-01-01", "Base64Pdf");
     private static final CovidCertificates COVID_CERTIFICATES =
             new CovidCertificates(new Vaccines("covidCertificate"), null, null, true);
     private static final String DOCUMENT_PHOTO = "Base64EncodedDocPhoto";
@@ -60,7 +64,7 @@ public abstract class CommonHttpTest {
                                     RELYING_PARTY_USER_ID, EMAIL_ADDRESS, ORGANISATION_ID, ADDRESSES,
                                     ALL_EMAIL_ADDRESSES, ALL_PHONE_NUMBERS, RegistrationLevel.EXTENDED, AGE,
                                     PHOTO, DOCUMENT_INFO, DOCUMENT_PHOTO,
-                                    COVID_CERTIFICATES, ORGANISATION_ID_INFO);
+                                    COVID_CERTIFICATES, ORGANISATION_ID_INFO, DOCUMENT_WITH_PDF);
     protected static final String POST_PARAMS_DELIMITER = "&";
     protected static final String KEY_VALUE_DELIMITER = "=";
     protected static final int MOCK_SERVICE_PORT = 30665;
@@ -76,7 +80,8 @@ public abstract class CommonHttpTest {
                 new OrganisationIdInfo("org_id", organisationIdIssuerNames, "org_id_issuer", null);
     }
 
-    protected void startMockServer(final RelyingPartyRequest expectedRequest, final int statusCodeToReturn,
+    protected void startMockServer(final RelyingPartyRequest expectedRequest,
+                                   final int statusCodeToReturn,
                                    final String responseToReturn)
             throws IOException {
         server = HttpServer.create(new InetSocketAddress(MOCK_SERVICE_PORT), 0);
@@ -92,32 +97,32 @@ public abstract class CommonHttpTest {
                         String[] postParams = requestData.split(POST_PARAMS_DELIMITER);
                         if (postParams.length == 2) {
                             String relyingPartyIdParam = postParams[1].split(KEY_VALUE_DELIMITER, 2)[1];
-                            Assert.assertEquals(RELYING_PARTY_ID, relyingPartyIdParam);
+                            assertEquals(RELYING_PARTY_ID, relyingPartyIdParam);
 
                             String requestParam = postParams[0].split(KEY_VALUE_DELIMITER, 2)[1];
                             String jsonReceivedRequest = new String(Base64.decodeBase64(requestParam),
                                                                     StandardCharsets.UTF_8);
                             String jsonExpectedRequest = jsonService.serializeToJson(expectedRequest);
-                            Assert.assertEquals(jsonExpectedRequest, jsonReceivedRequest);
+                            assertEquals(jsonExpectedRequest, jsonReceivedRequest);
 
                             RelyingPartyRequest receivedRequest =
                                     jsonService.deserializeFromJson(Base64.decodeBase64(requestParam),
                                                                     expectedRequest.getClass());
-                            Assert.assertEquals(expectedRequest, receivedRequest);
+                            assertEquals(expectedRequest, receivedRequest);
                         } else if (containsKeyValueDelimiter(postParams)) {
                             String relyingPartyIdParam = postParams[0].split(KEY_VALUE_DELIMITER, 2)[1];
-                            Assert.assertEquals(RELYING_PARTY_ID, relyingPartyIdParam);
+                            assertEquals(RELYING_PARTY_ID, relyingPartyIdParam);
                         } else {
                             String requestParam = postParams[0].split(KEY_VALUE_DELIMITER, 2)[1];
                             String jsonReceivedRequest = new String(Base64.decodeBase64(requestParam),
                                                                     StandardCharsets.UTF_8);
                             String jsonExpectedRequest = jsonService.serializeToJson(expectedRequest);
-                            Assert.assertEquals(jsonExpectedRequest, jsonReceivedRequest);
+                            assertEquals(jsonExpectedRequest, jsonReceivedRequest);
 
                             RelyingPartyRequest receivedRequest =
                                     jsonService.deserializeFromJson(Base64.decodeBase64(requestParam),
                                                                     expectedRequest.getClass());
-                            Assert.assertEquals(expectedRequest, receivedRequest);
+                            assertEquals(expectedRequest, receivedRequest);
                         }
 
                     }
