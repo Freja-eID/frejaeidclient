@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -58,6 +59,8 @@ public class SignClientGetResultTest {
             new DocumentInfo(DocumentType.PASSPORT, "123456789", Country.SWEDEN, "2050-01-01");
     private static final DocumentInfoWithPdf DOCUMENT_WITH_PDF =
             new DocumentInfoWithPdf(DocumentType.PASSPORT, "123456789", Country.SWEDEN, "2050-01-01", "Base64Pdf");
+    private static final DocumentInfoWithPdf CHILDREN_DOCUMENT_WITH_PDF =
+            new DocumentInfoWithPdf(DocumentType.PASSPORT, "987654321", Country.SWEDEN, "20240-01-01", "Base64Pdf");
     private static final String DOCUMENT_PHOTO = "Base64EncodedDocPhoto";
     protected static final CovidCertificates COVID_CERTIFICATES =
             new CovidCertificates(new Vaccines("covidCertificate"), null, null, true);
@@ -66,7 +69,7 @@ public class SignClientGetResultTest {
 
     @BeforeClass
     public static void initTestData() {
-        HashMap<String,String> organisationIdIssuerNames = new HashMap<>();
+        Map<String, String> organisationIdIssuerNames = new HashMap<>();
         organisationIdIssuerNames.put("EN", "Org ID issuer");
         organisationIdIssuerNames.put("SV", "Org ID issuer Swedish");
         ORGANISATION_ID_INFO =
@@ -82,7 +85,8 @@ public class SignClientGetResultTest {
                                         RELYING_PARTY_USER_ID, EMAIL_ADDRESS, ORGANISATION_ID, ADDRESSES,
                                         ALL_EMAIL_ADDRESSES, ALL_PHONE_NUMBERS, RegistrationLevel.EXTENDED,
                                         AGE, PHOTO, DOCUMENT_INFO, DOCUMENT_PHOTO,
-                                        COVID_CERTIFICATES, ORGANISATION_ID_INFO, DOCUMENT_WITH_PDF);
+                                        COVID_CERTIFICATES, ORGANISATION_ID_INFO, DOCUMENT_WITH_PDF,
+                                        Arrays.asList(CHILDREN_DOCUMENT_WITH_PDF));
     }
 
     @Before
@@ -99,12 +103,12 @@ public class SignClientGetResultTest {
         SignResult expectedResponse = new SignResult(SIGN_REFERENCE, TransactionStatus.STARTED, SIGN_DETAILS,
                                                      REQUESTED_ATTRIBUTES);
         when(httpServiceMock.send(anyString(), any(RequestTemplate.class),
-                                          any(RelyingPartyRequest.class), Mockito.eq(SignResult.class),
-                                          (String) Mockito.isNull())).thenReturn(expectedResponse);
+                                  any(RelyingPartyRequest.class), Mockito.eq(SignResult.class),
+                                  (String) Mockito.isNull())).thenReturn(expectedResponse);
         SignResult response = signClient.getResult(signResultsRequest);
         verify(httpServiceMock).send(FrejaEnvironment.TEST.getServiceUrl() + MethodUrl.SIGN_GET_RESULT,
-                                             RequestTemplate.SIGN_RESULT_TEMPLATE, signResultsRequest,
-                                             SignResult.class, null);
+                                     RequestTemplate.SIGN_RESULT_TEMPLATE, signResultsRequest,
+                                     SignResult.class, null);
         assertEquals(SIGN_REFERENCE, response.getSignRef());
         assertEquals(TransactionStatus.STARTED, response.getStatus());
         assertEquals(SIGN_DETAILS, response.getDetails());
@@ -121,8 +125,8 @@ public class SignClientGetResultTest {
                                   anyString())).thenReturn(expectedResponse);
         SignResult response = signClient.getResult(signResultRequest);
         verify(httpServiceMock).send(FrejaEnvironment.TEST.getServiceUrl() + MethodUrl.SIGN_GET_RESULT,
-                                             RequestTemplate.SIGN_RESULT_TEMPLATE, signResultRequest,
-                                             SignResult.class, RELYING_PARTY_ID);
+                                     RequestTemplate.SIGN_RESULT_TEMPLATE, signResultRequest,
+                                     SignResult.class, RELYING_PARTY_ID);
         assertEquals(SIGN_REFERENCE, response.getSignRef());
         assertEquals(TransactionStatus.STARTED, response.getStatus());
         assertEquals(SIGN_DETAILS, response.getDetails());
@@ -151,7 +155,8 @@ public class SignClientGetResultTest {
     }
 
     @Test
-    public void getSignResultOrganisational_withAdditionalAttributes_expectSuccess() throws FrejaEidClientInternalException, FrejaEidException {
+    public void getSignResultOrganisational_withAdditionalAttributes_expectSuccess() throws
+            FrejaEidClientInternalException, FrejaEidException {
         RequestedAttributes requestedAttributes =
                 new RequestedAttributes(new BasicUserInfo("name", "surname"), "customIdentifier",
                                         SsnUserInfo.create(Country.SWEDEN, "ssn"), null,
@@ -160,7 +165,8 @@ public class SignClientGetResultTest {
                                         ALL_EMAIL_ADDRESSES, ALL_PHONE_NUMBERS,
                                         RegistrationLevel.EXTENDED, AGE, PHOTO,
                                         DOCUMENT_INFO, DOCUMENT_PHOTO, COVID_CERTIFICATES,
-                                        ORGANISATION_ID_INFO_WITH_ADDITIONAL_ATTRIBUTES, DOCUMENT_WITH_PDF);
+                                        ORGANISATION_ID_INFO_WITH_ADDITIONAL_ATTRIBUTES, DOCUMENT_WITH_PDF,
+                                        Arrays.asList(CHILDREN_DOCUMENT_WITH_PDF));
         SignResultRequest signResultRequest = SignResultRequest.create(SIGN_REFERENCE, RELYING_PARTY_ID);
         SignResult expectedResponse =
                 new SignResult(SIGN_REFERENCE, TransactionStatus.APPROVED, SIGN_DETAILS, requestedAttributes);
@@ -194,8 +200,8 @@ public class SignClientGetResultTest {
             Assert.fail("Test should throw exception!");
         } catch (FrejaEidException rpEx) {
             verify(httpServiceMock).send(FrejaEnvironment.TEST.getServiceUrl() + MethodUrl.SIGN_GET_RESULT,
-                                                 RequestTemplate.SIGN_RESULT_TEMPLATE, signResultRequest,
-                                                 SignResult.class, RELYING_PARTY_ID);
+                                         RequestTemplate.SIGN_RESULT_TEMPLATE, signResultRequest,
+                                         SignResult.class, RELYING_PARTY_ID);
             assertEquals(1100, rpEx.getErrorCode());
             assertEquals("Invalid reference (for example, nonexistent or expired).", rpEx.getLocalizedMessage());
         }
@@ -211,8 +217,8 @@ public class SignClientGetResultTest {
         SignResultRequest signResultRequest = SignResultRequest.create(SIGN_REFERENCE);
         SignResult response = signClient.pollForResult(signResultRequest, 10000);
         verify(httpServiceMock).send(FrejaEnvironment.TEST.getServiceUrl() + MethodUrl.SIGN_GET_RESULT,
-                                             RequestTemplate.SIGN_RESULT_TEMPLATE, signResultRequest,
-                                             SignResult.class, null);
+                                     RequestTemplate.SIGN_RESULT_TEMPLATE, signResultRequest,
+                                     SignResult.class, null);
         assertEquals(TransactionStatus.REJECTED, response.getStatus());
     }
 
@@ -264,8 +270,8 @@ public class SignClientGetResultTest {
             Assert.fail("Test should throw exception!");
         } catch (FrejaEidException rpEx) {
             verify(httpServiceMock).send(FrejaEnvironment.TEST.getServiceUrl() + MethodUrl.SIGN_GET_RESULTS,
-                                                 RequestTemplate.SIGN_RESULTS_TEMPLATE, signResultsRequest,
-                                                 SignResults.class, RELYING_PARTY_ID);
+                                         RequestTemplate.SIGN_RESULTS_TEMPLATE, signResultsRequest,
+                                         SignResults.class, RELYING_PARTY_ID);
             assertEquals(1008, rpEx.getErrorCode());
             assertEquals("Unknown Relying party.", rpEx.getLocalizedMessage());
         }
@@ -276,8 +282,8 @@ public class SignClientGetResultTest {
             throws FrejaEidClientInternalException, FrejaEidException {
         List<SignResult> response = signClient.getResults(signResultsRequest);
         verify(httpServiceMock).send(FrejaEnvironment.TEST.getServiceUrl() + MethodUrl.SIGN_GET_RESULTS,
-                                             RequestTemplate.SIGN_RESULTS_TEMPLATE, signResultsRequest,
-                                             SignResults.class, signResultsRequest.getRelyingPartyId());
+                                     RequestTemplate.SIGN_RESULTS_TEMPLATE, signResultsRequest,
+                                     SignResults.class, signResultsRequest.getRelyingPartyId());
 
         SignResult firstResponse = response.get(0);
         assertEquals(SIGN_REFERENCE, firstResponse.getSignRef());

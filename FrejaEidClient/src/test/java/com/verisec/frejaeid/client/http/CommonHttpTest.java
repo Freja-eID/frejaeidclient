@@ -20,6 +20,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.codec.binary.Base64;
 import org.junit.After;
@@ -56,6 +57,8 @@ public abstract class CommonHttpTest {
             new DocumentInfo(DocumentType.PASSPORT, "123456789", Country.SWEDEN, "2050-01-01");
     private static final DocumentInfoWithPdf DOCUMENT_WITH_PDF =
             new DocumentInfoWithPdf(DocumentType.PASSPORT, "123456789", Country.SWEDEN, "2050-01-01", "Base64Pdf");
+    private static final DocumentInfoWithPdf CHILDREN_DOCUMENT_WITH_PDF =
+            new DocumentInfoWithPdf(DocumentType.PASSPORT, "987654321", Country.SWEDEN, "20240-01-01", "Base64Pdf");
     private static final CovidCertificates COVID_CERTIFICATES =
             new CovidCertificates(new Vaccines("covidCertificate"), null, null, true);
     private static final String DOCUMENT_PHOTO = "Base64EncodedDocPhoto";
@@ -64,7 +67,8 @@ public abstract class CommonHttpTest {
                                     RELYING_PARTY_USER_ID, EMAIL_ADDRESS, ORGANISATION_ID, ADDRESSES,
                                     ALL_EMAIL_ADDRESSES, ALL_PHONE_NUMBERS, RegistrationLevel.EXTENDED, AGE,
                                     PHOTO, DOCUMENT_INFO, DOCUMENT_PHOTO,
-                                    COVID_CERTIFICATES, ORGANISATION_ID_INFO, DOCUMENT_WITH_PDF);
+                                    COVID_CERTIFICATES, ORGANISATION_ID_INFO, DOCUMENT_WITH_PDF,
+                                    Arrays.asList(CHILDREN_DOCUMENT_WITH_PDF));
     protected static final String POST_PARAMS_DELIMITER = "&";
     protected static final String KEY_VALUE_DELIMITER = "=";
     protected static final int MOCK_SERVICE_PORT = 30665;
@@ -73,7 +77,7 @@ public abstract class CommonHttpTest {
 
     @BeforeClass
     public static void initTestData() {
-        HashMap<String,String> organisationIdIssuerNames = new HashMap<>();
+        Map<String, String> organisationIdIssuerNames = new HashMap<>();
         organisationIdIssuerNames.put("EN", "Org ID issuer");
         organisationIdIssuerNames.put("SV", "Org ID issuer Swedish");
         ORGANISATION_ID_INFO =
@@ -86,56 +90,56 @@ public abstract class CommonHttpTest {
             throws IOException {
         server = HttpServer.create(new InetSocketAddress(MOCK_SERVICE_PORT), 0);
         server.createContext("/", new HttpHandler() {
-            @Override
-            public void handle(HttpExchange t) throws IOException {
-                String requestData;
-                try (InputStreamReader isr = new InputStreamReader(t.getRequestBody())) {
-                    BufferedReader reader = new BufferedReader(isr);
-                    requestData = reader.readLine();
+                         @Override
+                         public void handle(HttpExchange t) throws IOException {
+                             String requestData;
+                             try (InputStreamReader isr = new InputStreamReader(t.getRequestBody())) {
+                                 BufferedReader reader = new BufferedReader(isr);
+                                 requestData = reader.readLine();
 
-                    if (requestData != null) {
-                        String[] postParams = requestData.split(POST_PARAMS_DELIMITER);
-                        if (postParams.length == 2) {
-                            String relyingPartyIdParam = postParams[1].split(KEY_VALUE_DELIMITER, 2)[1];
-                            assertEquals(RELYING_PARTY_ID, relyingPartyIdParam);
+                                 if (requestData != null) {
+                                     String[] postParams = requestData.split(POST_PARAMS_DELIMITER);
+                                     if (postParams.length == 2) {
+                                         String relyingPartyIdParam = postParams[1].split(KEY_VALUE_DELIMITER, 2)[1];
+                                         assertEquals(RELYING_PARTY_ID, relyingPartyIdParam);
 
-                            String requestParam = postParams[0].split(KEY_VALUE_DELIMITER, 2)[1];
-                            String jsonReceivedRequest = new String(Base64.decodeBase64(requestParam),
-                                                                    StandardCharsets.UTF_8);
-                            String jsonExpectedRequest = jsonService.serializeToJson(expectedRequest);
-                            assertEquals(jsonExpectedRequest, jsonReceivedRequest);
+                                         String requestParam = postParams[0].split(KEY_VALUE_DELIMITER, 2)[1];
+                                         String jsonReceivedRequest = new String(Base64.decodeBase64(requestParam),
+                                                                                 StandardCharsets.UTF_8);
+                                         String jsonExpectedRequest = jsonService.serializeToJson(expectedRequest);
+                                         assertEquals(jsonExpectedRequest, jsonReceivedRequest);
 
-                            RelyingPartyRequest receivedRequest =
-                                    jsonService.deserializeFromJson(Base64.decodeBase64(requestParam),
-                                                                    expectedRequest.getClass());
-                            assertEquals(expectedRequest, receivedRequest);
-                        } else if (containsKeyValueDelimiter(postParams)) {
-                            String relyingPartyIdParam = postParams[0].split(KEY_VALUE_DELIMITER, 2)[1];
-                            assertEquals(RELYING_PARTY_ID, relyingPartyIdParam);
-                        } else {
-                            String requestParam = postParams[0].split(KEY_VALUE_DELIMITER, 2)[1];
-                            String jsonReceivedRequest = new String(Base64.decodeBase64(requestParam),
-                                                                    StandardCharsets.UTF_8);
-                            String jsonExpectedRequest = jsonService.serializeToJson(expectedRequest);
-                            assertEquals(jsonExpectedRequest, jsonReceivedRequest);
+                                         RelyingPartyRequest receivedRequest =
+                                                 jsonService.deserializeFromJson(Base64.decodeBase64(requestParam),
+                                                                                 expectedRequest.getClass());
+                                         assertEquals(expectedRequest, receivedRequest);
+                                     } else if (containsKeyValueDelimiter(postParams)) {
+                                         String relyingPartyIdParam = postParams[0].split(KEY_VALUE_DELIMITER, 2)[1];
+                                         assertEquals(RELYING_PARTY_ID, relyingPartyIdParam);
+                                     } else {
+                                         String requestParam = postParams[0].split(KEY_VALUE_DELIMITER, 2)[1];
+                                         String jsonReceivedRequest = new String(Base64.decodeBase64(requestParam),
+                                                                                 StandardCharsets.UTF_8);
+                                         String jsonExpectedRequest = jsonService.serializeToJson(expectedRequest);
+                                         assertEquals(jsonExpectedRequest, jsonReceivedRequest);
 
-                            RelyingPartyRequest receivedRequest =
-                                    jsonService.deserializeFromJson(Base64.decodeBase64(requestParam),
-                                                                    expectedRequest.getClass());
-                            assertEquals(expectedRequest, receivedRequest);
-                        }
+                                         RelyingPartyRequest receivedRequest =
+                                                 jsonService.deserializeFromJson(Base64.decodeBase64(requestParam),
+                                                                                 expectedRequest.getClass());
+                                         assertEquals(expectedRequest, receivedRequest);
+                                     }
 
-                    }
-                } catch (Exception ex) {
-                    Assert.fail(ex.getMessage());
-                }
+                                 }
+                             } catch (Exception ex) {
+                                 Assert.fail(ex.getMessage());
+                             }
 
-                t.sendResponseHeaders(statusCodeToReturn, responseToReturn.length());
-                try (OutputStream os = t.getResponseBody()) {
-                    os.write(responseToReturn.getBytes());
-                }
-            }
-        });
+                             t.sendResponseHeaders(statusCodeToReturn, responseToReturn.length());
+                             try (OutputStream os = t.getResponseBody()) {
+                                 os.write(responseToReturn.getBytes());
+                             }
+                         }
+                     });
         server.setExecutor(null); // creates a default executor
         server.start();
     }
