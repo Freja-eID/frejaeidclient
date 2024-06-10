@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -58,11 +59,13 @@ public class AuthenticationClientGetResultTest {
     private static final List<Email> ALL_EMAIL_ADDRESSES = Arrays.asList(new Email(EMAIL_ADDRESS));
     private static final List<PhoneNumberInfo> ALL_PHONE_NUMBERS = Arrays.asList(new PhoneNumberInfo(PHONE_NUMBER));
     private static final Integer AGE = 35;
-        private static final String PHOTO = "https://image-hashId/test";
+    private static final String PHOTO = "https://image-hashId/test";
     private static final DocumentInfo DOCUMENT_INFO =
             new DocumentInfo(DocumentType.PASSPORT, "123456789", Country.SWEDEN, "2050-01-01");
     private static final DocumentInfoWithPdf DOCUMENT_WITH_PDF =
             new DocumentInfoWithPdf(DocumentType.PASSPORT, "123456789", Country.SWEDEN, "2050-01-01", "Base64Pdf");
+    private static final DocumentInfoWithPdf CHILDREN_DOCUMENT_WITH_PDF =
+            new DocumentInfoWithPdf(DocumentType.PASSPORT, "987654321", Country.SWEDEN, "20240-01-01", "Base64Pdf");
     private static final String DOCUMENT_PHOTO = "Base64EncodedDocPhoto";
     private static final CovidCertificates COVID_CERTIFICATES =
             new CovidCertificates(new Vaccines("covidCertificate"), null, null, true);
@@ -71,7 +74,7 @@ public class AuthenticationClientGetResultTest {
 
     @BeforeClass
     public static void initTestData() {
-        HashMap<String,String> organisationIdIssuerNames = new HashMap<>();
+        Map<String, String> organisationIdIssuerNames = new HashMap<>();
         organisationIdIssuerNames.put("EN", "Org ID issuer");
         organisationIdIssuerNames.put("SV", "Org ID issuer Swedish");
         ORGANISATION_ID_INFO =
@@ -87,7 +90,7 @@ public class AuthenticationClientGetResultTest {
                                         ALL_EMAIL_ADDRESSES, ALL_PHONE_NUMBERS, RegistrationLevel.EXTENDED,
                                         AGE, PHOTO, DOCUMENT_INFO, DOCUMENT_PHOTO,
                                         COVID_CERTIFICATES, ORGANISATION_ID_INFO,
-                                        DOCUMENT_WITH_PDF);
+                                        DOCUMENT_WITH_PDF, Arrays.asList(CHILDREN_DOCUMENT_WITH_PDF));
     }
 
     @Before
@@ -102,14 +105,14 @@ public class AuthenticationClientGetResultTest {
             throws FrejaEidClientInternalException, FrejaEidException {
         AuthenticationResultRequest authenticationResultRequest = AuthenticationResultRequest.create(REFERENCE);
         when(httpServiceMock.send(anyString(), any(RequestTemplate.class),
-                                          any(RelyingPartyRequest.class),
-                                          Mockito.eq(AuthenticationResult.class), (String) Mockito.isNull()))
+                                  any(RelyingPartyRequest.class),
+                                  Mockito.eq(AuthenticationResult.class), (String) Mockito.isNull()))
                 .thenReturn(new AuthenticationResult(REFERENCE, TransactionStatus.STARTED, DETAILS,
                                                      REQUESTED_ATTRIBUTES));
         AuthenticationResult response = authenticationClient.getResult(authenticationResultRequest);
         verify(httpServiceMock).send(FrejaEnvironment.TEST.getServiceUrl() + MethodUrl.AUTHENTICATION_GET_RESULT,
-                                             RequestTemplate.AUTHENTICATION_RESULT_TEMPLATE,
-                                             authenticationResultRequest, AuthenticationResult.class, null);
+                                     RequestTemplate.AUTHENTICATION_RESULT_TEMPLATE,
+                                     authenticationResultRequest, AuthenticationResult.class, null);
         assertEquals(REFERENCE, response.getAuthRef());
         assertEquals(TransactionStatus.STARTED, response.getStatus());
         assertEquals(DETAILS, response.getDetails());
@@ -127,8 +130,8 @@ public class AuthenticationClientGetResultTest {
                                                      REQUESTED_ATTRIBUTES));
         AuthenticationResult response = authenticationClient.getResult(authenticationResultRequest);
         verify(httpServiceMock).send(FrejaEnvironment.TEST.getServiceUrl() + MethodUrl.AUTHENTICATION_GET_RESULT,
-                                             RequestTemplate.AUTHENTICATION_RESULT_TEMPLATE,
-                                             authenticationResultRequest, AuthenticationResult.class, RELYING_PARTY_ID);
+                                     RequestTemplate.AUTHENTICATION_RESULT_TEMPLATE,
+                                     authenticationResultRequest, AuthenticationResult.class, RELYING_PARTY_ID);
         assertEquals(REFERENCE, response.getAuthRef());
         assertEquals(TransactionStatus.STARTED, response.getStatus());
         assertEquals(DETAILS, response.getDetails());
@@ -170,7 +173,8 @@ public class AuthenticationClientGetResultTest {
                                         ALL_EMAIL_ADDRESSES, ALL_PHONE_NUMBERS,
                                         RegistrationLevel.EXTENDED, AGE, PHOTO,
                                         DOCUMENT_INFO, DOCUMENT_PHOTO, COVID_CERTIFICATES,
-                                        ORGANISATION_ID_INFO_WITH_ADDITIONAL_ATTRIBUTES, DOCUMENT_WITH_PDF);
+                                        ORGANISATION_ID_INFO_WITH_ADDITIONAL_ATTRIBUTES, DOCUMENT_WITH_PDF,
+                                        Arrays.asList(CHILDREN_DOCUMENT_WITH_PDF));
         AuthenticationClientApi authenticationClient =
                 AuthenticationClient.create(TestUtil.getDefaultSslSettings(), FrejaEnvironment.TEST)
                         .setHttpService(httpServiceMock)
@@ -208,9 +212,9 @@ public class AuthenticationClientGetResultTest {
             Assert.fail("Test should throw exception!");
         } catch (FrejaEidException rpEx) {
             verify(httpServiceMock).send(FrejaEnvironment.TEST.getServiceUrl() + MethodUrl.AUTHENTICATION_GET_RESULT,
-                                                 RequestTemplate.AUTHENTICATION_RESULT_TEMPLATE,
-                                                 getOneAuthenticationResultRequest, AuthenticationResult.class,
-                                                 RELYING_PARTY_ID);
+                                         RequestTemplate.AUTHENTICATION_RESULT_TEMPLATE,
+                                         getOneAuthenticationResultRequest, AuthenticationResult.class,
+                                         RELYING_PARTY_ID);
             assertEquals(1100, rpEx.getErrorCode());
             assertEquals("Invalid reference (for example, nonexistent or expired).", rpEx.getLocalizedMessage());
         }
@@ -228,8 +232,8 @@ public class AuthenticationClientGetResultTest {
                 .thenReturn(expectedResponse);
         AuthenticationResult response = authenticationClient.pollForResult(authenticationResultRequest, 10000);
         verify(httpServiceMock).send(FrejaEnvironment.TEST.getServiceUrl() + MethodUrl.AUTHENTICATION_GET_RESULT,
-                                             RequestTemplate.AUTHENTICATION_RESULT_TEMPLATE,
-                                             authenticationResultRequest, AuthenticationResult.class, null);
+                                     RequestTemplate.AUTHENTICATION_RESULT_TEMPLATE,
+                                     authenticationResultRequest, AuthenticationResult.class, null);
         assertEquals(TransactionStatus.REJECTED, response.getStatus());
     }
 
@@ -247,8 +251,8 @@ public class AuthenticationClientGetResultTest {
         AuthenticationResult response = authenticationClient
                 .pollForResult(AuthenticationResultRequest.create(REFERENCE, RELYING_PARTY_ID), 10000);
         verify(httpServiceMock).send(FrejaEnvironment.TEST.getServiceUrl() + MethodUrl.AUTHENTICATION_GET_RESULT,
-                                             RequestTemplate.AUTHENTICATION_RESULT_TEMPLATE,
-                                             authenticationResultRequest, AuthenticationResult.class, RELYING_PARTY_ID);
+                                     RequestTemplate.AUTHENTICATION_RESULT_TEMPLATE,
+                                     authenticationResultRequest, AuthenticationResult.class, RELYING_PARTY_ID);
         assertEquals(TransactionStatus.REJECTED, response.getStatus());
     }
 
@@ -293,9 +297,9 @@ public class AuthenticationClientGetResultTest {
             throws FrejaEidClientInternalException, FrejaEidException {
         List<AuthenticationResult> response = authenticationClient.getResults(getAuthenticationResultsRequest);
         verify(httpServiceMock).send(FrejaEnvironment.TEST.getServiceUrl() + MethodUrl.AUTHENTICATION_GET_RESULTS,
-                                             RequestTemplate.AUTHENTICATION_RESULTS_TEMPLATE,
-                                             getAuthenticationResultsRequest, AuthenticationResults.class,
-                                             getAuthenticationResultsRequest.getRelyingPartyId());
+                                     RequestTemplate.AUTHENTICATION_RESULTS_TEMPLATE,
+                                     getAuthenticationResultsRequest, AuthenticationResults.class,
+                                     getAuthenticationResultsRequest.getRelyingPartyId());
         AuthenticationResult first = response.get(0);
         assertEquals(REFERENCE, first.getAuthRef());
         assertEquals(TransactionStatus.STARTED, first.getStatus());
@@ -315,12 +319,13 @@ public class AuthenticationClientGetResultTest {
                                         RELYING_PARTY_USER_ID, EMAIL_ADDRESS, ORGANISATION_ID, ADDRESSES,
                                         ALL_EMAIL_ADDRESSES, ALL_PHONE_NUMBERS, RegistrationLevel.EXTENDED, AGE,
                                         PHOTO, DOCUMENT_INFO, DOCUMENT_PHOTO, COVID_CERTIFICATES,
-                                        ORGANISATION_ID_INFO, DOCUMENT_WITH_PDF);
+                                        ORGANISATION_ID_INFO, DOCUMENT_WITH_PDF,
+                                        Arrays.asList(CHILDREN_DOCUMENT_WITH_PDF));
         AuthenticationResult firstResponse =
                 new AuthenticationResult(REFERENCE, TransactionStatus.STARTED, DETAILS, attributes1);
         RequestedAttributes attributes2 =
                 new RequestedAttributes(null, "test", null, null, null, null, null, null, null, null,
-                                        null, null, null, null, null, null, null, null, null);
+                                        null, null, null, null, null, null, null, null, null, null);
         AuthenticationResult secondResponse =
                 new AuthenticationResult(REFERENCE, TransactionStatus.DELIVERED_TO_MOBILE, "test", attributes2);
         List<AuthenticationResult> responses = new ArrayList<>();
