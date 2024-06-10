@@ -34,6 +34,7 @@ public class RequestedAttributes {
     private final String documentPhoto;
     private final CovidCertificates covidCertificates;
     private final DocumentInfoWithPdf documentInfoWithPdf;
+    private final List<DocumentInfoWithPdf> childrenDocumentInfoWithPdf;
 
     @JsonCreator
     public RequestedAttributes(@JsonProperty(value = "basicUserInfo") BasicUserInfo basicUserInfo,
@@ -54,7 +55,8 @@ public class RequestedAttributes {
                                @JsonProperty(value = "documentPhoto") String documentPhoto,
                                @JsonProperty(value = "covidCertificates") CovidCertificates covidCertificates,
                                @JsonProperty(value = "organisationId") OrganisationIdInfo organisationId,
-                               @JsonProperty(value = "documentInfoWithPdf") DocumentInfoWithPdf documentInfoWithPdf) {
+                               @JsonProperty(value = "documentInfoWithPdf") DocumentInfoWithPdf documentInfoWithPdf,
+                               @JsonProperty(value = "childrenDocumentInfoWithPdf") List<DocumentInfoWithPdf> childrenDocumentInfoWithPdf) {
         this.basicUserInfo = basicUserInfo;
         this.customIdentifier = customIdentifier;
         this.ssn = ssn;
@@ -74,6 +76,7 @@ public class RequestedAttributes {
         this.documentPhoto = documentPhoto;
         this.covidCertificates = covidCertificates;
         this.documentInfoWithPdf = documentInfoWithPdf;
+        this.childrenDocumentInfoWithPdf = childrenDocumentInfoWithPdf;
     }
 
     public BasicUserInfo getBasicUserInfo() {
@@ -152,12 +155,17 @@ public class RequestedAttributes {
         return documentInfoWithPdf;
     }
 
+    public List<DocumentInfoWithPdf> getChildrenDocumentInfoWithPdf() {
+        return childrenDocumentInfoWithPdf;
+    }
+
     @Override
     public int hashCode() {
         return Objects.hash(basicUserInfo, customIdentifier, ssn, integratorSpecificUserId,
                             dateOfBirth, relyingPartyUserId, emailAddress, organisationIdIdentifier,
                             organisationId, addresses, allEmailAddresses, allPhoneNumbers, registrationLevel, age,
-                            photo, document, documentPhoto, covidCertificates, documentInfoWithPdf);
+                            photo, document, documentPhoto, covidCertificates, documentInfoWithPdf, 
+                            childrenDocumentInfoWithPdf);
     }
 
     @Override
@@ -229,6 +237,9 @@ public class RequestedAttributes {
         if (!Objects.equals(this.documentInfoWithPdf, other.documentInfoWithPdf)) {
             return false;
         }
+        if (!Objects.equals(this.childrenDocumentInfoWithPdf, other.childrenDocumentInfoWithPdf)) {
+            return false;
+        }
         return true;
     }
 
@@ -254,6 +265,7 @@ public class RequestedAttributes {
                 ", documentPhoto=" + documentPhoto +
                 ", covidCertificates=" + covidCertificates +
                 ", documentInfoWithPdf=" + documentInfoWithPdf +
+                ", childrenDocumentInfoWithPdf=" + childrenDocumentInfoWithPdf +
                 '}';
     }
 }
