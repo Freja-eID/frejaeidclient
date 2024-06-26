@@ -6,12 +6,14 @@ package com.verisec.frejaeid.client.enums;
  * <br> - {@linkplain #BASIC}
  * <br> - {@linkplain #EXTENDED}
  * <br> - {@linkplain #PLUS}
+ * <br> - {@linkplain #INFERRED}
  */
 public enum MinRegistrationLevel {
 
     BASIC("BASIC"),
     EXTENDED("EXTENDED"),
-    PLUS("PLUS");
+    PLUS("PLUS"),
+    INFERRED("INFERRED");
 
     private final String state;
 
