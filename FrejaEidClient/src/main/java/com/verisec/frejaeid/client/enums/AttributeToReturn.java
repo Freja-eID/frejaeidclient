@@ -159,7 +159,12 @@ public enum AttributeToReturn {
      * {@linkplain MinRegistrationLevel#EXTENDED} and
      * {@linkplain MinRegistrationLevel#PLUS}.
      */
-    CHILDREN_DOCUMENT_INFO_WITH_PDF("CHILDREN_DOCUMENT_INFO_WITH_PDF");
+    CHILDREN_DOCUMENT_INFO_WITH_PDF("CHILDREN_DOCUMENT_INFO_WITH_PDF"),
+
+    /**
+     * Data contains information about the client device network connection.
+     */
+    NETWORK_INFO("NETWORK_INFO");
 
     private final String name;
 

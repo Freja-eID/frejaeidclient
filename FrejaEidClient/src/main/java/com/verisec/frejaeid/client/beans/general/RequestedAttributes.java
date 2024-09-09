@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.verisec.frejaeid.client.beans.covidcertificate.CovidCertificates;
 import com.verisec.frejaeid.client.enums.RegistrationLevel;
+import sun.nio.ch.Net;
 
 import java.util.List;
 import java.util.Objects;
@@ -35,6 +36,7 @@ public class RequestedAttributes {
     private final CovidCertificates covidCertificates;
     private final DocumentInfoWithPdf documentInfoWithPdf;
     private final List<DocumentInfoWithPdf> childrenDocumentInfoWithPdf;
+    private final NetworkInfo networkInfo;
 
     @JsonCreator
     public RequestedAttributes(@JsonProperty(value = "basicUserInfo") BasicUserInfo basicUserInfo,
@@ -56,7 +58,8 @@ public class RequestedAttributes {
                                @JsonProperty(value = "covidCertificates") CovidCertificates covidCertificates,
                                @JsonProperty(value = "organisationId") OrganisationIdInfo organisationId,
                                @JsonProperty(value = "documentInfoWithPdf") DocumentInfoWithPdf documentInfoWithPdf,
-                               @JsonProperty(value = "childrenDocumentInfoWithPdf") List<DocumentInfoWithPdf> childrenDocumentInfoWithPdf) {
+                               @JsonProperty(value = "childrenDocumentInfoWithPdf") List<DocumentInfoWithPdf> childrenDocumentInfoWithPdf,
+                               @JsonProperty(value = "networkInfo") NetworkInfo networkInfo) {
         this.basicUserInfo = basicUserInfo;
         this.customIdentifier = customIdentifier;
         this.ssn = ssn;
@@ -77,6 +80,7 @@ public class RequestedAttributes {
         this.covidCertificates = covidCertificates;
         this.documentInfoWithPdf = documentInfoWithPdf;
         this.childrenDocumentInfoWithPdf = childrenDocumentInfoWithPdf;
+        this.networkInfo = networkInfo;
     }
 
     public BasicUserInfo getBasicUserInfo() {
@@ -159,13 +163,17 @@ public class RequestedAttributes {
         return childrenDocumentInfoWithPdf;
     }
 
+    public NetworkInfo getNetworkInfo() {
+        return networkInfo;
+    }
+
     @Override
     public int hashCode() {
         return Objects.hash(basicUserInfo, customIdentifier, ssn, integratorSpecificUserId,
                             dateOfBirth, relyingPartyUserId, emailAddress, organisationIdIdentifier,
                             organisationId, addresses, allEmailAddresses, allPhoneNumbers, registrationLevel, age,
                             photo, document, documentPhoto, covidCertificates, documentInfoWithPdf, 
-                            childrenDocumentInfoWithPdf);
+                            childrenDocumentInfoWithPdf, networkInfo);
     }
 
     @Override
@@ -240,6 +248,9 @@ public class RequestedAttributes {
         if (!Objects.equals(this.childrenDocumentInfoWithPdf, other.childrenDocumentInfoWithPdf)) {
             return false;
         }
+        if (!Objects.equals(this.networkInfo, other.networkInfo)) {
+            return false;
+        }
         return true;
     }
 
@@ -266,6 +277,7 @@ public class RequestedAttributes {
                 ", covidCertificates=" + covidCertificates +
                 ", documentInfoWithPdf=" + documentInfoWithPdf +
                 ", childrenDocumentInfoWithPdf=" + childrenDocumentInfoWithPdf +
+                ", networkInfo=" + networkInfo +
                 '}';
     }
 }
