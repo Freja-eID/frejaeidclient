@@ -64,6 +64,7 @@ public class SignClientGetResultTest {
     private static final String DOCUMENT_PHOTO = "Base64EncodedDocPhoto";
     protected static final CovidCertificates COVID_CERTIFICATES =
             new CovidCertificates(new Vaccines("covidCertificate"), null, null, true);
+    private static final NetworkInfo NETWORK_INFO = new NetworkInfo("123.45.6.7");
     private static RequestedAttributes REQUESTED_ATTRIBUTES;
     private SignClientApi signClient;
 
@@ -86,7 +87,8 @@ public class SignClientGetResultTest {
                                         ALL_EMAIL_ADDRESSES, ALL_PHONE_NUMBERS, RegistrationLevel.EXTENDED,
                                         AGE, PHOTO, DOCUMENT_INFO, DOCUMENT_PHOTO,
                                         COVID_CERTIFICATES, ORGANISATION_ID_INFO, DOCUMENT_WITH_PDF,
-                                        Arrays.asList(CHILDREN_DOCUMENT_WITH_PDF));
+                                        Arrays.asList(CHILDREN_DOCUMENT_WITH_PDF),
+                                        NETWORK_INFO);
     }
 
     @Before
@@ -166,7 +168,8 @@ public class SignClientGetResultTest {
                                         RegistrationLevel.EXTENDED, AGE, PHOTO,
                                         DOCUMENT_INFO, DOCUMENT_PHOTO, COVID_CERTIFICATES,
                                         ORGANISATION_ID_INFO_WITH_ADDITIONAL_ATTRIBUTES, DOCUMENT_WITH_PDF,
-                                        Arrays.asList(CHILDREN_DOCUMENT_WITH_PDF));
+                                        Arrays.asList(CHILDREN_DOCUMENT_WITH_PDF),
+                                        NETWORK_INFO);
         SignResultRequest signResultRequest = SignResultRequest.create(SIGN_REFERENCE, RELYING_PARTY_ID);
         SignResult expectedResponse =
                 new SignResult(SIGN_REFERENCE, TransactionStatus.APPROVED, SIGN_DETAILS, requestedAttributes);

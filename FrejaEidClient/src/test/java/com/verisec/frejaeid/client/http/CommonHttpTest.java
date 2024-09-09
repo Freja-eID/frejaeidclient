@@ -62,13 +62,15 @@ public abstract class CommonHttpTest {
     private static final CovidCertificates COVID_CERTIFICATES =
             new CovidCertificates(new Vaccines("covidCertificate"), null, null, true);
     private static final String DOCUMENT_PHOTO = "Base64EncodedDocPhoto";
+    private static final NetworkInfo NETWORK_INFO = new NetworkInfo("123.45.6.7");
     protected static final RequestedAttributes REQUESTED_ATTRIBUTES =
             new RequestedAttributes(BASIC_USER_INFO, CUSTOM_IDENTIFIER, SSN_USER_INFO, null, DATE_OF_BIRTH,
                                     RELYING_PARTY_USER_ID, EMAIL_ADDRESS, ORGANISATION_ID, ADDRESSES,
                                     ALL_EMAIL_ADDRESSES, ALL_PHONE_NUMBERS, RegistrationLevel.EXTENDED, AGE,
                                     PHOTO, DOCUMENT_INFO, DOCUMENT_PHOTO,
                                     COVID_CERTIFICATES, ORGANISATION_ID_INFO, DOCUMENT_WITH_PDF,
-                                    Arrays.asList(CHILDREN_DOCUMENT_WITH_PDF));
+                                    Arrays.asList(CHILDREN_DOCUMENT_WITH_PDF),
+                                    NETWORK_INFO);
     protected static final String POST_PARAMS_DELIMITER = "&";
     protected static final String KEY_VALUE_DELIMITER = "=";
     protected static final int MOCK_SERVICE_PORT = 30665;
