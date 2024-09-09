@@ -69,6 +69,7 @@ public class AuthenticationClientGetResultTest {
     private static final String DOCUMENT_PHOTO = "Base64EncodedDocPhoto";
     private static final CovidCertificates COVID_CERTIFICATES =
             new CovidCertificates(new Vaccines("covidCertificate"), null, null, true);
+    private static final NetworkInfo NETWORK_INFO = new NetworkInfo("123.45.6.7");
     private static RequestedAttributes REQUESTED_ATTRIBUTES;
     private AuthenticationClientApi authenticationClient;
 
@@ -90,7 +91,8 @@ public class AuthenticationClientGetResultTest {
                                         ALL_EMAIL_ADDRESSES, ALL_PHONE_NUMBERS, RegistrationLevel.EXTENDED,
                                         AGE, PHOTO, DOCUMENT_INFO, DOCUMENT_PHOTO,
                                         COVID_CERTIFICATES, ORGANISATION_ID_INFO,
-                                        DOCUMENT_WITH_PDF, Arrays.asList(CHILDREN_DOCUMENT_WITH_PDF));
+                                        DOCUMENT_WITH_PDF, Arrays.asList(CHILDREN_DOCUMENT_WITH_PDF),
+                                        NETWORK_INFO);
     }
 
     @Before
@@ -174,7 +176,8 @@ public class AuthenticationClientGetResultTest {
                                         RegistrationLevel.EXTENDED, AGE, PHOTO,
                                         DOCUMENT_INFO, DOCUMENT_PHOTO, COVID_CERTIFICATES,
                                         ORGANISATION_ID_INFO_WITH_ADDITIONAL_ATTRIBUTES, DOCUMENT_WITH_PDF,
-                                        Arrays.asList(CHILDREN_DOCUMENT_WITH_PDF));
+                                        Arrays.asList(CHILDREN_DOCUMENT_WITH_PDF),
+                                        NETWORK_INFO);
         AuthenticationClientApi authenticationClient =
                 AuthenticationClient.create(TestUtil.getDefaultSslSettings(), FrejaEnvironment.TEST)
                         .setHttpService(httpServiceMock)
@@ -320,12 +323,13 @@ public class AuthenticationClientGetResultTest {
                                         ALL_EMAIL_ADDRESSES, ALL_PHONE_NUMBERS, RegistrationLevel.EXTENDED, AGE,
                                         PHOTO, DOCUMENT_INFO, DOCUMENT_PHOTO, COVID_CERTIFICATES,
                                         ORGANISATION_ID_INFO, DOCUMENT_WITH_PDF,
-                                        Arrays.asList(CHILDREN_DOCUMENT_WITH_PDF));
+                                        Arrays.asList(CHILDREN_DOCUMENT_WITH_PDF),
+                                        NETWORK_INFO);
         AuthenticationResult firstResponse =
                 new AuthenticationResult(REFERENCE, TransactionStatus.STARTED, DETAILS, attributes1);
         RequestedAttributes attributes2 =
                 new RequestedAttributes(null, "test", null, null, null, null, null, null, null, null,
-                                        null, null, null, null, null, null, null, null, null, null);
+                                        null, null, null, null, null, null, null, null, null, null, null);
         AuthenticationResult secondResponse =
                 new AuthenticationResult(REFERENCE, TransactionStatus.DELIVERED_TO_MOBILE, "test", attributes2);
         List<AuthenticationResult> responses = new ArrayList<>();

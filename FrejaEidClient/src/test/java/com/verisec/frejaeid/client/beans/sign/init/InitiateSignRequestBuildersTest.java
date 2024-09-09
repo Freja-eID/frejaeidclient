@@ -49,6 +49,7 @@ public class InitiateSignRequestBuildersTest {
         REQUESTED_ATTRIBUTES.add(attributeOf(AttributeToReturn.COVID_CERTIFICATES));
         REQUESTED_ATTRIBUTES.add(attributeOf(AttributeToReturn.DOCUMENT_INFO_WITH_PDF));
         REQUESTED_ATTRIBUTES.add(attributeOf(AttributeToReturn.CHILDREN_DOCUMENT_INFO_WITH_PDF));
+        REQUESTED_ATTRIBUTES.add(attributeOf(AttributeToReturn.NETWORK_INFO));
     }
 
     private static AttributeToReturnInfo attributeOf(AttributeToReturn attributeToReturn){
