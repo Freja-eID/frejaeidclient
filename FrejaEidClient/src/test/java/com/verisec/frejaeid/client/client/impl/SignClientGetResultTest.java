@@ -24,13 +24,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.mockito.Mockito;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.fail;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;
@@ -65,6 +66,7 @@ public class SignClientGetResultTest {
     protected static final CovidCertificates COVID_CERTIFICATES =
             new CovidCertificates(new Vaccines("covidCertificate"), null, null, true);
     private static final NetworkInfo NETWORK_INFO = new NetworkInfo("123.45.6.7");
+    private static final String FREJA_COOKIE = "frejaCookie";
     private static RequestedAttributes REQUESTED_ATTRIBUTES;
     private SignClientApi signClient;
 
@@ -103,7 +105,7 @@ public class SignClientGetResultTest {
             throws FrejaEidClientInternalException, FrejaEidException {
         SignResultRequest signResultsRequest = SignResultRequest.create(SIGN_REFERENCE);
         SignResult expectedResponse = new SignResult(SIGN_REFERENCE, TransactionStatus.STARTED, SIGN_DETAILS,
-                                                     REQUESTED_ATTRIBUTES);
+                                                     REQUESTED_ATTRIBUTES, FREJA_COOKIE);
         when(httpServiceMock.send(anyString(), any(RequestTemplate.class),
                                   any(RelyingPartyRequest.class), Mockito.eq(SignResult.class),
                                   (String) Mockito.isNull())).thenReturn(expectedResponse);
@@ -115,13 +117,15 @@ public class SignClientGetResultTest {
         assertEquals(TransactionStatus.STARTED, response.getStatus());
         assertEquals(SIGN_DETAILS, response.getDetails());
         assertEquals(REQUESTED_ATTRIBUTES, response.getRequestedAttributes());
+        assertEquals(FREJA_COOKIE, response.getFrejaCookie());
     }
 
     @Test
     public void getSignResultPersonal_expectSuccess() throws FrejaEidClientInternalException, FrejaEidException {
         SignResultRequest signResultRequest = SignResultRequest.create(SIGN_REFERENCE, RELYING_PARTY_ID);
         SignResult expectedResponse =
-                new SignResult(SIGN_REFERENCE, TransactionStatus.STARTED, SIGN_DETAILS, REQUESTED_ATTRIBUTES);
+                new SignResult(SIGN_REFERENCE, TransactionStatus.STARTED, SIGN_DETAILS, REQUESTED_ATTRIBUTES,
+                               FREJA_COOKIE);
         when(httpServiceMock.send(anyString(), any(RequestTemplate.class),
                                   any(RelyingPartyRequest.class), Mockito.eq(SignResult.class),
                                   anyString())).thenReturn(expectedResponse);
@@ -133,13 +137,15 @@ public class SignClientGetResultTest {
         assertEquals(TransactionStatus.STARTED, response.getStatus());
         assertEquals(SIGN_DETAILS, response.getDetails());
         assertEquals(REQUESTED_ATTRIBUTES, response.getRequestedAttributes());
+        assertEquals(FREJA_COOKIE, response.getFrejaCookie());
     }
 
     @Test
     public void getSignResultOrganisational_expectSuccess() throws FrejaEidClientInternalException, FrejaEidException {
         SignResultRequest signResultRequest = SignResultRequest.create(SIGN_REFERENCE, RELYING_PARTY_ID);
         SignResult expectedResponse =
-                new SignResult(SIGN_REFERENCE, TransactionStatus.APPROVED, SIGN_DETAILS, REQUESTED_ATTRIBUTES);
+                new SignResult(SIGN_REFERENCE, TransactionStatus.APPROVED, SIGN_DETAILS, REQUESTED_ATTRIBUTES,
+                               FREJA_COOKIE);
         SignClientApi signClient = SignClient.create(TestUtil.getDefaultSslSettings(), FrejaEnvironment.TEST)
                 .setHttpService(httpServiceMock)
                 .setTransactionContext(TransactionContext.ORGANISATIONAL).build();
@@ -154,6 +160,7 @@ public class SignClientGetResultTest {
         assertEquals(TransactionStatus.APPROVED, response.getStatus());
         assertEquals(SIGN_DETAILS, response.getDetails());
         assertEquals(REQUESTED_ATTRIBUTES, response.getRequestedAttributes());
+        assertEquals(FREJA_COOKIE, response.getFrejaCookie());
     }
 
     @Test
@@ -172,7 +179,8 @@ public class SignClientGetResultTest {
                                         NETWORK_INFO);
         SignResultRequest signResultRequest = SignResultRequest.create(SIGN_REFERENCE, RELYING_PARTY_ID);
         SignResult expectedResponse =
-                new SignResult(SIGN_REFERENCE, TransactionStatus.APPROVED, SIGN_DETAILS, requestedAttributes);
+                new SignResult(SIGN_REFERENCE, TransactionStatus.APPROVED, SIGN_DETAILS, requestedAttributes,
+                               FREJA_COOKIE);
         SignClientApi signClient = SignClient.create(TestUtil.getDefaultSslSettings(), FrejaEnvironment.TEST)
                 .setHttpService(httpServiceMock)
                 .setTransactionContext(TransactionContext.ORGANISATIONAL).build();
@@ -187,6 +195,7 @@ public class SignClientGetResultTest {
         assertEquals(TransactionStatus.APPROVED, response.getStatus());
         assertEquals(SIGN_DETAILS, response.getDetails());
         assertEquals(requestedAttributes, response.getRequestedAttributes());
+        assertEquals(FREJA_COOKIE, response.getFrejaCookie());
     }
 
     @Test
@@ -200,7 +209,7 @@ public class SignClientGetResultTest {
                                       any(RelyingPartyRequest.class), Mockito.eq(SignResult.class),
                                       anyString())).thenThrow(frejaEidException);
             signClient.getResult(signResultRequest);
-            Assert.fail("Test should throw exception!");
+            fail("Test should throw exception!");
         } catch (FrejaEidException rpEx) {
             verify(httpServiceMock).send(FrejaEnvironment.TEST.getServiceUrl() + MethodUrl.SIGN_GET_RESULT,
                                          RequestTemplate.SIGN_RESULT_TEMPLATE, signResultRequest,
@@ -213,7 +222,8 @@ public class SignClientGetResultTest {
     @Test
     public void pollForResult_finalResponseRejected_success()
             throws FrejaEidClientInternalException, FrejaEidException, FrejaEidClientPollingException {
-        SignResult expectedResponse = new SignResult(SIGN_REFERENCE, TransactionStatus.REJECTED, SIGN_DETAILS, null);
+        SignResult expectedResponse = new SignResult(SIGN_REFERENCE, TransactionStatus.REJECTED, SIGN_DETAILS, null,
+                                                     null);
         when(httpServiceMock.send(anyString(), any(RequestTemplate.class),
                                   any(RelyingPartyRequest.class), Mockito.eq(SignResult.class),
                                   (String) Mockito.isNull())).thenReturn(expectedResponse);
@@ -230,7 +240,7 @@ public class SignClientGetResultTest {
             throws FrejaEidClientInternalException, FrejaEidException {
         try {
             signClient.pollForResult(SignResultRequest.create(SIGN_REFERENCE), 2);
-            Assert.fail("Test should throw exception!");
+            fail("Test should throw exception!");
         } catch (FrejaEidClientPollingException ex) {
             assertEquals("A timeout of 2s was reached while sending request.", ex.getLocalizedMessage());
         }
@@ -270,7 +280,7 @@ public class SignClientGetResultTest {
         SignResultsRequest signResultsRequest = SignResultsRequest.create(RELYING_PARTY_ID);
         try {
             signClient.getResults(signResultsRequest);
-            Assert.fail("Test should throw exception!");
+            fail("Test should throw exception!");
         } catch (FrejaEidException rpEx) {
             verify(httpServiceMock).send(FrejaEnvironment.TEST.getServiceUrl() + MethodUrl.SIGN_GET_RESULTS,
                                          RequestTemplate.SIGN_RESULTS_TEMPLATE, signResultsRequest,
@@ -293,18 +303,21 @@ public class SignClientGetResultTest {
         assertEquals(TransactionStatus.STARTED, firstResponse.getStatus());
         assertEquals(SIGN_DETAILS, firstResponse.getDetails());
         assertEquals(REQUESTED_ATTRIBUTES, firstResponse.getRequestedAttributes());
+        assertEquals(FREJA_COOKIE, firstResponse.getFrejaCookie());
 
         SignResult secondResponse = response.get(1);
         assertEquals(SIGN_REFERENCE, secondResponse.getSignRef());
         assertEquals(TransactionStatus.DELIVERED_TO_MOBILE, secondResponse.getStatus());
         assertEquals("test", secondResponse.getDetails());
-        Assert.assertNull(secondResponse.getRequestedAttributes());
+        assertNull(secondResponse.getRequestedAttributes());
+        assertNull(secondResponse.getFrejaCookie());
     }
 
     private SignResults prepareResponse() {
         SignResult response1 =
-                new SignResult(SIGN_REFERENCE, TransactionStatus.STARTED, SIGN_DETAILS, REQUESTED_ATTRIBUTES);
-        SignResult response2 = new SignResult(SIGN_REFERENCE, TransactionStatus.DELIVERED_TO_MOBILE, "test", null);
+                new SignResult(SIGN_REFERENCE, TransactionStatus.STARTED, SIGN_DETAILS, REQUESTED_ATTRIBUTES,
+                               FREJA_COOKIE);
+        SignResult response2 = new SignResult(SIGN_REFERENCE, TransactionStatus.DELIVERED_TO_MOBILE, "test", null, null);
         List<SignResult> responses = new ArrayList<>();
         responses.add(response1);
         responses.add(response2);

@@ -63,6 +63,7 @@ public abstract class CommonHttpTest {
             new CovidCertificates(new Vaccines("covidCertificate"), null, null, true);
     private static final String DOCUMENT_PHOTO = "Base64EncodedDocPhoto";
     private static final NetworkInfo NETWORK_INFO = new NetworkInfo("123.45.6.7");
+    protected static final String FREJA_COOKIE = "frejaCookie";
     protected static final RequestedAttributes REQUESTED_ATTRIBUTES =
             new RequestedAttributes(BASIC_USER_INFO, CUSTOM_IDENTIFIER, SSN_USER_INFO, null, DATE_OF_BIRTH,
                                     RELYING_PARTY_USER_ID, EMAIL_ADDRESS, ORGANISATION_ID, ADDRESSES,

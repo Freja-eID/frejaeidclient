@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.verisec.frejaeid.client.beans.covidcertificate.CovidCertificates;
 import com.verisec.frejaeid.client.enums.RegistrationLevel;
-import sun.nio.ch.Net;
 
 import java.util.List;
 import java.util.Objects;

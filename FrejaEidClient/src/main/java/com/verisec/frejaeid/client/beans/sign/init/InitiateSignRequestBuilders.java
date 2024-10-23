@@ -1,6 +1,7 @@
 package com.verisec.frejaeid.client.beans.sign.init;
 
 import com.verisec.frejaeid.client.beans.general.AttributeToReturnInfo;
+import com.verisec.frejaeid.client.beans.general.OriginDeviceDetails;
 import com.verisec.frejaeid.client.beans.general.SsnUserInfo;
 import com.verisec.frejaeid.client.enums.*;
 import com.verisec.frejaeid.client.exceptions.FrejaEidClientInternalException;
@@ -91,6 +92,7 @@ public class InitiateSignRequestBuilders {
         private String relyingPartyId = null;
         private String orgIdIssuer = null;
         private UserConfirmationMethod userConfirmationMethod = null;
+        private OriginDeviceDetails originDeviceDetails = null;
 
         private SetOptionalParamsBuilder(UserInfoType userInfoType, String userInfo) {
             this.userInfoType = userInfoType;
@@ -264,11 +266,25 @@ public class InitiateSignRequestBuilders {
             this.userConfirmationMethod = userConfirmationMethod;
             return this;
         }
+        
+        
+        /**
+         * <b>OriginDeviceDetails contains information about the end user device from which the transaction was
+         * initiated.</b>
+         *
+         * @param originDeviceDetails information about the end user device
+         * @return request builder
+         */
+        public SetOptionalParamsBuilder setOriginDeviceDetails(OriginDeviceDetails originDeviceDetails) {
+            this.originDeviceDetails = originDeviceDetails;
+            return this;
+        }
+
 
         public InitiateSignRequest build() {
             return new InitiateSignRequest(userInfoType, userInfo, minRegistrationLevel, title, pushNotification,
                                            expiry, dataToSignType, dataToSign, signatureType, attributesToReturn,
-                                           relyingPartyId, orgIdIssuer, userConfirmationMethod);
+                                           relyingPartyId, orgIdIssuer, userConfirmationMethod, originDeviceDetails);
         }
 
     }
