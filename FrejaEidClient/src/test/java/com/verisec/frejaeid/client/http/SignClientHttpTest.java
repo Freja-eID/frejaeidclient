@@ -53,9 +53,9 @@ public class SignClientHttpTest extends CommonHttpTest {
         dataToSignText = "Data to sign";
         binaryData = "binaryData".getBytes(StandardCharsets.UTF_8);
         initiateSignResponse = new InitiateSignResponse(REFERENCE);
-        signResult = new SignResult(REFERENCE, TransactionStatus.STARTED, null, null);
+        signResult = new SignResult(REFERENCE, TransactionStatus.STARTED, null, null, null);
         signResultWithRequestedAttributes = new SignResult(REFERENCE, TransactionStatus.APPROVED, DETAILS,
-                                                           REQUESTED_ATTRIBUTES);
+                                                           REQUESTED_ATTRIBUTES, FREJA_COOKIE);
         signResults = new SignResults(Arrays.asList(signResult));
 
         signClient = SignClient.create(TestUtil.getDefaultSslSettings(), FrejaEnvironment.TEST)

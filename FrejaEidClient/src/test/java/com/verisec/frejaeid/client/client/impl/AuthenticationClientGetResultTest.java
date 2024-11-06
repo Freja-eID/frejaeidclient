@@ -24,13 +24,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.mockito.Mockito;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.fail;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;
@@ -70,6 +71,7 @@ public class AuthenticationClientGetResultTest {
     private static final CovidCertificates COVID_CERTIFICATES =
             new CovidCertificates(new Vaccines("covidCertificate"), null, null, true);
     private static final NetworkInfo NETWORK_INFO = new NetworkInfo("123.45.6.7");
+    private static final String FREJA_COOKIE = "frejaCookie";
     private static RequestedAttributes REQUESTED_ATTRIBUTES;
     private AuthenticationClientApi authenticationClient;
 
@@ -110,7 +112,7 @@ public class AuthenticationClientGetResultTest {
                                   any(RelyingPartyRequest.class),
                                   Mockito.eq(AuthenticationResult.class), (String) Mockito.isNull()))
                 .thenReturn(new AuthenticationResult(REFERENCE, TransactionStatus.STARTED, DETAILS,
-                                                     REQUESTED_ATTRIBUTES));
+                                                     REQUESTED_ATTRIBUTES, FREJA_COOKIE));
         AuthenticationResult response = authenticationClient.getResult(authenticationResultRequest);
         verify(httpServiceMock).send(FrejaEnvironment.TEST.getServiceUrl() + MethodUrl.AUTHENTICATION_GET_RESULT,
                                      RequestTemplate.AUTHENTICATION_RESULT_TEMPLATE,
@@ -119,6 +121,7 @@ public class AuthenticationClientGetResultTest {
         assertEquals(TransactionStatus.STARTED, response.getStatus());
         assertEquals(DETAILS, response.getDetails());
         assertEquals(REQUESTED_ATTRIBUTES, response.getRequestedAttributes());
+        assertEquals(FREJA_COOKIE, response.getFrejaCookie());
     }
 
     @Test
@@ -129,7 +132,7 @@ public class AuthenticationClientGetResultTest {
                                   any(RelyingPartyRequest.class),
                                   Mockito.eq(AuthenticationResult.class), anyString()))
                 .thenReturn(new AuthenticationResult(REFERENCE, TransactionStatus.STARTED, DETAILS,
-                                                     REQUESTED_ATTRIBUTES));
+                                                     REQUESTED_ATTRIBUTES, FREJA_COOKIE));
         AuthenticationResult response = authenticationClient.getResult(authenticationResultRequest);
         verify(httpServiceMock).send(FrejaEnvironment.TEST.getServiceUrl() + MethodUrl.AUTHENTICATION_GET_RESULT,
                                      RequestTemplate.AUTHENTICATION_RESULT_TEMPLATE,
@@ -138,6 +141,7 @@ public class AuthenticationClientGetResultTest {
         assertEquals(TransactionStatus.STARTED, response.getStatus());
         assertEquals(DETAILS, response.getDetails());
         assertEquals(REQUESTED_ATTRIBUTES, response.getRequestedAttributes());
+        assertEquals(FREJA_COOKIE, response.getFrejaCookie());
     }
 
     @Test
@@ -153,7 +157,7 @@ public class AuthenticationClientGetResultTest {
                                   any(RelyingPartyRequest.class),
                                   Mockito.eq(AuthenticationResult.class), anyString()))
                 .thenReturn(new AuthenticationResult(REFERENCE, TransactionStatus.APPROVED, DETAILS,
-                                                     REQUESTED_ATTRIBUTES));
+                                                     REQUESTED_ATTRIBUTES, FREJA_COOKIE));
         AuthenticationResult response = authenticationClient.getResult(authenticationResultRequest);
         verify(httpServiceMock)
                 .send(FrejaEnvironment.TEST.getServiceUrl() + MethodUrl.ORGANISATION_AUTHENTICATION_GET_ONE_RESULT,
@@ -163,6 +167,7 @@ public class AuthenticationClientGetResultTest {
         assertEquals(TransactionStatus.APPROVED, response.getStatus());
         assertEquals(DETAILS, response.getDetails());
         assertEquals(REQUESTED_ATTRIBUTES, response.getRequestedAttributes());
+        assertEquals(FREJA_COOKIE, response.getFrejaCookie());
     }
 
     @Test
@@ -188,7 +193,7 @@ public class AuthenticationClientGetResultTest {
                                   any(RelyingPartyRequest.class),
                                   Mockito.eq(AuthenticationResult.class), anyString()))
                 .thenReturn(new AuthenticationResult(REFERENCE, TransactionStatus.APPROVED, DETAILS,
-                                                     requestedAttributes));
+                                                     requestedAttributes, FREJA_COOKIE));
         AuthenticationResult response = authenticationClient.getResult(authenticationResultRequest);
         verify(httpServiceMock)
                 .send(FrejaEnvironment.TEST.getServiceUrl() + MethodUrl.ORGANISATION_AUTHENTICATION_GET_ONE_RESULT,
@@ -198,6 +203,7 @@ public class AuthenticationClientGetResultTest {
         assertEquals(TransactionStatus.APPROVED, response.getStatus());
         assertEquals(DETAILS, response.getDetails());
         assertEquals(requestedAttributes, response.getRequestedAttributes());
+        assertEquals(FREJA_COOKIE, response.getFrejaCookie());
     }
 
     @Test
@@ -212,7 +218,7 @@ public class AuthenticationClientGetResultTest {
                     .thenThrow(new FrejaEidException(FrejaEidErrorCode.INVALID_REFERENCE.getMessage(),
                                                      FrejaEidErrorCode.INVALID_REFERENCE.getCode()));
             authenticationClient.getResult(getOneAuthenticationResultRequest);
-            Assert.fail("Test should throw exception!");
+            fail("Test should throw exception!");
         } catch (FrejaEidException rpEx) {
             verify(httpServiceMock).send(FrejaEnvironment.TEST.getServiceUrl() + MethodUrl.AUTHENTICATION_GET_RESULT,
                                          RequestTemplate.AUTHENTICATION_RESULT_TEMPLATE,
@@ -227,7 +233,7 @@ public class AuthenticationClientGetResultTest {
     public void pollForResult_relyingPartyIdNull_finalResponseRejected_success()
             throws FrejaEidClientInternalException, FrejaEidException, FrejaEidClientPollingException {
         AuthenticationResult expectedResponse =
-                new AuthenticationResult(DETAILS, TransactionStatus.REJECTED, DETAILS, null);
+                new AuthenticationResult(DETAILS, TransactionStatus.REJECTED, DETAILS, null, null);
         AuthenticationResultRequest authenticationResultRequest = AuthenticationResultRequest.create(REFERENCE);
         when(httpServiceMock.send(anyString(), any(RequestTemplate.class),
                                   any(RelyingPartyRequest.class),
@@ -244,7 +250,7 @@ public class AuthenticationClientGetResultTest {
     public void pollForResult_relyingPartyIdNotNull_finalResponseRejected_success()
             throws FrejaEidClientInternalException, FrejaEidException, FrejaEidClientPollingException {
         AuthenticationResult expectedResponse =
-                new AuthenticationResult(DETAILS, TransactionStatus.REJECTED, DETAILS, null);
+                new AuthenticationResult(DETAILS, TransactionStatus.REJECTED, DETAILS, null, null);
         AuthenticationResultRequest authenticationResultRequest =
                 AuthenticationResultRequest.create(REFERENCE, RELYING_PARTY_ID);
         when(httpServiceMock.send(anyString(), any(RequestTemplate.class),
@@ -264,7 +270,7 @@ public class AuthenticationClientGetResultTest {
             throws FrejaEidClientInternalException, FrejaEidException {
         try {
             authenticationClient.pollForResult(AuthenticationResultRequest.create(REFERENCE), 2);
-            Assert.fail("Test should throw exception!");
+            fail("Test should throw exception!");
         } catch (FrejaEidClientPollingException ex) {
             assertEquals("A timeout of 2s was reached while sending request.", ex.getLocalizedMessage());
         }
@@ -308,12 +314,14 @@ public class AuthenticationClientGetResultTest {
         assertEquals(TransactionStatus.STARTED, first.getStatus());
         assertEquals(DETAILS, first.getDetails());
         assertEquals(REQUESTED_ATTRIBUTES, first.getRequestedAttributes());
+        assertEquals(FREJA_COOKIE, first.getFrejaCookie());
 
         AuthenticationResult second = response.get(1);
         assertEquals(REFERENCE, second.getAuthRef());
         assertEquals(TransactionStatus.DELIVERED_TO_MOBILE, second.getStatus());
         assertEquals("test", second.getDetails());
         assertEquals("test", second.getRequestedAttributes().getCustomIdentifier());
+        assertNull(second.getFrejaCookie());
     }
 
     private AuthenticationResults prepareResponse() {
@@ -326,12 +334,13 @@ public class AuthenticationClientGetResultTest {
                                         Arrays.asList(CHILDREN_DOCUMENT_WITH_PDF),
                                         NETWORK_INFO);
         AuthenticationResult firstResponse =
-                new AuthenticationResult(REFERENCE, TransactionStatus.STARTED, DETAILS, attributes1);
+                new AuthenticationResult(REFERENCE, TransactionStatus.STARTED, DETAILS, attributes1, FREJA_COOKIE);
         RequestedAttributes attributes2 =
                 new RequestedAttributes(null, "test", null, null, null, null, null, null, null, null,
                                         null, null, null, null, null, null, null, null, null, null, null);
         AuthenticationResult secondResponse =
-                new AuthenticationResult(REFERENCE, TransactionStatus.DELIVERED_TO_MOBILE, "test", attributes2);
+                new AuthenticationResult(REFERENCE, TransactionStatus.DELIVERED_TO_MOBILE, "test", attributes2,
+                                         null);
         List<AuthenticationResult> responses = new ArrayList<>();
         responses.add(firstResponse);
         responses.add(secondResponse);

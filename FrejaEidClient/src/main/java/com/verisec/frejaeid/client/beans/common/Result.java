@@ -15,16 +15,19 @@ public abstract class Result implements FrejaHttpResponse {
     private final TransactionStatus status;
     private final String details;
     private final RequestedAttributes requestedAttributes;
+    private final String frejaCookie;
 
     @JsonCreator
     public Result(String reference,
                   @JsonProperty(value = "status") TransactionStatus status,
                   @JsonProperty(value = "details") String details,
-                  @JsonProperty(value = "requestedAttributes") RequestedAttributes requestedAttributes) {
+                  @JsonProperty(value = "requestedAttributes") RequestedAttributes requestedAttributes,
+                  @JsonProperty(value = "frejaCookie") String frejaCookie) {
         this.reference = reference;
         this.status = status;
         this.details = details;
         this.requestedAttributes = requestedAttributes;
+        this.frejaCookie = frejaCookie;
     }
 
     public String getReference() {
@@ -59,9 +62,21 @@ public abstract class Result implements FrejaHttpResponse {
         return requestedAttributes;
     }
 
+    /**
+     * 
+     * @return Cookie to be set in end-user browser.
+     *         Each time an initAuthentication is called, the cookie obtained through 
+     *         "Cookie" header of the HTTP request shall be passed to Freja's REST API.
+     *         After transaction is confirmed, a new cookie is received from Freja API, 
+     *         and shall be forwarded to end-user browser via the "Set-Cookie" HTTP header.
+     */
+    public String getFrejaCookie() {
+        return frejaCookie;
+    }
+    
     @Override
     public int hashCode() {
-        return Objects.hash(reference, status, details, requestedAttributes);
+        return Objects.hash(reference, status, details, requestedAttributes, frejaCookie);
     }
 
     @Override
@@ -82,13 +97,20 @@ public abstract class Result implements FrejaHttpResponse {
         if (!Objects.equals(this.details, other.details)) {
             return false;
         }
-        return Objects.equals(this.requestedAttributes, other.requestedAttributes);
+        if (!Objects.equals(this.requestedAttributes, other.requestedAttributes)) {
+            return false;
+        }
+        return Objects.equals(this.frejaCookie, other.frejaCookie);
     }
 
     @Override
     public String toString() {
-        return "Result{" + "reference=" + reference + ", status=" + status + ", details=" + details + ", " +
-                "requestedAttributes=" + requestedAttributes + '}';
+        return "Result{" + "reference=" + reference + 
+                ", status=" + status + 
+                ", details=" + details + 
+                ", requestedAttributes=" + requestedAttributes +
+                ", frejaCookie=" + frejaCookie 
+                + '}';
     }
 
 }
