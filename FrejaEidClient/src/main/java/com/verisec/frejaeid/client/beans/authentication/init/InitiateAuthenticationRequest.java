@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.verisec.frejaeid.client.beans.authentication.init.InitiateAuthenticationRequestBuilders.UserInfoBuilder;
 import com.verisec.frejaeid.client.beans.common.RelyingPartyRequest;
 import com.verisec.frejaeid.client.beans.general.AttributeToReturnInfo;
+import com.verisec.frejaeid.client.beans.general.OriginDeviceDetails;
 import com.verisec.frejaeid.client.beans.general.SsnUserInfo;
 import com.verisec.frejaeid.client.enums.MinRegistrationLevel;
 import com.verisec.frejaeid.client.enums.UserConfirmationMethod;
@@ -25,6 +26,7 @@ public class InitiateAuthenticationRequest implements RelyingPartyRequest {
     private final String relyingPartyId;
     private final String orgIdIssuer;
     private final UserConfirmationMethod userConfirmationMethod;
+    private final OriginDeviceDetails originDeviceDetails;
 
     /**
      * Returns instance of {@linkplain InitiateAuthenticationRequest} with:
@@ -73,14 +75,17 @@ public class InitiateAuthenticationRequest implements RelyingPartyRequest {
             @JsonProperty(value = "minRegistrationLevel") MinRegistrationLevel minRegistrationLevel,
             @JsonProperty(value = "attributesToReturn") Set<AttributeToReturnInfo> attributesToReturn,
             @JsonProperty(value = "orgIdIssuer") String orgIdIssuer,
-            @JsonProperty(value = "userConfirmationMethod") UserConfirmationMethod userConfirmationMethod) {
-        this(userInfoType, userInfo, minRegistrationLevel, attributesToReturn, null, orgIdIssuer, userConfirmationMethod);
+            @JsonProperty(value = "userConfirmationMethod") UserConfirmationMethod userConfirmationMethod,
+            @JsonProperty(value = "originDeviceDetails") OriginDeviceDetails originDeviceDetails) {
+        this(userInfoType, userInfo, minRegistrationLevel, attributesToReturn, null, orgIdIssuer,
+             userConfirmationMethod, originDeviceDetails);
     }
 
     InitiateAuthenticationRequest(
             UserInfoType userInfoType, String userInfo, MinRegistrationLevel minRegistrationLevel,
             Set<AttributeToReturnInfo> attributesToReturn, String relyingPartyId,
-            String orgIdIssuer, UserConfirmationMethod userConfirmationMethod) {
+            String orgIdIssuer, UserConfirmationMethod userConfirmationMethod,
+            OriginDeviceDetails originDeviceDetails) {
         this.userInfoType = userInfoType;
         this.userInfo = userInfo;
         this.minRegistrationLevel = minRegistrationLevel;
@@ -88,6 +93,8 @@ public class InitiateAuthenticationRequest implements RelyingPartyRequest {
         this.relyingPartyId = relyingPartyId;
         this.orgIdIssuer = orgIdIssuer;
         this.userConfirmationMethod = userConfirmationMethod;
+        this.originDeviceDetails = originDeviceDetails;
+
     }
 
     @JsonIgnore
@@ -119,10 +126,14 @@ public class InitiateAuthenticationRequest implements RelyingPartyRequest {
         return userConfirmationMethod;
     }
 
+    public OriginDeviceDetails getOriginDeviceDetails() {
+        return originDeviceDetails;
+    }
+
     @Override
     public int hashCode() {
         return Objects.hash(userInfoType, userInfo, minRegistrationLevel, attributesToReturn, relyingPartyId,
-                            orgIdIssuer, userConfirmationMethod);
+                            orgIdIssuer, userConfirmationMethod, originDeviceDetails);
     }
 
     @Override
@@ -165,19 +176,19 @@ public class InitiateAuthenticationRequest implements RelyingPartyRequest {
         if (this.userConfirmationMethod != other.userConfirmationMethod) {
             return false;
         }
+        if (!Objects.equals(this.originDeviceDetails, other.originDeviceDetails)) {
+            return false;
+        }
         return true;
     }
 
     @Override
     public String toString() {
-        return "InitiateAuthenticationRequest{" +
-                "userInfoType=" + userInfoType +
-                ", userInfo='" + userInfo + '\'' +
-                ", minRegistrationLevel=" + minRegistrationLevel +
-                ", attributesToReturn=" + attributesToReturn +
-                ", relyingPartyId='" + relyingPartyId + '\'' +
-                ", orgIdIssuer='" + orgIdIssuer + '\'' +
-                ", userConfirmationMethod=" + userConfirmationMethod +
-                '}';
+        return "InitiateAuthenticationRequest{" + "userInfoType=" + userInfoType + ", userInfo='" + userInfo + '\''
+                + ", minRegistrationLevel=" + minRegistrationLevel + ", attributesToReturn=" + attributesToReturn
+                + ", relyingPartyId='" + relyingPartyId + '\'' + ", orgIdIssuer='" + orgIdIssuer + '\''
+                + ", userConfirmationMethod=" + userConfirmationMethod
+                + ", originDeviceDetails=" + originDeviceDetails
+                + '}';
     }
 }

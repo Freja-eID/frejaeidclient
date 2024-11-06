@@ -37,9 +37,10 @@ public class AuthenticationClientHttpTest extends CommonHttpTest {
     public static void init() throws FrejaEidClientInternalException {
         jsonService = new JsonService();
         initiateAuthenticationResponse = new InitiateAuthenticationResponse(REFERENCE);
-        authenticationResult = new AuthenticationResult(REFERENCE, TransactionStatus.STARTED, null, null);
+        authenticationResult = new AuthenticationResult(REFERENCE, TransactionStatus.STARTED, null, null, null);
         authenticationResultWithRequestedAttributes =
-                new AuthenticationResult(REFERENCE, TransactionStatus.APPROVED, DETAILS, REQUESTED_ATTRIBUTES);
+                new AuthenticationResult(REFERENCE, TransactionStatus.APPROVED, DETAILS, REQUESTED_ATTRIBUTES,
+                                         FREJA_COOKIE);
         authenticationResults = new AuthenticationResults(Arrays.asList(authenticationResult));
         authenticationClient = AuthenticationClient.create(TestUtil.getDefaultSslSettings(), FrejaEnvironment.TEST)
                 .setTestModeServerCustomUrl("http://localhost:" + MOCK_SERVICE_PORT)

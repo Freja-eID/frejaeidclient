@@ -1,6 +1,7 @@
 package com.verisec.frejaeid.client.beans.sign.init;
 
 import com.verisec.frejaeid.client.beans.general.AttributeToReturnInfo;
+import com.verisec.frejaeid.client.beans.general.OriginDeviceDetails;
 import com.verisec.frejaeid.client.beans.general.SsnUserInfo;
 import com.verisec.frejaeid.client.enums.*;
 import com.verisec.frejaeid.client.exceptions.FrejaEidClientInternalException;
@@ -25,6 +26,7 @@ public class InitiateSignRequestBuildersTest {
     private static final String ORGANISATION_ID = "orgId";
     private static final String ORG_ID_ISSUER = "orgIdIssuer";
     private static final PushNotification PUSH_NOTIFICATION = PushNotification.create(TITLE, TEXT);
+    private static final OriginDeviceDetails ORIGIN_DEVICE_DETAILS = OriginDeviceDetails.create("frejaCookie");
     private static final Set<AttributeToReturnInfo> REQUESTED_ATTRIBUTES = new HashSet<>();
 
     @BeforeClass
@@ -61,7 +63,7 @@ public class InitiateSignRequestBuildersTest {
         InitiateSignRequest expectedInitiateSignRequest =
                 new InitiateSignRequest(UserInfoType.EMAIL, EMAIL, MinRegistrationLevel.PLUS, TITLE, null, null,
                                         DataToSignType.SIMPLE_UTF8_TEXT, DataToSign.create(TEXT),
-                                        SignatureType.SIMPLE, null, null, null, null);
+                                        SignatureType.SIMPLE, null, null, null, null, null);
         InitiateSignRequest initiateSignRequest = InitiateSignRequest.createDefaultWithEmail(EMAIL, TITLE, TEXT);
         Assert.assertEquals(expectedInitiateSignRequest, initiateSignRequest);
     }
@@ -71,7 +73,7 @@ public class InitiateSignRequestBuildersTest {
         InitiateSignRequest expectedInitiateSignRequest =
                 new InitiateSignRequest(UserInfoType.SSN, UserInfoUtil.convertSsnUserInfo(SSN_USER_INFO),
                                         MinRegistrationLevel.PLUS, TITLE, null, null, DataToSignType.SIMPLE_UTF8_TEXT,
-                                        DataToSign.create(TEXT), SignatureType.SIMPLE, null, null, null, null);
+                                        DataToSign.create(TEXT), SignatureType.SIMPLE, null, null, null, null, null);
         InitiateSignRequest initiateSignRequest = InitiateSignRequest.createDefaultWithSsn(SSN_USER_INFO, TITLE, TEXT);
         Assert.assertEquals(expectedInitiateSignRequest, initiateSignRequest);
     }
@@ -82,7 +84,7 @@ public class InitiateSignRequestBuildersTest {
                 new InitiateSignRequest(UserInfoType.EMAIL, EMAIL, REGISTRATION_STATE, TITLE, PUSH_NOTIFICATION,
                                         EXPIRY, DataToSignType.SIMPLE_UTF8_TEXT, DataToSign.create(TEXT),
                                         SignatureType.SIMPLE, REQUESTED_ATTRIBUTES, RELYING_PARTY_ID, ORG_ID_ISSUER,
-                                        UserConfirmationMethod.DEFAULT);
+                                        UserConfirmationMethod.DEFAULT, ORIGIN_DEVICE_DETAILS);
         InitiateSignRequest initiateSignRequest = InitiateSignRequest.createCustom()
                 .setEmail(EMAIL)
                 .setTitle(TITLE)
@@ -94,6 +96,7 @@ public class InitiateSignRequestBuildersTest {
                 .setRelyingPartyId(RELYING_PARTY_ID)
                 .setOrgIdIssuer(ORG_ID_ISSUER)
                 .setUserConfirmationMethod(UserConfirmationMethod.DEFAULT)
+                .setOriginDeviceDetails(ORIGIN_DEVICE_DETAILS)
                 .build();
         Assert.assertEquals(expectedInitiateSignRequest, initiateSignRequest);
     }
@@ -104,7 +107,7 @@ public class InitiateSignRequestBuildersTest {
                 new InitiateSignRequest(
                         UserInfoType.EMAIL, EMAIL, MinRegistrationLevel.PLUS, TITLE, null, EXPIRY,
                         DataToSignType.SIMPLE_UTF8_TEXT, DataToSign.create(TEXT),
-                        SignatureType.SIMPLE, REQUESTED_ATTRIBUTES, RELYING_PARTY_ID, ORG_ID_ISSUER, null);
+                        SignatureType.SIMPLE, REQUESTED_ATTRIBUTES, RELYING_PARTY_ID, ORG_ID_ISSUER, null, null);
         InitiateSignRequest initiateSignRequest = InitiateSignRequest.createCustom()
                 .setEmail(EMAIL)
                 .setTitle(TITLE)
@@ -124,7 +127,7 @@ public class InitiateSignRequestBuildersTest {
                         UserInfoType.SSN, UserInfoUtil.convertSsnUserInfo(SSN_USER_INFO),
                         REGISTRATION_STATE, TITLE, PUSH_NOTIFICATION, EXPIRY,
                         DataToSignType.SIMPLE_UTF8_TEXT, DataToSign.create(TEXT),
-                        SignatureType.SIMPLE, REQUESTED_ATTRIBUTES, RELYING_PARTY_ID, ORG_ID_ISSUER, null);
+                        SignatureType.SIMPLE, REQUESTED_ATTRIBUTES, RELYING_PARTY_ID, ORG_ID_ISSUER, null, null);
         InitiateSignRequest initiateSignRequest = InitiateSignRequest.createCustom()
                 .setSsn(SSN_USER_INFO)
                 .setTitle(TITLE)
@@ -144,7 +147,7 @@ public class InitiateSignRequestBuildersTest {
         InitiateSignRequest expectedInitiateSignRequest =
                 new InitiateSignRequest(UserInfoType.PHONE, PHONE_NUMBER, MinRegistrationLevel.PLUS, null, null, null,
                                         DataToSignType.SIMPLE_UTF8_TEXT, DataToSign.create(TEXT),
-                                        SignatureType.SIMPLE, null, null, null, null);
+                                        SignatureType.SIMPLE, null, null, null, null, null);
         InitiateSignRequest initiateSignRequest = InitiateSignRequest.createCustom()
                 .setPhoneNumber(PHONE_NUMBER)
                 .setTitle(null)
@@ -166,7 +169,7 @@ public class InitiateSignRequestBuildersTest {
                         UserInfoType.SSN, UserInfoUtil.convertSsnUserInfo(SSN_USER_INFO),
                         REGISTRATION_STATE, TITLE, PUSH_NOTIFICATION, EXPIRY,
                         DataToSignType.EXTENDED_UTF8_TEXT, DataToSign.create(TEXT, TEXT.getBytes()),
-                        SignatureType.EXTENDED, REQUESTED_ATTRIBUTES, RELYING_PARTY_ID, ORG_ID_ISSUER, null);
+                        SignatureType.EXTENDED, REQUESTED_ATTRIBUTES, RELYING_PARTY_ID, ORG_ID_ISSUER, null, null);
         InitiateSignRequest initiateSignRequest = InitiateSignRequest.createCustom()
                 .setSsn(SSN_USER_INFO)
                 .setTitle(TITLE)
@@ -188,7 +191,7 @@ public class InitiateSignRequestBuildersTest {
                         UserInfoType.SSN, UserInfoUtil.convertSsnUserInfo(SSN_USER_INFO),
                         REGISTRATION_STATE, TITLE, PUSH_NOTIFICATION, EXPIRY,
                         DataToSignType.SIMPLE_UTF8_TEXT, DataToSign.create(TEXT),
-                        SignatureType.SIMPLE, REQUESTED_ATTRIBUTES, RELYING_PARTY_ID, ORG_ID_ISSUER, null);
+                        SignatureType.SIMPLE, REQUESTED_ATTRIBUTES, RELYING_PARTY_ID, ORG_ID_ISSUER, null, null);
         InitiateSignRequest initiateSignRequest = InitiateSignRequest.createCustom()
                 .setSsn(SSN_USER_INFO)
                 .setTitle(TITLE)
@@ -210,7 +213,7 @@ public class InitiateSignRequestBuildersTest {
                         UserInfoType.SSN, UserInfoUtil.convertSsnUserInfo(SSN_USER_INFO),
                         REGISTRATION_STATE, TITLE, PUSH_NOTIFICATION, EXPIRY,
                         DataToSignType.SIMPLE_UTF8_TEXT, DataToSign.create(TEXT, "".getBytes()),
-                        SignatureType.SIMPLE, REQUESTED_ATTRIBUTES, RELYING_PARTY_ID, ORG_ID_ISSUER, null);
+                        SignatureType.SIMPLE, REQUESTED_ATTRIBUTES, RELYING_PARTY_ID, ORG_ID_ISSUER, null, null);
         InitiateSignRequest initiateSignRequest = InitiateSignRequest.createCustom()
                 .setSsn(SSN_USER_INFO)
                 .setTitle(TITLE)
@@ -232,7 +235,7 @@ public class InitiateSignRequestBuildersTest {
                         UserInfoType.SSN, UserInfoUtil.convertSsnUserInfo(SSN_USER_INFO),
                         MinRegistrationLevel.PLUS, TITLE, PUSH_NOTIFICATION, EXPIRY,
                         DataToSignType.SIMPLE_UTF8_TEXT, DataToSign.create(TEXT),
-                        SignatureType.SIMPLE, REQUESTED_ATTRIBUTES, null, ORG_ID_ISSUER, null);
+                        SignatureType.SIMPLE, REQUESTED_ATTRIBUTES, null, ORG_ID_ISSUER, null, null);
         InitiateSignRequest initiateSignRequest = InitiateSignRequest.createCustom()
                 .setSsn(SSN_USER_INFO)
                 .setTitle(TITLE)
@@ -254,7 +257,7 @@ public class InitiateSignRequestBuildersTest {
                         UserInfoType.ORG_ID, ORGANISATION_ID, REGISTRATION_STATE, TITLE,
                         PUSH_NOTIFICATION, EXPIRY, DataToSignType.SIMPLE_UTF8_TEXT,
                         DataToSign.create(TEXT), SignatureType.SIMPLE, REQUESTED_ATTRIBUTES,
-                        RELYING_PARTY_ID, ORG_ID_ISSUER, null);
+                        RELYING_PARTY_ID, ORG_ID_ISSUER, null, null);
         InitiateSignRequest initiateSignRequest = InitiateSignRequest.createCustom()
                 .setOrganisationId(ORGANISATION_ID)
                 .setTitle(TITLE)
@@ -276,7 +279,7 @@ public class InitiateSignRequestBuildersTest {
                         UserInfoType.SSN, UserInfoUtil.convertSsnUserInfo(SSN_USER_INFO),
                         MinRegistrationLevel.PLUS, TITLE, PUSH_NOTIFICATION, EXPIRY,
                         DataToSignType.SIMPLE_UTF8_TEXT, DataToSign.create(TEXT),
-                        SignatureType.SIMPLE, REQUESTED_ATTRIBUTES, RELYING_PARTY_ID, null, null);
+                        SignatureType.SIMPLE, REQUESTED_ATTRIBUTES, RELYING_PARTY_ID, null, null, null);
         InitiateSignRequest initiateSignRequest = InitiateSignRequest.createCustom()
                 .setSsn(SSN_USER_INFO)
                 .setTitle(TITLE)
@@ -297,7 +300,8 @@ public class InitiateSignRequestBuildersTest {
                         UserInfoType.SSN, UserInfoUtil.convertSsnUserInfo(SSN_USER_INFO),
                         MinRegistrationLevel.PLUS, TITLE, null, EXPIRY,
                         DataToSignType.SIMPLE_UTF8_TEXT, DataToSign.create(TEXT),
-                        SignatureType.XML_MINAMEDDELANDEN, REQUESTED_ATTRIBUTES, RELYING_PARTY_ID, ORG_ID_ISSUER, null);
+                        SignatureType.XML_MINAMEDDELANDEN, REQUESTED_ATTRIBUTES, RELYING_PARTY_ID, ORG_ID_ISSUER, 
+                        null, null);
         InitiateSignRequest initiateSignRequest = InitiateSignRequest.createCustom()
                 .setSsn(SSN_USER_INFO)
                 .setTitle(TITLE)
@@ -317,7 +321,7 @@ public class InitiateSignRequestBuildersTest {
                 new InitiateSignRequest(UserInfoType.EMAIL, EMAIL, REGISTRATION_STATE, TITLE, PUSH_NOTIFICATION,
                                         EXPIRY, DataToSignType.SIMPLE_UTF8_TEXT, DataToSign.create(TEXT),
                                         SignatureType.SIMPLE, REQUESTED_ATTRIBUTES, RELYING_PARTY_ID, ORG_ID_ISSUER,
-                                        UserConfirmationMethod.DEFAULT_AND_FACE);
+                                        UserConfirmationMethod.DEFAULT_AND_FACE, null);
         InitiateSignRequest initiateSignRequest = InitiateSignRequest.createCustom()
                 .setEmail(EMAIL)
                 .setTitle(TITLE)
@@ -329,6 +333,26 @@ public class InitiateSignRequestBuildersTest {
                 .setRelyingPartyId(RELYING_PARTY_ID)
                 .setOrgIdIssuer(ORG_ID_ISSUER)
                 .setUserConfirmationMethod(UserConfirmationMethod.DEFAULT_AND_FACE)
+                .build();
+        Assert.assertEquals(expectedInitiateSignRequest, initiateSignRequest);
+    }
+    
+        @Test
+    public void createCustomRequest_originDeviceDetailsSet() {
+        InitiateSignRequest expectedInitiateSignRequest =
+                new InitiateSignRequest(UserInfoType.EMAIL, EMAIL, REGISTRATION_STATE, TITLE, PUSH_NOTIFICATION,
+                                        EXPIRY, DataToSignType.SIMPLE_UTF8_TEXT, DataToSign.create(TEXT),
+                                        SignatureType.SIMPLE, REQUESTED_ATTRIBUTES, null, null,
+                                        null, ORIGIN_DEVICE_DETAILS);
+        InitiateSignRequest initiateSignRequest = InitiateSignRequest.createCustom()
+                .setEmail(EMAIL)
+                .setTitle(TITLE)
+                .setDataToSign(DataToSign.create(TEXT))
+                .setMinRegistrationLevel(REGISTRATION_STATE)
+                .setAttributesToReturn(AttributeToReturn.values())
+                .setExpiry(EXPIRY)
+                .setPushNotification(PUSH_NOTIFICATION)
+                .setOriginDeviceDetails(ORIGIN_DEVICE_DETAILS)
                 .build();
         Assert.assertEquals(expectedInitiateSignRequest, initiateSignRequest);
     }

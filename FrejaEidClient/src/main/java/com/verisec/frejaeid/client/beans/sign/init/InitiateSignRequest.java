@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.verisec.frejaeid.client.beans.common.RelyingPartyRequest;
 import com.verisec.frejaeid.client.beans.general.AttributeToReturnInfo;
+import com.verisec.frejaeid.client.beans.general.OriginDeviceDetails;
 import com.verisec.frejaeid.client.beans.general.SsnUserInfo;
 import com.verisec.frejaeid.client.beans.sign.init.InitiateSignRequestBuilders.UserInfoBuilder;
 import com.verisec.frejaeid.client.enums.*;
@@ -29,6 +30,7 @@ public class InitiateSignRequest implements RelyingPartyRequest {
     private final String relyingPartyId;
     private final String orgIdIssuer;
     private final UserConfirmationMethod userConfirmationMethod;
+    private final OriginDeviceDetails originDeviceDetails;
 
     /**
      * Returns instance of {@linkplain InitiateSignRequest} with:
@@ -48,7 +50,7 @@ public class InitiateSignRequest implements RelyingPartyRequest {
     public static InitiateSignRequest createDefaultWithEmail(String email, String title, String text) {
         return new InitiateSignRequest(UserInfoType.EMAIL, email, MinRegistrationLevel.PLUS, title, null, null,
                                        DataToSignType.SIMPLE_UTF8_TEXT, DataToSign.create(text), SignatureType.SIMPLE,
-                                       null, null, null, null);
+                                       null, null, null, null, null);
     }
 
     /**
@@ -73,7 +75,7 @@ public class InitiateSignRequest implements RelyingPartyRequest {
             throws FrejaEidClientInternalException {
         return new InitiateSignRequest(UserInfoType.SSN, UserInfoUtil.convertSsnUserInfo(ssnUserInfo),
                                        MinRegistrationLevel.PLUS, title, null, null, DataToSignType.SIMPLE_UTF8_TEXT,
-                                       DataToSign.create(text), SignatureType.SIMPLE, null, null, null, null);
+                                       DataToSign.create(text), SignatureType.SIMPLE, null, null, null, null, null);
     }
 
     /**
@@ -100,7 +102,8 @@ public class InitiateSignRequest implements RelyingPartyRequest {
             @JsonProperty(value = "attributesToReturn") Set<AttributeToReturnInfo> attributesToReturn,
             @JsonProperty(value = "relyingPartyId") String relyingPartyId,
             @JsonProperty(value = "orgIdIssuer") String orgIdIssuer,
-            @JsonProperty(value = "userConfirmationMethod") UserConfirmationMethod userConfirmationMethod) {
+            @JsonProperty(value = "userConfirmationMethod") UserConfirmationMethod userConfirmationMethod,
+            @JsonProperty(value = "originDeviceDetails") OriginDeviceDetails originDeviceDetails) {
         this.userInfoType = userInfoType;
         this.userInfo = userInfo;
         this.title = title;
@@ -114,6 +117,7 @@ public class InitiateSignRequest implements RelyingPartyRequest {
         this.relyingPartyId = relyingPartyId;
         this.orgIdIssuer = orgIdIssuer;
         this.userConfirmationMethod = userConfirmationMethod;
+        this.originDeviceDetails = originDeviceDetails;
     }
 
     public UserInfoType getUserInfoType() {
@@ -169,11 +173,15 @@ public class InitiateSignRequest implements RelyingPartyRequest {
         return userConfirmationMethod;
     }
 
+    public OriginDeviceDetails getOriginDeviceDetails() {
+        return originDeviceDetails;
+    }
+
     @Override
     public int hashCode() {
         return Objects.hash(
                 userInfoType, userInfo, title, minRegistrationLevel, pushNotification, expiry, dataToSignType,
-                dataToSign, signatureType, relyingPartyId, orgIdIssuer, userConfirmationMethod);
+                dataToSign, signatureType, relyingPartyId, orgIdIssuer, userConfirmationMethod, originDeviceDetails);
     }
 
     @Override
@@ -234,6 +242,9 @@ public class InitiateSignRequest implements RelyingPartyRequest {
         if (this.userConfirmationMethod != other.userConfirmationMethod) {
             return false;
         }
+        if (!Objects.equals(this.originDeviceDetails, other.originDeviceDetails)) {
+            return false;
+        }
         return true;
     }
 
@@ -253,6 +264,7 @@ public class InitiateSignRequest implements RelyingPartyRequest {
                 ", relyingPartyId='" + relyingPartyId + '\'' +
                 ", orgIdIssuer='" + orgIdIssuer + '\'' +
                 ", userConfirmationMethod=" + userConfirmationMethod +
+                ", originDeviceDetails=" + originDeviceDetails +
                 '}';
     }
 }

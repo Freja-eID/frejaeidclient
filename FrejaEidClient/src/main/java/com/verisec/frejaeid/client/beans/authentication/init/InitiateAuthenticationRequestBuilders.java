@@ -1,6 +1,7 @@
 package com.verisec.frejaeid.client.beans.authentication.init;
 
 import com.verisec.frejaeid.client.beans.general.AttributeToReturnInfo;
+import com.verisec.frejaeid.client.beans.general.OriginDeviceDetails;
 import com.verisec.frejaeid.client.beans.general.SsnUserInfo;
 import com.verisec.frejaeid.client.enums.*;
 import com.verisec.frejaeid.client.exceptions.FrejaEidClientInternalException;
@@ -14,11 +15,10 @@ public class InitiateAuthenticationRequestBuilders {
     public static class UserInfoBuilder {
 
         /**
-         * Sets email as userInfo and {@linkplain UserInfoType#EMAIL} as
-         * {@linkplain UserInfoType} for initiating transaction.
+         * Sets email as userInfo and {@linkplain UserInfoType#EMAIL} as {@linkplain UserInfoType} for initiating
+         * transaction.
          *
-         * @param email user's email that will be used to identify the end user.
-         *              Maximum length is 256 characters.
+         * @param email user's email that will be used to identify the end user. Maximum length is 256 characters.
          * @return request builder
          */
         public SetOptionalParamsBuilder setEmail(String email) {
@@ -26,26 +26,23 @@ public class InitiateAuthenticationRequestBuilders {
         }
 
         /**
-         * Sets ssnUserInfo as userInfo and {@linkplain UserInfoType#SSN} as
-         * {@linkplain UserInfoType} for initiating transaction.
+         * Sets ssnUserInfo as userInfo and {@linkplain UserInfoType#SSN} as {@linkplain UserInfoType} for initiating
+         * transaction.
          *
-         * @param ssnUserInfo instance {@linkplain SsnUserInfo} that contains
-         *                    personal number and country of user that will be used to identify the
-         *                    end user.
+         * @param ssnUserInfo instance {@linkplain SsnUserInfo} that contains personal number and country of user that
+         * will be used to identify the end user.
          * @return request builder
-         * @throws FrejaEidClientInternalException if error occurs when
-         *                                         generating JSON content from ssnUserInfo
+         * @throws FrejaEidClientInternalException if error occurs when generating JSON content from ssnUserInfo
          */
         public SetOptionalParamsBuilder setSsn(SsnUserInfo ssnUserInfo) throws FrejaEidClientInternalException {
             return new SetOptionalParamsBuilder(UserInfoType.SSN, UserInfoUtil.convertSsnUserInfo(ssnUserInfo));
         }
 
         /**
-         * Sets phoneNumber as userInfo and {@link UserInfoType#PHONE} as
-         * {@linkplain UserInfoType} for initiating transaction.
+         * Sets phoneNumber as userInfo and {@link UserInfoType#PHONE} as {@linkplain UserInfoType} for initiating
+         * transaction.
          *
-         * @param phoneNumber user's phone number that will be used to identify
-         *                    the end user in format +467123456789.
+         * @param phoneNumber user's phone number that will be used to identify the end user in format +467123456789.
          * @return request builder
          */
         public SetOptionalParamsBuilder setPhoneNumber(String phoneNumber) {
@@ -53,8 +50,7 @@ public class InitiateAuthenticationRequestBuilders {
         }
 
         /**
-         * Sets {@linkplain UserInfoType#INFERRED} as {@linkplain UserInfoType}
-         * for initiating transaction.
+         * Sets {@linkplain UserInfoType#INFERRED} as {@linkplain UserInfoType} for initiating transaction.
          *
          * @return request builder
          */
@@ -63,11 +59,10 @@ public class InitiateAuthenticationRequestBuilders {
         }
 
         /**
-         * Sets organisation id as userInfo and {@link UserInfoType#ORG_ID} as
-         * {@linkplain UserInfoType} for initiating transaction.
+         * Sets organisation id as userInfo and {@link UserInfoType#ORG_ID} as {@linkplain UserInfoType} for initiating
+         * transaction.
          *
-         * @param identifier user's identifier that was previously set by
-         *                   organisation
+         * @param identifier user's identifier that was previously set by organisation
          * @return request builder
          */
         public SetOptionalParamsBuilder setOrganisationId(String identifier) {
@@ -85,6 +80,7 @@ public class InitiateAuthenticationRequestBuilders {
         private String relyingPartyId = null;
         private String orgIdIssuer = null;
         private UserConfirmationMethod userConfirmationMethod = null;
+        private OriginDeviceDetails originDeviceDetails = null;
 
         private SetOptionalParamsBuilder(UserInfoType userInfoType, String userInfo) {
             this.userInfoType = userInfoType;
@@ -165,9 +161,22 @@ public class InitiateAuthenticationRequestBuilders {
             return this;
         }
 
+        /**
+         * <b>OriginDeviceDetails contains information about the end user device from which the transaction was
+         * initiated.</b>
+         *
+         * @param originDeviceDetails information about the end user device
+         * @return request builder
+         */
+        public SetOptionalParamsBuilder setOriginDeviceDetails(OriginDeviceDetails originDeviceDetails) {
+            this.originDeviceDetails = originDeviceDetails;
+            return this;
+        }
+
         public InitiateAuthenticationRequest build() {
             return new InitiateAuthenticationRequest(userInfoType, userInfo, minRegistrationLevel, attributesToReturn,
-                                                     relyingPartyId, orgIdIssuer, userConfirmationMethod);
+                                                     relyingPartyId, orgIdIssuer, userConfirmationMethod,
+                                                     originDeviceDetails);
         }
 
     }
