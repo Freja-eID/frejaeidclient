@@ -3,6 +3,7 @@ package com.verisec.frejaeid.client.beans.general;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.verisec.frejaeid.client.beans.covidcertificate.CovidCertificates;
+import com.verisec.frejaeid.client.enums.LoaLevel;
 import com.verisec.frejaeid.client.enums.RegistrationLevel;
 
 import java.util.List;
@@ -37,6 +38,9 @@ public class RequestedAttributes {
     private final List<DocumentInfoWithPdf> childrenDocumentInfoWithPdf;
     private final NetworkInfo networkInfo;
 
+    private final LoaLevel loaLevel;
+    private final String uniquePersonalIdentifier;
+
     @JsonCreator
     public RequestedAttributes(@JsonProperty(value = "basicUserInfo") BasicUserInfo basicUserInfo,
                                @JsonProperty(value = "customIdentifier") String customIdentifier,
@@ -58,7 +62,9 @@ public class RequestedAttributes {
                                @JsonProperty(value = "organisationId") OrganisationIdInfo organisationId,
                                @JsonProperty(value = "documentInfoWithPdf") DocumentInfoWithPdf documentInfoWithPdf,
                                @JsonProperty(value = "childrenDocumentInfoWithPdf") List<DocumentInfoWithPdf> childrenDocumentInfoWithPdf,
-                               @JsonProperty(value = "networkInfo") NetworkInfo networkInfo) {
+                               @JsonProperty(value = "networkInfo") NetworkInfo networkInfo,
+                               @JsonProperty(value = "loaLevel") LoaLevel loaLevel,
+                               @JsonProperty(value = "uniquePersonalIdentifier") String uniquePersonalIdentifier) {
         this.basicUserInfo = basicUserInfo;
         this.customIdentifier = customIdentifier;
         this.ssn = ssn;
@@ -80,6 +86,8 @@ public class RequestedAttributes {
         this.documentInfoWithPdf = documentInfoWithPdf;
         this.childrenDocumentInfoWithPdf = childrenDocumentInfoWithPdf;
         this.networkInfo = networkInfo;
+        this.loaLevel = loaLevel;
+        this.uniquePersonalIdentifier = uniquePersonalIdentifier;
     }
 
     public BasicUserInfo getBasicUserInfo() {
@@ -166,13 +174,21 @@ public class RequestedAttributes {
         return networkInfo;
     }
 
+    public LoaLevel getLoaLevel() {
+        return loaLevel;
+    }
+
+    public String getUniquePersonalIdentifier() {
+        return uniquePersonalIdentifier;
+    }
+
     @Override
     public int hashCode() {
         return Objects.hash(basicUserInfo, customIdentifier, ssn, integratorSpecificUserId,
                             dateOfBirth, relyingPartyUserId, emailAddress, organisationIdIdentifier,
                             organisationId, addresses, allEmailAddresses, allPhoneNumbers, registrationLevel, age,
                             photo, document, documentPhoto, covidCertificates, documentInfoWithPdf, 
-                            childrenDocumentInfoWithPdf, networkInfo);
+                            childrenDocumentInfoWithPdf, networkInfo, loaLevel, uniquePersonalIdentifier);
     }
 
     @Override

@@ -71,7 +71,7 @@ public abstract class CommonHttpTest {
                                     PHOTO, DOCUMENT_INFO, DOCUMENT_PHOTO,
                                     COVID_CERTIFICATES, ORGANISATION_ID_INFO, DOCUMENT_WITH_PDF,
                                     Arrays.asList(CHILDREN_DOCUMENT_WITH_PDF),
-                                    NETWORK_INFO);
+                                    NETWORK_INFO, null, null);
     protected static final String POST_PARAMS_DELIMITER = "&";
     protected static final String KEY_VALUE_DELIMITER = "=";
     protected static final int MOCK_SERVICE_PORT = 30665;
