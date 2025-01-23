@@ -64,6 +64,8 @@ public abstract class CommonHttpTest {
     private static final String DOCUMENT_PHOTO = "Base64EncodedDocPhoto";
     private static final NetworkInfo NETWORK_INFO = new NetworkInfo("123.45.6.7");
     protected static final String FREJA_COOKIE = "frejaCookie";
+    private static final LoaLevel LOA_LEVEL = LoaLevel.LOA3;
+    private static final String UNIQUE_IDENTIFIER = "1234-567890-1234";
     protected static final RequestedAttributes REQUESTED_ATTRIBUTES =
             new RequestedAttributes(BASIC_USER_INFO, CUSTOM_IDENTIFIER, SSN_USER_INFO, null, DATE_OF_BIRTH,
                                     RELYING_PARTY_USER_ID, EMAIL_ADDRESS, ORGANISATION_ID, ADDRESSES,
@@ -71,7 +73,7 @@ public abstract class CommonHttpTest {
                                     PHOTO, DOCUMENT_INFO, DOCUMENT_PHOTO,
                                     COVID_CERTIFICATES, ORGANISATION_ID_INFO, DOCUMENT_WITH_PDF,
                                     Arrays.asList(CHILDREN_DOCUMENT_WITH_PDF),
-                                    NETWORK_INFO, null, null);
+                                    NETWORK_INFO, LOA_LEVEL, UNIQUE_IDENTIFIER);
     protected static final String POST_PARAMS_DELIMITER = "&";
     protected static final String KEY_VALUE_DELIMITER = "=";
     protected static final int MOCK_SERVICE_PORT = 30665;
