@@ -33,6 +33,9 @@ import java.util.Map;
  * <br> - {@link #COVID_CERTIFICATES}
  * <br> - {@link #DOCUMENT_INFO_WITH_PDF}
  * <br> - {@link #CHILDREN_DOCUMENT_INFO_WITH_PDF}
+ * <br> - {@link #NETWORK_INFO}
+ * <br> - {@link #LOA_LEVEL}
+ * <br> - {@link #UNIQUE_PERSONAL_IDENTIFIER}
  */
 public enum AttributeToReturn {
 
