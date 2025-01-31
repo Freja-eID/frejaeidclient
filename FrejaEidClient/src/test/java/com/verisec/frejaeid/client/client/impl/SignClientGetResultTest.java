@@ -90,7 +90,7 @@ public class SignClientGetResultTest {
                                         AGE, PHOTO, DOCUMENT_INFO, DOCUMENT_PHOTO,
                                         COVID_CERTIFICATES, ORGANISATION_ID_INFO, DOCUMENT_WITH_PDF,
                                         Arrays.asList(CHILDREN_DOCUMENT_WITH_PDF),
-                                        NETWORK_INFO);
+                                        NETWORK_INFO, null, null);
     }
 
     @Before
@@ -176,7 +176,7 @@ public class SignClientGetResultTest {
                                         DOCUMENT_INFO, DOCUMENT_PHOTO, COVID_CERTIFICATES,
                                         ORGANISATION_ID_INFO_WITH_ADDITIONAL_ATTRIBUTES, DOCUMENT_WITH_PDF,
                                         Arrays.asList(CHILDREN_DOCUMENT_WITH_PDF),
-                                        NETWORK_INFO);
+                                        NETWORK_INFO, null, null);
         SignResultRequest signResultRequest = SignResultRequest.create(SIGN_REFERENCE, RELYING_PARTY_ID);
         SignResult expectedResponse =
                 new SignResult(SIGN_REFERENCE, TransactionStatus.APPROVED, SIGN_DETAILS, requestedAttributes,
