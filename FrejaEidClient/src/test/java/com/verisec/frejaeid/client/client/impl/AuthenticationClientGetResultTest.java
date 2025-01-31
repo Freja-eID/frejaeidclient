@@ -94,7 +94,7 @@ public class AuthenticationClientGetResultTest {
                                         AGE, PHOTO, DOCUMENT_INFO, DOCUMENT_PHOTO,
                                         COVID_CERTIFICATES, ORGANISATION_ID_INFO,
                                         DOCUMENT_WITH_PDF, Arrays.asList(CHILDREN_DOCUMENT_WITH_PDF),
-                                        NETWORK_INFO);
+                                        NETWORK_INFO, null, null);
     }
 
     @Before
@@ -182,7 +182,7 @@ public class AuthenticationClientGetResultTest {
                                         DOCUMENT_INFO, DOCUMENT_PHOTO, COVID_CERTIFICATES,
                                         ORGANISATION_ID_INFO_WITH_ADDITIONAL_ATTRIBUTES, DOCUMENT_WITH_PDF,
                                         Arrays.asList(CHILDREN_DOCUMENT_WITH_PDF),
-                                        NETWORK_INFO);
+                                        NETWORK_INFO, null, null);
         AuthenticationClientApi authenticationClient =
                 AuthenticationClient.create(TestUtil.getDefaultSslSettings(), FrejaEnvironment.TEST)
                         .setHttpService(httpServiceMock)
@@ -332,12 +332,12 @@ public class AuthenticationClientGetResultTest {
                                         PHOTO, DOCUMENT_INFO, DOCUMENT_PHOTO, COVID_CERTIFICATES,
                                         ORGANISATION_ID_INFO, DOCUMENT_WITH_PDF,
                                         Arrays.asList(CHILDREN_DOCUMENT_WITH_PDF),
-                                        NETWORK_INFO);
+                                        NETWORK_INFO, null, null);
         AuthenticationResult firstResponse =
                 new AuthenticationResult(REFERENCE, TransactionStatus.STARTED, DETAILS, attributes1, FREJA_COOKIE);
         RequestedAttributes attributes2 =
                 new RequestedAttributes(null, "test", null, null, null, null, null, null, null, null,
-                                        null, null, null, null, null, null, null, null, null, null, null);
+                                        null, null, null, null, null, null, null, null, null, null, null, null, null);
         AuthenticationResult secondResponse =
                 new AuthenticationResult(REFERENCE, TransactionStatus.DELIVERED_TO_MOBILE, "test", attributes2,
                                          null);

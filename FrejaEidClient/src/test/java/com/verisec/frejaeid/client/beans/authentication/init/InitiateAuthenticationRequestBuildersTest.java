@@ -49,6 +49,8 @@ public class InitiateAuthenticationRequestBuildersTest {
         REQUESTED_ATTRIBUTES.add(attributeOf(AttributeToReturn.DOCUMENT_INFO_WITH_PDF));
         REQUESTED_ATTRIBUTES.add(attributeOf(AttributeToReturn.CHILDREN_DOCUMENT_INFO_WITH_PDF));
         REQUESTED_ATTRIBUTES.add(attributeOf(AttributeToReturn.NETWORK_INFO));
+        REQUESTED_ATTRIBUTES.add(attributeOf(AttributeToReturn.LOA_LEVEL));
+        REQUESTED_ATTRIBUTES.add(attributeOf(AttributeToReturn.UNIQUE_PERSONAL_IDENTIFIER));
     }
 
     private static AttributeToReturnInfo attributeOf(AttributeToReturn attributeToReturn){
