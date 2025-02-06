@@ -4,7 +4,7 @@ public enum LoaLevel {
     LOA1("LOA1"),
     LOA2("LOA2"),
     LOA3("LOA3"),
-    LOA3NR("LOA3-NR");
+    LOA3_NR("LOA3_NR");
 
     private final String level;
 
