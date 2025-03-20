@@ -182,13 +182,12 @@ public class HttpService implements HttpServiceApi {
         HttpGet request = null;
         HttpStatusCode httpStatusCode = null;
 
-        URIBuilder uriBuilder = new URIBuilder();
-        uriBuilder.setPath(methodUrl);
-        for (Map.Entry<String, String> parameter : parameters.entrySet()) {
-            uriBuilder.addParameter(parameter.getKey(), parameter.getValue());
-        }
-
         try {
+            URIBuilder uriBuilder = new URIBuilder(methodUrl);
+            for (Map.Entry<String, String> parameter : parameters.entrySet()) {
+                uriBuilder.addParameter(parameter.getKey(), parameter.getValue());
+            }
+
             request = new HttpGet(uriBuilder.build());
             request.addHeader("Content-Type", "application/json");
             request.addHeader(HttpHeaders.USER_AGENT, userAgentHeader);
@@ -196,7 +195,7 @@ public class HttpService implements HttpServiceApi {
             LOG.debug("Successfully sent HttpGet request to address {}.", methodUrl);
             int httpStatusCodeValue = httpResponse.getStatusLine().getStatusCode();
             httpStatusCode = HttpStatusCode.getHttpStatusCode(httpStatusCodeValue);
-            byte[] response =  readAllBytes(httpResponse.getEntity().getContent());
+            byte[] response = readAllBytes(httpResponse.getEntity().getContent());
             if (httpStatusCode == null) {
                 throw new FrejaEidException(
                         String.format("Received unsupported HTTP status code %s. Received HTTP message: %s.",
@@ -206,9 +205,9 @@ public class HttpService implements HttpServiceApi {
                 case OK:
                     return response;
                 case NO_CONTENT:
-                    throw new FrejaEidException(String.format("HTTP code %s message: Http transaction failed, no "
-                                                                      + "content received.",
-                                                        httpResponse.getStatusLine().getStatusCode()));
+                    throw new FrejaEidException(String.format(
+                            "HTTP code %s message: Http transaction failed, no content received.",
+                            httpResponse.getStatusLine().getStatusCode()));
                 default:
                     throw new FrejaEidException(String.format("HTTP code %s message: %s",
                                                               httpResponse.getStatusLine().getStatusCode(),
@@ -238,7 +237,7 @@ public class HttpService implements HttpServiceApi {
     final String getLibVersion() {
         ClassLoader classLoader = this.getClass().getClassLoader();
         try (InputStreamReader is = new InputStreamReader(classLoader.getResourceAsStream("version.txt"));
-             BufferedReader bufferedReader = new BufferedReader(is)) {
+                BufferedReader bufferedReader = new BufferedReader(is)) {
             String line = bufferedReader.readLine();
             return line != null ? line : "N/A";
         } catch (IOException e) {
