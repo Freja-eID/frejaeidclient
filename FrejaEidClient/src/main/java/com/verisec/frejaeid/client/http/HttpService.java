@@ -205,9 +205,9 @@ public class HttpService implements HttpServiceApi {
                 case OK:
                     return response;
                 case NO_CONTENT:
-                    throw new FrejaEidException(String.format("HTTP code %s message: Http transaction failed, no "
-                            + "content received.",
-                                                              httpResponse.getStatusLine().getStatusCode()));
+                    throw new FrejaEidException(String.format(
+                            "HTTP code %s message: Http transaction failed, no content received.",
+                            httpResponse.getStatusLine().getStatusCode()));
                 default:
                     throw new FrejaEidException(String.format("HTTP code %s message: %s",
                                                               httpResponse.getStatusLine().getStatusCode(),
