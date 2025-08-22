@@ -31,8 +31,9 @@ public class OrganisationIdClientGetAllUsersTest {
             OrganisationId.create("Title", "Identifier name", "Identifier");
     private static final SsnUserInfo SSN = SsnUserInfo.create(Country.SWEDEN, "301219938787");
     private static final String RELYING_PARTY_ID = "relyingPartyId";
+    private static final String UNIQUE_PERSONAL_IDENTIFIER = "uniquePersonalIdentifier";
     private final OrganisationIdUserInfo organisationIdUserInfo =
-            new OrganisationIdUserInfo(ORGANISATION_ID, SSN, RegistrationState.EXTENDED);
+            new OrganisationIdUserInfo(ORGANISATION_ID, SSN, RegistrationState.EXTENDED, UNIQUE_PERSONAL_IDENTIFIER);
     private final GetAllOrganisationIdUsersResponse expectedResponse =
             new GetAllOrganisationIdUsersResponse(Arrays.asList(organisationIdUserInfo));
     private OrganisationIdClientApi organisationIdClient;
