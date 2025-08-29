@@ -138,6 +138,17 @@ public class OrganisationIdClient extends BasicClient implements OrganisationIdC
     }
 
     @Override
+    public List<OrganisationIdUserInfo> getAllUsersV2(GetAllOrganisationIdUsersRequest getAllOrganisationIdUsersRequest)
+            throws FrejaEidClientInternalException, FrejaEidException {
+        requestValidationService.validateGetAllOrganisationIdUsersRequest(getAllOrganisationIdUsersRequest);
+        LOG.debug("Getting information about all users with organisation ID.");
+        List<OrganisationIdUserInfo> organisationIdUserInfos =
+                organisationIdService.getAllUsersV2(getAllOrganisationIdUsersRequest).getUserInfos();
+        LOG.debug("Successfully got information about all users with organisation ID.");
+        return organisationIdUserInfos;
+    }
+
+    @Override
     public UpdateOrganisationIdResponse update(UpdateOrganisationIdRequest updateOrganisationIdRequest)
             throws FrejaEidClientInternalException, FrejaEidException {
         requestValidationService.validateUpdateOrganisationIdRequest(updateOrganisationIdRequest);
