@@ -252,7 +252,7 @@ public class OrganisationIdClientHttpTest extends CommonHttpTest {
     }
 
     @Test
-    public void getAllOrganisationIdUsersV2_sendRequestWithoutRelyingPartyId_success()
+    public void getAllOrganisationIdUsersV1_1_sendRequestWithoutRelyingPartyId_success()
             throws FrejaEidClientInternalException, IOException, FrejaEidException {
         GetAllOrganisationIdUsersRequest getAllOrganisationIdUsersRequest = GetAllOrganisationIdUsersRequest.create();
         String responseString = jsonService.serializeToJson(getAllOrganisationIdUsersResponse);
@@ -260,12 +260,12 @@ public class OrganisationIdClientHttpTest extends CommonHttpTest {
         startMockServer(getAllOrganisationIdUsersRequest, HttpStatusCode.OK.getCode(), responseString);
 
         List<OrganisationIdUserInfo> actualListOfOrganisationIdUserInfos =
-                organisationIdClient.getAllUsersV2(getAllOrganisationIdUsersRequest);
+                organisationIdClient.getAllUsersV1_1(getAllOrganisationIdUsersRequest);
         Assert.assertEquals(getAllOrganisationIdUsersResponse.getUserInfos(), actualListOfOrganisationIdUserInfos);
     }
 
     @Test
-    public void getAllOrganisationIdUsersV2_sendRequestWithRelyingPartyId_success()
+    public void getAllOrganisationIdUsersV1_1_sendRequestWithRelyingPartyId_success()
             throws FrejaEidClientInternalException, IOException, FrejaEidException {
         GetAllOrganisationIdUsersRequest getAllOrganisationIdUsersRequest =
                 GetAllOrganisationIdUsersRequest.create(RELYING_PARTY_ID);
@@ -273,7 +273,7 @@ public class OrganisationIdClientHttpTest extends CommonHttpTest {
         startMockServer(getAllOrganisationIdUsersRequest, HttpStatusCode.OK.getCode(), responseString);
 
         List<OrganisationIdUserInfo> actualListOfOrganisationIdUserInfos =
-                organisationIdClient.getAllUsersV2(getAllOrganisationIdUsersRequest);
+                organisationIdClient.getAllUsersV1_1(getAllOrganisationIdUsersRequest);
         Assert.assertEquals(getAllOrganisationIdUsersResponse.getUserInfos(), actualListOfOrganisationIdUserInfos);
     }
 
