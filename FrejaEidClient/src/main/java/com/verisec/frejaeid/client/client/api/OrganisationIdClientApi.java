@@ -112,7 +112,7 @@ public interface OrganisationIdClientApi {
      *                                         fails.
      * @throws FrejaEidException               if server returns an error.
      */
-    public List<OrganisationIdUserInfo> getAllUsersV2(GetAllOrganisationIdUsersRequest getAllOrganisationIdUsersRequest)
+    public List<OrganisationIdUserInfo> getAllUsersV1_1(GetAllOrganisationIdUsersRequest getAllOrganisationIdUsersRequest)
             throws FrejaEidClientInternalException, FrejaEidException;
 
     /**
