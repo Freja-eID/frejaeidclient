@@ -23,7 +23,7 @@ public enum MethodUrl {
     ORGANISATION_ID_DELETE("/organisation/management/orgId/1.0/delete"),
     ORGANISATION_ID_CANCEL_ADD("/organisation/management/orgId/1.0/cancelAdd"),
     ORGANISATION_ID_GET_ALL_USERS("/organisation/management/orgId/1.0/users/getAll"),
-    ORGANISATION_ID_GET_ALL_USERS_V2("/organisation/management/orgId/1.0/users/getAllV2"),
+    ORGANISATION_ID_GET_ALL_USERS_V1_1("/organisation/management/orgId/1.1/users/getAll"),
     ORGANISATION_ID_UPDATE("/organisation/management/orgId/1.0/update"),
     CUSTOM_IDENTIFIER_SET("/user/manage/1.0/setCustomIdentifier"),
     CUSTOM_IDENTIFIER_DELETE("/user/manage/1.0/deleteCustomIdentifier"),
