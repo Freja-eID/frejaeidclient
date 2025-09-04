@@ -31,8 +31,9 @@ public class OrganisationIdClientGetAllUsersTest {
             OrganisationId.create("Title", "Identifier name", "Identifier");
     private static final SsnUserInfo SSN = SsnUserInfo.create(Country.SWEDEN, "301219938787");
     private static final String RELYING_PARTY_ID = "relyingPartyId";
+    private static final String UNIQUE_PERSONAL_IDENTIFIER = "uniquePersonalIdentifier";
     private final OrganisationIdUserInfo organisationIdUserInfo =
-            new OrganisationIdUserInfo(ORGANISATION_ID, SSN, RegistrationState.EXTENDED);
+            new OrganisationIdUserInfo(ORGANISATION_ID, SSN, RegistrationState.EXTENDED, UNIQUE_PERSONAL_IDENTIFIER);
     private final GetAllOrganisationIdUsersResponse expectedResponse =
             new GetAllOrganisationIdUsersResponse(Arrays.asList(organisationIdUserInfo));
     private OrganisationIdClientApi organisationIdClient;
@@ -68,6 +69,34 @@ public class OrganisationIdClientGetAllUsersTest {
                 .thenReturn(expectedResponse);
         List<OrganisationIdUserInfo> actualListOfOrgansiationIdUserInfos = organisationIdClient.getAllUsers(request);
         Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getServiceUrl() + MethodUrl.ORGANISATION_ID_GET_ALL_USERS,
+                                             null, request, GetAllOrganisationIdUsersResponse.class, RELYING_PARTY_ID);
+        Assert.assertEquals(expectedResponse.getUserInfos(), actualListOfOrgansiationIdUserInfos);
+    }
+
+    @Test
+    public void getAllOrganisationIdUsersV2_withoutRelyingPartyId_success()
+            throws FrejaEidClientInternalException, FrejaEidException {
+        GetAllOrganisationIdUsersRequest request = GetAllOrganisationIdUsersRequest.create();
+        Mockito.when(httpServiceMock.send(Mockito.anyString(), (RequestTemplate) Mockito.isNull(),
+                                          Mockito.any(GetAllOrganisationIdUsersRequest.class),
+                                          Mockito.eq(GetAllOrganisationIdUsersResponse.class),
+                                          (String) Mockito.isNull())).thenReturn(expectedResponse);
+        List<OrganisationIdUserInfo> actualListOfOrganisationIdUserInfos = organisationIdClient.getAllUsersV2(request);
+        Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getServiceUrl() + MethodUrl.ORGANISATION_ID_GET_ALL_USERS_V1_1,
+                                             null, request, GetAllOrganisationIdUsersResponse.class, null);
+        Assert.assertEquals(expectedResponse.getUserInfos(), actualListOfOrganisationIdUserInfos);
+    }
+
+    @Test
+    public void getAllOrganisationIdUsersV2_withRelyingPartyId_success()
+            throws FrejaEidClientInternalException, FrejaEidException {
+        GetAllOrganisationIdUsersRequest request = GetAllOrganisationIdUsersRequest.create(RELYING_PARTY_ID);
+        Mockito.when(httpServiceMock.send(Mockito.anyString(), (RequestTemplate) Mockito.isNull(),
+                                          Mockito.any(GetAllOrganisationIdUsersRequest.class),
+                                          Mockito.eq(GetAllOrganisationIdUsersResponse.class), Mockito.anyString()))
+                .thenReturn(expectedResponse);
+        List<OrganisationIdUserInfo> actualListOfOrgansiationIdUserInfos = organisationIdClient.getAllUsersV2(request);
+        Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getServiceUrl() + MethodUrl.ORGANISATION_ID_GET_ALL_USERS_V1_1,
                                              null, request, GetAllOrganisationIdUsersResponse.class, RELYING_PARTY_ID);
         Assert.assertEquals(expectedResponse.getUserInfos(), actualListOfOrgansiationIdUserInfos);
     }
