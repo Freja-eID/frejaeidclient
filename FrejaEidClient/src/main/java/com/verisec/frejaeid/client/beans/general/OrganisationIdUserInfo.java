@@ -11,14 +11,17 @@ public class OrganisationIdUserInfo {
     private final OrganisationId organisationId;
     private final SsnUserInfo ssn;
     private final RegistrationState registrationState;
+    private final String uniquePersonalIdentifier;
 
     @JsonCreator
     public OrganisationIdUserInfo(@JsonProperty("organisationId") OrganisationId organisationId,
                                   @JsonProperty("ssn") SsnUserInfo ssn,
-                                  @JsonProperty("registrationState") RegistrationState registrationState) {
+                                  @JsonProperty("registrationState") RegistrationState registrationState,
+                                  @JsonProperty("uniquePersonalIdentifier") String uniquePersonalIdentifier) {
         this.organisationId = organisationId;
         this.ssn = ssn;
         this.registrationState = registrationState;
+        this.uniquePersonalIdentifier = uniquePersonalIdentifier;
     }
 
     public OrganisationId getOrganisationId() {
@@ -33,39 +36,33 @@ public class OrganisationIdUserInfo {
         return registrationState;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(organisationId, ssn, registrationState);
+    public String getUniquePersonalIdentifier() {
+        return uniquePersonalIdentifier;
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final OrganisationIdUserInfo other = (OrganisationIdUserInfo) obj;
-        if (!Objects.equals(this.organisationId, other.organisationId)) {
-            return false;
-        }
-        if (!Objects.equals(this.ssn, other.ssn)) {
-            return false;
-        }
-        if (this.registrationState != other.registrationState) {
-            return false;
-        }
-        return true;
+    public int hashCode() {
+        return Objects.hash(organisationId, ssn, registrationState, uniquePersonalIdentifier);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof OrganisationIdUserInfo)) return false;
+        OrganisationIdUserInfo that = (OrganisationIdUserInfo) o;
+        return Objects.equals(organisationId, that.organisationId) &&
+                Objects.equals(ssn, that.ssn) &&
+                registrationState == that.registrationState &&
+                Objects.equals(uniquePersonalIdentifier, that.uniquePersonalIdentifier);
     }
 
     @Override
     public String toString() {
-        return "OrganisationIdUserInfo{" + "organisationId=" + organisationId + ", ssn=" + ssn + ", registrationState" +
-                "=" + registrationState + '}';
+        return "OrganisationIdUserInfo{" +
+                "organisationId=" + organisationId +
+                ", ssn=" + ssn +
+                ", registrationState=" + registrationState +
+                ", uniquePersonalIdentifier='" + uniquePersonalIdentifier + '\'' +
+                '}';
     }
-
 }

@@ -36,6 +36,7 @@ public class OrganisationIdClientHttpTest extends CommonHttpTest {
     private static final String ORGANISATION_ID_TITLE = "OrganisationId title";
     private static final String IDENTIFIER_NAME = "Identifier name";
     private static final String IDENTIFIER = "identifier";
+    private static final String UNIQUE_PERSONAL_IDENTIFIER = "uniquePersonalIdentifier";
     private static final List<OrganisationIdAttribute> ADDITIONAL_ATTRIBUTES =
             Arrays.asList(OrganisationIdAttribute.create("key", "friendly name", "value"),
                           OrganisationIdAttribute.create("attribute_id", "attribute name", "attribute value"));
@@ -47,7 +48,7 @@ public class OrganisationIdClientHttpTest extends CommonHttpTest {
         organisationIdResult = new OrganisationIdResult(REFERENCE, TransactionStatus.STARTED, null, null);
         OrganisationIdUserInfo organisationIdUserInfo =
                 new OrganisationIdUserInfo(OrganisationId.create(ORGANISATION_ID_TITLE, IDENTIFIER_NAME, IDENTIFIER),
-                                           SSN_USER_INFO, RegistrationState.EXTENDED);
+                                           SSN_USER_INFO, RegistrationState.EXTENDED, UNIQUE_PERSONAL_IDENTIFIER);
         getAllOrganisationIdUsersResponse =
                 new GetAllOrganisationIdUsersResponse(Arrays.asList(organisationIdUserInfo));
 
@@ -247,6 +248,32 @@ public class OrganisationIdClientHttpTest extends CommonHttpTest {
 
         List<OrganisationIdUserInfo> actualListOfOrganisationIdUserInfos =
                 organisationIdClient.getAllUsers(getAllOrganisationIdUsersRequest);
+        Assert.assertEquals(getAllOrganisationIdUsersResponse.getUserInfos(), actualListOfOrganisationIdUserInfos);
+    }
+
+    @Test
+    public void getAllOrganisationIdUsersV1_1_sendRequestWithoutRelyingPartyId_success()
+            throws FrejaEidClientInternalException, IOException, FrejaEidException {
+        GetAllOrganisationIdUsersRequest getAllOrganisationIdUsersRequest = GetAllOrganisationIdUsersRequest.create();
+        String responseString = jsonService.serializeToJson(getAllOrganisationIdUsersResponse);
+
+        startMockServer(getAllOrganisationIdUsersRequest, HttpStatusCode.OK.getCode(), responseString);
+
+        List<OrganisationIdUserInfo> actualListOfOrganisationIdUserInfos =
+                organisationIdClient.getAllUsersV1_1(getAllOrganisationIdUsersRequest);
+        Assert.assertEquals(getAllOrganisationIdUsersResponse.getUserInfos(), actualListOfOrganisationIdUserInfos);
+    }
+
+    @Test
+    public void getAllOrganisationIdUsersV1_1_sendRequestWithRelyingPartyId_success()
+            throws FrejaEidClientInternalException, IOException, FrejaEidException {
+        GetAllOrganisationIdUsersRequest getAllOrganisationIdUsersRequest =
+                GetAllOrganisationIdUsersRequest.create(RELYING_PARTY_ID);
+        String responseString = jsonService.serializeToJson(getAllOrganisationIdUsersResponse);
+        startMockServer(getAllOrganisationIdUsersRequest, HttpStatusCode.OK.getCode(), responseString);
+
+        List<OrganisationIdUserInfo> actualListOfOrganisationIdUserInfos =
+                organisationIdClient.getAllUsersV1_1(getAllOrganisationIdUsersRequest);
         Assert.assertEquals(getAllOrganisationIdUsersResponse.getUserInfos(), actualListOfOrganisationIdUserInfos);
     }
 

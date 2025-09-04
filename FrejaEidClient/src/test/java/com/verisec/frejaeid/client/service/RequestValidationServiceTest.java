@@ -902,6 +902,16 @@ public class RequestValidationServiceTest {
     }
 
     @Test
+    public void getAllOrgIdUsersV1_1_emptyRelyingPartyId_expectError() throws FrejaEidException {
+        try {
+            organisationIdClient.getAllUsersV1_1(GetAllOrganisationIdUsersRequest.create(""));
+            Assert.fail("Test should throw exception!");
+        } catch (FrejaEidClientInternalException ex) {
+            Assert.assertEquals("RelyingPartyId cannot be empty.", ex.getLocalizedMessage());
+        }
+    }
+
+    @Test
     public void getCustodianshipStatus_emptyRelyingPartyId_expectError() throws FrejaEidException {
         try {
             GetUserCustodianshipStatusRequest getUserCustodianshipStatusRequest =

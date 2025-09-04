@@ -104,6 +104,18 @@ public interface OrganisationIdClientApi {
             throws FrejaEidClientInternalException, FrejaEidException;
 
     /**
+     * Gets information about users for whom relying party has set Organisation ID (all registration states included).
+     *
+     * @param getAllOrganisationIdUsersRequest
+     * @return list of {@linkplain OrganisationIdUserInfo}
+     * @throws FrejaEidClientInternalException if internal validation of request
+     *                                         fails.
+     * @throws FrejaEidException               if server returns an error.
+     */
+    public List<OrganisationIdUserInfo> getAllUsersV1_1(GetAllOrganisationIdUsersRequest getAllOrganisationIdUsersRequest)
+            throws FrejaEidClientInternalException, FrejaEidException;
+
+    /**
      * Updates issued organisation id for a specific person.
      *
      * @param updateOrganisationIdRequest instance of

@@ -94,6 +94,14 @@ public class OrganisationIdService extends BasicService {
                                 getAllOrganisationIdUsersRequest.getRelyingPartyId());
     }
 
+    public GetAllOrganisationIdUsersResponse getAllUsersV1_1(
+            GetAllOrganisationIdUsersRequest getAllOrganisationIdUsersRequest)
+            throws FrejaEidClientInternalException, FrejaEidException {
+        return httpService.send(getUrl(serverAddress, MethodUrl.ORGANISATION_ID_GET_ALL_USERS_V1_1), null,
+                                getAllOrganisationIdUsersRequest, GetAllOrganisationIdUsersResponse.class,
+                                getAllOrganisationIdUsersRequest.getRelyingPartyId());
+    }
+
     public UpdateOrganisationIdResponse update(UpdateOrganisationIdRequest updateOrganisationIdRequest)
             throws FrejaEidClientInternalException, FrejaEidException {
         return httpService.send(getUrl(serverAddress, MethodUrl.ORGANISATION_ID_UPDATE),
