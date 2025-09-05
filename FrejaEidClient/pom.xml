@@ -42,18 +42,6 @@
         <project.scm.id>github</project.scm.id>
     </properties>
 
-<!--    <distributionManagement>-->
-<!--        <snapshotRepository>-->
-<!--            <id>ossrh</id>-->
-<!--            <url>https://oss.sonatype.org/content/repositories/snapshots</url>-->
-<!--        </snapshotRepository>-->
-<!--        <repository>-->
-<!--            <id>sonatypeCentral</id>-->
-<!--            <url>https://central.sonatype.com/service/local/staging/deploy/maven2/</url>-->
-<!--        </repository>-->
-
-<!--    </distributionManagement>-->
-
     <scm>
         <connection>
             scm:git:https://github.com/Verisec/frejaeidclient.git
