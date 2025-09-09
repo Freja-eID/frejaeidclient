@@ -22,6 +22,7 @@ public class InitiateAddOrganisationIdRequest implements RelyingPartyRequest {
     private final MinRegistrationLevel minRegistrationLevel;
     private final Long expiry;
     private final String relyingPartyId;
+    private final boolean useDynamicQrCode;
 
     /**
      * Returns instance of {@linkplain InitiateAddOrganisationIdRequest} with
@@ -35,7 +36,7 @@ public class InitiateAddOrganisationIdRequest implements RelyingPartyRequest {
      */
     public static InitiateAddOrganisationIdRequest createDefaultWithEmail(String email, OrganisationId organisationId) {
         return new InitiateAddOrganisationIdRequest(UserInfoType.EMAIL, email, organisationId,
-                                                    MinRegistrationLevel.EXTENDED, null, null);
+                                                    MinRegistrationLevel.EXTENDED, null, null, false);
     }
 
     /**
@@ -55,7 +56,7 @@ public class InitiateAddOrganisationIdRequest implements RelyingPartyRequest {
                                                                         OrganisationId organisationId)
             throws FrejaEidClientInternalException {
         return new InitiateAddOrganisationIdRequest(UserInfoType.SSN, UserInfoUtil.convertSsnUserInfo(ssnUserInfo),
-                                                    organisationId, MinRegistrationLevel.EXTENDED, null, null);
+                                                    organisationId, MinRegistrationLevel.EXTENDED, null, null, false);
     }
 
     /**
@@ -75,19 +76,21 @@ public class InitiateAddOrganisationIdRequest implements RelyingPartyRequest {
             @JsonProperty(value = "userInfo") String userInfo,
             @JsonProperty(value = "organisationId") OrganisationId organisationId,
             @JsonProperty(value = "minRegistrationLevel") MinRegistrationLevel minRegistrationLevel,
-            @JsonProperty(value = "expiry") Long expiry) {
-        this(userInfoType, userInfo, organisationId, minRegistrationLevel, expiry, null);
+            @JsonProperty(value = "expiry") Long expiry,
+            @JsonProperty(value = "useDynamicQrCode") boolean useDynamicQrCode) {
+        this(userInfoType, userInfo, organisationId, minRegistrationLevel, expiry, null, useDynamicQrCode);
     }
 
     InitiateAddOrganisationIdRequest(UserInfoType userInfoType, String userInfo,
                                      OrganisationId organisationId, MinRegistrationLevel minRegistrationLevel,
-                                     Long expiry, String relyingPartyId) {
+                                     Long expiry, String relyingPartyId, boolean useDynamicQrCode) {
         this.userInfoType = userInfoType;
         this.userInfo = userInfo;
         this.organisationId = organisationId;
         this.minRegistrationLevel = minRegistrationLevel;
         this.expiry = expiry;
         this.relyingPartyId = relyingPartyId;
+        this.useDynamicQrCode = useDynamicQrCode;
     }
 
     public UserInfoType getUserInfoType() {
@@ -115,49 +118,39 @@ public class InitiateAddOrganisationIdRequest implements RelyingPartyRequest {
         return relyingPartyId;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(userInfoType, userInfo, organisationId, minRegistrationLevel, expiry, relyingPartyId);
+    public boolean isUseDynamicQrCode() {
+        return useDynamicQrCode;
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final InitiateAddOrganisationIdRequest other = (InitiateAddOrganisationIdRequest) obj;
-        if (!Objects.equals(this.userInfo, other.userInfo)) {
-            return false;
-        }
-        if (!Objects.equals(this.relyingPartyId, other.relyingPartyId)) {
-            return false;
-        }
-        if (this.userInfoType != other.userInfoType) {
-            return false;
-        }
-        if (!Objects.equals(this.organisationId, other.organisationId)) {
-            return false;
-        }
-        if (this.minRegistrationLevel != other.minRegistrationLevel) {
-            return false;
-        }
-        if (!Objects.equals(this.expiry, other.expiry)) {
-            return false;
-        }
-        return true;
+    public int hashCode() {
+        return Objects.hash(userInfoType, userInfo, organisationId, minRegistrationLevel, expiry, relyingPartyId, useDynamicQrCode);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof InitiateAddOrganisationIdRequest)) return false;
+        InitiateAddOrganisationIdRequest that = (InitiateAddOrganisationIdRequest) o;
+        return useDynamicQrCode == that.useDynamicQrCode &&
+                userInfoType == that.userInfoType &&
+                Objects.equals(userInfo, that.userInfo) &&
+                Objects.equals(organisationId, that.organisationId) &&
+                minRegistrationLevel == that.minRegistrationLevel &&
+                Objects.equals(expiry, that.expiry) &&
+                Objects.equals(relyingPartyId, that.relyingPartyId);
     }
 
     @Override
     public String toString() {
-        return "InitiateAddOrganisationIdRequest{" + "userInfoType=" + userInfoType + ", userInfo=" + userInfo + ", " +
-                "organisationId=" + organisationId + ", minRegistrationLevel=" + minRegistrationLevel + ", expiry=" +
-                expiry + ", relyingPartyId=" + relyingPartyId + '}';
+        return "InitiateAddOrganisationIdRequest{" +
+                "userInfoType=" + userInfoType +
+                ", userInfo='" + userInfo + '\'' +
+                ", organisationId=" + organisationId +
+                ", minRegistrationLevel=" + minRegistrationLevel +
+                ", expiry=" + expiry +
+                ", relyingPartyId='" + relyingPartyId + '\'' +
+                ", useDynamicQrCode=" + useDynamicQrCode +
+                '}';
     }
-
 }
