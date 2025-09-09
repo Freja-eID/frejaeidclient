@@ -93,6 +93,7 @@ public class InitiateSignRequestBuilders {
         private String orgIdIssuer = null;
         private UserConfirmationMethod userConfirmationMethod = null;
         private OriginDeviceDetails originDeviceDetails = null;
+        private boolean useDynamicQrCode;
 
         private SetOptionalParamsBuilder(UserInfoType userInfoType, String userInfo) {
             this.userInfoType = userInfoType;
@@ -280,11 +281,15 @@ public class InitiateSignRequestBuilders {
             return this;
         }
 
+        public SetOptionalParamsBuilder setUseDynamicQrCode(boolean useDynamicQrCode) {
+            this.useDynamicQrCode = useDynamicQrCode;
+            return this;
+        }
 
         public InitiateSignRequest build() {
             return new InitiateSignRequest(userInfoType, userInfo, minRegistrationLevel, title, pushNotification,
                                            expiry, dataToSignType, dataToSign, signatureType, attributesToReturn,
-                                           relyingPartyId, orgIdIssuer, userConfirmationMethod, originDeviceDetails);
+                                           relyingPartyId, orgIdIssuer, userConfirmationMethod, originDeviceDetails, useDynamicQrCode);
         }
 
     }

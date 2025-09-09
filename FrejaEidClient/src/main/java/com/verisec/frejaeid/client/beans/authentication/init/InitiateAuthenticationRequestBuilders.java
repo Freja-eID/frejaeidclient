@@ -81,6 +81,7 @@ public class InitiateAuthenticationRequestBuilders {
         private String orgIdIssuer = null;
         private UserConfirmationMethod userConfirmationMethod = null;
         private OriginDeviceDetails originDeviceDetails = null;
+        private boolean useDynamicQrCode;
 
         private SetOptionalParamsBuilder(UserInfoType userInfoType, String userInfo) {
             this.userInfoType = userInfoType;
@@ -173,10 +174,15 @@ public class InitiateAuthenticationRequestBuilders {
             return this;
         }
 
+        public SetOptionalParamsBuilder setUseDynamicQrCode(boolean useDynamicQrCode) {
+            this.useDynamicQrCode = useDynamicQrCode;
+            return this;
+        }
+
         public InitiateAuthenticationRequest build() {
             return new InitiateAuthenticationRequest(userInfoType, userInfo, minRegistrationLevel, attributesToReturn,
                                                      relyingPartyId, orgIdIssuer, userConfirmationMethod,
-                                                     originDeviceDetails);
+                                                     originDeviceDetails, useDynamicQrCode);
         }
 
     }

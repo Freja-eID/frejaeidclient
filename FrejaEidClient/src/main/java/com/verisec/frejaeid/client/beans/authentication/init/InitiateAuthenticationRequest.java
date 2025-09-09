@@ -27,6 +27,7 @@ public class InitiateAuthenticationRequest implements RelyingPartyRequest {
     private final String orgIdIssuer;
     private final UserConfirmationMethod userConfirmationMethod;
     private final OriginDeviceDetails originDeviceDetails;
+    private final boolean useDynamicQrCode;
 
     /**
      * Returns instance of {@linkplain InitiateAuthenticationRequest} with:
@@ -39,7 +40,7 @@ public class InitiateAuthenticationRequest implements RelyingPartyRequest {
      */
     public static InitiateAuthenticationRequest createDefaultWithEmail(String email) {
         return new InitiateAuthenticationRequest(
-                UserInfoType.EMAIL, email, MinRegistrationLevel.BASIC, null, null, null, null);
+                UserInfoType.EMAIL, email, MinRegistrationLevel.BASIC, null, null, null, null, false);
     }
 
     /**
@@ -55,7 +56,7 @@ public class InitiateAuthenticationRequest implements RelyingPartyRequest {
     public static InitiateAuthenticationRequest createDefaultWithSsn(SsnUserInfo ssnUserInfo)
             throws FrejaEidClientInternalException {
         return new InitiateAuthenticationRequest(UserInfoType.SSN, UserInfoUtil.convertSsnUserInfo(ssnUserInfo),
-                                                 MinRegistrationLevel.BASIC, null, null, null, null);
+                                                 MinRegistrationLevel.BASIC, null, null, null, null, false);
     }
 
     /**
@@ -76,16 +77,17 @@ public class InitiateAuthenticationRequest implements RelyingPartyRequest {
             @JsonProperty(value = "attributesToReturn") Set<AttributeToReturnInfo> attributesToReturn,
             @JsonProperty(value = "orgIdIssuer") String orgIdIssuer,
             @JsonProperty(value = "userConfirmationMethod") UserConfirmationMethod userConfirmationMethod,
-            @JsonProperty(value = "originDeviceDetails") OriginDeviceDetails originDeviceDetails) {
+            @JsonProperty(value = "originDeviceDetails") OriginDeviceDetails originDeviceDetails,
+            @JsonProperty(value = "useDynamicQrCode") boolean useDynamicQrCode) {
         this(userInfoType, userInfo, minRegistrationLevel, attributesToReturn, null, orgIdIssuer,
-             userConfirmationMethod, originDeviceDetails);
+             userConfirmationMethod, originDeviceDetails, useDynamicQrCode);
     }
 
     InitiateAuthenticationRequest(
             UserInfoType userInfoType, String userInfo, MinRegistrationLevel minRegistrationLevel,
             Set<AttributeToReturnInfo> attributesToReturn, String relyingPartyId,
             String orgIdIssuer, UserConfirmationMethod userConfirmationMethod,
-            OriginDeviceDetails originDeviceDetails) {
+            OriginDeviceDetails originDeviceDetails, boolean useDynamicQrCode) {
         this.userInfoType = userInfoType;
         this.userInfo = userInfo;
         this.minRegistrationLevel = minRegistrationLevel;
@@ -94,7 +96,7 @@ public class InitiateAuthenticationRequest implements RelyingPartyRequest {
         this.orgIdIssuer = orgIdIssuer;
         this.userConfirmationMethod = userConfirmationMethod;
         this.originDeviceDetails = originDeviceDetails;
-
+        this.useDynamicQrCode = useDynamicQrCode;
     }
 
     @JsonIgnore
@@ -130,65 +132,44 @@ public class InitiateAuthenticationRequest implements RelyingPartyRequest {
         return originDeviceDetails;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(userInfoType, userInfo, minRegistrationLevel, attributesToReturn, relyingPartyId,
-                            orgIdIssuer, userConfirmationMethod, originDeviceDetails);
+    public boolean isUseDynamicQrCode() {
+        return useDynamicQrCode;
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final InitiateAuthenticationRequest other = (InitiateAuthenticationRequest) obj;
-        if (!Objects.equals(this.userInfo, other.userInfo)) {
-            return false;
-        }
-        if (!Objects.equals(this.relyingPartyId, other.relyingPartyId)) {
-            return false;
-        }
-        if (!Objects.equals(this.orgIdIssuer, other.orgIdIssuer)) {
-            return false;
-        }
-        if (this.userInfoType != other.userInfoType) {
-            return false;
-        }
-        if (this.minRegistrationLevel != other.minRegistrationLevel) {
-            return false;
-        }
-        if (this.attributesToReturn != null && other.attributesToReturn != null) {
-            if (this.attributesToReturn.size() != other.attributesToReturn.size()) {
-                return false;
-            }
-            if (!this.attributesToReturn.containsAll(other.attributesToReturn)) {
-                return false;
-            }
-        } else if (this.attributesToReturn != null || other.attributesToReturn != null) {
-            return false;
-        }
-        if (this.userConfirmationMethod != other.userConfirmationMethod) {
-            return false;
-        }
-        if (!Objects.equals(this.originDeviceDetails, other.originDeviceDetails)) {
-            return false;
-        }
-        return true;
+    public int hashCode() {
+        return Objects.hash(userInfoType, userInfo, minRegistrationLevel, attributesToReturn, relyingPartyId,
+                            orgIdIssuer, userConfirmationMethod, originDeviceDetails, useDynamicQrCode);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof InitiateAuthenticationRequest)) return false;
+        InitiateAuthenticationRequest that = (InitiateAuthenticationRequest) o;
+        return useDynamicQrCode == that.useDynamicQrCode &&
+                userInfoType == that.userInfoType &&
+                Objects.equals(userInfo, that.userInfo) &&
+                minRegistrationLevel == that.minRegistrationLevel &&
+                Objects.equals(attributesToReturn, that.attributesToReturn) &&
+                Objects.equals(relyingPartyId, that.relyingPartyId) &&
+                Objects.equals(orgIdIssuer, that.orgIdIssuer) &&
+                userConfirmationMethod == that.userConfirmationMethod &&
+                Objects.equals(originDeviceDetails, that.originDeviceDetails);
     }
 
     @Override
     public String toString() {
-        return "InitiateAuthenticationRequest{" + "userInfoType=" + userInfoType + ", userInfo='" + userInfo + '\''
-                + ", minRegistrationLevel=" + minRegistrationLevel + ", attributesToReturn=" + attributesToReturn
-                + ", relyingPartyId='" + relyingPartyId + '\'' + ", orgIdIssuer='" + orgIdIssuer + '\''
-                + ", userConfirmationMethod=" + userConfirmationMethod
-                + ", originDeviceDetails=" + originDeviceDetails
-                + '}';
+        return "InitiateAuthenticationRequest{" +
+                "userInfoType=" + userInfoType +
+                ", userInfo='" + userInfo + '\'' +
+                ", minRegistrationLevel=" + minRegistrationLevel +
+                ", attributesToReturn=" + attributesToReturn +
+                ", relyingPartyId='" + relyingPartyId + '\'' +
+                ", orgIdIssuer='" + orgIdIssuer + '\'' +
+                ", userConfirmationMethod=" + userConfirmationMethod +
+                ", originDeviceDetails=" + originDeviceDetails +
+                ", useDynamicQrCode=" + useDynamicQrCode +
+                '}';
     }
 }
