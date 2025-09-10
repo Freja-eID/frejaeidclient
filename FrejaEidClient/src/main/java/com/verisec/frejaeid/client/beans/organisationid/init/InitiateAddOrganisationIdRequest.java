@@ -22,7 +22,6 @@ public class InitiateAddOrganisationIdRequest implements RelyingPartyRequest {
     private final MinRegistrationLevel minRegistrationLevel;
     private final Long expiry;
     private final String relyingPartyId;
-    private final boolean useDynamicQrCode;
 
     /**
      * Returns instance of {@linkplain InitiateAddOrganisationIdRequest} with
@@ -36,7 +35,7 @@ public class InitiateAddOrganisationIdRequest implements RelyingPartyRequest {
      */
     public static InitiateAddOrganisationIdRequest createDefaultWithEmail(String email, OrganisationId organisationId) {
         return new InitiateAddOrganisationIdRequest(UserInfoType.EMAIL, email, organisationId,
-                                                    MinRegistrationLevel.EXTENDED, null, null, false);
+                                                    MinRegistrationLevel.EXTENDED, null, null);
     }
 
     /**
@@ -56,7 +55,7 @@ public class InitiateAddOrganisationIdRequest implements RelyingPartyRequest {
                                                                         OrganisationId organisationId)
             throws FrejaEidClientInternalException {
         return new InitiateAddOrganisationIdRequest(UserInfoType.SSN, UserInfoUtil.convertSsnUserInfo(ssnUserInfo),
-                                                    organisationId, MinRegistrationLevel.EXTENDED, null, null, false);
+                                                    organisationId, MinRegistrationLevel.EXTENDED, null, null);
     }
 
     /**
@@ -76,21 +75,19 @@ public class InitiateAddOrganisationIdRequest implements RelyingPartyRequest {
             @JsonProperty(value = "userInfo") String userInfo,
             @JsonProperty(value = "organisationId") OrganisationId organisationId,
             @JsonProperty(value = "minRegistrationLevel") MinRegistrationLevel minRegistrationLevel,
-            @JsonProperty(value = "expiry") Long expiry,
-            @JsonProperty(value = "useDynamicQrCode") boolean useDynamicQrCode) {
-        this(userInfoType, userInfo, organisationId, minRegistrationLevel, expiry, null, useDynamicQrCode);
+            @JsonProperty(value = "expiry") Long expiry) {
+        this(userInfoType, userInfo, organisationId, minRegistrationLevel, expiry, null);
     }
 
     InitiateAddOrganisationIdRequest(UserInfoType userInfoType, String userInfo,
                                      OrganisationId organisationId, MinRegistrationLevel minRegistrationLevel,
-                                     Long expiry, String relyingPartyId, boolean useDynamicQrCode) {
+                                     Long expiry, String relyingPartyId) {
         this.userInfoType = userInfoType;
         this.userInfo = userInfo;
         this.organisationId = organisationId;
         this.minRegistrationLevel = minRegistrationLevel;
         this.expiry = expiry;
         this.relyingPartyId = relyingPartyId;
-        this.useDynamicQrCode = useDynamicQrCode;
     }
 
     public UserInfoType getUserInfoType() {
@@ -118,13 +115,9 @@ public class InitiateAddOrganisationIdRequest implements RelyingPartyRequest {
         return relyingPartyId;
     }
 
-    public boolean isUseDynamicQrCode() {
-        return useDynamicQrCode;
-    }
-
     @Override
     public int hashCode() {
-        return Objects.hash(userInfoType, userInfo, organisationId, minRegistrationLevel, expiry, relyingPartyId, useDynamicQrCode);
+        return Objects.hash(userInfoType, userInfo, organisationId, minRegistrationLevel, expiry, relyingPartyId);
     }
 
     @Override
@@ -132,8 +125,7 @@ public class InitiateAddOrganisationIdRequest implements RelyingPartyRequest {
         if (this == o) return true;
         if (!(o instanceof InitiateAddOrganisationIdRequest)) return false;
         InitiateAddOrganisationIdRequest that = (InitiateAddOrganisationIdRequest) o;
-        return useDynamicQrCode == that.useDynamicQrCode &&
-                userInfoType == that.userInfoType &&
+        return userInfoType == that.userInfoType &&
                 Objects.equals(userInfo, that.userInfo) &&
                 Objects.equals(organisationId, that.organisationId) &&
                 minRegistrationLevel == that.minRegistrationLevel &&
@@ -150,7 +142,6 @@ public class InitiateAddOrganisationIdRequest implements RelyingPartyRequest {
                 ", minRegistrationLevel=" + minRegistrationLevel +
                 ", expiry=" + expiry +
                 ", relyingPartyId='" + relyingPartyId + '\'' +
-                ", useDynamicQrCode=" + useDynamicQrCode +
                 '}';
     }
 }

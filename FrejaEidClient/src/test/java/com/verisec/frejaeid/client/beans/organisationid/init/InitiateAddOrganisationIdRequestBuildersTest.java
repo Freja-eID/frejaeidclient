@@ -29,7 +29,7 @@ public class InitiateAddOrganisationIdRequestBuildersTest {
     public void createDefaultEmailRequest() {
         InitiateAddOrganisationIdRequest expectedInitiateAddOrganisationIdRequest =
                 new InitiateAddOrganisationIdRequest(UserInfoType.EMAIL, EMAIL, ORGANISATION_ID,
-                                                     MinRegistrationLevel.EXTENDED, null, null, false);
+                                                     MinRegistrationLevel.EXTENDED, null, null);
         InitiateAddOrganisationIdRequest initiateAddOrganisationIdRequest =
                 InitiateAddOrganisationIdRequest.createDefaultWithEmail(EMAIL, ORGANISATION_ID);
         Assert.assertEquals(expectedInitiateAddOrganisationIdRequest, initiateAddOrganisationIdRequest);
@@ -39,7 +39,7 @@ public class InitiateAddOrganisationIdRequestBuildersTest {
     public void createDefaultSsnRequest() throws FrejaEidClientInternalException {
         InitiateAddOrganisationIdRequest expectedInitiateAddOrganisationIdRequest =
                 new InitiateAddOrganisationIdRequest(UserInfoType.SSN, UserInfoUtil.convertSsnUserInfo(SSN_USER_INFO),
-                                                     ORGANISATION_ID, MinRegistrationLevel.EXTENDED, null, null, false);
+                                                     ORGANISATION_ID, MinRegistrationLevel.EXTENDED, null, null);
         InitiateAddOrganisationIdRequest initiateAddOrganisationIdRequest =
                 InitiateAddOrganisationIdRequest.createDefaultWithSsn(SSN_USER_INFO, ORGANISATION_ID);
         Assert.assertEquals(expectedInitiateAddOrganisationIdRequest, initiateAddOrganisationIdRequest);
@@ -49,7 +49,7 @@ public class InitiateAddOrganisationIdRequestBuildersTest {
     public void createCustomRequest_userInfoTypeEmail() {
         InitiateAddOrganisationIdRequest expectedInitiateAddOrganisationIdRequest =
                 new InitiateAddOrganisationIdRequest(UserInfoType.EMAIL, EMAIL, ORGANISATION_ID,
-                                                     REGISTRATION_STATE, EXPIRY, RELYING_PARTY_ID, false);
+                                                     REGISTRATION_STATE, EXPIRY, RELYING_PARTY_ID);
         InitiateAddOrganisationIdRequest initiateAddOrganisationIdRequest =
                 InitiateAddOrganisationIdRequest.createCustom()
                         .setEmailAndOrganisationId(EMAIL, ORGANISATION_ID)
@@ -64,7 +64,7 @@ public class InitiateAddOrganisationIdRequestBuildersTest {
     public void createCustomRequest_userInfoTypeEmail_defaultRegistrationState() {
         InitiateAddOrganisationIdRequest expectedInitiateAddOrganisationIdRequest =
                 new InitiateAddOrganisationIdRequest(UserInfoType.EMAIL, EMAIL, ORGANISATION_ID,
-                                                     MinRegistrationLevel.EXTENDED, null, RELYING_PARTY_ID, false);
+                                                     MinRegistrationLevel.EXTENDED, null, RELYING_PARTY_ID);
         InitiateAddOrganisationIdRequest initiateAddOrganisationIdRequest =
                 InitiateAddOrganisationIdRequest.createCustom()
                         .setEmailAndOrganisationId(EMAIL, ORGANISATION_ID)
@@ -78,7 +78,7 @@ public class InitiateAddOrganisationIdRequestBuildersTest {
         InitiateAddOrganisationIdRequest expectedInitiateAddOrganisationIdRequest =
                 new InitiateAddOrganisationIdRequest(UserInfoType.SSN, UserInfoUtil.convertSsnUserInfo(SSN_USER_INFO),
                                                      ORGANISATION_ID, MinRegistrationLevel.EXTENDED, null,
-                                                     RELYING_PARTY_ID, false);
+                                                     RELYING_PARTY_ID);
         InitiateAddOrganisationIdRequest initiateAddOrganisationIdRequest =
                 InitiateAddOrganisationIdRequest.createCustom()
                         .setSsnAndOrganisationId(SSN_USER_INFO, ORGANISATION_ID)
@@ -91,7 +91,7 @@ public class InitiateAddOrganisationIdRequestBuildersTest {
     public void createCustomRequest_userInfoTypePhoneNumber() {
         InitiateAddOrganisationIdRequest expectedInitiateAddOrganisationIdRequest =
                 new InitiateAddOrganisationIdRequest(UserInfoType.PHONE, PHONE_NUMBER, ORGANISATION_ID,
-                                                     MinRegistrationLevel.EXTENDED, EXPIRY, null, false);
+                                                     MinRegistrationLevel.EXTENDED, EXPIRY, null);
         InitiateAddOrganisationIdRequest initiateAddOrganisationIdRequest =
                 InitiateAddOrganisationIdRequest.createCustom()
                         .setPhoneNumberAndOrganisationId(PHONE_NUMBER, ORGANISATION_ID)
@@ -104,7 +104,7 @@ public class InitiateAddOrganisationIdRequestBuildersTest {
     public void createCustomRequest_userInfoTypeInferred() {
         InitiateAddOrganisationIdRequest expectedInitiateAuthenticationRequest =
                 new InitiateAddOrganisationIdRequest(UserInfoType.INFERRED, INFERRED_USER_INFO, ORGANISATION_ID,
-                                                     MinRegistrationLevel.EXTENDED, EXPIRY, null, false);
+                                                     MinRegistrationLevel.EXTENDED, EXPIRY, null);
         InitiateAddOrganisationIdRequest initiateAuthenticationRequest =
                 InitiateAddOrganisationIdRequest.createCustom()
                         .setInferredAndOrganisationId(ORGANISATION_ID)
@@ -117,29 +117,13 @@ public class InitiateAddOrganisationIdRequestBuildersTest {
     public void createCustomRequest_minRegistrationLevelAndRelyingPartyIdNull() {
         InitiateAddOrganisationIdRequest expectedInitiateAddOrganisationIdRequest =
                 new InitiateAddOrganisationIdRequest(UserInfoType.PHONE, PHONE_NUMBER, ORGANISATION_ID,
-                                                     MinRegistrationLevel.EXTENDED, EXPIRY, null, false);
+                                                     MinRegistrationLevel.EXTENDED, EXPIRY, null);
         InitiateAddOrganisationIdRequest initiateAddOrganisationIdRequest =
                 InitiateAddOrganisationIdRequest.createCustom()
                         .setPhoneNumberAndOrganisationId(PHONE_NUMBER, ORGANISATION_ID)
                         .setExpiry(EXPIRY)
                         .setMinRegistrationLevel(null)
                         .setRelyingPartyId(null)
-                        .build();
-        Assert.assertEquals(expectedInitiateAddOrganisationIdRequest, initiateAddOrganisationIdRequest);
-    }
-
-    @Test
-    public void createCustomRequest_userDynamicQrCodeSet() {
-        InitiateAddOrganisationIdRequest expectedInitiateAddOrganisationIdRequest =
-                new InitiateAddOrganisationIdRequest(UserInfoType.EMAIL, EMAIL, ORGANISATION_ID,
-                                                     REGISTRATION_STATE, EXPIRY, RELYING_PARTY_ID, true);
-        InitiateAddOrganisationIdRequest initiateAddOrganisationIdRequest =
-                InitiateAddOrganisationIdRequest.createCustom()
-                        .setEmailAndOrganisationId(EMAIL, ORGANISATION_ID)
-                        .setMinRegistrationLevel(REGISTRATION_STATE)
-                        .setExpiry(EXPIRY)
-                        .setRelyingPartyId(RELYING_PARTY_ID)
-                        .setUseDynamicQrCode(true)
                         .build();
         Assert.assertEquals(expectedInitiateAddOrganisationIdRequest, initiateAddOrganisationIdRequest);
     }

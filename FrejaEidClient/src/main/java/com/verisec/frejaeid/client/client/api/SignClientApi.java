@@ -25,13 +25,11 @@ public interface SignClientApi {
      *
      * @param initiateSignRequest instance of {@linkplain InitiateSignRequest}
      *                            with corresponding parameters.
-     * @return sign transaction reference which is used for fetching sign
-     * results.
+     * @return {@linkplain InitiateSignResponse}
      * @throws FrejaEidClientInternalException if internal validation of request
      *                                         fails.
      * @throws FrejaEidException               if server returns an error.
      */
-    //@stop check doc
     public InitiateSignResponse initiate(InitiateSignRequest initiateSignRequest)
             throws FrejaEidClientInternalException, FrejaEidException;
 

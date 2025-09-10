@@ -24,14 +24,11 @@ public interface AuthenticationClientApi {
      *
      * @param initiateAuthenticationRequest instance of
      *                                      {@linkplain InitiateAuthenticationRequest} with corresponding parameters.
-     * @return authentication transaction reference which is used for fetching
-     * results.
+     * @return {@linkplain InitiateAuthenticationResponse}
      * @throws FrejaEidClientInternalException if internal validation of request
      *                                         fails.
      * @throws FrejaEidException               if server returns an error.
      */
-
-    //@Stop check doc
     public InitiateAuthenticationResponse initiate(InitiateAuthenticationRequest initiateAuthenticationRequest)
             throws FrejaEidClientInternalException, FrejaEidException;
 

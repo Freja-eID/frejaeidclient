@@ -81,7 +81,6 @@ public class InitiateAddOrganisationIdRequestBuilders {
         private MinRegistrationLevel minRegistrationLevel = MinRegistrationLevel.EXTENDED;
         private Long expiry = null;
         private String relyingPartyId = null;
-        private boolean useDynamicQrCode;
 
         private SetOptionalParamsBuilder(UserInfoType userInfoType, String userInfo, OrganisationId organisationId) {
             this.userInfoType = userInfoType;
@@ -134,15 +133,9 @@ public class InitiateAddOrganisationIdRequestBuilders {
             return this;
         }
 
-//        @Stop add documentation
-        public SetOptionalParamsBuilder setUseDynamicQrCode(boolean useDynamicQrCode) {
-            this.useDynamicQrCode = useDynamicQrCode;
-            return this;
-        }
-
         public InitiateAddOrganisationIdRequest build() {
             return new InitiateAddOrganisationIdRequest(userInfoType, userInfo, organisationId, minRegistrationLevel,
-                                                        expiry, relyingPartyId, useDynamicQrCode);
+                                                        expiry, relyingPartyId);
         }
 
     }
