@@ -6,6 +6,7 @@ import com.verisec.frejaeid.client.beans.sign.get.SignResultRequest;
 import com.verisec.frejaeid.client.beans.sign.get.SignResult;
 import com.verisec.frejaeid.client.beans.sign.get.SignResultsRequest;
 import com.verisec.frejaeid.client.beans.sign.init.InitiateSignRequest;
+import com.verisec.frejaeid.client.beans.sign.init.InitiateSignResponse;
 import com.verisec.frejaeid.client.client.api.SignClientApi;
 import com.verisec.frejaeid.client.enums.FrejaEnvironment;
 import com.verisec.frejaeid.client.enums.TransactionContext;
@@ -64,7 +65,7 @@ public class SignClient extends BasicClient implements SignClientApi {
     }
 
     @Override
-    public String initiate(InitiateSignRequest initiateSignRequest)
+    public InitiateSignResponse initiate(InitiateSignRequest initiateSignRequest)
             throws FrejaEidClientInternalException, FrejaEidException {
         requestValidationService.validateInitSignRequest(initiateSignRequest, signService.getTransactionContext());
         LOG.debug("Initiating sign transaction for user info type {}, minimum registration level of user {}, " +
@@ -72,9 +73,9 @@ public class SignClient extends BasicClient implements SignClientApi {
                   initiateSignRequest.getMinRegistrationLevel().getState(),
                   initiateSignRequest.getAttributesToReturn(), initiateSignRequest.getExpiry() == null ?
                           DEFAULT_EXPIRY_TIME_IN_MILLIS : initiateSignRequest.getExpiry());
-        String reference = signService.initiate(initiateSignRequest).getSignRef();
-        LOG.debug("Received sign transaction reference {}.", reference);
-        return reference;
+        InitiateSignResponse response = signService.initiate(initiateSignRequest);
+        LOG.debug("Received sign transaction reference {}.", response.getSignRef());
+        return response;
     }
 
     @Override

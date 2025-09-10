@@ -5,6 +5,7 @@ import com.verisec.frejaeid.client.beans.authentication.get.AuthenticationResult
 import com.verisec.frejaeid.client.beans.authentication.get.AuthenticationResultRequest;
 import com.verisec.frejaeid.client.beans.authentication.get.AuthenticationResult;
 import com.verisec.frejaeid.client.beans.authentication.init.InitiateAuthenticationRequest;
+import com.verisec.frejaeid.client.beans.authentication.init.InitiateAuthenticationResponse;
 import com.verisec.frejaeid.client.beans.general.SslSettings;
 import com.verisec.frejaeid.client.client.api.AuthenticationClientApi;
 import com.verisec.frejaeid.client.enums.FrejaEnvironment;
@@ -28,11 +29,11 @@ public class AuthenticationClient extends BasicClient implements AuthenticationC
 
     public static final Logger LOG = LogManager.getLogger(AuthenticationClient.class);
 
-    private AuthenticationClient(String serverCustomUrl, int pollingTimeoutInMillseconds,
+    private AuthenticationClient(String serverCustomUrl, int pollingTimeoutInMilliseconds,
                                  TransactionContext transactionContext, HttpServiceApi httpService,
                                  String resourceServiceUrl)
             throws FrejaEidClientInternalException {
-        super(serverCustomUrl, pollingTimeoutInMillseconds, transactionContext, httpService, resourceServiceUrl);
+        super(serverCustomUrl, pollingTimeoutInMilliseconds, transactionContext, httpService, resourceServiceUrl);
     }
 
     /**
@@ -60,7 +61,7 @@ public class AuthenticationClient extends BasicClient implements AuthenticationC
     }
 
     @Override
-    public String initiate(InitiateAuthenticationRequest initiateAuthenticationRequest)
+    public InitiateAuthenticationResponse initiate(InitiateAuthenticationRequest initiateAuthenticationRequest)
             throws FrejaEidClientInternalException, FrejaEidException {
         requestValidationService.validateInitAuthRequest(initiateAuthenticationRequest,
                                                          authenticationService.getTransactionContext());
@@ -68,9 +69,9 @@ public class AuthenticationClient extends BasicClient implements AuthenticationC
                           " and requesting attributes {}.", initiateAuthenticationRequest.getUserInfoType(),
                   initiateAuthenticationRequest.getMinRegistrationLevel().getState(),
                   initiateAuthenticationRequest.getAttributesToReturn());
-        String reference = authenticationService.initiate(initiateAuthenticationRequest).getAuthRef();
-        LOG.debug("Received authentication transaction reference {}.", reference);
-        return reference;
+        InitiateAuthenticationResponse response = authenticationService.initiate(initiateAuthenticationRequest);
+        LOG.debug("Received authentication transaction reference {}.", response.getAuthRef());
+        return response;
     }
 
     @Override

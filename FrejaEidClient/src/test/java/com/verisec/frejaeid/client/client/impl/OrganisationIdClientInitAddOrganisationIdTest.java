@@ -29,6 +29,7 @@ public class OrganisationIdClientInitAddOrganisationIdTest {
     private static final String EMAIL = "eid.demo.verisec@gmail.com";
     private static final String SSN = "199207295578";
     private static final String REFERENCE = "123456789123456789";
+    private static final String QR_CODE_SECRET = "qrCodeSecret";
     private static final String RELYING_PARTY_ID = "verisec_integrator";
     private static final String ORGANISATION_ID_TITLE = "OrgananisationId title";
     private static final String IDENTIFIER_NAME = "Identifier name";
@@ -48,7 +49,7 @@ public class OrganisationIdClientInitAddOrganisationIdTest {
     @Test
     public void initAddOrganisationId_defaultRequests_expectSuccess()
             throws FrejaEidClientInternalException, FrejaEidException {
-        InitiateAddOrganisationIdResponse expectedResponse = new InitiateAddOrganisationIdResponse(REFERENCE);
+        InitiateAddOrganisationIdResponse expectedResponse = new InitiateAddOrganisationIdResponse(REFERENCE, QR_CODE_SECRET);
         Mockito.when(httpServiceMock.send(Mockito.anyString(), Mockito.any(RequestTemplate.class),
                                           Mockito.any(RelyingPartyRequest.class),
                                           Mockito.eq(InitiateAddOrganisationIdResponse.class),
@@ -62,25 +63,25 @@ public class OrganisationIdClientInitAddOrganisationIdTest {
                         SsnUserInfo.create(Country.SWEDEN, SSN),
                         OrganisationId.create(ORGANISATION_ID_TITLE, IDENTIFIER_NAME, IDENTIFIER));
 
-        String reference = organisationIdClient.initiateAdd(initiateAddOrganisationIdDefaultEmailRequest);
+        InitiateAddOrganisationIdResponse response = organisationIdClient.initiateAdd(initiateAddOrganisationIdDefaultEmailRequest);
         Mockito.verify(httpServiceMock)
                 .send(FrejaEnvironment.TEST.getServiceUrl() + MethodUrl.ORGANISATION_ID_INIT_ADD,
                       RequestTemplate.INIT_ADD_ORGANISATION_ID_TEMPLATE, initiateAddOrganisationIdDefaultEmailRequest,
                       InitiateAddOrganisationIdResponse.class, null);
-        Assert.assertEquals(REFERENCE, reference);
+        Assert.assertEquals(expectedResponse, response);
 
-        reference = organisationIdClient.initiateAdd(initiateAddOrganisationIdDefaultSsnRequest);
+        response = organisationIdClient.initiateAdd(initiateAddOrganisationIdDefaultSsnRequest);
         Mockito.verify(httpServiceMock)
                 .send(FrejaEnvironment.TEST.getServiceUrl() + MethodUrl.ORGANISATION_ID_INIT_ADD,
                       RequestTemplate.INIT_ADD_ORGANISATION_ID_TEMPLATE, initiateAddOrganisationIdDefaultSsnRequest,
                       InitiateAddOrganisationIdResponse.class, null);
-        Assert.assertEquals(REFERENCE, reference);
+        Assert.assertEquals(expectedResponse, response);
     }
 
     @Test
     public void initAddOrganisationId_customRequests_expectSuccess()
             throws FrejaEidClientInternalException, FrejaEidException {
-        InitiateAddOrganisationIdResponse expectedResponse = new InitiateAddOrganisationIdResponse(REFERENCE);
+        InitiateAddOrganisationIdResponse expectedResponse = new InitiateAddOrganisationIdResponse(REFERENCE, QR_CODE_SECRET);
         Mockito.when(httpServiceMock.send(Mockito.anyString(), Mockito.any(RequestTemplate.class),
                                           Mockito.any(RelyingPartyRequest.class),
                                           Mockito.eq(InitiateAddOrganisationIdResponse.class), Mockito.anyString()))
@@ -95,18 +96,18 @@ public class OrganisationIdClientInitAddOrganisationIdTest {
                         .setRelyingPartyId(RELYING_PARTY_ID)
                         .build();
 
-        String reference = organisationIdClient.initiateAdd(initiateAddOrganisationIdRequest);
+        InitiateAddOrganisationIdResponse response = organisationIdClient.initiateAdd(initiateAddOrganisationIdRequest);
         Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getServiceUrl() + MethodUrl.ORGANISATION_ID_INIT_ADD,
                                              RequestTemplate.INIT_ADD_ORGANISATION_ID_TEMPLATE,
                                              initiateAddOrganisationIdRequest,
                                              InitiateAddOrganisationIdResponse.class, RELYING_PARTY_ID);
-        Assert.assertEquals(REFERENCE, reference);
+        Assert.assertEquals(expectedResponse, response);
     }
 
     @Test
     public void initAddOrganisationId_customRequestWithOptionalParameters_expectSuccess()
             throws FrejaEidClientInternalException, FrejaEidException {
-        InitiateAddOrganisationIdResponse expectedResponse = new InitiateAddOrganisationIdResponse(REFERENCE);
+        InitiateAddOrganisationIdResponse expectedResponse = new InitiateAddOrganisationIdResponse(REFERENCE, QR_CODE_SECRET);
         Mockito.when(httpServiceMock.send(Mockito.anyString(), Mockito.any(RequestTemplate.class),
                                           Mockito.any(RelyingPartyRequest.class),
                                           Mockito.eq(InitiateAddOrganisationIdResponse.class), Mockito.anyString()))
@@ -126,12 +127,12 @@ public class OrganisationIdClientInitAddOrganisationIdTest {
                         .setRelyingPartyId(RELYING_PARTY_ID)
                         .build();
 
-        String reference = organisationIdClient.initiateAdd(initiateAddOrganisationIdRequest);
+        InitiateAddOrganisationIdResponse response = organisationIdClient.initiateAdd(initiateAddOrganisationIdRequest);
         Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getServiceUrl() + MethodUrl.ORGANISATION_ID_INIT_ADD,
                                              RequestTemplate.INIT_ADD_ORGANISATION_ID_TEMPLATE,
                                              initiateAddOrganisationIdRequest,
                                              InitiateAddOrganisationIdResponse.class, RELYING_PARTY_ID);
-        Assert.assertEquals(REFERENCE, reference);
+        Assert.assertEquals(expectedResponse, response);
     }
 
     @Test

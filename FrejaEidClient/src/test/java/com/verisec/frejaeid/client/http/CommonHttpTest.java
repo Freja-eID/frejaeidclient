@@ -32,6 +32,7 @@ import static org.junit.Assert.assertEquals;
 public abstract class CommonHttpTest {
 
     protected static final String REFERENCE = "123456789012345678";
+    protected static final String QR_CODE_SECRET = "qrCodeSecret";
     protected static final String EMAIL = "eid.demo.verisec@gmail.com";
     protected static final String SSN = "123455697887";
     protected static final String RELYING_PARTY_ID = "relying_party_id";

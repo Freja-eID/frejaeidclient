@@ -5,6 +5,7 @@ import com.verisec.frejaeid.client.beans.authentication.get.AuthenticationResult
 import com.verisec.frejaeid.client.beans.authentication.get.AuthenticationResultRequest;
 import com.verisec.frejaeid.client.beans.authentication.get.AuthenticationResult;
 import com.verisec.frejaeid.client.beans.authentication.init.InitiateAuthenticationRequest;
+import com.verisec.frejaeid.client.beans.authentication.init.InitiateAuthenticationResponse;
 import com.verisec.frejaeid.client.enums.TransactionStatus;
 import com.verisec.frejaeid.client.exceptions.FrejaEidClientInternalException;
 import com.verisec.frejaeid.client.exceptions.FrejaEidClientPollingException;
@@ -29,7 +30,9 @@ public interface AuthenticationClientApi {
      *                                         fails.
      * @throws FrejaEidException               if server returns an error.
      */
-    public String initiate(InitiateAuthenticationRequest initiateAuthenticationRequest)
+
+    //@Stop check doc
+    public InitiateAuthenticationResponse initiate(InitiateAuthenticationRequest initiateAuthenticationRequest)
             throws FrejaEidClientInternalException, FrejaEidException;
 
     /**

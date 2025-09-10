@@ -52,7 +52,7 @@ public class SignClientHttpTest extends CommonHttpTest {
         pushNotification = PushNotification.create(pushNotificationTitle, pushNotificationText);
         dataToSignText = "Data to sign";
         binaryData = "binaryData".getBytes(StandardCharsets.UTF_8);
-        initiateSignResponse = new InitiateSignResponse(REFERENCE);
+        initiateSignResponse = new InitiateSignResponse(REFERENCE, QR_CODE_SECRET);
         signResult = new SignResult(REFERENCE, TransactionStatus.STARTED, null, null, null);
         signResultWithRequestedAttributes = new SignResult(REFERENCE, TransactionStatus.APPROVED, DETAILS,
                                                            REQUESTED_ATTRIBUTES, FREJA_COOKIE);
@@ -74,9 +74,9 @@ public class SignClientHttpTest extends CommonHttpTest {
             throws FrejaEidClientInternalException, IOException, FrejaEidException, InterruptedException {
         String initSignResponseString = jsonService.serializeToJson(initiateSignResponse);
         startMockServer(expectedRequest, HttpStatusCode.OK.getCode(), initSignResponseString);
-        String reference = signClient.initiate(validRequest);
+        InitiateSignResponse response = signClient.initiate(validRequest);
         stopServer();
-        Assert.assertEquals(REFERENCE, reference);
+        Assert.assertEquals(initiateSignResponse, response);
     }
 
     @Test
@@ -166,9 +166,9 @@ public class SignClientHttpTest extends CommonHttpTest {
         startMockServer(initSignCustomRequestWithRequestedAttributes, HttpStatusCode.OK.getCode(),
                         initSignResponseString);
 
-        String reference = signClient.initiate(initSignCustomRequestWithRequestedAttributes);
+        InitiateSignResponse response = signClient.initiate(initSignCustomRequestWithRequestedAttributes);
         stopServer();
-        Assert.assertEquals(REFERENCE, reference);
+        Assert.assertEquals(initiateSignResponse, response);
     }
 
     @Test

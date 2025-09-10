@@ -36,7 +36,7 @@ public class AuthenticationClientHttpTest extends CommonHttpTest {
     @BeforeClass
     public static void init() throws FrejaEidClientInternalException {
         jsonService = new JsonService();
-        initiateAuthenticationResponse = new InitiateAuthenticationResponse(REFERENCE);
+        initiateAuthenticationResponse = new InitiateAuthenticationResponse(REFERENCE, QR_CODE_SECRET);
         authenticationResult = new AuthenticationResult(REFERENCE, TransactionStatus.STARTED, null, null, null);
         authenticationResultWithRequestedAttributes =
                 new AuthenticationResult(REFERENCE, TransactionStatus.APPROVED, DETAILS, REQUESTED_ATTRIBUTES,
@@ -58,9 +58,9 @@ public class AuthenticationClientHttpTest extends CommonHttpTest {
                                                       String initAuthResponseString)
             throws IOException, FrejaEidClientInternalException, InterruptedException, FrejaEidException {
         startMockServer(expectedRequest, HttpStatusCode.OK.getCode(), initAuthResponseString);
-        String reference = authenticationClient.initiate(validRequest);
+        InitiateAuthenticationResponse response = authenticationClient.initiate(validRequest);
         stopServer();
-        Assert.assertEquals(REFERENCE, reference);
+        Assert.assertEquals(initiateAuthenticationResponse, response);
     }
 
     @Test
@@ -142,10 +142,10 @@ public class AuthenticationClientHttpTest extends CommonHttpTest {
         String initAuthResponseString = jsonService.serializeToJson(initiateAuthenticationResponse);
         startMockServer(initAuthenticationRequestWithRequestedAttributesUserInfoOrganisationId,
                         HttpStatusCode.OK.getCode(), initAuthResponseString);
-        String reference =
+        InitiateAuthenticationResponse response =
                 authenticationClient.initiate(initAuthenticationRequestWithRequestedAttributesUserInfoOrganisationId);
         stopServer();
-        Assert.assertEquals(REFERENCE, reference);
+        Assert.assertEquals(initiateAuthenticationResponse, response);
 
     }
 

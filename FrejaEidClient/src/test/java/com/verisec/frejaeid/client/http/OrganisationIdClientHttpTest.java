@@ -44,7 +44,7 @@ public class OrganisationIdClientHttpTest extends CommonHttpTest {
     @BeforeClass
     public static void init() throws FrejaEidClientInternalException {
         jsonService = new JsonService();
-        initiateAddOrganisationIdResponse = new InitiateAddOrganisationIdResponse(REFERENCE);
+        initiateAddOrganisationIdResponse = new InitiateAddOrganisationIdResponse(REFERENCE, QR_CODE_SECRET);
         organisationIdResult = new OrganisationIdResult(REFERENCE, TransactionStatus.STARTED, null, null);
         OrganisationIdUserInfo organisationIdUserInfo =
                 new OrganisationIdUserInfo(OrganisationId.create(ORGANISATION_ID_TITLE, IDENTIFIER_NAME, IDENTIFIER),
@@ -67,9 +67,9 @@ public class OrganisationIdClientHttpTest extends CommonHttpTest {
             throws FrejaEidClientInternalException, IOException, FrejaEidException, InterruptedException {
         String initAddOrganisationIdResponseString = jsonService.serializeToJson(initiateAddOrganisationIdResponse);
         startMockServer(expectedRequest, HttpStatusCode.OK.getCode(), initAddOrganisationIdResponseString);
-        String reference = organisationIdClient.initiateAdd(validRequest);
+        InitiateAddOrganisationIdResponse response = organisationIdClient.initiateAdd(validRequest);
         stopServer();
-        Assert.assertEquals(REFERENCE, reference);
+        Assert.assertEquals(initiateAddOrganisationIdResponse, response);
     }
 
     @Test

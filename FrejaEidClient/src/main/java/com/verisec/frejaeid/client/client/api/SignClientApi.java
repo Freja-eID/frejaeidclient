@@ -5,6 +5,7 @@ import com.verisec.frejaeid.client.beans.sign.get.SignResultRequest;
 import com.verisec.frejaeid.client.beans.sign.get.SignResult;
 import com.verisec.frejaeid.client.beans.sign.get.SignResultsRequest;
 import com.verisec.frejaeid.client.beans.sign.init.InitiateSignRequest;
+import com.verisec.frejaeid.client.beans.sign.init.InitiateSignResponse;
 import com.verisec.frejaeid.client.exceptions.FrejaEidClientInternalException;
 import com.verisec.frejaeid.client.exceptions.FrejaEidClientPollingException;
 import com.verisec.frejaeid.client.exceptions.FrejaEidException;
@@ -30,7 +31,8 @@ public interface SignClientApi {
      *                                         fails.
      * @throws FrejaEidException               if server returns an error.
      */
-    public String initiate(InitiateSignRequest initiateSignRequest)
+    //@stop check doc
+    public InitiateSignResponse initiate(InitiateSignRequest initiateSignRequest)
             throws FrejaEidClientInternalException, FrejaEidException;
 
     /**

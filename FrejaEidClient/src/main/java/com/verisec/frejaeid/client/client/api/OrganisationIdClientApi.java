@@ -7,6 +7,7 @@ import com.verisec.frejaeid.client.beans.organisationid.get.OrganisationIdResult
 import com.verisec.frejaeid.client.beans.organisationid.get.OrganisationIdResultRequest;
 import com.verisec.frejaeid.client.beans.organisationid.getall.GetAllOrganisationIdUsersRequest;
 import com.verisec.frejaeid.client.beans.organisationid.init.InitiateAddOrganisationIdRequest;
+import com.verisec.frejaeid.client.beans.organisationid.init.InitiateAddOrganisationIdResponse;
 import com.verisec.frejaeid.client.beans.organisationid.update.UpdateOrganisationIdRequest;
 import com.verisec.frejaeid.client.beans.organisationid.update.UpdateOrganisationIdResponse;
 import com.verisec.frejaeid.client.enums.TransactionStatus;
@@ -32,7 +33,8 @@ public interface OrganisationIdClientApi {
      *                                         fails.
      * @throws FrejaEidException               if server returns an error.
      */
-    public String initiateAdd(InitiateAddOrganisationIdRequest initiateAddOrganisationIdRequest)
+    //@Stop check doc
+    public InitiateAddOrganisationIdResponse initiateAdd(InitiateAddOrganisationIdRequest initiateAddOrganisationIdRequest)
             throws FrejaEidClientInternalException, FrejaEidException;
 
     /**

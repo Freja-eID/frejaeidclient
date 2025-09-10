@@ -8,6 +8,7 @@ import com.verisec.frejaeid.client.beans.organisationid.get.OrganisationIdResult
 import com.verisec.frejaeid.client.beans.organisationid.get.OrganisationIdResultRequest;
 import com.verisec.frejaeid.client.beans.organisationid.getall.GetAllOrganisationIdUsersRequest;
 import com.verisec.frejaeid.client.beans.organisationid.init.InitiateAddOrganisationIdRequest;
+import com.verisec.frejaeid.client.beans.organisationid.init.InitiateAddOrganisationIdResponse;
 import com.verisec.frejaeid.client.beans.organisationid.update.UpdateOrganisationIdRequest;
 import com.verisec.frejaeid.client.beans.organisationid.update.UpdateOrganisationIdResponse;
 import com.verisec.frejaeid.client.client.api.OrganisationIdClientApi;
@@ -67,7 +68,7 @@ public class OrganisationIdClient extends BasicClient implements OrganisationIdC
     }
 
     @Override
-    public String initiateAdd(InitiateAddOrganisationIdRequest initiateAddOrganisationIdRequest)
+    public InitiateAddOrganisationIdResponse initiateAdd(InitiateAddOrganisationIdRequest initiateAddOrganisationIdRequest)
             throws FrejaEidClientInternalException, FrejaEidException {
         requestValidationService.validateInitAddOrganisationIdRequest(initiateAddOrganisationIdRequest);
         LOG.debug("Initiating adding organisation ID with user info type {}, minimum registration level of user {} " +
@@ -75,9 +76,9 @@ public class OrganisationIdClient extends BasicClient implements OrganisationIdC
                   initiateAddOrganisationIdRequest.getMinRegistrationLevel().getState(),
                   initiateAddOrganisationIdRequest.getExpiry() == null ? DEFAULT_EXPIRY_TIME_IN_MILLIS :
                           initiateAddOrganisationIdRequest.getExpiry());
-        String reference = organisationIdService.initiateAdd(initiateAddOrganisationIdRequest).getOrgIdRef();
-        LOG.debug("Received add organisation ID transaction reference {}.", reference);
-        return reference;
+        InitiateAddOrganisationIdResponse response = organisationIdService.initiateAdd(initiateAddOrganisationIdRequest);
+        LOG.debug("Received add organisation ID transaction reference {}.", response.getOrgIdRef());
+        return response;
     }
 
     @Override

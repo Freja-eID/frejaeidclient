@@ -9,19 +9,26 @@ import java.util.Objects;
 public class InitiateSignResponse implements FrejaHttpResponse {
 
     private final String signRef;
+    private final String qrCodeSecret;
 
     @JsonCreator
-    public InitiateSignResponse(@JsonProperty(value = "signRef") String signRef) {
+    public InitiateSignResponse(@JsonProperty(value = "signRef") String signRef,
+                                @JsonProperty(value = "qrCodeSecret") String qrCodeSecret) {
         this.signRef = signRef;
+        this.qrCodeSecret = qrCodeSecret;
     }
 
     public String getSignRef() {
         return signRef;
     }
 
+    public String getQrCodeSecret() {
+        return qrCodeSecret;
+    }
+
     @Override
     public int hashCode() {
-        return Objects.hash(signRef);
+        return Objects.hash(signRef, qrCodeSecret);
 
     }
 
@@ -40,11 +47,17 @@ public class InitiateSignResponse implements FrejaHttpResponse {
         if (!Objects.equals(this.signRef, other.signRef)) {
             return false;
         }
+        if (!Objects.equals(this.qrCodeSecret, other.qrCodeSecret)) {
+            return false;
+        }
         return true;
     }
 
     @Override
     public String toString() {
-        return "InitiateSignResponse{" + "signRef=" + signRef + '}';
+        return "InitiateSignResponse{" +
+                "signRef='" + signRef + '\'' +
+                ", qrCodeSecret='" + qrCodeSecret + '\'' +
+                '}';
     }
 }

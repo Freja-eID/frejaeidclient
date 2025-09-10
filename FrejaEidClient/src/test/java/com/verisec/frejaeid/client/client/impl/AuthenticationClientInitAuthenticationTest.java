@@ -17,7 +17,10 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.mockito.Mockito;
 
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Arrays;
 
 public class AuthenticationClientInitAuthenticationTest {
@@ -26,6 +29,7 @@ public class AuthenticationClientInitAuthenticationTest {
     private static final String EMAIL = "eid.demo.verisec@gmail.com";
     private static final String SSN = "199207295578";
     private static final String REFERENCE = "123456789012345678";
+    private static final String QR_CODE_SECRET = "qrCodeSecret";
     private static final String RELYING_PARTY_ID = "relyingPartyId";
     private static final String ORGANISATION_ID = "orgId";
     private static final Country COUNTRY = Country.SWEDEN;
@@ -43,8 +47,8 @@ public class AuthenticationClientInitAuthenticationTest {
     @Test
     public void generateQRCode_expectSuccess() throws FrejaEidClientInternalException, FrejaEidException, IOException {
         byte[] byteArray = null;
-        try(ByteArrayInputStream inputStream = new ByteArrayInputStream(REFERENCE.getBytes());
-            ByteArrayInputStream expectedBytesStream = new ByteArrayInputStream(REFERENCE.getBytes())
+        try (ByteArrayInputStream inputStream = new ByteArrayInputStream(REFERENCE.getBytes());
+             ByteArrayInputStream expectedBytesStream = new ByteArrayInputStream(REFERENCE.getBytes())
         ) {
             byte[] expectedBytesResult = readAllBytes(expectedBytesStream);
             AuthenticationClientApi authenticationClient =
@@ -60,6 +64,7 @@ public class AuthenticationClientInitAuthenticationTest {
             Assert.assertEquals(Arrays.toString(byteArray), Arrays.toString(expectedBytesResult));
         }
     }
+
     @Test
     public void initAuth_expectError() throws FrejaEidClientInternalException, FrejaEidException {
         InitiateAuthenticationRequest initiateAuthenticationRequest =
@@ -156,7 +161,7 @@ public class AuthenticationClientInitAuthenticationTest {
 
     private void initAuth_relyingPartyNull_success(InitiateAuthenticationRequest initiateAuthenticationRequest)
             throws FrejaEidClientInternalException, FrejaEidException {
-        InitiateAuthenticationResponse expectedResponse = new InitiateAuthenticationResponse(REFERENCE);
+        InitiateAuthenticationResponse expectedResponse = new InitiateAuthenticationResponse(REFERENCE, QR_CODE_SECRET);
         Mockito.when(httpServiceMock.send(Mockito.anyString(), Mockito.any(RequestTemplate.class),
                                           Mockito.any(RelyingPartyRequest.class),
                                           Mockito.eq(InitiateAuthenticationResponse.class),
@@ -165,11 +170,11 @@ public class AuthenticationClientInitAuthenticationTest {
                 AuthenticationClient.create(TestUtil.getDefaultSslSettings(), FrejaEnvironment.TEST)
                         .setHttpService(httpServiceMock)
                         .setTransactionContext(TransactionContext.PERSONAL).build();
-        String reference = authenticationClient.initiate(initiateAuthenticationRequest);
+        InitiateAuthenticationResponse response = authenticationClient.initiate(initiateAuthenticationRequest);
         Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getServiceUrl() + MethodUrl.AUTHENTICATION_INIT,
                                              RequestTemplate.INIT_AUTHENTICATION, initiateAuthenticationRequest,
                                              InitiateAuthenticationResponse.class, null);
-        Assert.assertEquals(REFERENCE, reference);
+        Assert.assertEquals(expectedResponse, response);
     }
 
     private void initAuth_personalContext_relyingPartyNotNull_success(
@@ -181,7 +186,7 @@ public class AuthenticationClientInitAuthenticationTest {
     private void initAuth_relyingPartyNotNull_success(InitiateAuthenticationRequest initiateAuthenticationRequest,
                                                       TransactionContext transactionContext)
             throws FrejaEidClientInternalException, FrejaEidException {
-        InitiateAuthenticationResponse expectedResponse = new InitiateAuthenticationResponse(REFERENCE);
+        InitiateAuthenticationResponse expectedResponse = new InitiateAuthenticationResponse(REFERENCE, QR_CODE_SECRET);
         Mockito.when(httpServiceMock.send(Mockito.anyString(), Mockito.any(RequestTemplate.class),
                                           Mockito.any(RelyingPartyRequest.class),
                                           Mockito.eq(InitiateAuthenticationResponse.class), Mockito.anyString()))
@@ -190,7 +195,7 @@ public class AuthenticationClientInitAuthenticationTest {
                 AuthenticationClient.create(TestUtil.getDefaultSslSettings(), FrejaEnvironment.TEST)
                         .setHttpService(httpServiceMock)
                         .setTransactionContext(transactionContext).build();
-        String reference = authenticationClient.initiate(initiateAuthenticationRequest);
+        InitiateAuthenticationResponse response = authenticationClient.initiate(initiateAuthenticationRequest);
         if (transactionContext.equals(TransactionContext.PERSONAL)) {
             Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getServiceUrl() + MethodUrl.AUTHENTICATION_INIT,
                                                  RequestTemplate.INIT_AUTHENTICATION, initiateAuthenticationRequest,
@@ -202,7 +207,7 @@ public class AuthenticationClientInitAuthenticationTest {
                           InitiateAuthenticationResponse.class, RELYING_PARTY_ID);
         }
 
-        Assert.assertEquals(REFERENCE, reference);
+        Assert.assertEquals(expectedResponse, response);
     }
 
     private static byte[] readAllBytes(InputStream inputStream) throws FrejaEidClientInternalException {
