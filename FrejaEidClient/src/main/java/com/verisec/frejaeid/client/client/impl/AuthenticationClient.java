@@ -1,9 +1,9 @@
 package com.verisec.frejaeid.client.client.impl;
 
 import com.verisec.frejaeid.client.beans.authentication.cancel.CancelAuthenticationRequest;
-import com.verisec.frejaeid.client.beans.authentication.get.AuthenticationResultsRequest;
-import com.verisec.frejaeid.client.beans.authentication.get.AuthenticationResultRequest;
 import com.verisec.frejaeid.client.beans.authentication.get.AuthenticationResult;
+import com.verisec.frejaeid.client.beans.authentication.get.AuthenticationResultRequest;
+import com.verisec.frejaeid.client.beans.authentication.get.AuthenticationResultsRequest;
 import com.verisec.frejaeid.client.beans.authentication.init.InitiateAuthenticationRequest;
 import com.verisec.frejaeid.client.beans.authentication.init.InitiateAuthenticationResponse;
 import com.verisec.frejaeid.client.beans.general.SslSettings;
@@ -18,9 +18,9 @@ import com.verisec.frejaeid.client.http.HttpServiceApi;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import javax.net.ssl.SSLContext;
 import java.io.IOException;
 import java.util.List;
-import javax.net.ssl.SSLContext;
 
 /**
  * Performs authentication actions.
@@ -61,17 +61,18 @@ public class AuthenticationClient extends BasicClient implements AuthenticationC
     }
 
     @Override
-    public InitiateAuthenticationResponse initiate(InitiateAuthenticationRequest initiateAuthenticationRequest)
+    public String initiate(InitiateAuthenticationRequest initiateAuthenticationRequest)
             throws FrejaEidClientInternalException, FrejaEidException {
-        requestValidationService.validateInitAuthRequest(initiateAuthenticationRequest,
-                                                         authenticationService.getTransactionContext());
-        LOG.debug("Initiating authentication transaction for user info type {}, minimum registration level of user {}" +
-                          " and requesting attributes {}.", initiateAuthenticationRequest.getUserInfoType(),
-                  initiateAuthenticationRequest.getMinRegistrationLevel().getState(),
-                  initiateAuthenticationRequest.getAttributesToReturn());
-        InitiateAuthenticationResponse response = authenticationService.initiate(initiateAuthenticationRequest);
-        LOG.debug("Received authentication transaction reference {}.", response.getAuthRef());
-        return response;
+        if (initiateAuthenticationRequest != null && initiateAuthenticationRequest.isUseDynamicQrCode()) {
+            throw new FrejaEidClientInternalException("In order to use dynamic qr code feature use initiateV1_1 method.");
+        }
+        return initiateAuthentication(initiateAuthenticationRequest).getAuthRef();
+    }
+
+    @Override
+    public InitiateAuthenticationResponse initiateV1_1(InitiateAuthenticationRequest initiateAuthenticationRequest)
+            throws FrejaEidClientInternalException, FrejaEidException {
+        return initiateAuthentication(initiateAuthenticationRequest);
     }
 
     @Override
@@ -161,5 +162,17 @@ public class AuthenticationClient extends BasicClient implements AuthenticationC
             return new AuthenticationClient(serverCustomUrl, pollingTimeout, transactionContext, httpService, resourceServiceUrl);
         }
 
+    }
+
+    InitiateAuthenticationResponse initiateAuthentication(InitiateAuthenticationRequest initiateAuthenticationRequest) throws FrejaEidClientInternalException, FrejaEidException {
+        requestValidationService.validateInitAuthRequest(initiateAuthenticationRequest,
+                                                         authenticationService.getTransactionContext());
+        LOG.debug("Initiating authentication transaction for user info type {}, minimum registration level of user {}" +
+                          " and requesting attributes {}.", initiateAuthenticationRequest.getUserInfoType(),
+                  initiateAuthenticationRequest.getMinRegistrationLevel().getState(),
+                  initiateAuthenticationRequest.getAttributesToReturn());
+        InitiateAuthenticationResponse response = authenticationService.initiate(initiateAuthenticationRequest);
+        LOG.debug("Received authentication transaction reference {}.", response.getAuthRef());
+        return response;
     }
 }

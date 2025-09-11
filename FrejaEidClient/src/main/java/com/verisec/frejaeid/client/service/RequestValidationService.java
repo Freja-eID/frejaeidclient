@@ -28,6 +28,7 @@ public class RequestValidationService {
         validateRequest(initiateAuthenticationRequest);
         validateUserInfoTypeAndUserInfo(initiateAuthenticationRequest.getUserInfoType(),
                                         initiateAuthenticationRequest.getUserInfo(), transactionContext);
+        validateUserInfoTypeAndDynamicQrCode(initiateAuthenticationRequest.getUserInfoType(), initiateAuthenticationRequest.isUseDynamicQrCode());
         validateRequestedAttributes(initiateAuthenticationRequest.getAttributesToReturn());
         validateRegistrationState(initiateAuthenticationRequest.getMinRegistrationLevel(), transactionContext);
         validateRelyingPartyIdIsEmpty(initiateAuthenticationRequest.getRelyingPartyId());
@@ -61,6 +62,7 @@ public class RequestValidationService {
         validateRequest(initiateSignRequest);
         validateUserInfoTypeAndUserInfo(initiateSignRequest.getUserInfoType(), initiateSignRequest.getUserInfo(),
                                         transactionContext);
+        validateUserInfoTypeAndDynamicQrCode(initiateSignRequest.getUserInfoType(), initiateSignRequest.isUseDynamicQrCode());
         validateRequestedAttributes(initiateSignRequest.getAttributesToReturn());
         if (initiateSignRequest.getTitle() != null && initiateSignRequest.getTitle().isEmpty()) {
             throw new FrejaEidClientInternalException("Title cannot be empty.");
@@ -87,7 +89,7 @@ public class RequestValidationService {
         validateAdvancedSignRequestedAttributes(initiateSignRequest.getSignatureType(), initiateSignRequest.getAttributesToReturn());
     }
 
-    public void validateSetCustomIDentifierRequest(SetCustomIdentifierRequest setCustomIdentifierRequest)
+    public void validateSetCustomIdentifierRequest(SetCustomIdentifierRequest setCustomIdentifierRequest)
             throws FrejaEidClientInternalException {
         validateRequest(setCustomIdentifierRequest);
         validateUserInfoTypeAndUserInfo(setCustomIdentifierRequest.getUserInfoType(),
@@ -163,6 +165,12 @@ public class RequestValidationService {
         }
         if (transactionContext == TransactionContext.PERSONAL && userInfoType.equals(UserInfoType.ORG_ID)) {
             throw new FrejaEidClientInternalException("UserInfoType ORG ID cannot be used in personal context.");
+        }
+    }
+
+    private void validateUserInfoTypeAndDynamicQrCode(UserInfoType userInfoType, boolean useDynamicQrCode) throws FrejaEidClientInternalException{
+        if (userInfoType != UserInfoType.INFERRED && useDynamicQrCode){
+            throw new FrejaEidClientInternalException("Dynamic QR code can only be used with inferred transactions.");
         }
     }
 

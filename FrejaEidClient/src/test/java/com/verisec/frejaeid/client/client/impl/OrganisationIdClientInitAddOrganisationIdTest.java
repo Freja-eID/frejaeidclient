@@ -49,7 +49,7 @@ public class OrganisationIdClientInitAddOrganisationIdTest {
     @Test
     public void initAddOrganisationId_defaultRequests_expectSuccess()
             throws FrejaEidClientInternalException, FrejaEidException {
-        InitiateAddOrganisationIdResponse expectedResponse = new InitiateAddOrganisationIdResponse(REFERENCE, QR_CODE_SECRET);
+        InitiateAddOrganisationIdResponse expectedResponse = new InitiateAddOrganisationIdResponse(REFERENCE);
         Mockito.when(httpServiceMock.send(Mockito.anyString(), Mockito.any(RequestTemplate.class),
                                           Mockito.any(RelyingPartyRequest.class),
                                           Mockito.eq(InitiateAddOrganisationIdResponse.class),
@@ -81,7 +81,7 @@ public class OrganisationIdClientInitAddOrganisationIdTest {
     @Test
     public void initAddOrganisationId_customRequests_expectSuccess()
             throws FrejaEidClientInternalException, FrejaEidException {
-        InitiateAddOrganisationIdResponse expectedResponse = new InitiateAddOrganisationIdResponse(REFERENCE, QR_CODE_SECRET);
+        InitiateAddOrganisationIdResponse expectedResponse = new InitiateAddOrganisationIdResponse(REFERENCE);
         Mockito.when(httpServiceMock.send(Mockito.anyString(), Mockito.any(RequestTemplate.class),
                                           Mockito.any(RelyingPartyRequest.class),
                                           Mockito.eq(InitiateAddOrganisationIdResponse.class), Mockito.anyString()))
@@ -107,7 +107,7 @@ public class OrganisationIdClientInitAddOrganisationIdTest {
     @Test
     public void initAddOrganisationId_customRequestWithOptionalParameters_expectSuccess()
             throws FrejaEidClientInternalException, FrejaEidException {
-        InitiateAddOrganisationIdResponse expectedResponse = new InitiateAddOrganisationIdResponse(REFERENCE, QR_CODE_SECRET);
+        InitiateAddOrganisationIdResponse expectedResponse = new InitiateAddOrganisationIdResponse(REFERENCE);
         Mockito.when(httpServiceMock.send(Mockito.anyString(), Mockito.any(RequestTemplate.class),
                                           Mockito.any(RelyingPartyRequest.class),
                                           Mockito.eq(InitiateAddOrganisationIdResponse.class), Mockito.anyString()))

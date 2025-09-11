@@ -2,8 +2,8 @@ package com.verisec.frejaeid.client.client.impl;
 
 import com.verisec.frejaeid.client.beans.general.SslSettings;
 import com.verisec.frejaeid.client.beans.sign.cancel.CancelSignRequest;
-import com.verisec.frejaeid.client.beans.sign.get.SignResultRequest;
 import com.verisec.frejaeid.client.beans.sign.get.SignResult;
+import com.verisec.frejaeid.client.beans.sign.get.SignResultRequest;
 import com.verisec.frejaeid.client.beans.sign.get.SignResultsRequest;
 import com.verisec.frejaeid.client.beans.sign.init.InitiateSignRequest;
 import com.verisec.frejaeid.client.beans.sign.init.InitiateSignResponse;
@@ -18,9 +18,9 @@ import com.verisec.frejaeid.client.http.HttpServiceApi;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import javax.net.ssl.SSLContext;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
-import javax.net.ssl.SSLContext;
 
 
 /**
@@ -32,10 +32,10 @@ public class SignClient extends BasicClient implements SignClientApi {
     private static final long DEFAULT_EXPIRY_TIME_IN_MILLIS = TimeUnit.MINUTES.toMillis(2);
     private static final int DEFAULT_POLLING_TIMEOUT_IN_MILLISECONDS = 60000;
 
-    private SignClient(String serverCustomUrl, int pollingTimeoutInMillseconds, TransactionContext transactionContext,
+    private SignClient(String serverCustomUrl, int pollingTimeoutInMilliseconds, TransactionContext transactionContext,
                        HttpServiceApi httpService)
             throws FrejaEidClientInternalException {
-        super(serverCustomUrl, pollingTimeoutInMillseconds, transactionContext, httpService, null);
+        super(serverCustomUrl, pollingTimeoutInMilliseconds, transactionContext, httpService, null);
     }
 
     /**
@@ -65,17 +65,17 @@ public class SignClient extends BasicClient implements SignClientApi {
     }
 
     @Override
-    public InitiateSignResponse initiate(InitiateSignRequest initiateSignRequest)
+    public String initiate(InitiateSignRequest initiateSignRequest) throws FrejaEidClientInternalException, FrejaEidException {
+        if (initiateSignRequest.isUseDynamicQrCode()) {
+            throw new FrejaEidClientInternalException("In order to use dynamic qr code feature use initiateV1_1 method.");
+        }
+        return initiateSign(initiateSignRequest).getSignRef();
+    }
+
+    @Override
+    public InitiateSignResponse initiateV1_1(InitiateSignRequest initiateSignRequest)
             throws FrejaEidClientInternalException, FrejaEidException {
-        requestValidationService.validateInitSignRequest(initiateSignRequest, signService.getTransactionContext());
-        LOG.debug("Initiating sign transaction for user info type {}, minimum registration level of user {}, " +
-                          "requesting attributes {} and expiry time {} ms.", initiateSignRequest.getUserInfoType(),
-                  initiateSignRequest.getMinRegistrationLevel().getState(),
-                  initiateSignRequest.getAttributesToReturn(), initiateSignRequest.getExpiry() == null ?
-                          DEFAULT_EXPIRY_TIME_IN_MILLIS : initiateSignRequest.getExpiry());
-        InitiateSignResponse response = signService.initiate(initiateSignRequest);
-        LOG.debug("Received sign transaction reference {}.", response.getSignRef());
-        return response;
+        return initiateSign(initiateSignRequest);
     }
 
     @Override
@@ -160,6 +160,18 @@ public class SignClient extends BasicClient implements SignClientApi {
             return new SignClient(serverCustomUrl, pollingTimeout, transactionContext, httpService);
         }
 
+    }
+
+    private InitiateSignResponse initiateSign(InitiateSignRequest initiateSignRequest) throws FrejaEidClientInternalException, FrejaEidException {
+        requestValidationService.validateInitSignRequest(initiateSignRequest, signService.getTransactionContext());
+        LOG.debug("Initiating sign transaction for user info type {}, minimum registration level of user {}, " +
+                          "requesting attributes {} and expiry time {} ms.", initiateSignRequest.getUserInfoType(),
+                  initiateSignRequest.getMinRegistrationLevel().getState(),
+                  initiateSignRequest.getAttributesToReturn(), initiateSignRequest.getExpiry() == null ?
+                          DEFAULT_EXPIRY_TIME_IN_MILLIS : initiateSignRequest.getExpiry());
+        InitiateSignResponse response = signService.initiate(initiateSignRequest);
+        LOG.debug("Received sign transaction reference {}.", response.getSignRef());
+        return response;
     }
 
 }

@@ -64,33 +64,33 @@ public class SignClientHttpTest extends CommonHttpTest {
 
     }
 
-    private void sendInitiateSignRequestAndAssertResponse(InitiateSignRequest validRequest)
+    private void sendInitiateV11SignRequestAndAssertResponse(InitiateSignRequest validRequest)
             throws IOException, FrejaEidClientInternalException, InterruptedException, FrejaEidException {
-        sendInitiateSignRequestAndAssertResponse(validRequest, validRequest);
+        sendInitiateV11SignRequestAndAssertResponse(validRequest, validRequest);
     }
 
-    private void sendInitiateSignRequestAndAssertResponse(InitiateSignRequest expectedRequest,
-                                                          InitiateSignRequest validRequest)
+    private void sendInitiateV11SignRequestAndAssertResponse(InitiateSignRequest expectedRequest,
+                                                             InitiateSignRequest validRequest)
             throws FrejaEidClientInternalException, IOException, FrejaEidException, InterruptedException {
         String initSignResponseString = jsonService.serializeToJson(initiateSignResponse);
         startMockServer(expectedRequest, HttpStatusCode.OK.getCode(), initSignResponseString);
-        InitiateSignResponse response = signClient.initiate(validRequest);
+        InitiateSignResponse response = signClient.initiateV1_1(validRequest);
         stopServer();
         Assert.assertEquals(initiateSignResponse, response);
     }
 
     @Test
-    public void initSign_success()
+    public void initiateSign_success()
             throws FrejaEidClientInternalException, IOException, InterruptedException, FrejaEidException {
         DataToSign dataToSign =
                 DataToSign.create(Base64.encodeBase64String(dataToSignText.getBytes(StandardCharsets.UTF_8)));
         InitiateSignRequest initiateSignRequestDefaultEmail =
                 InitiateSignRequest.createDefaultWithEmail(EMAIL, title, dataToSignText);
-        sendInitiateSignRequestAndAssertResponse(initiateSignRequestDefaultEmail);
+        sendInitiateV11SignRequestAndAssertResponse(initiateSignRequestDefaultEmail);
         InitiateSignRequest initiateSignRequestDefaultSsn =
                 InitiateSignRequest.createDefaultWithSsn(SsnUserInfo.create(
                         Country.FINLAND, SSN), title, dataToSignText);
-        sendInitiateSignRequestAndAssertResponse(initiateSignRequestDefaultSsn);
+        sendInitiateV11SignRequestAndAssertResponse(initiateSignRequestDefaultSsn);
         InitiateSignRequest initSignCustomRequestWithRequestedAttributes = InitiateSignRequest.createCustom()
                 .setEmail(EMAIL)
                 .setDataToSign(dataToSign)
@@ -100,7 +100,7 @@ public class SignClientHttpTest extends CommonHttpTest {
                 .setPushNotification(pushNotification)
                 .setTitle(title)
                 .build();
-        sendInitiateSignRequestAndAssertResponse(initSignCustomRequestWithRequestedAttributes);
+        sendInitiateV11SignRequestAndAssertResponse(initSignCustomRequestWithRequestedAttributes);
 
         InitiateSignRequest initSignCustomRequestWithRequestedAttributesExtendedDataToSign =
                 InitiateSignRequest.createCustom()
@@ -112,13 +112,13 @@ public class SignClientHttpTest extends CommonHttpTest {
                         .setPushNotification(pushNotification)
                         .setTitle(title)
                         .build();
-        sendInitiateSignRequestAndAssertResponse(initSignCustomRequestWithRequestedAttributesExtendedDataToSign);
+        sendInitiateV11SignRequestAndAssertResponse(initSignCustomRequestWithRequestedAttributesExtendedDataToSign);
 
         InitiateSignRequest initSignCustomRequestWithDefaultValues = InitiateSignRequest.createCustom()
                 .setEmail(EMAIL)
                 .setDataToSign(DataToSign.create(dataToSignText, binaryData))
                 .build();
-        sendInitiateSignRequestAndAssertResponse(initSignCustomRequestWithDefaultValues);
+        sendInitiateV11SignRequestAndAssertResponse(initSignCustomRequestWithDefaultValues);
 
         InitiateSignRequest initSignCustomRequestWithRelyingPartyId = InitiateSignRequest.createCustom()
                 .setEmail(EMAIL)
@@ -129,8 +129,8 @@ public class SignClientHttpTest extends CommonHttpTest {
                 .setEmail(EMAIL)
                 .setDataToSign(DataToSign.create(dataToSignText, binaryData))
                 .build();
-        sendInitiateSignRequestAndAssertResponse(expectedInitSignCustomRequestWithRelyingPartyId,
-                                                 initSignCustomRequestWithRelyingPartyId);
+        sendInitiateV11SignRequestAndAssertResponse(expectedInitSignCustomRequestWithRelyingPartyId,
+                                                    initSignCustomRequestWithRelyingPartyId);
 
         InitiateSignRequest initSignCustomRequestWithAdvancedSignatureType = InitiateSignRequest.createCustom()
                 .setEmail(EMAIL)
@@ -138,12 +138,12 @@ public class SignClientHttpTest extends CommonHttpTest {
                 .setMinRegistrationLevel(MinRegistrationLevel.PLUS)
                 .setAttributesToReturn(ATTRIBUTES_TO_RETURN)
                 .build();
-        sendInitiateSignRequestAndAssertResponse(initSignCustomRequestWithAdvancedSignatureType);
+        sendInitiateV11SignRequestAndAssertResponse(initSignCustomRequestWithAdvancedSignatureType);
 
     }
 
     @Test
-    public void initSign_organisational_success()
+    public void initiateSign_organisational_success()
             throws FrejaEidClientInternalException, IOException, InterruptedException, FrejaEidException {
         SignClient signClient =
                 SignClient.create(TestUtil.getDefaultSslSettings(), FrejaEnvironment.TEST)
@@ -166,7 +166,7 @@ public class SignClientHttpTest extends CommonHttpTest {
         startMockServer(initSignCustomRequestWithRequestedAttributes, HttpStatusCode.OK.getCode(),
                         initSignResponseString);
 
-        InitiateSignResponse response = signClient.initiate(initSignCustomRequestWithRequestedAttributes);
+        InitiateSignResponse response = signClient.initiateV1_1(initSignCustomRequestWithRequestedAttributes);
         stopServer();
         Assert.assertEquals(initiateSignResponse, response);
     }

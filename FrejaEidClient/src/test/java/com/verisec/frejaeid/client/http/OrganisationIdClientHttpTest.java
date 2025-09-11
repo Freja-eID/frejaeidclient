@@ -44,7 +44,7 @@ public class OrganisationIdClientHttpTest extends CommonHttpTest {
     @BeforeClass
     public static void init() throws FrejaEidClientInternalException {
         jsonService = new JsonService();
-        initiateAddOrganisationIdResponse = new InitiateAddOrganisationIdResponse(REFERENCE, QR_CODE_SECRET);
+        initiateAddOrganisationIdResponse = new InitiateAddOrganisationIdResponse(REFERENCE);
         organisationIdResult = new OrganisationIdResult(REFERENCE, TransactionStatus.STARTED, null, null);
         OrganisationIdUserInfo organisationIdUserInfo =
                 new OrganisationIdUserInfo(OrganisationId.create(ORGANISATION_ID_TITLE, IDENTIFIER_NAME, IDENTIFIER),
