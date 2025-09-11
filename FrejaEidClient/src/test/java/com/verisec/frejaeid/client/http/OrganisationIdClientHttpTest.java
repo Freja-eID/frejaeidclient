@@ -67,9 +67,9 @@ public class OrganisationIdClientHttpTest extends CommonHttpTest {
             throws FrejaEidClientInternalException, IOException, FrejaEidException, InterruptedException {
         String initAddOrganisationIdResponseString = jsonService.serializeToJson(initiateAddOrganisationIdResponse);
         startMockServer(expectedRequest, HttpStatusCode.OK.getCode(), initAddOrganisationIdResponseString);
-        InitiateAddOrganisationIdResponse response = organisationIdClient.initiateAdd(validRequest);
+        String reference = organisationIdClient.initiateAdd(validRequest);
         stopServer();
-        Assert.assertEquals(initiateAddOrganisationIdResponse, response);
+        Assert.assertEquals(REFERENCE, reference);
     }
 
     @Test

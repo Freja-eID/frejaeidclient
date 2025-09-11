@@ -28,12 +28,12 @@ public interface OrganisationIdClientApi {
      * @param initiateAddOrganisationIdRequest instance of
      *                                         {@linkplain InitiateAddOrganisationIdRequest} with corresponding
      *                                         parameters
-     * @return {@linkplain InitiateAddOrganisationIdResponse}
+     * @return transaction reference which is used for fetching results.
      * @throws FrejaEidClientInternalException if internal validation of request
      *                                         fails.
      * @throws FrejaEidException               if server returns an error.
      */
-    public InitiateAddOrganisationIdResponse initiateAdd(InitiateAddOrganisationIdRequest initiateAddOrganisationIdRequest)
+    public String initiateAdd(InitiateAddOrganisationIdRequest initiateAddOrganisationIdRequest)
             throws FrejaEidClientInternalException, FrejaEidException;
 
     /**

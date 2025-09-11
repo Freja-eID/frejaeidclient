@@ -8,23 +8,20 @@ import com.verisec.frejaeid.client.beans.organisationid.get.OrganisationIdResult
 import com.verisec.frejaeid.client.beans.organisationid.get.OrganisationIdResultRequest;
 import com.verisec.frejaeid.client.beans.organisationid.getall.GetAllOrganisationIdUsersRequest;
 import com.verisec.frejaeid.client.beans.organisationid.init.InitiateAddOrganisationIdRequest;
-import com.verisec.frejaeid.client.beans.organisationid.init.InitiateAddOrganisationIdResponse;
 import com.verisec.frejaeid.client.beans.organisationid.update.UpdateOrganisationIdRequest;
 import com.verisec.frejaeid.client.beans.organisationid.update.UpdateOrganisationIdResponse;
 import com.verisec.frejaeid.client.client.api.OrganisationIdClientApi;
 import com.verisec.frejaeid.client.enums.FrejaEnvironment;
 import com.verisec.frejaeid.client.enums.TransactionContext;
 import com.verisec.frejaeid.client.exceptions.FrejaEidClientInternalException;
-import com.verisec.frejaeid.client.http.HttpService;
-import com.verisec.frejaeid.client.http.HttpServiceApi;
-
-import javax.net.ssl.SSLContext;
-
 import com.verisec.frejaeid.client.exceptions.FrejaEidClientPollingException;
 import com.verisec.frejaeid.client.exceptions.FrejaEidException;
+import com.verisec.frejaeid.client.http.HttpService;
+import com.verisec.frejaeid.client.http.HttpServiceApi;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import javax.net.ssl.SSLContext;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -68,7 +65,7 @@ public class OrganisationIdClient extends BasicClient implements OrganisationIdC
     }
 
     @Override
-    public InitiateAddOrganisationIdResponse initiateAdd(InitiateAddOrganisationIdRequest initiateAddOrganisationIdRequest)
+    public String initiateAdd(InitiateAddOrganisationIdRequest initiateAddOrganisationIdRequest)
             throws FrejaEidClientInternalException, FrejaEidException {
         requestValidationService.validateInitAddOrganisationIdRequest(initiateAddOrganisationIdRequest);
         LOG.debug("Initiating adding organisation ID with user info type {}, minimum registration level of user {} " +
@@ -76,9 +73,9 @@ public class OrganisationIdClient extends BasicClient implements OrganisationIdC
                   initiateAddOrganisationIdRequest.getMinRegistrationLevel().getState(),
                   initiateAddOrganisationIdRequest.getExpiry() == null ? DEFAULT_EXPIRY_TIME_IN_MILLIS :
                           initiateAddOrganisationIdRequest.getExpiry());
-        InitiateAddOrganisationIdResponse response = organisationIdService.initiateAdd(initiateAddOrganisationIdRequest);
-        LOG.debug("Received add organisation ID transaction reference {}.", response.getOrgIdRef());
-        return response;
+        String reference = organisationIdService.initiateAdd(initiateAddOrganisationIdRequest).getOrgIdRef();
+        LOG.debug("Received add organisation ID transaction reference {}.", reference);
+        return reference;
     }
 
     @Override

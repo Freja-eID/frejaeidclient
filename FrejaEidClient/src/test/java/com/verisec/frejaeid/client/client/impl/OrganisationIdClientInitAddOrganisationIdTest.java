@@ -63,19 +63,19 @@ public class OrganisationIdClientInitAddOrganisationIdTest {
                         SsnUserInfo.create(Country.SWEDEN, SSN),
                         OrganisationId.create(ORGANISATION_ID_TITLE, IDENTIFIER_NAME, IDENTIFIER));
 
-        InitiateAddOrganisationIdResponse response = organisationIdClient.initiateAdd(initiateAddOrganisationIdDefaultEmailRequest);
+        String reference = organisationIdClient.initiateAdd(initiateAddOrganisationIdDefaultEmailRequest);
         Mockito.verify(httpServiceMock)
                 .send(FrejaEnvironment.TEST.getServiceUrl() + MethodUrl.ORGANISATION_ID_INIT_ADD,
                       RequestTemplate.INIT_ADD_ORGANISATION_ID_TEMPLATE, initiateAddOrganisationIdDefaultEmailRequest,
                       InitiateAddOrganisationIdResponse.class, null);
-        Assert.assertEquals(expectedResponse, response);
+        Assert.assertEquals(REFERENCE, reference);
 
-        response = organisationIdClient.initiateAdd(initiateAddOrganisationIdDefaultSsnRequest);
+        reference = organisationIdClient.initiateAdd(initiateAddOrganisationIdDefaultSsnRequest);
         Mockito.verify(httpServiceMock)
                 .send(FrejaEnvironment.TEST.getServiceUrl() + MethodUrl.ORGANISATION_ID_INIT_ADD,
                       RequestTemplate.INIT_ADD_ORGANISATION_ID_TEMPLATE, initiateAddOrganisationIdDefaultSsnRequest,
                       InitiateAddOrganisationIdResponse.class, null);
-        Assert.assertEquals(expectedResponse, response);
+        Assert.assertEquals(REFERENCE, reference);
     }
 
     @Test
@@ -96,12 +96,12 @@ public class OrganisationIdClientInitAddOrganisationIdTest {
                         .setRelyingPartyId(RELYING_PARTY_ID)
                         .build();
 
-        InitiateAddOrganisationIdResponse response = organisationIdClient.initiateAdd(initiateAddOrganisationIdRequest);
+        String reference = organisationIdClient.initiateAdd(initiateAddOrganisationIdRequest);
         Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getServiceUrl() + MethodUrl.ORGANISATION_ID_INIT_ADD,
                                              RequestTemplate.INIT_ADD_ORGANISATION_ID_TEMPLATE,
                                              initiateAddOrganisationIdRequest,
                                              InitiateAddOrganisationIdResponse.class, RELYING_PARTY_ID);
-        Assert.assertEquals(expectedResponse, response);
+        Assert.assertEquals(REFERENCE, reference);
     }
 
     @Test
@@ -127,12 +127,12 @@ public class OrganisationIdClientInitAddOrganisationIdTest {
                         .setRelyingPartyId(RELYING_PARTY_ID)
                         .build();
 
-        InitiateAddOrganisationIdResponse response = organisationIdClient.initiateAdd(initiateAddOrganisationIdRequest);
+        String reference = organisationIdClient.initiateAdd(initiateAddOrganisationIdRequest);
         Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getServiceUrl() + MethodUrl.ORGANISATION_ID_INIT_ADD,
                                              RequestTemplate.INIT_ADD_ORGANISATION_ID_TEMPLATE,
                                              initiateAddOrganisationIdRequest,
                                              InitiateAddOrganisationIdResponse.class, RELYING_PARTY_ID);
-        Assert.assertEquals(expectedResponse, response);
+        Assert.assertEquals(REFERENCE, reference);
     }
 
     @Test
