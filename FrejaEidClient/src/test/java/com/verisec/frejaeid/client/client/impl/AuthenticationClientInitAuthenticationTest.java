@@ -37,10 +37,10 @@ public class AuthenticationClientInitAuthenticationTest {
     private static final String QR_CODE_GENERATION_URL_PREFIX = "https://resources.test.frejaeid.com/qrcode/generate";
 
     @Test
-    public void initiateAuthentication_userInfoTypeEmail_success() throws FrejaEidClientInternalException, FrejaEidException {
+    public void initiateAuthenticationV1_1_userInfoTypeEmail_success() throws FrejaEidClientInternalException, FrejaEidException {
         InitiateAuthenticationRequest initiateAuthenticationRequest =
                 InitiateAuthenticationRequest.createDefaultWithEmail(EMAIL);
-        initiateAuthentication_relyingPartyNull_success(initiateAuthenticationRequest);
+        initiateAuthenticationV1_1_relyingPartyNull_success(initiateAuthenticationRequest);
     }
 
 
@@ -63,6 +63,107 @@ public class AuthenticationClientInitAuthenticationTest {
             byteArray = authenticationClient.generateQRCodeForAuthentication(REFERENCE);
             Assert.assertEquals(Arrays.toString(byteArray), Arrays.toString(expectedBytesResult));
         }
+    }
+
+    @Test
+    public void initiateAuthenticationV1_1_expectError() throws FrejaEidClientInternalException, FrejaEidException {
+        InitiateAuthenticationRequest initiateAuthenticationRequest =
+                InitiateAuthenticationRequest.createCustom().setPhoneNumber(EMAIL)
+                        .setRelyingPartyId(RELYING_PARTY_ID).build();
+        try {
+            AuthenticationClientApi authenticationClient =
+                    AuthenticationClient.create(TestUtil.getDefaultSslSettings(), FrejaEnvironment.TEST)
+                            .setHttpService(httpServiceMock)
+                            .setTransactionContext(TransactionContext.PERSONAL).build();
+            Mockito.when(httpServiceMock.send(Mockito.anyString(), Mockito.any(RequestTemplate.class),
+                                              Mockito.any(RelyingPartyRequest.class),
+                                              Mockito.eq(InitiateAuthenticationResponse.class), Mockito.anyString()))
+                    .thenThrow(new FrejaEidException(FrejaEidErrorCode.INVALID_USER_INFO.getMessage(),
+                                                     FrejaEidErrorCode.INVALID_USER_INFO.getCode()));
+            authenticationClient.initiateV1_1(initiateAuthenticationRequest);
+            Assert.fail("Test should throw exception!");
+        } catch (FrejaEidException rpEx) {
+            Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getServiceUrl() + MethodUrl.AUTHENTICATION_INIT,
+                                                 RequestTemplate.INIT_AUTHENTICATION, initiateAuthenticationRequest,
+                                                 InitiateAuthenticationResponse.class, RELYING_PARTY_ID);
+            Assert.assertEquals("Invalid error", 1002, rpEx.getErrorCode());
+            Assert.assertEquals("Invalid error", "Invalid or missing userInfo.", rpEx.getLocalizedMessage());
+        }
+    }
+
+    @Test
+    public void initiateAuthenticationV1_1_userInfoTypeSsn_success() throws FrejaEidClientInternalException, FrejaEidException {
+        InitiateAuthenticationRequest initiateAuthenticationRequest =
+                InitiateAuthenticationRequest.createDefaultWithSsn(SsnUserInfo.create(COUNTRY, SSN));
+        initiateAuthenticationV1_1_relyingPartyNull_success(initiateAuthenticationRequest);
+    }
+
+    @Test
+    public void initiateAuthenticationV1_1_userInfoTypeEmail_requestedAttributes_success()
+            throws FrejaEidClientInternalException, FrejaEidException {
+        InitiateAuthenticationRequest initiateAuthenticationRequest =
+                InitiateAuthenticationRequest.createCustom().setEmail(EMAIL)
+                        .setAttributesToReturn(ATTRIBUTES_TO_RETURN).setRelyingPartyId(RELYING_PARTY_ID).build();
+        initiateAuthenticationV1_1_personalContext_relyingPartyNotNull_success(initiateAuthenticationRequest);
+    }
+
+    @Test
+    public void initiateAuthenticationV1_1_userInfoTypeSsn_requestedAttributes_success()
+            throws FrejaEidClientInternalException, FrejaEidException {
+        InitiateAuthenticationRequest initiateAuthenticationRequest =
+                InitiateAuthenticationRequest.createCustom().setSsn(SsnUserInfo.create(COUNTRY, SSN))
+                        .setAttributesToReturn(ATTRIBUTES_TO_RETURN).setRelyingPartyId(RELYING_PARTY_ID).build();
+        initiateAuthenticationV1_1_personalContext_relyingPartyNotNull_success(initiateAuthenticationRequest);
+    }
+
+    @Test
+    public void initiateAuthenticationV1_1_userInfoTypePhoneNumber_requestedAttributes_success()
+            throws FrejaEidClientInternalException, FrejaEidException {
+        InitiateAuthenticationRequest initiateAuthenticationRequest =
+                InitiateAuthenticationRequest.createCustom().setPhoneNumber(EMAIL)
+                        .setAttributesToReturn(ATTRIBUTES_TO_RETURN).setRelyingPartyId(RELYING_PARTY_ID).build();
+        initiateAuthenticationV1_1_personalContext_relyingPartyNotNull_success(initiateAuthenticationRequest);
+    }
+
+    @Test
+    public void initiateAuthenticationV1_1_userInfoTypeOrganisationId_requestedAttributes_success()
+            throws FrejaEidClientInternalException, FrejaEidException {
+        InitiateAuthenticationRequest initiateAuthenticationRequest =
+                InitiateAuthenticationRequest.createCustom().setOrganisationId(ORGANISATION_ID)
+                        .setAttributesToReturn(ATTRIBUTES_TO_RETURN).setRelyingPartyId(RELYING_PARTY_ID).build();
+        initiateAuthenticationV1_1_relyingPartyNotNull_success(initiateAuthenticationRequest, TransactionContext.ORGANISATIONAL);
+    }
+
+    @Test
+    public void initiateAuthenticationV1_1_minRegistrationLevelBasic_success() throws FrejaEidClientInternalException, FrejaEidException {
+        InitiateAuthenticationRequest initiateAuthenticationRequest =
+                InitiateAuthenticationRequest.createCustom().setEmail(EMAIL).setAttributesToReturn(ATTRIBUTES_TO_RETURN)
+                        .setRelyingPartyId(RELYING_PARTY_ID).build();
+        initiateAuthenticationV1_1_personalContext_relyingPartyNotNull_success(initiateAuthenticationRequest);
+    }
+
+    @Test
+    public void initiateAuthenticationV1_1_minRegistrationLevelPlus_success() throws FrejaEidClientInternalException, FrejaEidException {
+        InitiateAuthenticationRequest initiateAuthenticationRequest =
+                InitiateAuthenticationRequest.createCustom().setEmail(EMAIL)
+                        .setAttributesToReturn(AttributeToReturn.CUSTOM_IDENTIFIER)
+                        .setMinRegistrationLevel(MinRegistrationLevel.PLUS).build();
+        initiateAuthenticationV1_1_relyingPartyNull_success(initiateAuthenticationRequest);
+    }
+
+    @Test
+    public void initiateAuthenticationV1_1_userInfoTypeInferred_requestedAttributes_success()
+            throws FrejaEidClientInternalException, FrejaEidException {
+        InitiateAuthenticationRequest initiateAuthenticationRequest =
+                InitiateAuthenticationRequest.createCustom().setInferred().build();
+        initiateAuthenticationV1_1_relyingPartyNull_success(initiateAuthenticationRequest);
+    }
+
+    @Test
+    public void initiateAuthentication_userInfoTypeEmail_success() throws FrejaEidClientInternalException, FrejaEidException {
+        InitiateAuthenticationRequest initiateAuthenticationRequest =
+                InitiateAuthenticationRequest.createDefaultWithEmail(EMAIL);
+        initiateAuthentication_relyingPartyNull_success(initiateAuthenticationRequest);
     }
 
     @Test
@@ -159,7 +260,7 @@ public class AuthenticationClientInitAuthenticationTest {
         initiateAuthentication_relyingPartyNull_success(initiateAuthenticationRequest);
     }
 
-    private void initiateAuthentication_relyingPartyNull_success(InitiateAuthenticationRequest initiateAuthenticationRequest)
+    private void initiateAuthenticationV1_1_relyingPartyNull_success(InitiateAuthenticationRequest initiateAuthenticationRequest)
             throws FrejaEidClientInternalException, FrejaEidException {
         InitiateAuthenticationResponse expectedResponse = new InitiateAuthenticationResponse(REFERENCE, QR_CODE_SECRET);
         Mockito.when(httpServiceMock.send(Mockito.anyString(), Mockito.any(RequestTemplate.class),
@@ -177,13 +278,13 @@ public class AuthenticationClientInitAuthenticationTest {
         Assert.assertEquals(expectedResponse, response);
     }
 
-    private void initiateAuthentication_personalContext_relyingPartyNotNull_success(
+    private void initiateAuthenticationV1_1_personalContext_relyingPartyNotNull_success(
             InitiateAuthenticationRequest initiateAuthenticationRequest)
             throws FrejaEidClientInternalException, FrejaEidException {
-        initiateAuthentication_relyingPartyNotNull_success(initiateAuthenticationRequest, TransactionContext.PERSONAL);
+        initiateAuthenticationV1_1_relyingPartyNotNull_success(initiateAuthenticationRequest, TransactionContext.PERSONAL);
     }
 
-    private void initiateAuthentication_relyingPartyNotNull_success(InitiateAuthenticationRequest initiateAuthenticationRequest,
+    private void initiateAuthenticationV1_1_relyingPartyNotNull_success(InitiateAuthenticationRequest initiateAuthenticationRequest,
                                                                     TransactionContext transactionContext)
             throws FrejaEidClientInternalException, FrejaEidException {
         InitiateAuthenticationResponse expectedResponse = new InitiateAuthenticationResponse(REFERENCE, QR_CODE_SECRET);
@@ -208,6 +309,58 @@ public class AuthenticationClientInitAuthenticationTest {
         }
 
         Assert.assertEquals(expectedResponse, response);
+    }
+
+
+    private void initiateAuthentication_relyingPartyNull_success(InitiateAuthenticationRequest initiateAuthenticationRequest)
+            throws FrejaEidClientInternalException, FrejaEidException {
+        InitiateAuthenticationResponse expectedResponse = new InitiateAuthenticationResponse(REFERENCE, QR_CODE_SECRET);
+        Mockito.when(httpServiceMock.send(Mockito.anyString(), Mockito.any(RequestTemplate.class),
+                                          Mockito.any(RelyingPartyRequest.class),
+                                          Mockito.eq(InitiateAuthenticationResponse.class),
+                                          (String) Mockito.isNull())).thenReturn(expectedResponse);
+        AuthenticationClientApi authenticationClient =
+                AuthenticationClient.create(TestUtil.getDefaultSslSettings(), FrejaEnvironment.TEST)
+                        .setHttpService(httpServiceMock)
+                        .setTransactionContext(TransactionContext.PERSONAL).build();
+        String reference = authenticationClient.initiate(initiateAuthenticationRequest);
+        Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getServiceUrl() + MethodUrl.AUTHENTICATION_INIT,
+                                             RequestTemplate.INIT_AUTHENTICATION, initiateAuthenticationRequest,
+                                             InitiateAuthenticationResponse.class, null);
+        Assert.assertEquals(REFERENCE, reference);
+    }
+
+    private void initiateAuthentication_personalContext_relyingPartyNotNull_success(
+            InitiateAuthenticationRequest initiateAuthenticationRequest)
+            throws FrejaEidClientInternalException, FrejaEidException {
+        initiateAuthentication_relyingPartyNotNull_success(initiateAuthenticationRequest, TransactionContext.PERSONAL);
+    }
+
+    private void initiateAuthentication_relyingPartyNotNull_success(InitiateAuthenticationRequest initiateAuthenticationRequest,
+                                                                        TransactionContext transactionContext)
+            throws FrejaEidClientInternalException, FrejaEidException {
+        InitiateAuthenticationResponse expectedResponse = new InitiateAuthenticationResponse(REFERENCE, QR_CODE_SECRET);
+        Mockito.when(httpServiceMock.send(Mockito.anyString(), Mockito.any(RequestTemplate.class),
+                                          Mockito.any(RelyingPartyRequest.class),
+                                          Mockito.eq(InitiateAuthenticationResponse.class), Mockito.anyString()))
+                .thenReturn(expectedResponse);
+        AuthenticationClientApi authenticationClient =
+                AuthenticationClient.create(TestUtil.getDefaultSslSettings(), FrejaEnvironment.TEST)
+                        .setHttpService(httpServiceMock)
+                        .setTransactionContext(transactionContext).build();
+        String reference = authenticationClient.initiate(initiateAuthenticationRequest);
+        if (transactionContext.equals(TransactionContext.PERSONAL)) {
+            Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getServiceUrl() + MethodUrl.AUTHENTICATION_INIT,
+                                                 RequestTemplate.INIT_AUTHENTICATION, initiateAuthenticationRequest,
+                                                 InitiateAuthenticationResponse.class, RELYING_PARTY_ID);
+        } else {
+            Mockito.verify(httpServiceMock)
+                    .send(FrejaEnvironment.TEST.getServiceUrl() + MethodUrl.ORGANISATION_AUTHENTICATION_INIT,
+                          RequestTemplate.INIT_AUTHENTICATION, initiateAuthenticationRequest,
+                          InitiateAuthenticationResponse.class, RELYING_PARTY_ID);
+        }
+
+        Assert.assertEquals(REFERENCE, reference);
     }
 
     private static byte[] readAllBytes(InputStream inputStream) throws FrejaEidClientInternalException {

@@ -29,7 +29,6 @@ public class OrganisationIdClientInitAddOrganisationIdTest {
     private static final String EMAIL = "eid.demo.verisec@gmail.com";
     private static final String SSN = "199207295578";
     private static final String REFERENCE = "123456789123456789";
-    private static final String QR_CODE_SECRET = "qrCodeSecret";
     private static final String RELYING_PARTY_ID = "verisec_integrator";
     private static final String ORGANISATION_ID_TITLE = "OrgananisationId title";
     private static final String IDENTIFIER_NAME = "Identifier name";

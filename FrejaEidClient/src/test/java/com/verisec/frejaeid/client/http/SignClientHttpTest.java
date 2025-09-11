@@ -80,7 +80,7 @@ public class SignClientHttpTest extends CommonHttpTest {
     }
 
     @Test
-    public void initiateSign_success()
+    public void initiateSignV1_1_success()
             throws FrejaEidClientInternalException, IOException, InterruptedException, FrejaEidException {
         DataToSign dataToSign =
                 DataToSign.create(Base64.encodeBase64String(dataToSignText.getBytes(StandardCharsets.UTF_8)));
@@ -143,7 +143,7 @@ public class SignClientHttpTest extends CommonHttpTest {
     }
 
     @Test
-    public void initiateSign_organisational_success()
+    public void initiateSignV1_1_organisational_success()
             throws FrejaEidClientInternalException, IOException, InterruptedException, FrejaEidException {
         SignClient signClient =
                 SignClient.create(TestUtil.getDefaultSslSettings(), FrejaEnvironment.TEST)
@@ -169,6 +169,113 @@ public class SignClientHttpTest extends CommonHttpTest {
         InitiateSignResponse response = signClient.initiateV1_1(initSignCustomRequestWithRequestedAttributes);
         stopServer();
         Assert.assertEquals(initiateSignResponse, response);
+    }
+
+    private void sendInitiateSignRequestAndAssertResponse(InitiateSignRequest validRequest)
+            throws IOException, FrejaEidClientInternalException, InterruptedException, FrejaEidException {
+        sendInitiateSignRequestAndAssertResponse(validRequest, validRequest);
+    }
+
+    private void sendInitiateSignRequestAndAssertResponse(InitiateSignRequest expectedRequest,
+                                                          InitiateSignRequest validRequest)
+            throws FrejaEidClientInternalException, IOException, FrejaEidException, InterruptedException {
+        String initSignResponseString = jsonService.serializeToJson(initiateSignResponse);
+        startMockServer(expectedRequest, HttpStatusCode.OK.getCode(), initSignResponseString);
+        String reference = signClient.initiate(validRequest);
+        stopServer();
+        Assert.assertEquals(REFERENCE, reference);
+    }
+
+    @Test
+    public void initiateSign_success()
+            throws FrejaEidClientInternalException, IOException, InterruptedException, FrejaEidException {
+        DataToSign dataToSign =
+                DataToSign.create(Base64.encodeBase64String(dataToSignText.getBytes(StandardCharsets.UTF_8)));
+        InitiateSignRequest initiateSignRequestDefaultEmail =
+                InitiateSignRequest.createDefaultWithEmail(EMAIL, title, dataToSignText);
+        sendInitiateSignRequestAndAssertResponse(initiateSignRequestDefaultEmail);
+        InitiateSignRequest initiateSignRequestDefaultSsn =
+                InitiateSignRequest.createDefaultWithSsn(SsnUserInfo.create(
+                        Country.FINLAND, SSN), title, dataToSignText);
+        sendInitiateSignRequestAndAssertResponse(initiateSignRequestDefaultSsn);
+        InitiateSignRequest initSignCustomRequestWithRequestedAttributes = InitiateSignRequest.createCustom()
+                .setEmail(EMAIL)
+                .setDataToSign(dataToSign)
+                .setExpiry(Long.MAX_VALUE)
+                .setMinRegistrationLevel(MinRegistrationLevel.BASIC)
+                .setAttributesToReturn(ATTRIBUTES_TO_RETURN)
+                .setPushNotification(pushNotification)
+                .setTitle(title)
+                .build();
+        sendInitiateSignRequestAndAssertResponse(initSignCustomRequestWithRequestedAttributes);
+
+        InitiateSignRequest initSignCustomRequestWithRequestedAttributesExtendedDataToSign =
+                InitiateSignRequest.createCustom()
+                        .setEmail(EMAIL)
+                        .setDataToSign(DataToSign.create(dataToSignText, binaryData))
+                        .setExpiry(Long.MAX_VALUE)
+                        .setMinRegistrationLevel(MinRegistrationLevel.BASIC)
+                        .setAttributesToReturn(ATTRIBUTES_TO_RETURN)
+                        .setPushNotification(pushNotification)
+                        .setTitle(title)
+                        .build();
+        sendInitiateSignRequestAndAssertResponse(initSignCustomRequestWithRequestedAttributesExtendedDataToSign);
+
+        InitiateSignRequest initSignCustomRequestWithDefaultValues = InitiateSignRequest.createCustom()
+                .setEmail(EMAIL)
+                .setDataToSign(DataToSign.create(dataToSignText, binaryData))
+                .build();
+        sendInitiateSignRequestAndAssertResponse(initSignCustomRequestWithDefaultValues);
+
+        InitiateSignRequest initSignCustomRequestWithRelyingPartyId = InitiateSignRequest.createCustom()
+                .setEmail(EMAIL)
+                .setDataToSign(DataToSign.create(dataToSignText, binaryData))
+                .setRelyingPartyId(RELYING_PARTY_ID)
+                .build();
+        InitiateSignRequest expectedInitSignCustomRequestWithRelyingPartyId = InitiateSignRequest.createCustom()
+                .setEmail(EMAIL)
+                .setDataToSign(DataToSign.create(dataToSignText, binaryData))
+                .build();
+        sendInitiateSignRequestAndAssertResponse(expectedInitSignCustomRequestWithRelyingPartyId,
+                                                 initSignCustomRequestWithRelyingPartyId);
+
+        InitiateSignRequest initSignCustomRequestWithAdvancedSignatureType = InitiateSignRequest.createCustom()
+                .setEmail(EMAIL)
+                .setDataToSign(DataToSign.create(dataToSignText), SignatureType.XML_MINAMEDDELANDEN)
+                .setMinRegistrationLevel(MinRegistrationLevel.PLUS)
+                .setAttributesToReturn(ATTRIBUTES_TO_RETURN)
+                .build();
+        sendInitiateSignRequestAndAssertResponse(initSignCustomRequestWithAdvancedSignatureType);
+
+    }
+
+    @Test
+    public void initiateSign_organisational_success()
+            throws FrejaEidClientInternalException, IOException, InterruptedException, FrejaEidException {
+        SignClient signClient =
+                SignClient.create(TestUtil.getDefaultSslSettings(), FrejaEnvironment.TEST)
+                        .setTestModeServerCustomUrl("http://localhost:" + MOCK_SERVICE_PORT)
+                        .setTransactionContext(TransactionContext.ORGANISATIONAL).build();
+        DataToSign dataToSign =
+                DataToSign.create(Base64.encodeBase64String(dataToSignText.getBytes(StandardCharsets.UTF_8)));
+        InitiateSignRequest initSignCustomRequestWithRequestedAttributes = InitiateSignRequest.createCustom()
+                .setOrganisationId(ORGANISATION_ID)
+                .setDataToSign(dataToSign)
+                .setExpiry(Long.MAX_VALUE)
+                .setMinRegistrationLevel(MinRegistrationLevel.EXTENDED)
+                .setAttributesToReturn(ATTRIBUTES_TO_RETURN)
+                .setPushNotification(pushNotification)
+                .setTitle(title)
+                .build();
+
+        String initSignResponseString = jsonService.serializeToJson(initiateSignResponse);
+
+        startMockServer(initSignCustomRequestWithRequestedAttributes, HttpStatusCode.OK.getCode(),
+                        initSignResponseString);
+
+        String reference = signClient.initiate(initSignCustomRequestWithRequestedAttributes);
+        stopServer();
+        Assert.assertEquals(REFERENCE, reference);
     }
 
     @Test

@@ -65,7 +65,8 @@ public class SignClient extends BasicClient implements SignClientApi {
     }
 
     @Override
-    public String initiate(InitiateSignRequest initiateSignRequest) throws FrejaEidClientInternalException, FrejaEidException {
+    public String initiate(InitiateSignRequest initiateSignRequest)
+            throws FrejaEidClientInternalException, FrejaEidException {
         if (initiateSignRequest != null && initiateSignRequest.isUseDynamicQrCode()) {
             throw new FrejaEidClientInternalException("In order to use dynamic qr code feature use initiateV1_1 method.");
         }
