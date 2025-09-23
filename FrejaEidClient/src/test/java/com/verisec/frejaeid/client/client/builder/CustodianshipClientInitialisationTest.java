@@ -5,9 +5,13 @@ import com.verisec.frejaeid.client.client.api.CustodianshipClientApi;
 import com.verisec.frejaeid.client.client.impl.CustodianshipClient;
 import com.verisec.frejaeid.client.client.util.TestUtil;
 import com.verisec.frejaeid.client.enums.FrejaEnvironment;
+import com.verisec.frejaeid.client.enums.KeyStoreType;
 import com.verisec.frejaeid.client.exceptions.FrejaEidClientInternalException;
 import org.junit.Assert;
 import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 public class CustodianshipClientInitialisationTest {
     @Test
@@ -15,10 +19,12 @@ public class CustodianshipClientInitialisationTest {
         try {
             CustodianshipClient.create(SslSettings.create("x", TestUtil.KEYSTORE_PASSWORD,
                                                           TestUtil.CERTIFICATE_PATH), FrejaEnvironment.TEST).build();
-            Assert.fail("Test should throw exception!");
+            fail("Test should throw exception!");
         } catch (FrejaEidClientInternalException ex) {
-            Assert.assertEquals("Failed to initiate SSL context with supported keystore types JKS, JCEKS and PKCS12.",
-                                ex.getLocalizedMessage());
+            assertEquals(
+                    String.format("Failed to load keystore at path %s with supported keystore types %s.",
+                                  "x", KeyStoreType.getAllKeyStoreTypes()),
+                    ex.getMessage());
         }
     }
 
@@ -26,11 +32,13 @@ public class CustodianshipClientInitialisationTest {
     public void custodianshipClientInit_invalidCertificatePath_expectKeystoreError() {
         try {
             CustodianshipClient.create(SslSettings.create(TestUtil.KEYSTORE_PATH, TestUtil.KEYSTORE_PASSWORD, "x"),
-                                          FrejaEnvironment.TEST).build();
-            Assert.fail("Test should throw exception!");
+                                       FrejaEnvironment.TEST).build();
+            fail("Test should throw exception!");
         } catch (FrejaEidClientInternalException ex) {
-            Assert.assertEquals("Failed to initiate SSL context with supported keystore types JKS, JCEKS and PKCS12.",
-                                ex.getLocalizedMessage());
+            assertEquals(
+                    String.format("Failed to create trust store with certificate at path %s.",
+                                  "x", KeyStoreType.getAllKeyStoreTypes()),
+                    ex.getMessage());
         }
     }
 
@@ -38,11 +46,13 @@ public class CustodianshipClientInitialisationTest {
     public void custodianshipClientInit_invalidKeystorePassword_expectKeystoreError() {
         try {
             CustodianshipClient.create(SslSettings.create(TestUtil.KEYSTORE_PATH, "111111111",
-                                                             TestUtil.CERTIFICATE_PATH), FrejaEnvironment.TEST).build();
-            Assert.fail("Test should throw exception!");
+                                                          TestUtil.CERTIFICATE_PATH), FrejaEnvironment.TEST).build();
+            fail("Test should throw exception!");
         } catch (FrejaEidClientInternalException ex) {
-            Assert.assertEquals("Failed to initiate SSL context with supported keystore types JKS, JCEKS and PKCS12.",
-                                ex.getLocalizedMessage());
+            assertEquals(
+                    String.format("Failed to load keystore at path %s with supported keystore types %s.",
+                                  TestUtil.KEYSTORE_PATH, KeyStoreType.getAllKeyStoreTypes()),
+                    ex.getMessage());
         }
     }
 
@@ -50,12 +60,14 @@ public class CustodianshipClientInitialisationTest {
     public void custodianshipClientInit_invalidKeystoreFile_expectKeystoreError() {
         try {
             CustodianshipClient.create(SslSettings.create(TestUtil.INVALID_KEYSTORE_FILE,
-                                                             TestUtil.KEYSTORE_PASSWORD, TestUtil.CERTIFICATE_PATH),
-                                          FrejaEnvironment.TEST).build();
-            Assert.fail("Test should throw exception!");
+                                                          TestUtil.KEYSTORE_PASSWORD, TestUtil.CERTIFICATE_PATH),
+                                       FrejaEnvironment.TEST).build();
+            fail("Test should throw exception!");
         } catch (FrejaEidClientInternalException ex) {
-            Assert.assertEquals("Failed to initiate SSL context with supported keystore types JKS, JCEKS and PKCS12.",
-                                ex.getLocalizedMessage());
+            assertEquals(
+                    String.format("Failed to load keystore at path %s with supported keystore types %s.",
+                                  TestUtil.INVALID_KEYSTORE_FILE, KeyStoreType.getAllKeyStoreTypes()),
+                    ex.getMessage());
         }
     }
 
@@ -63,10 +75,10 @@ public class CustodianshipClientInitialisationTest {
     public void custodianshipClientInit_invalidPollingTime_expectError() {
         try {
             CustodianshipClient.create(SslSettings.create(TestUtil.KEYSTORE_PATH, TestUtil.KEYSTORE_PASSWORD,
-                                                             TestUtil.CERTIFICATE_PATH), FrejaEnvironment.TEST)
+                                                          TestUtil.CERTIFICATE_PATH), FrejaEnvironment.TEST)
                     .setPollingTimeout(500)
                     .build();
-            Assert.fail("Test should throw exception!");
+            fail("Test should throw exception!");
         } catch (FrejaEidClientInternalException ex) {
             Assert.assertEquals("Polling timeout must be between 1 and 60 seconds.", ex.getLocalizedMessage());
         }
@@ -76,8 +88,8 @@ public class CustodianshipClientInitialisationTest {
     public void custodianshipClientInit_invalidNullParameter_expectInternalError() {
         try {
             CustodianshipClient.create(SslSettings.create(null, TestUtil.KEYSTORE_PASSWORD,
-                                                             TestUtil.CERTIFICATE_PATH), FrejaEnvironment.TEST).build();
-            Assert.fail("Test should throw exception!");
+                                                          TestUtil.CERTIFICATE_PATH), FrejaEnvironment.TEST).build();
+            fail("Test should throw exception!");
         } catch (FrejaEidClientInternalException ex) {
             Assert.assertEquals("KeyStore Path, keyStore password or server certificate path cannot be null or empty.",
                                 ex.getLocalizedMessage());
@@ -88,8 +100,8 @@ public class CustodianshipClientInitialisationTest {
     public void custodianshipClientInit_invalidEmptyParameter_expectInternalError() {
         try {
             CustodianshipClient.create(SslSettings.create(" ", TestUtil.KEYSTORE_PASSWORD,
-                                                             TestUtil.CERTIFICATE_PATH), FrejaEnvironment.TEST).build();
-            Assert.fail("Test should throw exception!");
+                                                          TestUtil.CERTIFICATE_PATH), FrejaEnvironment.TEST).build();
+            fail("Test should throw exception!");
         } catch (FrejaEidClientInternalException ex) {
             Assert.assertEquals("KeyStore Path, keyStore password or server certificate path cannot be null or empty.",
                                 ex.getLocalizedMessage());
