@@ -5,6 +5,7 @@ import com.verisec.frejaeid.client.beans.authentication.get.AuthenticationResult
 import com.verisec.frejaeid.client.beans.authentication.get.AuthenticationResultRequest;
 import com.verisec.frejaeid.client.beans.authentication.get.AuthenticationResult;
 import com.verisec.frejaeid.client.beans.authentication.init.InitiateAuthenticationRequest;
+import com.verisec.frejaeid.client.beans.authentication.init.InitiateAuthenticationResponse;
 import com.verisec.frejaeid.client.enums.TransactionStatus;
 import com.verisec.frejaeid.client.exceptions.FrejaEidClientInternalException;
 import com.verisec.frejaeid.client.exceptions.FrejaEidClientPollingException;
@@ -30,6 +31,19 @@ public interface AuthenticationClientApi {
      * @throws FrejaEidException               if server returns an error.
      */
     public String initiate(InitiateAuthenticationRequest initiateAuthenticationRequest)
+            throws FrejaEidClientInternalException, FrejaEidException;
+
+    /**
+     * Initiates authentication transaction. It will be active for two minutes.
+     *
+     * @param initiateAuthenticationRequest instance of
+     *                                      {@linkplain InitiateAuthenticationRequest} with corresponding parameters.
+     * @return {@linkplain InitiateAuthenticationResponse}
+     * @throws FrejaEidClientInternalException if internal validation of request
+     *                                         fails.
+     * @throws FrejaEidException               if server returns an error.
+     */
+    public InitiateAuthenticationResponse initiateV1_1(InitiateAuthenticationRequest initiateAuthenticationRequest)
             throws FrejaEidClientInternalException, FrejaEidException;
 
     /**

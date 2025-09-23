@@ -36,7 +36,7 @@ public class AuthenticationClientHttpTest extends CommonHttpTest {
     @BeforeClass
     public static void init() throws FrejaEidClientInternalException {
         jsonService = new JsonService();
-        initiateAuthenticationResponse = new InitiateAuthenticationResponse(REFERENCE);
+        initiateAuthenticationResponse = new InitiateAuthenticationResponse(REFERENCE, QR_CODE_SECRET);
         authenticationResult = new AuthenticationResult(REFERENCE, TransactionStatus.STARTED, null, null, null);
         authenticationResultWithRequestedAttributes =
                 new AuthenticationResult(REFERENCE, TransactionStatus.APPROVED, DETAILS, REQUESTED_ATTRIBUTES,
@@ -47,66 +47,82 @@ public class AuthenticationClientHttpTest extends CommonHttpTest {
                 .setTransactionContext(TransactionContext.PERSONAL).build();
     }
 
-    private void sendInitAuthRequestAndAssertResponse(InitiateAuthenticationRequest validRequest,
-                                                      String initAuthResponseString)
+    private void sendInitiateAuthenticationV1_1RequestAndAssertResponse(InitiateAuthenticationRequest validRequest,
+                                                                        String initAuthResponseString)
             throws IOException, FrejaEidClientInternalException, InterruptedException, FrejaEidException {
-        sendInitAuthRequestAndAssertResponse(validRequest, validRequest, initAuthResponseString);
+        sendInitiateAuthenticationV1_1RequestAndAssertResponse(validRequest, validRequest, initAuthResponseString);
     }
 
-    private void sendInitAuthRequestAndAssertResponse(InitiateAuthenticationRequest expectedRequest,
-                                                      InitiateAuthenticationRequest validRequest,
-                                                      String initAuthResponseString)
+    private void sendInitiateAuthenticationV1_1RequestAndAssertResponse(InitiateAuthenticationRequest expectedRequest,
+                                                                        InitiateAuthenticationRequest validRequest,
+                                                                        String initAuthResponseString)
             throws IOException, FrejaEidClientInternalException, InterruptedException, FrejaEidException {
         startMockServer(expectedRequest, HttpStatusCode.OK.getCode(), initAuthResponseString);
-        String reference = authenticationClient.initiate(validRequest);
+        InitiateAuthenticationResponse response = authenticationClient.initiateV1_1(validRequest);
         stopServer();
-        Assert.assertEquals(REFERENCE, reference);
+        Assert.assertEquals(initiateAuthenticationResponse, response);
+    }
+
+    private void sendInitiateAuthenticationRequestAndAssertResponse(InitiateAuthenticationRequest validRequest,
+                                                                    String initAuthResponseString)
+            throws IOException, FrejaEidClientInternalException, InterruptedException, FrejaEidException {
+        sendInitiateAuthenticationRequestAndAssertResponse(validRequest, validRequest, initAuthResponseString);
+    }
+
+    private void sendInitiateAuthenticationRequestAndAssertResponse(InitiateAuthenticationRequest expectedRequest,
+                                                                    InitiateAuthenticationRequest validRequest,
+                                                                    String initAuthResponseString)
+            throws IOException, FrejaEidClientInternalException, InterruptedException, FrejaEidException {
+        startMockServer(expectedRequest, HttpStatusCode.OK.getCode(), initAuthResponseString);
+        String response = authenticationClient.initiate(validRequest);
+        stopServer();
+        Assert.assertEquals(REFERENCE, response);
     }
 
     @Test
-    public void initAuth_success()
+    public void initiateAuthenticationV1_1_success()
             throws FrejaEidClientInternalException, IOException, InterruptedException, FrejaEidException {
         String initAuthResponseString = jsonService.serializeToJson(initiateAuthenticationResponse);
 
         InitiateAuthenticationRequest initiateAuthenticationRequestDefaultWithEmail =
                 InitiateAuthenticationRequest.createDefaultWithEmail(EMAIL);
-        sendInitAuthRequestAndAssertResponse(initiateAuthenticationRequestDefaultWithEmail, initAuthResponseString);
+        sendInitiateAuthenticationV1_1RequestAndAssertResponse(initiateAuthenticationRequestDefaultWithEmail, initAuthResponseString);
 
         InitiateAuthenticationRequest initiateAuthenticationRequestDefaultWithSsn =
                 InitiateAuthenticationRequest.createDefaultWithSsn(SsnUserInfo.create(Country.NORWAY, SSN));
-        sendInitAuthRequestAndAssertResponse(initiateAuthenticationRequestDefaultWithSsn, initAuthResponseString);
+        sendInitiateAuthenticationV1_1RequestAndAssertResponse(initiateAuthenticationRequestDefaultWithSsn, initAuthResponseString);
 
         InitiateAuthenticationRequest initAuthenticationRequestWithRequestedAttributesUserInfoEmail =
                 InitiateAuthenticationRequest.createCustom()
                         .setEmail(EMAIL)
                         .setAttributesToReturn(ATTRIBUTES_TO_RETURN)
                         .build();
-        sendInitAuthRequestAndAssertResponse(initAuthenticationRequestWithRequestedAttributesUserInfoEmail,
-                                             initAuthResponseString);
+        sendInitiateAuthenticationV1_1RequestAndAssertResponse(initAuthenticationRequestWithRequestedAttributesUserInfoEmail,
+                                                               initAuthResponseString);
 
         InitiateAuthenticationRequest initAuthenticationRequestWithRequestedAttributesUserInfoPhoneNum =
                 InitiateAuthenticationRequest.createCustom()
                         .setPhoneNumber(EMAIL)
                         .setAttributesToReturn(ATTRIBUTES_TO_RETURN)
                         .build();
-        sendInitAuthRequestAndAssertResponse(initAuthenticationRequestWithRequestedAttributesUserInfoPhoneNum,
-                                             initAuthResponseString);
+        sendInitiateAuthenticationV1_1RequestAndAssertResponse(initAuthenticationRequestWithRequestedAttributesUserInfoPhoneNum,
+                                                               initAuthResponseString);
 
         InitiateAuthenticationRequest initAuthenticationRequestWithRequestedAttributesUserInfoSsn =
                 InitiateAuthenticationRequest.createCustom()
                         .setSsn(SsnUserInfo.create(Country.NORWAY, SSN))
                         .setAttributesToReturn(ATTRIBUTES_TO_RETURN)
                         .build();
-        sendInitAuthRequestAndAssertResponse(initAuthenticationRequestWithRequestedAttributesUserInfoSsn,
-                                             initAuthResponseString);
+        sendInitiateAuthenticationV1_1RequestAndAssertResponse(initAuthenticationRequestWithRequestedAttributesUserInfoSsn,
+                                                               initAuthResponseString);
 
         InitiateAuthenticationRequest initAuthenticationRequestWithRequestedAttributesUserInfoInferred =
                 InitiateAuthenticationRequest.createCustom()
                         .setInferred()
                         .setAttributesToReturn(ATTRIBUTES_TO_RETURN)
                         .build();
-        sendInitAuthRequestAndAssertResponse(initAuthenticationRequestWithRequestedAttributesUserInfoInferred,
-                                             initAuthResponseString);
+        sendInitiateAuthenticationV1_1RequestAndAssertResponse(initAuthenticationRequestWithRequestedAttributesUserInfoInferred,
+                                                               initAuthResponseString);
 
         InitiateAuthenticationRequest initAuthenticationRequestWithRegistrationStateAndRelyingPartyId =
                 InitiateAuthenticationRequest.createCustom()
@@ -120,14 +136,76 @@ public class AuthenticationClientHttpTest extends CommonHttpTest {
                         .setMinRegistrationLevel(MinRegistrationLevel.EXTENDED)
                         .build();
 
-        sendInitAuthRequestAndAssertResponse(expectedInitAuthenticationRequestWithRegistrationStateAndRelyingPartyId,
-                                             initAuthenticationRequestWithRegistrationStateAndRelyingPartyId,
-                                             initAuthResponseString);
+        sendInitiateAuthenticationV1_1RequestAndAssertResponse(expectedInitAuthenticationRequestWithRegistrationStateAndRelyingPartyId,
+                                                               initAuthenticationRequestWithRegistrationStateAndRelyingPartyId,
+                                                               initAuthResponseString);
 
     }
 
     @Test
-    public void initAuth_organisationalTransaction_success()
+    public void initiateAuthentication_success()
+            throws FrejaEidClientInternalException, IOException, InterruptedException, FrejaEidException {
+        String initAuthResponseString = jsonService.serializeToJson(initiateAuthenticationResponse);
+
+        InitiateAuthenticationRequest initiateAuthenticationRequestDefaultWithEmail =
+                InitiateAuthenticationRequest.createDefaultWithEmail(EMAIL);
+        sendInitiateAuthenticationRequestAndAssertResponse(initiateAuthenticationRequestDefaultWithEmail, initAuthResponseString);
+
+        InitiateAuthenticationRequest initiateAuthenticationRequestDefaultWithSsn =
+                InitiateAuthenticationRequest.createDefaultWithSsn(SsnUserInfo.create(Country.NORWAY, SSN));
+        sendInitiateAuthenticationRequestAndAssertResponse(initiateAuthenticationRequestDefaultWithSsn, initAuthResponseString);
+
+        InitiateAuthenticationRequest initAuthenticationRequestWithRequestedAttributesUserInfoEmail =
+                InitiateAuthenticationRequest.createCustom()
+                        .setEmail(EMAIL)
+                        .setAttributesToReturn(ATTRIBUTES_TO_RETURN)
+                        .build();
+        sendInitiateAuthenticationRequestAndAssertResponse(initAuthenticationRequestWithRequestedAttributesUserInfoEmail,
+                                                               initAuthResponseString);
+
+        InitiateAuthenticationRequest initAuthenticationRequestWithRequestedAttributesUserInfoPhoneNum =
+                InitiateAuthenticationRequest.createCustom()
+                        .setPhoneNumber(EMAIL)
+                        .setAttributesToReturn(ATTRIBUTES_TO_RETURN)
+                        .build();
+        sendInitiateAuthenticationRequestAndAssertResponse(initAuthenticationRequestWithRequestedAttributesUserInfoPhoneNum,
+                                                               initAuthResponseString);
+
+        InitiateAuthenticationRequest initAuthenticationRequestWithRequestedAttributesUserInfoSsn =
+                InitiateAuthenticationRequest.createCustom()
+                        .setSsn(SsnUserInfo.create(Country.NORWAY, SSN))
+                        .setAttributesToReturn(ATTRIBUTES_TO_RETURN)
+                        .build();
+        sendInitiateAuthenticationRequestAndAssertResponse(initAuthenticationRequestWithRequestedAttributesUserInfoSsn,
+                                                               initAuthResponseString);
+
+        InitiateAuthenticationRequest initAuthenticationRequestWithRequestedAttributesUserInfoInferred =
+                InitiateAuthenticationRequest.createCustom()
+                        .setInferred()
+                        .setAttributesToReturn(ATTRIBUTES_TO_RETURN)
+                        .build();
+        sendInitiateAuthenticationRequestAndAssertResponse(initAuthenticationRequestWithRequestedAttributesUserInfoInferred,
+                                                               initAuthResponseString);
+
+        InitiateAuthenticationRequest initAuthenticationRequestWithRegistrationStateAndRelyingPartyId =
+                InitiateAuthenticationRequest.createCustom()
+                        .setEmail(EMAIL)
+                        .setMinRegistrationLevel(MinRegistrationLevel.EXTENDED)
+                        .setRelyingPartyId(RELYING_PARTY_ID)
+                        .build();
+        InitiateAuthenticationRequest expectedInitAuthenticationRequestWithRegistrationStateAndRelyingPartyId =
+                InitiateAuthenticationRequest.createCustom()
+                        .setEmail(EMAIL)
+                        .setMinRegistrationLevel(MinRegistrationLevel.EXTENDED)
+                        .build();
+
+        sendInitiateAuthenticationRequestAndAssertResponse(expectedInitAuthenticationRequestWithRegistrationStateAndRelyingPartyId,
+                                                               initAuthenticationRequestWithRegistrationStateAndRelyingPartyId,
+                                                               initAuthResponseString);
+    }
+
+    @Test
+    public void initiateAuthentication_organisationalTransaction_success()
             throws FrejaEidClientInternalException, IOException, InterruptedException, FrejaEidException {
         AuthenticationClient authenticationClient =
                 AuthenticationClient.create(TestUtil.getDefaultSslSettings(), FrejaEnvironment.TEST)
@@ -142,11 +220,32 @@ public class AuthenticationClientHttpTest extends CommonHttpTest {
         String initAuthResponseString = jsonService.serializeToJson(initiateAuthenticationResponse);
         startMockServer(initAuthenticationRequestWithRequestedAttributesUserInfoOrganisationId,
                         HttpStatusCode.OK.getCode(), initAuthResponseString);
-        String reference =
+        String response =
                 authenticationClient.initiate(initAuthenticationRequestWithRequestedAttributesUserInfoOrganisationId);
         stopServer();
-        Assert.assertEquals(REFERENCE, reference);
+        Assert.assertEquals(REFERENCE, response);
+    }
 
+    @Test
+    public void initiateAuthenticationV1_1_organisationalTransaction_success()
+            throws FrejaEidClientInternalException, IOException, InterruptedException, FrejaEidException {
+        AuthenticationClient authenticationClient =
+                AuthenticationClient.create(TestUtil.getDefaultSslSettings(), FrejaEnvironment.TEST)
+                        .setTestModeServerCustomUrl("http://localhost:" + MOCK_SERVICE_PORT)
+                        .setTransactionContext(TransactionContext.ORGANISATIONAL).build();
+        InitiateAuthenticationRequest initAuthenticationRequestWithRequestedAttributesUserInfoOrganisationId =
+                InitiateAuthenticationRequest.createCustom()
+                        .setOrganisationId(ORGANISATION_ID)
+                        .setAttributesToReturn(ATTRIBUTES_TO_RETURN)
+                        .build();
+
+        String initAuthResponseString = jsonService.serializeToJson(initiateAuthenticationResponse);
+        startMockServer(initAuthenticationRequestWithRequestedAttributesUserInfoOrganisationId,
+                        HttpStatusCode.OK.getCode(), initAuthResponseString);
+        InitiateAuthenticationResponse response =
+                authenticationClient.initiateV1_1(initAuthenticationRequestWithRequestedAttributesUserInfoOrganisationId);
+        stopServer();
+        Assert.assertEquals(initiateAuthenticationResponse, response);
     }
 
     @Test

@@ -9,19 +9,26 @@ import java.util.Objects;
 public class InitiateAuthenticationResponse implements FrejaHttpResponse {
 
     private final String authRef;
+    private final String qrCodeSecret;
 
     @JsonCreator
-    public InitiateAuthenticationResponse(@JsonProperty(value = "authRef") String authRef) {
+    public InitiateAuthenticationResponse(@JsonProperty(value = "authRef") String authRef,
+                                          @JsonProperty(value = "qrCodeSecret") String qrCodeSecret) {
         this.authRef = authRef;
+        this.qrCodeSecret = qrCodeSecret;
     }
 
     public String getAuthRef() {
         return authRef;
     }
 
+    public String getQrCodeSecret() {
+        return qrCodeSecret;
+    }
+
     @Override
     public int hashCode() {
-        return Objects.hash(authRef);
+        return Objects.hash(authRef, qrCodeSecret);
     }
 
     @Override
@@ -39,12 +46,17 @@ public class InitiateAuthenticationResponse implements FrejaHttpResponse {
         if (!Objects.equals(this.authRef, other.authRef)) {
             return false;
         }
+        if (!Objects.equals(this.qrCodeSecret, other.qrCodeSecret)) {
+            return false;
+        }
         return true;
     }
 
     @Override
     public String toString() {
-        return "InitiateAuthenticationResponse{" + "authRef=" + authRef + '}';
+        return "InitiateAuthenticationResponse{" +
+                "authRef='" + authRef + '\'' +
+                ", qrCodeSecret='" + qrCodeSecret + '\'' +
+                '}';
     }
-
 }
