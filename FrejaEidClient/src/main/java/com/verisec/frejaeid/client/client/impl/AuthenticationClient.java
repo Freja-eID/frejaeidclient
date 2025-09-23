@@ -52,10 +52,6 @@ public class AuthenticationClient extends BasicClient implements AuthenticationC
         if (sslSettings == null) {
             throw new FrejaEidClientInternalException("SslSettings cannot be null.");
         }
-//        if (sslSettings.getSslContext() == null) {
-//            return new Builder(sslSettings.getKeystorePath(), sslSettings.getKeystorePass(),
-//                               sslSettings.getServerCertificatePath(), frejaEnvironment);
-//        }
         return new Builder(sslSettings, frejaEnvironment);
     }
 
