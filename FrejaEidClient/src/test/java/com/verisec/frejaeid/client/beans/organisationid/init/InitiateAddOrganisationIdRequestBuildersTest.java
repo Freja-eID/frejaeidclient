@@ -127,5 +127,4 @@ public class InitiateAddOrganisationIdRequestBuildersTest {
                         .build();
         Assert.assertEquals(expectedInitiateAddOrganisationIdRequest, initiateAddOrganisationIdRequest);
     }
-
 }

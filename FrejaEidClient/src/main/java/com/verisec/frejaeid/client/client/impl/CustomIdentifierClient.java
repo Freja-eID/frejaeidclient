@@ -57,7 +57,7 @@ public class CustomIdentifierClient extends BasicClient implements CustomIdentif
     @Override
     public void set(SetCustomIdentifierRequest setCustomIdentifierRequest)
             throws FrejaEidClientInternalException, FrejaEidException {
-        requestValidationService.validateSetCustomIDentifierRequest(setCustomIdentifierRequest);
+        requestValidationService.validateSetCustomIdentifierRequest(setCustomIdentifierRequest);
         LOG.debug("Setting custom identifier for user info type {}.", setCustomIdentifierRequest.getUserInfoType());
         customIdentifierService.set(setCustomIdentifierRequest);
         LOG.debug("Successfully set custom identifier.");

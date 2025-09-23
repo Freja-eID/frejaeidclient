@@ -121,43 +121,27 @@ public class InitiateAddOrganisationIdRequest implements RelyingPartyRequest {
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final InitiateAddOrganisationIdRequest other = (InitiateAddOrganisationIdRequest) obj;
-        if (!Objects.equals(this.userInfo, other.userInfo)) {
-            return false;
-        }
-        if (!Objects.equals(this.relyingPartyId, other.relyingPartyId)) {
-            return false;
-        }
-        if (this.userInfoType != other.userInfoType) {
-            return false;
-        }
-        if (!Objects.equals(this.organisationId, other.organisationId)) {
-            return false;
-        }
-        if (this.minRegistrationLevel != other.minRegistrationLevel) {
-            return false;
-        }
-        if (!Objects.equals(this.expiry, other.expiry)) {
-            return false;
-        }
-        return true;
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof InitiateAddOrganisationIdRequest)) return false;
+        InitiateAddOrganisationIdRequest that = (InitiateAddOrganisationIdRequest) o;
+        return userInfoType == that.userInfoType &&
+                Objects.equals(userInfo, that.userInfo) &&
+                Objects.equals(organisationId, that.organisationId) &&
+                minRegistrationLevel == that.minRegistrationLevel &&
+                Objects.equals(expiry, that.expiry) &&
+                Objects.equals(relyingPartyId, that.relyingPartyId);
     }
 
     @Override
     public String toString() {
-        return "InitiateAddOrganisationIdRequest{" + "userInfoType=" + userInfoType + ", userInfo=" + userInfo + ", " +
-                "organisationId=" + organisationId + ", minRegistrationLevel=" + minRegistrationLevel + ", expiry=" +
-                expiry + ", relyingPartyId=" + relyingPartyId + '}';
+        return "InitiateAddOrganisationIdRequest{" +
+                "userInfoType=" + userInfoType +
+                ", userInfo='" + userInfo + '\'' +
+                ", organisationId=" + organisationId +
+                ", minRegistrationLevel=" + minRegistrationLevel +
+                ", expiry=" + expiry +
+                ", relyingPartyId='" + relyingPartyId + '\'' +
+                '}';
     }
-
 }

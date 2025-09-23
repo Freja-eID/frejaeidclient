@@ -1,10 +1,11 @@
 package com.verisec.frejaeid.client.client.impl;
 
 import com.verisec.frejaeid.client.beans.authentication.cancel.CancelAuthenticationRequest;
-import com.verisec.frejaeid.client.beans.authentication.get.AuthenticationResultsRequest;
-import com.verisec.frejaeid.client.beans.authentication.get.AuthenticationResultRequest;
 import com.verisec.frejaeid.client.beans.authentication.get.AuthenticationResult;
+import com.verisec.frejaeid.client.beans.authentication.get.AuthenticationResultRequest;
+import com.verisec.frejaeid.client.beans.authentication.get.AuthenticationResultsRequest;
 import com.verisec.frejaeid.client.beans.authentication.init.InitiateAuthenticationRequest;
+import com.verisec.frejaeid.client.beans.authentication.init.InitiateAuthenticationResponse;
 import com.verisec.frejaeid.client.beans.general.SslSettings;
 import com.verisec.frejaeid.client.client.api.AuthenticationClientApi;
 import com.verisec.frejaeid.client.enums.FrejaEnvironment;
@@ -17,9 +18,9 @@ import com.verisec.frejaeid.client.http.HttpServiceApi;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import javax.net.ssl.SSLContext;
 import java.io.IOException;
 import java.util.List;
-import javax.net.ssl.SSLContext;
 
 /**
  * Performs authentication actions.
@@ -28,11 +29,11 @@ public class AuthenticationClient extends BasicClient implements AuthenticationC
 
     public static final Logger LOG = LogManager.getLogger(AuthenticationClient.class);
 
-    private AuthenticationClient(String serverCustomUrl, int pollingTimeoutInMillseconds,
+    private AuthenticationClient(String serverCustomUrl, int pollingTimeoutInMilliseconds,
                                  TransactionContext transactionContext, HttpServiceApi httpService,
                                  String resourceServiceUrl)
             throws FrejaEidClientInternalException {
-        super(serverCustomUrl, pollingTimeoutInMillseconds, transactionContext, httpService, resourceServiceUrl);
+        super(serverCustomUrl, pollingTimeoutInMilliseconds, transactionContext, httpService, resourceServiceUrl);
     }
 
     /**
@@ -62,15 +63,16 @@ public class AuthenticationClient extends BasicClient implements AuthenticationC
     @Override
     public String initiate(InitiateAuthenticationRequest initiateAuthenticationRequest)
             throws FrejaEidClientInternalException, FrejaEidException {
-        requestValidationService.validateInitAuthRequest(initiateAuthenticationRequest,
-                                                         authenticationService.getTransactionContext());
-        LOG.debug("Initiating authentication transaction for user info type {}, minimum registration level of user {}" +
-                          " and requesting attributes {}.", initiateAuthenticationRequest.getUserInfoType(),
-                  initiateAuthenticationRequest.getMinRegistrationLevel().getState(),
-                  initiateAuthenticationRequest.getAttributesToReturn());
-        String reference = authenticationService.initiate(initiateAuthenticationRequest).getAuthRef();
-        LOG.debug("Received authentication transaction reference {}.", reference);
-        return reference;
+        if (initiateAuthenticationRequest != null && initiateAuthenticationRequest.isUseDynamicQrCode()) {
+            throw new FrejaEidClientInternalException("In order to use dynamic qr code feature use initiateV1_1 method.");
+        }
+        return initiateAuthentication(initiateAuthenticationRequest).getAuthRef();
+    }
+
+    @Override
+    public InitiateAuthenticationResponse initiateV1_1(InitiateAuthenticationRequest initiateAuthenticationRequest)
+            throws FrejaEidClientInternalException, FrejaEidException {
+        return initiateAuthentication(initiateAuthenticationRequest);
     }
 
     @Override
@@ -160,5 +162,17 @@ public class AuthenticationClient extends BasicClient implements AuthenticationC
             return new AuthenticationClient(serverCustomUrl, pollingTimeout, transactionContext, httpService, resourceServiceUrl);
         }
 
+    }
+
+    InitiateAuthenticationResponse initiateAuthentication(InitiateAuthenticationRequest initiateAuthenticationRequest) throws FrejaEidClientInternalException, FrejaEidException {
+        requestValidationService.validateInitAuthRequest(initiateAuthenticationRequest,
+                                                         authenticationService.getTransactionContext());
+        LOG.debug("Initiating authentication transaction for user info type {}, minimum registration level of user {}" +
+                          " and requesting attributes {}.", initiateAuthenticationRequest.getUserInfoType(),
+                  initiateAuthenticationRequest.getMinRegistrationLevel().getState(),
+                  initiateAuthenticationRequest.getAttributesToReturn());
+        InitiateAuthenticationResponse response = authenticationService.initiate(initiateAuthenticationRequest);
+        LOG.debug("Received authentication transaction reference {}.", response.getAuthRef());
+        return response;
     }
 }

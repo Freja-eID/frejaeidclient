@@ -36,12 +36,12 @@ public class OrganisationIdService extends BasicService {
     }
 
     public InitiateAddOrganisationIdResponse initiateAdd(
-            InitiateAddOrganisationIdRequest initiateAddOrganisaitonIdRequest)
+            InitiateAddOrganisationIdRequest initiateAddOrganisationIdRequest)
             throws FrejaEidClientInternalException, FrejaEidException {
         return httpService.send(getUrl(serverAddress, MethodUrl.ORGANISATION_ID_INIT_ADD),
-                                RequestTemplate.INIT_ADD_ORGANISATION_ID_TEMPLATE, initiateAddOrganisaitonIdRequest,
+                                RequestTemplate.INIT_ADD_ORGANISATION_ID_TEMPLATE, initiateAddOrganisationIdRequest,
                                 InitiateAddOrganisationIdResponse.class,
-                                initiateAddOrganisaitonIdRequest.getRelyingPartyId());
+                                initiateAddOrganisationIdRequest.getRelyingPartyId());
     }
 
     public OrganisationIdResult getResult(OrganisationIdResultRequest organisationIdResultRequest)

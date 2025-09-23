@@ -185,10 +185,22 @@ public class RequestValidationServiceTest {
     public void initAuth_relyingPartyIdEmpty() throws FrejaEidException {
         try {
             authenticationClient.initiate(InitiateAuthenticationRequest.createCustom().setEmail(EMAIL)
-                                                  .setRelyingPartyId("").build());
+                                                      .setRelyingPartyId("").build());
             Assert.fail("Test should throw exception!");
         } catch (FrejaEidClientInternalException ex) {
             Assert.assertEquals("RelyingPartyId cannot be empty.", ex.getLocalizedMessage());
+        }
+    }
+
+    @Test
+    public void initAuth_useDynamicQrCodeNotAllowed_expectedError() throws FrejaEidException {
+        try {
+            authenticationClient.initiate(InitiateAuthenticationRequest.createCustom().setEmail(EMAIL)
+                                                  .setRelyingPartyId("")
+                                                  .setUseDynamicQrCode(true).build());
+            Assert.fail("Test should throw exception!");
+        } catch (FrejaEidClientInternalException ex) {
+            Assert.assertEquals("In order to use dynamic qr code feature use initiateV1_1 method.", ex.getLocalizedMessage());
         }
     }
 
@@ -216,7 +228,7 @@ public class RequestValidationServiceTest {
     public void initAuth_requestedAttributesEmpty() throws FrejaEidException {
         try {
             authenticationClient.initiate(InitiateAuthenticationRequest.createCustom()
-                                                  .setEmail(EMAIL).setAttributesToReturn().build());
+                                                      .setEmail(EMAIL).setAttributesToReturn().build());
             Assert.fail("Test should throw exception!");
         } catch (FrejaEidClientInternalException ex) {
             Assert.assertEquals("RequestedAttributes cannot be empty.", ex.getLocalizedMessage());
@@ -224,10 +236,10 @@ public class RequestValidationServiceTest {
     }
 
     @Test
-    public void initAuth_perosnal_setOrgId() throws FrejaEidException {
+    public void initAuth_personal_setOrgId() throws FrejaEidException {
         try {
             authenticationClient.initiate(InitiateAuthenticationRequest.createCustom()
-                                                  .setOrganisationId(IDENTIFIER).setAttributesToReturn().build());
+                                                      .setOrganisationId(IDENTIFIER).setAttributesToReturn().build());
             Assert.fail("Test should throw exception!");
         } catch (FrejaEidClientInternalException ex) {
             Assert.assertEquals("UserInfoType ORG ID cannot be used in personal context.", ex.getLocalizedMessage());
@@ -238,7 +250,7 @@ public class RequestValidationServiceTest {
     public void initAuth_orgIdIssuerWrongValue() throws FrejaEidException {
         try {
             authenticationClient.initiate(InitiateAuthenticationRequest.createCustom().setEmail(EMAIL)
-                                                  .setOrgIdIssuer(ORG_ID_ISSUER).build());
+                                                      .setOrgIdIssuer(ORG_ID_ISSUER).build());
             Assert.fail("Test should throw exception!");
         } catch (FrejaEidClientInternalException ex) {
             Assert.assertEquals("OrgIdIssuer unsupported value. OrgIdIssuer must be null/empty or <ANY>",
@@ -258,6 +270,111 @@ public class RequestValidationServiceTest {
         } catch (FrejaEidClientInternalException ex) {
             Assert.assertEquals("For the chosen userConfirmationMethod you must set "
                                         + "minRegistrationLevel to at least EXTENDED", ex.getLocalizedMessage());
+        }
+    }
+
+    @Test
+    public void initAuthV1_1_requestNull() throws FrejaEidException {
+        try {
+            authenticationClient.initiateV1_1(null);
+            Assert.fail("Test should throw exception!");
+        } catch (FrejaEidClientInternalException ex) {
+            Assert.assertEquals("Request cannot be null value.", ex.getLocalizedMessage());
+        }
+    }
+
+    @Test
+    public void initAuthV1_1_relyingPartyIdEmpty() throws FrejaEidException {
+        try {
+            authenticationClient.initiateV1_1(InitiateAuthenticationRequest.createCustom().setEmail(EMAIL)
+                                                  .setRelyingPartyId("").build());
+            Assert.fail("Test should throw exception!");
+        } catch (FrejaEidClientInternalException ex) {
+            Assert.assertEquals("RelyingPartyId cannot be empty.", ex.getLocalizedMessage());
+        }
+    }
+
+    @Test
+    public void initAuthV1_1_userInfoEmpty() throws FrejaEidException {
+        try {
+            authenticationClient.initiateV1_1(InitiateAuthenticationRequest.createCustom().setEmail("").build());
+            Assert.fail("Test should throw exception!");
+        } catch (FrejaEidClientInternalException ex) {
+            Assert.assertEquals("UserInfo cannot be null or empty.", ex.getLocalizedMessage());
+        }
+    }
+
+    @Test
+    public void initAuthV1_1_userInfoNull() throws FrejaEidException {
+        try {
+            authenticationClient.initiateV1_1(InitiateAuthenticationRequest.createCustom().setEmail(null).build());
+            Assert.fail("Test should throw exception!");
+        } catch (FrejaEidClientInternalException ex) {
+            Assert.assertEquals("UserInfo cannot be null or empty.", ex.getLocalizedMessage());
+        }
+    }
+
+    @Test
+    public void initAuthV1_1_requestedAttributesEmpty() throws FrejaEidException {
+        try {
+            authenticationClient.initiateV1_1(InitiateAuthenticationRequest.createCustom()
+                                                  .setEmail(EMAIL).setAttributesToReturn().build());
+            Assert.fail("Test should throw exception!");
+        } catch (FrejaEidClientInternalException ex) {
+            Assert.assertEquals("RequestedAttributes cannot be empty.", ex.getLocalizedMessage());
+        }
+    }
+
+    @Test
+    public void initAuthV1_1_personal_setOrgId() throws FrejaEidException {
+        try {
+            authenticationClient.initiateV1_1(InitiateAuthenticationRequest.createCustom()
+                                                  .setOrganisationId(IDENTIFIER).setAttributesToReturn().build());
+            Assert.fail("Test should throw exception!");
+        } catch (FrejaEidClientInternalException ex) {
+            Assert.assertEquals("UserInfoType ORG ID cannot be used in personal context.", ex.getLocalizedMessage());
+        }
+    }
+
+    @Test
+    public void initAuthV1_1_orgIdIssuerWrongValue() throws FrejaEidException {
+        try {
+            authenticationClient.initiateV1_1(InitiateAuthenticationRequest.createCustom().setEmail(EMAIL)
+                                                  .setOrgIdIssuer(ORG_ID_ISSUER).build());
+            Assert.fail("Test should throw exception!");
+        } catch (FrejaEidClientInternalException ex) {
+            Assert.assertEquals("OrgIdIssuer unsupported value. OrgIdIssuer must be null/empty or <ANY>",
+                                ex.getLocalizedMessage());
+        }
+    }
+
+    @Test
+    public void initAuthV1_1_userConfirmationMethod_wrongMinRegLevel() throws FrejaEidException {
+        try {
+            authenticationClient.initiateV1_1(
+                    InitiateAuthenticationRequest.createCustom().setEmail(EMAIL)
+                            .setMinRegistrationLevel(MinRegistrationLevel.BASIC)
+                            .setUserConfirmationMethod(UserConfirmationMethod.DEFAULT_AND_FACE)
+                            .build());
+            Assert.fail("Test should throw exception!");
+        } catch (FrejaEidClientInternalException ex) {
+            Assert.assertEquals("For the chosen userConfirmationMethod you must set "
+                                        + "minRegistrationLevel to at least EXTENDED", ex.getLocalizedMessage());
+        }
+    }
+
+    @Test
+    public void initAuthV1_1_userInfoTypeUseDynamicQrCode_expectedError() throws FrejaEidException {
+        try {
+            authenticationClient.initiateV1_1(
+                    InitiateAuthenticationRequest.createCustom().setEmail(EMAIL)
+                            .setMinRegistrationLevel(MinRegistrationLevel.BASIC)
+                            .setUseDynamicQrCode(true)
+                            .build());
+            Assert.fail("Test should throw exception!");
+        } catch (FrejaEidClientInternalException ex) {
+            Assert.assertEquals("Dynamic QR code can only be used with inferred transactions.",
+                                ex.getLocalizedMessage());
         }
     }
 
@@ -445,6 +562,200 @@ public class RequestValidationServiceTest {
     }
 
     @Test
+    public void initSignV1_1_requestNull() throws FrejaEidException {
+        try {
+            signClient.initiateV1_1(null);
+            Assert.fail("Test should throw exception!");
+        } catch (FrejaEidClientInternalException ex) {
+            Assert.assertEquals("Request cannot be null value.", ex.getLocalizedMessage());
+        }
+    }
+
+    @Test
+    public void initSignV1_1_relyingPartyIdEmpty() throws FrejaEidException {
+        try {
+            signClient.initiateV1_1(InitiateSignRequest.createCustom().setEmail(EMAIL)
+                                        .setDataToSign(DataToSign.create(TEXT)).setRelyingPartyId("").build());
+            Assert.fail("Test should throw exception!");
+        } catch (FrejaEidClientInternalException ex) {
+            Assert.assertEquals("RelyingPartyId cannot be empty.", ex.getLocalizedMessage());
+        }
+    }
+
+    @Test
+    public void initSignV1_1_userInfoEmpty() throws FrejaEidException {
+        try {
+            signClient.initiateV1_1(InitiateSignRequest.createCustom().setEmail("").build());
+            Assert.fail("Test should throw exception!");
+        } catch (FrejaEidClientInternalException ex) {
+            Assert.assertEquals("UserInfo cannot be null or empty.", ex.getLocalizedMessage());
+        }
+    }
+
+    @Test
+    public void initSignV1_1_userInfoNull() throws FrejaEidException {
+        try {
+            signClient.initiateV1_1(InitiateSignRequest.createCustom().setEmail(null).build());
+            Assert.fail("Test should throw exception!");
+        } catch (FrejaEidClientInternalException ex) {
+            Assert.assertEquals("UserInfo cannot be null or empty.", ex.getLocalizedMessage());
+        }
+    }
+
+    @Test
+    public void initSignV1_1_requestedAttributesEmpty() throws FrejaEidException {
+        try {
+            signClient.initiateV1_1(InitiateSignRequest.createCustom().setEmail(EMAIL).setAttributesToReturn().build());
+            Assert.fail("Test should throw exception!");
+        } catch (FrejaEidClientInternalException ex) {
+            Assert.assertEquals("RequestedAttributes cannot be empty.", ex.getLocalizedMessage());
+        }
+    }
+
+    @Test
+    public void initSignV1_1_dataToSignNull() throws FrejaEidException {
+        try {
+            signClient.initiateV1_1(InitiateSignRequest.createCustom().setEmail(EMAIL).setDataToSign(null).build());
+            Assert.fail("Test should throw exception!");
+        } catch (FrejaEidClientInternalException ex) {
+            Assert.assertEquals("DataToSign cannot be null or empty.", ex.getLocalizedMessage());
+        }
+    }
+
+    @Test
+    public void initSignV1_1_dataToSignTextNull() throws FrejaEidException {
+        try {
+            signClient.initiateV1_1(InitiateSignRequest.createCustom().setEmail(EMAIL)
+                                        .setDataToSign(DataToSign.create(null)).build());
+            Assert.fail("Test should throw exception!");
+        } catch (FrejaEidClientInternalException ex) {
+            Assert.assertEquals("DataToSign cannot be null or empty.", ex.getLocalizedMessage());
+        }
+    }
+
+    @Test
+    public void initSignV1_1_dataToSignTextEmpty() throws FrejaEidException {
+        try {
+            signClient.initiateV1_1(InitiateSignRequest.createCustom().setEmail(EMAIL)
+                                        .setDataToSign(DataToSign.create("")).build());
+            Assert.fail("Test should throw exception!");
+        } catch (FrejaEidClientInternalException ex) {
+            Assert.assertEquals("DataToSign cannot be null or empty.", ex.getLocalizedMessage());
+        }
+    }
+
+    @Test
+    public void initSignV1_1_pushNotificationTextEmpty() throws FrejaEidException {
+        try {
+            signClient.initiateV1_1(InitiateSignRequest.createCustom().setEmail(EMAIL)
+                                        .setDataToSign(DataToSign.create(TEXT))
+                                        .setPushNotification(PushNotification.create(TITLE, "")).build());
+            Assert.fail("Test should throw exception!");
+        } catch (FrejaEidClientInternalException ex) {
+            Assert.assertEquals("PushNotification title or text cannot be null or empty.", ex.getLocalizedMessage());
+        }
+    }
+
+    @Test
+    public void initSignV1_1_pushNotificationTextNull() throws FrejaEidException {
+        try {
+            signClient.initiateV1_1(InitiateSignRequest.createCustom().setEmail(EMAIL)
+                                        .setDataToSign(DataToSign.create(TEXT))
+                                        .setPushNotification(PushNotification.create(TITLE, null)).build());
+            Assert.fail("Test should throw exception!");
+        } catch (FrejaEidClientInternalException ex) {
+            Assert.assertEquals("PushNotification title or text cannot be null or empty.", ex.getLocalizedMessage());
+        }
+    }
+
+    @Test
+    public void initSignV1_1_pushNotificationTitleEmpty() throws FrejaEidException {
+        try {
+            signClient.initiateV1_1(InitiateSignRequest.createCustom().setEmail(EMAIL)
+                                        .setDataToSign(DataToSign.create(TEXT))
+                                        .setPushNotification(PushNotification.create("", TEXT)).build());
+            Assert.fail("Test should throw exception!");
+        } catch (FrejaEidClientInternalException ex) {
+            Assert.assertEquals("PushNotification title or text cannot be null or empty.", ex.getLocalizedMessage());
+        }
+    }
+
+    @Test
+    public void initSignV1_1_pushNotificationTitleNull() throws FrejaEidException {
+        try {
+            signClient.initiateV1_1(InitiateSignRequest.createCustom().setEmail(EMAIL)
+                                        .setDataToSign(DataToSign.create(TEXT))
+                                        .setPushNotification(PushNotification.create(null, TEXT)).build());
+            Assert.fail("Test should throw exception!");
+        } catch (FrejaEidClientInternalException ex) {
+            Assert.assertEquals("PushNotification title or text cannot be null or empty.", ex.getLocalizedMessage());
+        }
+    }
+
+    @Test
+    public void initSignV1_1_emptyTitle() throws FrejaEidException {
+        try {
+            signClient.initiateV1_1(InitiateSignRequest.createCustom().setEmail(EMAIL)
+                                        .setDataToSign(DataToSign.create(TEXT)).setTitle("").build());
+            Assert.fail("Test should throw exception!");
+        } catch (FrejaEidClientInternalException ex) {
+            Assert.assertEquals("Title cannot be empty.", ex.getLocalizedMessage());
+        }
+    }
+
+    @Test
+    public void initSignV1_1_advancedSignatureTypeBasicRegistration_expectFail() throws FrejaEidException {
+        try {
+            signClient.initiateV1_1(InitiateSignRequest.createCustom().setEmail(EMAIL)
+                                        .setDataToSign(DataToSign.create(TEXT), SignatureType.XML_MINAMEDDELANDEN)
+                                        .setMinRegistrationLevel(MinRegistrationLevel.BASIC).build());
+            Assert.fail("Test should throw exception!");
+        } catch (FrejaEidClientInternalException ex) {
+            Assert.assertEquals("Advanced signature type request requires registration levels above BASIC.",
+                                ex.getLocalizedMessage());
+        }
+    }
+
+    @Test
+    public void initSignV1_1_signatureTypeAndDataTypeMismatch_expectFail() throws FrejaEidException {
+        try {
+            signClient.initiateV1_1(InitiateSignRequest.createCustom().setEmail(EMAIL)
+                                        .setDataToSign(DataToSign.create(TEXT), SignatureType.EXTENDED)
+                                        .setMinRegistrationLevel(MinRegistrationLevel.PLUS).build());
+            Assert.fail("Test should throw exception!");
+        } catch (FrejaEidClientInternalException ex) {
+            Assert.assertEquals("DataToSignType and SignatureType mismatch.", ex.getLocalizedMessage());
+        }
+    }
+
+    @Test
+    public void initSignV1_1_advancedSignatureTypeBadRequestedAttributes_expectFail() throws FrejaEidException {
+        try {
+            signClient.initiateV1_1(InitiateSignRequest.createCustom().setEmail(EMAIL)
+                                        .setDataToSign(DataToSign.create(TEXT), SignatureType.XML_MINAMEDDELANDEN)
+                                        .setMinRegistrationLevel(MinRegistrationLevel.PLUS).build());
+            Assert.fail("Test should throw exception!");
+        } catch (FrejaEidClientInternalException ex) {
+            Assert.assertEquals("Sign transaction with an advanced signature type requires SSN and BasicUserInfo in its RequestedAttributes.",
+                                ex.getLocalizedMessage());
+        }
+    }
+
+
+    @Test
+    public void initSignV1_1_orgIdIssuerWrongValue() throws FrejaEidException {
+        try {
+            signClient.initiateV1_1(InitiateSignRequest.createCustom().setEmail(EMAIL)
+                                        .setDataToSign(DataToSign.create(TEXT))
+                                        .setOrgIdIssuer(ORG_ID_ISSUER).build());
+            Assert.fail("Test should throw exception!");
+        } catch (FrejaEidClientInternalException ex) {
+            Assert.assertEquals("OrgIdIssuer unsupported value. OrgIdIssuer must be null/empty or <ANY>",
+                                ex.getLocalizedMessage());
+        }
+    }
+
+    @Test
     public void initSign_requestNull() throws FrejaEidException {
         try {
             signClient.initiate(null);
@@ -458,10 +769,21 @@ public class RequestValidationServiceTest {
     public void initSign_relyingPartyIdEmpty() throws FrejaEidException {
         try {
             signClient.initiate(InitiateSignRequest.createCustom().setEmail(EMAIL)
-                                        .setDataToSign(DataToSign.create(TEXT)).setRelyingPartyId("").build());
+                                            .setDataToSign(DataToSign.create(TEXT)).setRelyingPartyId("").build());
             Assert.fail("Test should throw exception!");
         } catch (FrejaEidClientInternalException ex) {
             Assert.assertEquals("RelyingPartyId cannot be empty.", ex.getLocalizedMessage());
+        }
+    }
+
+    @Test
+    public void initSign_useDynamicQrCodeNotAllowed() throws FrejaEidException {
+        try {
+            signClient.initiate(InitiateSignRequest.createCustom().setEmail(EMAIL)
+                                        .setDataToSign(DataToSign.create(TEXT)).setRelyingPartyId("").setUseDynamicQrCode(true).build());
+            Assert.fail("Test should throw exception!");
+        } catch (FrejaEidClientInternalException ex) {
+            Assert.assertEquals("In order to use dynamic qr code feature use initiateV1_1 method.", ex.getLocalizedMessage());
         }
     }
 
@@ -509,7 +831,7 @@ public class RequestValidationServiceTest {
     public void initSign_dataToSignTextNull() throws FrejaEidException {
         try {
             signClient.initiate(InitiateSignRequest.createCustom().setEmail(EMAIL)
-                                        .setDataToSign(DataToSign.create(null)).build());
+                                            .setDataToSign(DataToSign.create(null)).build());
             Assert.fail("Test should throw exception!");
         } catch (FrejaEidClientInternalException ex) {
             Assert.assertEquals("DataToSign cannot be null or empty.", ex.getLocalizedMessage());
@@ -520,7 +842,7 @@ public class RequestValidationServiceTest {
     public void initSign_dataToSignTextEmpty() throws FrejaEidException {
         try {
             signClient.initiate(InitiateSignRequest.createCustom().setEmail(EMAIL)
-                                        .setDataToSign(DataToSign.create("")).build());
+                                            .setDataToSign(DataToSign.create("")).build());
             Assert.fail("Test should throw exception!");
         } catch (FrejaEidClientInternalException ex) {
             Assert.assertEquals("DataToSign cannot be null or empty.", ex.getLocalizedMessage());
@@ -531,8 +853,8 @@ public class RequestValidationServiceTest {
     public void initSign_pushNotificationTextEmpty() throws FrejaEidException {
         try {
             signClient.initiate(InitiateSignRequest.createCustom().setEmail(EMAIL)
-                                        .setDataToSign(DataToSign.create(TEXT))
-                                        .setPushNotification(PushNotification.create(TITLE, "")).build());
+                                            .setDataToSign(DataToSign.create(TEXT))
+                                            .setPushNotification(PushNotification.create(TITLE, "")).build());
             Assert.fail("Test should throw exception!");
         } catch (FrejaEidClientInternalException ex) {
             Assert.assertEquals("PushNotification title or text cannot be null or empty.", ex.getLocalizedMessage());
@@ -543,8 +865,8 @@ public class RequestValidationServiceTest {
     public void initSign_pushNotificationTextNull() throws FrejaEidException {
         try {
             signClient.initiate(InitiateSignRequest.createCustom().setEmail(EMAIL)
-                                        .setDataToSign(DataToSign.create(TEXT))
-                                        .setPushNotification(PushNotification.create(TITLE, null)).build());
+                                            .setDataToSign(DataToSign.create(TEXT))
+                                            .setPushNotification(PushNotification.create(TITLE, null)).build());
             Assert.fail("Test should throw exception!");
         } catch (FrejaEidClientInternalException ex) {
             Assert.assertEquals("PushNotification title or text cannot be null or empty.", ex.getLocalizedMessage());
@@ -555,8 +877,8 @@ public class RequestValidationServiceTest {
     public void initSign_pushNotificationTitleEmpty() throws FrejaEidException {
         try {
             signClient.initiate(InitiateSignRequest.createCustom().setEmail(EMAIL)
-                                        .setDataToSign(DataToSign.create(TEXT))
-                                        .setPushNotification(PushNotification.create("", TEXT)).build());
+                                            .setDataToSign(DataToSign.create(TEXT))
+                                            .setPushNotification(PushNotification.create("", TEXT)).build());
             Assert.fail("Test should throw exception!");
         } catch (FrejaEidClientInternalException ex) {
             Assert.assertEquals("PushNotification title or text cannot be null or empty.", ex.getLocalizedMessage());
@@ -567,8 +889,8 @@ public class RequestValidationServiceTest {
     public void initSign_pushNotificationTitleNull() throws FrejaEidException {
         try {
             signClient.initiate(InitiateSignRequest.createCustom().setEmail(EMAIL)
-                                        .setDataToSign(DataToSign.create(TEXT))
-                                        .setPushNotification(PushNotification.create(null, TEXT)).build());
+                                            .setDataToSign(DataToSign.create(TEXT))
+                                            .setPushNotification(PushNotification.create(null, TEXT)).build());
             Assert.fail("Test should throw exception!");
         } catch (FrejaEidClientInternalException ex) {
             Assert.assertEquals("PushNotification title or text cannot be null or empty.", ex.getLocalizedMessage());
@@ -579,7 +901,7 @@ public class RequestValidationServiceTest {
     public void initSign_emptyTitle() throws FrejaEidException {
         try {
             signClient.initiate(InitiateSignRequest.createCustom().setEmail(EMAIL)
-                                        .setDataToSign(DataToSign.create(TEXT)).setTitle("").build());
+                                            .setDataToSign(DataToSign.create(TEXT)).setTitle("").build());
             Assert.fail("Test should throw exception!");
         } catch (FrejaEidClientInternalException ex) {
             Assert.assertEquals("Title cannot be empty.", ex.getLocalizedMessage());
@@ -590,8 +912,8 @@ public class RequestValidationServiceTest {
     public void initSign_advancedSignatureTypeBasicRegistration_expectFail() throws FrejaEidException {
         try {
             signClient.initiate(InitiateSignRequest.createCustom().setEmail(EMAIL)
-                                        .setDataToSign(DataToSign.create(TEXT), SignatureType.XML_MINAMEDDELANDEN)
-                                        .setMinRegistrationLevel(MinRegistrationLevel.BASIC).build());
+                                            .setDataToSign(DataToSign.create(TEXT), SignatureType.XML_MINAMEDDELANDEN)
+                                            .setMinRegistrationLevel(MinRegistrationLevel.BASIC).build());
             Assert.fail("Test should throw exception!");
         } catch (FrejaEidClientInternalException ex) {
             Assert.assertEquals("Advanced signature type request requires registration levels above BASIC.",
@@ -603,8 +925,8 @@ public class RequestValidationServiceTest {
     public void initSign_signatureTypeAndDataTypeMismatch_expectFail() throws FrejaEidException {
         try {
             signClient.initiate(InitiateSignRequest.createCustom().setEmail(EMAIL)
-                                        .setDataToSign(DataToSign.create(TEXT), SignatureType.EXTENDED)
-                                        .setMinRegistrationLevel(MinRegistrationLevel.PLUS).build());
+                                            .setDataToSign(DataToSign.create(TEXT), SignatureType.EXTENDED)
+                                            .setMinRegistrationLevel(MinRegistrationLevel.PLUS).build());
             Assert.fail("Test should throw exception!");
         } catch (FrejaEidClientInternalException ex) {
             Assert.assertEquals("DataToSignType and SignatureType mismatch.", ex.getLocalizedMessage());
@@ -615,8 +937,8 @@ public class RequestValidationServiceTest {
     public void initSign_advancedSignatureTypeBadRequestedAttributes_expectFail() throws FrejaEidException {
         try {
             signClient.initiate(InitiateSignRequest.createCustom().setEmail(EMAIL)
-                                        .setDataToSign(DataToSign.create(TEXT), SignatureType.XML_MINAMEDDELANDEN)
-                                        .setMinRegistrationLevel(MinRegistrationLevel.PLUS).build());
+                                            .setDataToSign(DataToSign.create(TEXT), SignatureType.XML_MINAMEDDELANDEN)
+                                            .setMinRegistrationLevel(MinRegistrationLevel.PLUS).build());
             Assert.fail("Test should throw exception!");
         } catch (FrejaEidClientInternalException ex) {
             Assert.assertEquals("Sign transaction with an advanced signature type requires SSN and BasicUserInfo in its RequestedAttributes.",
@@ -624,13 +946,12 @@ public class RequestValidationServiceTest {
         }
     }
 
-
     @Test
     public void initSign_orgIdIssuerWrongValue() throws FrejaEidException {
         try {
             signClient.initiate(InitiateSignRequest.createCustom().setEmail(EMAIL)
-                                        .setDataToSign(DataToSign.create(TEXT))
-                                        .setOrgIdIssuer(ORG_ID_ISSUER).build());
+                                            .setDataToSign(DataToSign.create(TEXT))
+                                            .setOrgIdIssuer(ORG_ID_ISSUER).build());
             Assert.fail("Test should throw exception!");
         } catch (FrejaEidClientInternalException ex) {
             Assert.assertEquals("OrgIdIssuer unsupported value. OrgIdIssuer must be null/empty or <ANY>",

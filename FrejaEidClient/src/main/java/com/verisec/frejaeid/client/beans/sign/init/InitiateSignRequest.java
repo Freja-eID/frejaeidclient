@@ -31,6 +31,7 @@ public class InitiateSignRequest implements RelyingPartyRequest {
     private final String orgIdIssuer;
     private final UserConfirmationMethod userConfirmationMethod;
     private final OriginDeviceDetails originDeviceDetails;
+    private final boolean useDynamicQrCode;
 
     /**
      * Returns instance of {@linkplain InitiateSignRequest} with:
@@ -50,7 +51,7 @@ public class InitiateSignRequest implements RelyingPartyRequest {
     public static InitiateSignRequest createDefaultWithEmail(String email, String title, String text) {
         return new InitiateSignRequest(UserInfoType.EMAIL, email, MinRegistrationLevel.PLUS, title, null, null,
                                        DataToSignType.SIMPLE_UTF8_TEXT, DataToSign.create(text), SignatureType.SIMPLE,
-                                       null, null, null, null, null);
+                                       null, null, null, null, null, false);
     }
 
     /**
@@ -75,7 +76,7 @@ public class InitiateSignRequest implements RelyingPartyRequest {
             throws FrejaEidClientInternalException {
         return new InitiateSignRequest(UserInfoType.SSN, UserInfoUtil.convertSsnUserInfo(ssnUserInfo),
                                        MinRegistrationLevel.PLUS, title, null, null, DataToSignType.SIMPLE_UTF8_TEXT,
-                                       DataToSign.create(text), SignatureType.SIMPLE, null, null, null, null, null);
+                                       DataToSign.create(text), SignatureType.SIMPLE, null, null, null, null, null, false);
     }
 
     /**
@@ -103,7 +104,8 @@ public class InitiateSignRequest implements RelyingPartyRequest {
             @JsonProperty(value = "relyingPartyId") String relyingPartyId,
             @JsonProperty(value = "orgIdIssuer") String orgIdIssuer,
             @JsonProperty(value = "userConfirmationMethod") UserConfirmationMethod userConfirmationMethod,
-            @JsonProperty(value = "originDeviceDetails") OriginDeviceDetails originDeviceDetails) {
+            @JsonProperty(value = "originDeviceDetails") OriginDeviceDetails originDeviceDetails,
+            @JsonProperty(value = "useDynamicQrCode") boolean useDynamicQrCode) {
         this.userInfoType = userInfoType;
         this.userInfo = userInfo;
         this.title = title;
@@ -118,6 +120,7 @@ public class InitiateSignRequest implements RelyingPartyRequest {
         this.orgIdIssuer = orgIdIssuer;
         this.userConfirmationMethod = userConfirmationMethod;
         this.originDeviceDetails = originDeviceDetails;
+        this.useDynamicQrCode = useDynamicQrCode;
     }
 
     public UserInfoType getUserInfoType() {
@@ -177,75 +180,37 @@ public class InitiateSignRequest implements RelyingPartyRequest {
         return originDeviceDetails;
     }
 
+    public boolean isUseDynamicQrCode() {
+        return useDynamicQrCode;
+    }
+
     @Override
     public int hashCode() {
         return Objects.hash(
                 userInfoType, userInfo, title, minRegistrationLevel, pushNotification, expiry, dataToSignType,
-                dataToSign, signatureType, relyingPartyId, orgIdIssuer, userConfirmationMethod, originDeviceDetails);
+                dataToSign, signatureType, relyingPartyId, orgIdIssuer, userConfirmationMethod, originDeviceDetails, useDynamicQrCode);
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final InitiateSignRequest other = (InitiateSignRequest) obj;
-        if (!Objects.equals(this.userInfo, other.userInfo)) {
-            return false;
-        }
-        if (!Objects.equals(this.title, other.title)) {
-            return false;
-        }
-        if (!Objects.equals(this.relyingPartyId, other.relyingPartyId)) {
-            return false;
-        }
-        if (!Objects.equals(this.orgIdIssuer, other.orgIdIssuer)) {
-            return false;
-        }
-        if (this.userInfoType != other.userInfoType) {
-            return false;
-        }
-        if (this.minRegistrationLevel != other.minRegistrationLevel) {
-            return false;
-        }
-        if (!Objects.equals(this.pushNotification, other.pushNotification)) {
-            return false;
-        }
-        if (!Objects.equals(this.expiry, other.expiry)) {
-            return false;
-        }
-        if (this.dataToSignType != other.dataToSignType) {
-            return false;
-        }
-        if (!Objects.equals(this.dataToSign, other.dataToSign)) {
-            return false;
-        }
-        if (this.signatureType != other.signatureType) {
-            return false;
-        }
-        if (this.attributesToReturn != null && other.attributesToReturn != null) {
-            if (this.attributesToReturn.size() != other.attributesToReturn.size()) {
-                return false;
-            }
-            if (!this.attributesToReturn.containsAll(other.attributesToReturn)) {
-                return false;
-            }
-        } else if (this.attributesToReturn != null || other.attributesToReturn != null) {
-            return false;
-        }
-        if (this.userConfirmationMethod != other.userConfirmationMethod) {
-            return false;
-        }
-        if (!Objects.equals(this.originDeviceDetails, other.originDeviceDetails)) {
-            return false;
-        }
-        return true;
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof InitiateSignRequest)) return false;
+        InitiateSignRequest that = (InitiateSignRequest) o;
+        return useDynamicQrCode == that.useDynamicQrCode &&
+                userInfoType == that.userInfoType &&
+                Objects.equals(userInfo, that.userInfo) &&
+                Objects.equals(title, that.title) &&
+                minRegistrationLevel == that.minRegistrationLevel &&
+                Objects.equals(pushNotification, that.pushNotification) &&
+                Objects.equals(expiry, that.expiry) &&
+                dataToSignType == that.dataToSignType &&
+                Objects.equals(dataToSign, that.dataToSign) &&
+                signatureType == that.signatureType &&
+                Objects.equals(attributesToReturn, that.attributesToReturn) &&
+                Objects.equals(relyingPartyId, that.relyingPartyId) &&
+                Objects.equals(orgIdIssuer, that.orgIdIssuer) &&
+                userConfirmationMethod == that.userConfirmationMethod &&
+                Objects.equals(originDeviceDetails, that.originDeviceDetails);
     }
 
     @Override
@@ -265,6 +230,7 @@ public class InitiateSignRequest implements RelyingPartyRequest {
                 ", orgIdIssuer='" + orgIdIssuer + '\'' +
                 ", userConfirmationMethod=" + userConfirmationMethod +
                 ", originDeviceDetails=" + originDeviceDetails +
+                ", useDynamicQrCode=" + useDynamicQrCode +
                 '}';
     }
 }
