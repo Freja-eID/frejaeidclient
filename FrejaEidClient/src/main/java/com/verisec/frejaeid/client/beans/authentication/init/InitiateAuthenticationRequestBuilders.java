@@ -81,6 +81,7 @@ public class InitiateAuthenticationRequestBuilders {
         private String orgIdIssuer = null;
         private UserConfirmationMethod userConfirmationMethod = null;
         private OriginDeviceDetails originDeviceDetails = null;
+        private boolean useDynamicQrCode;
 
         private SetOptionalParamsBuilder(UserInfoType userInfoType, String userInfo) {
             this.userInfoType = userInfoType;
@@ -173,10 +174,23 @@ public class InitiateAuthenticationRequestBuilders {
             return this;
         }
 
+        /**
+         * <b>Use of dynamic qr code is optional, default value is false</b>
+         *
+         * @param useDynamicQrCode  - If set to true, a dynamic QR code must be used. The code
+         *                          will change every few seconds, which reduces the opportunity for
+         *                          someone to misuse it.
+         * @return request builder
+         */
+        public SetOptionalParamsBuilder setUseDynamicQrCode(boolean useDynamicQrCode) {
+            this.useDynamicQrCode = useDynamicQrCode;
+            return this;
+        }
+
         public InitiateAuthenticationRequest build() {
             return new InitiateAuthenticationRequest(userInfoType, userInfo, minRegistrationLevel, attributesToReturn,
                                                      relyingPartyId, orgIdIssuer, userConfirmationMethod,
-                                                     originDeviceDetails);
+                                                     originDeviceDetails, useDynamicQrCode);
         }
 
     }

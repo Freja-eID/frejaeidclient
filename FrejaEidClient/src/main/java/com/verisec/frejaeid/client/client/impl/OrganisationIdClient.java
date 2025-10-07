@@ -14,16 +14,14 @@ import com.verisec.frejaeid.client.client.api.OrganisationIdClientApi;
 import com.verisec.frejaeid.client.enums.FrejaEnvironment;
 import com.verisec.frejaeid.client.enums.TransactionContext;
 import com.verisec.frejaeid.client.exceptions.FrejaEidClientInternalException;
-import com.verisec.frejaeid.client.http.HttpService;
-import com.verisec.frejaeid.client.http.HttpServiceApi;
-
-import javax.net.ssl.SSLContext;
-
 import com.verisec.frejaeid.client.exceptions.FrejaEidClientPollingException;
 import com.verisec.frejaeid.client.exceptions.FrejaEidException;
+import com.verisec.frejaeid.client.http.HttpService;
+import com.verisec.frejaeid.client.http.HttpServiceApi;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import javax.net.ssl.SSLContext;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
