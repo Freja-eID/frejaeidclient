@@ -72,22 +72,27 @@ public class SslSettings {
     }
 
     /**
-     * Returns instance of {@link SslSettings} which will create SSL context
-     * with given keyStore (supported types are
-     * <B>JKS</B>,
-     * <B>JCEKS</B>, <B>PKCS12</B>), password.
+     * Creates and returns an instance of {@link SslSettings} configured to establish
+     * mutual TLS (mTLS) connections.
      *
-     * <B>Use this creator if you have added server certificate to keyStore.</B>
+     * <p>The SSL context will be initialized using the provided key store and trust store.
+     * Supported key/trust store types are <b>JKS</b>, <b>JCEKS</b>, and <b>PKCS12</b>.</p>
+     *
      * <p>
-     * In order to establish SSL with server, client should provide path of
-     * keyStore and password.
+     * The client keystore is expected to contain the client's private key and corresponding
+     * SSL certificate. The truststore should contain the trusted root or intermediate
+     * certificates used to validate the server's SSL certificate.
+     * </p>
      *
-     * @param keystorePath absolute path of keyStore file where key pair with
-     *                     appropriate SSL certificate and server certificate are stored.
-     * @param keystorePass password of client keyStore.
-     * @return sslSettings
-     * @throws FrejaEidClientInternalException if any parameter is {@code null}
-     *                                         or empty.
+     * @param keystorePath  absolute path to the keystore file containing the client's private key and SSL certificate.
+     * @param keystorePass  password protecting the keystore.
+     * @param truststorePath absolute path to the truststore file containing trusted CA or server certificates.
+     * @param truststorePass password protecting the truststore.
+     *
+     * @return a configured {@link SslSettings} instance.
+     *
+     * @throws FrejaEidClientInternalException if any parameter is {@code null}, empty,
+     *                                        or if the keystore/truststore cannot be loaded.
      */
     public static SslSettings create(String keystorePath,
                                      String keystorePass,
