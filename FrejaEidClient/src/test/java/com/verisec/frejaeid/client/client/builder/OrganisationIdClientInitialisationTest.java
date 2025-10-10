@@ -5,9 +5,13 @@ import com.verisec.frejaeid.client.client.api.OrganisationIdClientApi;
 import com.verisec.frejaeid.client.client.impl.OrganisationIdClient;
 import com.verisec.frejaeid.client.client.util.TestUtil;
 import com.verisec.frejaeid.client.enums.FrejaEnvironment;
+import com.verisec.frejaeid.client.enums.KeyStoreType;
 import com.verisec.frejaeid.client.exceptions.FrejaEidClientInternalException;
 import org.junit.Assert;
 import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 public class OrganisationIdClientInitialisationTest {
 
@@ -16,11 +20,12 @@ public class OrganisationIdClientInitialisationTest {
         try {
             OrganisationIdClient.create(SslSettings.create("x", TestUtil.KEYSTORE_PASSWORD,
                                                            TestUtil.CERTIFICATE_PATH), FrejaEnvironment.TEST).build();
-            Assert.fail("Test should throw exception!");
+            fail("Test should throw exception!");
         } catch (FrejaEidClientInternalException ex) {
-            Assert.assertEquals("Invalid error",
-                                "Failed to initiate SSL context with supported keystore types JKS, JCEKS and PKCS12.",
-                                ex.getLocalizedMessage());
+            assertEquals(
+                    String.format("Failed to load keystore at path %s with supported keystore types %s.",
+                                  "x", KeyStoreType.getAllKeyStoreTypes()),
+                    ex.getMessage());
         }
     }
 
@@ -29,11 +34,12 @@ public class OrganisationIdClientInitialisationTest {
         try {
             OrganisationIdClient.create(SslSettings.create(TestUtil.KEYSTORE_PATH, TestUtil.KEYSTORE_PASSWORD, "x"),
                                         FrejaEnvironment.TEST).build();
-            Assert.fail("Test should throw exception!");
+            fail("Test should throw exception!");
         } catch (FrejaEidClientInternalException ex) {
-            Assert.assertEquals("Invalid error",
-                                "Failed to initiate SSL context with supported keystore types JKS, JCEKS and PKCS12.",
-                                ex.getLocalizedMessage());
+            assertEquals(
+                    String.format("Failed to create trust store with certificate at path %s.",
+                                  "x", KeyStoreType.getAllKeyStoreTypes()),
+                    ex.getMessage());
         }
     }
 
@@ -42,11 +48,12 @@ public class OrganisationIdClientInitialisationTest {
         try {
             OrganisationIdClient.create(SslSettings.create(TestUtil.KEYSTORE_PATH, "111111111",
                                                            TestUtil.CERTIFICATE_PATH), FrejaEnvironment.TEST).build();
-            Assert.fail("Test should throw exception!");
+            fail("Test should throw exception!");
         } catch (FrejaEidClientInternalException ex) {
-            Assert.assertEquals("Invalid error",
-                                "Failed to initiate SSL context with supported keystore types JKS, JCEKS and PKCS12.",
-                                ex.getLocalizedMessage());
+            assertEquals(
+                    String.format("Failed to load keystore at path %s with supported keystore types %s.",
+                                  TestUtil.KEYSTORE_PATH, KeyStoreType.getAllKeyStoreTypes()),
+                    ex.getMessage());
         }
     }
 
@@ -55,11 +62,12 @@ public class OrganisationIdClientInitialisationTest {
         try {
             OrganisationIdClient.create(SslSettings.create(TestUtil.INVALID_KEYSTORE_FILE, TestUtil.KEYSTORE_PASSWORD,
                                                            TestUtil.CERTIFICATE_PATH), FrejaEnvironment.TEST).build();
-            Assert.fail("Test should throw exception!");
+            fail("Test should throw exception!");
         } catch (FrejaEidClientInternalException ex) {
-            Assert.assertEquals("Invalid error",
-                                "Failed to initiate SSL context with supported keystore types JKS, JCEKS and PKCS12.",
-                                ex.getLocalizedMessage());
+            assertEquals(
+                    String.format("Failed to load keystore at path %s with supported keystore types %s.",
+                                  TestUtil.INVALID_KEYSTORE_FILE, KeyStoreType.getAllKeyStoreTypes()),
+                    ex.getMessage());
         }
     }
 
@@ -70,7 +78,7 @@ public class OrganisationIdClientInitialisationTest {
                                                            TestUtil.CERTIFICATE_PATH), FrejaEnvironment.TEST)
                     .setPollingTimeout(500)
                     .build();
-            Assert.fail("Test should throw exception!");
+            fail("Test should throw exception!");
         } catch (FrejaEidClientInternalException ex) {
             Assert.assertEquals("Invalid error", "Polling timeout must be between 1 and 60 seconds.",
                                 ex.getLocalizedMessage());
@@ -82,7 +90,7 @@ public class OrganisationIdClientInitialisationTest {
         try {
             OrganisationIdClient.create(SslSettings.create(TestUtil.KEYSTORE_PATH, TestUtil.KEYSTORE_PASSWORD, null),
                                         FrejaEnvironment.TEST).build();
-            Assert.fail("Test should throw exception!");
+            fail("Test should throw exception!");
         } catch (FrejaEidClientInternalException ex) {
             Assert.assertEquals("KeyStore Path, keyStore password or server certificate path cannot be null or empty.",
                                 ex.getLocalizedMessage());
@@ -94,7 +102,7 @@ public class OrganisationIdClientInitialisationTest {
         try {
             OrganisationIdClient.create(SslSettings.create(TestUtil.KEYSTORE_PATH, TestUtil.KEYSTORE_PASSWORD, " "),
                                         FrejaEnvironment.TEST).build();
-            Assert.fail("Test should throw exception!");
+            fail("Test should throw exception!");
         } catch (FrejaEidClientInternalException ex) {
             Assert.assertEquals("KeyStore Path, keyStore password or server certificate path cannot be null or empty.",
                                 ex.getLocalizedMessage());

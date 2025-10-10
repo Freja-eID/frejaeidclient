@@ -28,11 +28,7 @@ public class CustodianshipClient extends BasicClient implements CustodianshipCli
         if (sslSettings == null) {
             throw new FrejaEidClientInternalException("SslSettings cannot be null.");
         }
-        if (sslSettings.getSslContext() == null) {
-            return new CustodianshipClient.Builder(sslSettings.getKeystorePath(), sslSettings.getKeystorePass(),
-                                                    sslSettings.getServerCertificatePath(), frejaEnvironment);
-        }
-        return new CustodianshipClient.Builder(sslSettings.getSslContext(), frejaEnvironment);
+        return new CustodianshipClient.Builder(sslSettings, frejaEnvironment);
     }
 
     @Override
@@ -49,14 +45,9 @@ public class CustodianshipClient extends BasicClient implements CustodianshipCli
 
         public static final Logger LOG = LogManager.getLogger(CustodianshipClient.Builder.class);
 
-        private Builder(SSLContext sslContext, FrejaEnvironment frejaEnvironment) {
-            super(sslContext, frejaEnvironment);
-        }
-
-        private Builder(String keystorePath, String keystorePass, String certificatePath,
-                        FrejaEnvironment frejaEnvironment)
-                throws FrejaEidClientInternalException {
-            super(keystorePath, keystorePass, certificatePath, frejaEnvironment);
+        private Builder(SslSettings sslSettings,
+                        FrejaEnvironment frejaEnvironment) throws FrejaEidClientInternalException {
+            super(sslSettings, frejaEnvironment);
         }
 
         @Override

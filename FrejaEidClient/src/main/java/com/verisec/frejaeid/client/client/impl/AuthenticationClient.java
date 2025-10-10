@@ -53,11 +53,7 @@ public class AuthenticationClient extends BasicClient implements AuthenticationC
         if (sslSettings == null) {
             throw new FrejaEidClientInternalException("SslSettings cannot be null.");
         }
-        if (sslSettings.getSslContext() == null) {
-            return new Builder(sslSettings.getKeystorePath(), sslSettings.getKeystorePass(),
-                               sslSettings.getServerCertificatePath(), frejaEnvironment);
-        }
-        return new Builder(sslSettings.getSslContext(), frejaEnvironment);
+        return new Builder(sslSettings, frejaEnvironment);
     }
 
     @Override
@@ -135,15 +131,9 @@ public class AuthenticationClient extends BasicClient implements AuthenticationC
 
         public static final Logger LOG = LogManager.getLogger(Builder.class);
 
-        private Builder(SSLContext sslContext, FrejaEnvironment frejaEnvironment)
+        private Builder(SslSettings sslSettings, FrejaEnvironment frejaEnvironment)
                 throws FrejaEidClientInternalException {
-            super(sslContext, frejaEnvironment);
-        }
-
-        private Builder(String keystorePath, String keystorePass, String certificatePath,
-                        FrejaEnvironment frejaEnvironment)
-                throws FrejaEidClientInternalException {
-            super(keystorePath, keystorePass, certificatePath, frejaEnvironment);
+            super(sslSettings, frejaEnvironment);
         }
 
         @Override
