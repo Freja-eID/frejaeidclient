@@ -102,7 +102,7 @@ public class SslSettings {
             throw new FrejaEidClientInternalException("Keystore path or password cannot be null or empty.");
         }
         if (StringUtils.isAnyBlank(truststorePath, truststorePass)) {
-            throw new FrejaEidClientInternalException("Truststore path or password password cannot be null or empty.");
+            throw new FrejaEidClientInternalException("Truststore path or password cannot be null or empty.");
         }
         return new SslSettings(keystorePath, keystorePass, truststorePath, truststorePass, null);
     }
