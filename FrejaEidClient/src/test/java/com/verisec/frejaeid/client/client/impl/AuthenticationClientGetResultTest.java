@@ -74,6 +74,8 @@ public class AuthenticationClientGetResultTest {
     private static final String FREJA_COOKIE = "frejaCookie";
     private static RequestedAttributes REQUESTED_ATTRIBUTES;
     private AuthenticationClientApi authenticationClient;
+    private static final String GENDER = "MALE";
+    private static final String NFC_ID_PHOTO = "Base64EncodedNfcIdPhoto";
 
     @BeforeClass
     public static void initTestData() {
@@ -94,7 +96,7 @@ public class AuthenticationClientGetResultTest {
                                         AGE, PHOTO, DOCUMENT_INFO, DOCUMENT_PHOTO,
                                         COVID_CERTIFICATES, ORGANISATION_ID_INFO,
                                         DOCUMENT_WITH_PDF, Arrays.asList(CHILDREN_DOCUMENT_WITH_PDF),
-                                        NETWORK_INFO, null, null);
+                                        NETWORK_INFO, null, null, GENDER, NFC_ID_PHOTO);
     }
 
     @Before
@@ -182,7 +184,7 @@ public class AuthenticationClientGetResultTest {
                                         DOCUMENT_INFO, DOCUMENT_PHOTO, COVID_CERTIFICATES,
                                         ORGANISATION_ID_INFO_WITH_ADDITIONAL_ATTRIBUTES, DOCUMENT_WITH_PDF,
                                         Arrays.asList(CHILDREN_DOCUMENT_WITH_PDF),
-                                        NETWORK_INFO, null, null);
+                                        NETWORK_INFO, null, null, GENDER, NFC_ID_PHOTO);
         AuthenticationClientApi authenticationClient =
                 AuthenticationClient.create(TestUtil.getDefaultSslSettings(), FrejaEnvironment.TEST)
                         .setHttpService(httpServiceMock)
@@ -332,12 +334,13 @@ public class AuthenticationClientGetResultTest {
                                         PHOTO, DOCUMENT_INFO, DOCUMENT_PHOTO, COVID_CERTIFICATES,
                                         ORGANISATION_ID_INFO, DOCUMENT_WITH_PDF,
                                         Arrays.asList(CHILDREN_DOCUMENT_WITH_PDF),
-                                        NETWORK_INFO, null, null);
+                                        NETWORK_INFO, null, null, GENDER, NFC_ID_PHOTO);
         AuthenticationResult firstResponse =
                 new AuthenticationResult(REFERENCE, TransactionStatus.STARTED, DETAILS, attributes1, FREJA_COOKIE);
         RequestedAttributes attributes2 =
                 new RequestedAttributes(null, "test", null, null, null, null, null, null, null, null,
-                                        null, null, null, null, null, null, null, null, null, null, null, null, null);
+                                        null, null, null, null, null, null, null, null, null, null, null, null, null,
+                                        null, null);
         AuthenticationResult secondResponse =
                 new AuthenticationResult(REFERENCE, TransactionStatus.DELIVERED_TO_MOBILE, "test", attributes2,
                                          null);

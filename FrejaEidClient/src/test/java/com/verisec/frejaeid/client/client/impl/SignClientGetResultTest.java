@@ -67,6 +67,8 @@ public class SignClientGetResultTest {
             new CovidCertificates(new Vaccines("covidCertificate"), null, null, true);
     private static final NetworkInfo NETWORK_INFO = new NetworkInfo("123.45.6.7");
     private static final String FREJA_COOKIE = "frejaCookie";
+    private static final String GENDER = "MALE";
+    private static final String NFC_ID_PHOTO = "Base64EncodedNfcIdPhoto";
     private static RequestedAttributes REQUESTED_ATTRIBUTES;
     private SignClientApi signClient;
 
@@ -90,7 +92,7 @@ public class SignClientGetResultTest {
                                         AGE, PHOTO, DOCUMENT_INFO, DOCUMENT_PHOTO,
                                         COVID_CERTIFICATES, ORGANISATION_ID_INFO, DOCUMENT_WITH_PDF,
                                         Arrays.asList(CHILDREN_DOCUMENT_WITH_PDF),
-                                        NETWORK_INFO, null, null);
+                                        NETWORK_INFO, null, null, GENDER, NFC_ID_PHOTO);
     }
 
     @Before
@@ -176,7 +178,7 @@ public class SignClientGetResultTest {
                                         DOCUMENT_INFO, DOCUMENT_PHOTO, COVID_CERTIFICATES,
                                         ORGANISATION_ID_INFO_WITH_ADDITIONAL_ATTRIBUTES, DOCUMENT_WITH_PDF,
                                         Arrays.asList(CHILDREN_DOCUMENT_WITH_PDF),
-                                        NETWORK_INFO, null, null);
+                                        NETWORK_INFO, null, null, GENDER, NFC_ID_PHOTO);
         SignResultRequest signResultRequest = SignResultRequest.create(SIGN_REFERENCE, RELYING_PARTY_ID);
         SignResult expectedResponse =
                 new SignResult(SIGN_REFERENCE, TransactionStatus.APPROVED, SIGN_DETAILS, requestedAttributes,

@@ -37,9 +37,10 @@ public class RequestedAttributes {
     private final DocumentInfoWithPdf documentInfoWithPdf;
     private final List<DocumentInfoWithPdf> childrenDocumentInfoWithPdf;
     private final NetworkInfo networkInfo;
-
     private final LoaLevel loaLevel;
     private final String uniquePersonalIdentifier;
+    private final String gender;
+    private final String nfcIdPhoto;
 
     @JsonCreator
     public RequestedAttributes(@JsonProperty(value = "basicUserInfo") BasicUserInfo basicUserInfo,
@@ -64,7 +65,9 @@ public class RequestedAttributes {
                                @JsonProperty(value = "childrenDocumentInfoWithPdf") List<DocumentInfoWithPdf> childrenDocumentInfoWithPdf,
                                @JsonProperty(value = "networkInfo") NetworkInfo networkInfo,
                                @JsonProperty(value = "loaLevel") LoaLevel loaLevel,
-                               @JsonProperty(value = "uniquePersonalIdentifier") String uniquePersonalIdentifier) {
+                               @JsonProperty(value = "uniquePersonalIdentifier") String uniquePersonalIdentifier,
+                               @JsonProperty(value = "gender") String gender,
+                               @JsonProperty(value = "nfcIdPhoto") String nfcIdPhoto) {
         this.basicUserInfo = basicUserInfo;
         this.customIdentifier = customIdentifier;
         this.ssn = ssn;
@@ -88,6 +91,8 @@ public class RequestedAttributes {
         this.networkInfo = networkInfo;
         this.loaLevel = loaLevel;
         this.uniquePersonalIdentifier = uniquePersonalIdentifier;
+        this.gender = gender;
+        this.nfcIdPhoto = nfcIdPhoto;
     }
 
     public BasicUserInfo getBasicUserInfo() {
@@ -182,13 +187,22 @@ public class RequestedAttributes {
         return uniquePersonalIdentifier;
     }
 
+    public String getGender() {
+        return gender;
+    }
+
+    public String getNfcIdPhoto() {
+        return nfcIdPhoto;
+    }
+
     @Override
     public int hashCode() {
         return Objects.hash(basicUserInfo, customIdentifier, ssn, integratorSpecificUserId,
                             dateOfBirth, relyingPartyUserId, emailAddress, organisationIdIdentifier,
                             organisationId, addresses, allEmailAddresses, allPhoneNumbers, registrationLevel, age,
-                            photo, document, documentPhoto, covidCertificates, documentInfoWithPdf, 
-                            childrenDocumentInfoWithPdf, networkInfo, loaLevel, uniquePersonalIdentifier);
+                            photo, document, documentPhoto, covidCertificates, documentInfoWithPdf,
+                            childrenDocumentInfoWithPdf, networkInfo, loaLevel, uniquePersonalIdentifier, gender,
+                            nfcIdPhoto);
     }
 
     @Override
@@ -266,11 +280,23 @@ public class RequestedAttributes {
         if (!Objects.equals(this.networkInfo, other.networkInfo)) {
             return false;
         }
+        if (!Objects.equals(this.loaLevel, other.loaLevel)) {
+            return false;
+        }
+        if (!Objects.equals(this.uniquePersonalIdentifier, other.uniquePersonalIdentifier)) {
+            return false;
+        }
+        if (!Objects.equals(this.gender, other.gender)) {
+            return false;
+        }
+        if (!Objects.equals(this.nfcIdPhoto, other.nfcIdPhoto)) {
+            return false;
+        }
         return true;
     }
 
     @Override
-    public java.lang.String toString() {
+    public String toString() {
         return "RequestedAttributes{" +
                 "basicUserInfo=" + basicUserInfo +
                 ", customIdentifier='" + customIdentifier + '\'' +
@@ -280,19 +306,23 @@ public class RequestedAttributes {
                 ", relyingPartyUserId='" + relyingPartyUserId + '\'' +
                 ", emailAddress='" + emailAddress + '\'' +
                 ", organisationIdIdentifier='" + organisationIdIdentifier + '\'' +
-                ", organisationId='" + organisationId + '\'' +
+                ", organisationId=" + organisationId +
                 ", addresses=" + addresses +
                 ", allEmailAddresses=" + allEmailAddresses +
                 ", allPhoneNumbers=" + allPhoneNumbers +
                 ", registrationLevel=" + registrationLevel +
                 ", age=" + age +
-                ", photo=" + photo +
-                ", documentInfo=" + document +
-                ", documentPhoto=" + documentPhoto +
+                ", photo='" + photo + '\'' +
+                ", document=" + document +
+                ", documentPhoto='" + documentPhoto + '\'' +
                 ", covidCertificates=" + covidCertificates +
                 ", documentInfoWithPdf=" + documentInfoWithPdf +
                 ", childrenDocumentInfoWithPdf=" + childrenDocumentInfoWithPdf +
                 ", networkInfo=" + networkInfo +
+                ", loaLevel=" + loaLevel +
+                ", uniquePersonalIdentifier='" + uniquePersonalIdentifier + '\'' +
+                ", gender='" + gender + '\'' +
+                ", nfcIdPhoto='" + nfcIdPhoto + '\'' +
                 '}';
     }
 }
