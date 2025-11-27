@@ -86,26 +86,21 @@ public class BasicClient {
                 this.sslContext = sslSettings.getSslContext();
             } else {
                 KeyStore keyStore = loadKeystore(sslSettings.getKeystorePath(), sslSettings.getKeystorePass());
-                KeyStore trustStore = createTrustStore(sslSettings);
+                KeyStore trustStore = createTrustStore(keyStore, sslSettings);
                 createSSLContext(keyStore, sslSettings.getKeystorePass(), trustStore);
             }
 
             setServerUrl(frejaEnvironment);
         }
 
-        private KeyStore createTrustStore(SslSettings sslSettings) throws FrejaEidClientInternalException {
+        private KeyStore createTrustStore(KeyStore keyStore, SslSettings sslSettings) throws FrejaEidClientInternalException {
             KeyStore trustStore;
             if (sslSettings.getServerCertificatePath() != null) {
                 trustStore = createTrustStoreWithCertificate(sslSettings.getServerCertificatePath());
             } else if (StringUtils.isNoneBlank(sslSettings.getTruststorePath(), sslSettings.getTruststorePass())) {
                 trustStore = loadKeystore(sslSettings.getTruststorePath(), sslSettings.getTruststorePass());
             } else {
-                try {
-                    trustStore = KeyStore.getInstance(KeyStore.getDefaultType());
-                } catch (KeyStoreException e) {
-                    throw new FrejaEidClientInternalException(
-                            String.format("Failed to create truststore of type %s.", KeyStore.getDefaultType()), e);
-                }
+                trustStore = keyStore;
             }
             return trustStore;
         }
