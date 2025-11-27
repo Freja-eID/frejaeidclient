@@ -36,6 +36,8 @@ import java.util.Map;
  * <br> - {@link #NETWORK_INFO}
  * <br> - {@link #LOA_LEVEL}
  * <br> - {@link #UNIQUE_PERSONAL_IDENTIFIER}
+ * <br> - {@link #GENDER}
+ * <br> - {@link #NFC_ID_PHOTO}
  */
 public enum AttributeToReturn {
 
@@ -178,9 +180,20 @@ public enum AttributeToReturn {
      * across multiple Relying Parties
      */
     UNIQUE_PERSONAL_IDENTIFIER("UNIQUE_PERSONAL_IDENTIFIER"),
-
-//    @STOP
+    /**
+     * Gender returned as String.
+     * Allowed values: "MALE", "FEMALE", "UNSPECIFIED".
+     * Gender can be requested only for
+     * {@linkplain MinRegistrationLevel#EXTENDED} and
+     * {@linkplain MinRegistrationLevel#PLUS}.
+     */
     GENDER("GENDER"),
+    /**
+     * User's photo from the nfc ID document returned as a Base64-encoded String
+     * NFC_ID_PHOTO can be requested only for
+     * {@linkplain MinRegistrationLevel#EXTENDED} and
+     * {@linkplain MinRegistrationLevel#PLUS}.
+     */
     NFC_ID_PHOTO("NFC_ID_PHOTO");
 
     private final String name;
