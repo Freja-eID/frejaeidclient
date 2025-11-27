@@ -9,11 +9,18 @@ import java.net.URL;
 public class TestUtil {
 
     public static final String CERTIFICATE_PATH = getAbsolutePath("certificates/validServerCertificate.cer");
+
     public static final String KEYSTORE_PATH = getAbsolutePath("keystores/test.jks");
     public static final String KEYSTORE_PASSWORD = "123123123";
     public static final String INVALID_KEYSTORE_FILE = getAbsolutePath("keystores/invalidKeystoreFile.txt");
     public static final String KEYSTORE_PATH_PKCS12 = getAbsolutePath("keystores/test.p12");
     public static final String KEYSTORE_PATH_JCEKS = getAbsolutePath("keystores/test.jceks");
+
+    public static final String TRUSTSTORE_PATH = getAbsolutePath("truststores/test.jks");
+    public static final String TRUSTSTORE_PASSWORD = "123123123";
+    public static final String INVALID_TRUSTSTORE_FILE = getAbsolutePath("truststores/invalidTruststoreFile.txt");
+    public static final String TRUSTSTORE_PATH_PKCS12 = getAbsolutePath("truststores/test.p12");
+    public static final String TRUSTSTORE_PATH_JCEKS = getAbsolutePath("truststores/test.jceks");
 
     public static String getAbsolutePath(String fileName) {
         URL fileUrl = TestUtil.class.getClassLoader().getResource(fileName);

@@ -1,5 +1,6 @@
 package com.verisec.frejaeid.client.client.impl;
 
+import com.verisec.frejaeid.client.beans.general.SslSettings;
 import com.verisec.frejaeid.client.enums.FrejaEnvironment;
 import com.verisec.frejaeid.client.enums.KeyStoreType;
 import com.verisec.frejaeid.client.enums.TransactionContext;
@@ -12,6 +13,7 @@ import com.verisec.frejaeid.client.service.SignService;
 import com.verisec.frejaeid.client.service.CustomIdentifierService;
 import com.verisec.frejaeid.client.service.CustodianshipService;
 import com.verisec.frejaeid.client.util.JsonService;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -77,28 +79,52 @@ public class BasicClient {
         protected TransactionContext transactionContext;
         protected String resourceServiceUrl = null;
 
-        public GenericBuilder(SSLContext sslContext, FrejaEnvironment frejaEnvironment) {
-            if (sslContext != null) {
-                this.sslContext = sslContext;
+        public GenericBuilder(SslSettings sslSettings,
+                              FrejaEnvironment frejaEnvironment) throws FrejaEidClientInternalException {
+
+            if (sslSettings.getSslContext() != null) {
+                this.sslContext = sslSettings.getSslContext();
+            } else {
+                KeyStore keyStore = loadKeystore(sslSettings.getKeystorePath(), sslSettings.getKeystorePass());
+                KeyStore trustStore = createTrustStore(sslSettings);
+                createSSLContext(keyStore, sslSettings.getKeystorePass(), trustStore);
             }
+
             setServerUrl(frejaEnvironment);
         }
 
-        public GenericBuilder(String keystorePath, String keystorePass, String certificatePath,
-                              FrejaEnvironment frejaEnvironment)
-                throws FrejaEidClientInternalException {
-            int numberOfFails = 0;
-            for (KeyStoreType keyStoreType : KeyStoreType.values()) {
-                try (InputStream keyStoreStream = new FileInputStream(keystorePath)) {
-                    KeyStore keyStore = KeyStore.getInstance(keyStoreType.getType());
-                    keyStore.load(keyStoreStream, keystorePass.toCharArray());
-                    LOG.debug("Creating SSL context with keystore file on path {}.", keystorePath);
-                    createSSLContext(keyStore, keystorePass, certificatePath);
+        private KeyStore createTrustStore(SslSettings sslSettings) throws FrejaEidClientInternalException {
+            KeyStore trustStore;
+            if (sslSettings.getServerCertificatePath() != null) {
+                trustStore = createTrustStoreWithCertificate(sslSettings.getServerCertificatePath());
+            } else if (StringUtils.isNoneBlank(sslSettings.getTruststorePath(), sslSettings.getTruststorePass())) {
+                trustStore = loadKeystore(sslSettings.getTruststorePath(), sslSettings.getTruststorePass());
+            } else {
+                try {
+                    trustStore = KeyStore.getInstance(KeyStore.getDefaultType());
+                } catch (KeyStoreException e) {
+                    throw new FrejaEidClientInternalException(
+                            String.format("Failed to create truststore of type %s.", KeyStore.getDefaultType()), e);
+                }
+            }
+            return trustStore;
+        }
 
-                } catch (FrejaEidClientInternalException | IOException | KeyStoreException
-                        | NoSuchAlgorithmException | CertificateException e) {
+        private KeyStore loadKeystore(String path, String password) throws FrejaEidClientInternalException {
+            KeyStore keyStore = null;
+
+            int numberOfFails = 0;
+            Exception lastException = null;
+
+            for (KeyStoreType keyStoreType : KeyStoreType.values()) {
+                try (InputStream keyStoreStream = new FileInputStream(path)) {
+                    keyStore = KeyStore.getInstance(keyStoreType.getType());
+                    keyStore.load(keyStoreStream, password.toCharArray());
+                    LOG.debug("Loaded keystore from path path {}.", path);
+                } catch (Exception ex) {
+                    lastException = ex;
                     LOG.error("Failed to initialize SSL context with keystore type {} and path {}.", keyStoreType,
-                              keystorePath, e);
+                              path, ex);
                     numberOfFails++;
                     continue;
                 }
@@ -106,10 +132,12 @@ public class BasicClient {
             }
             if (numberOfFails == KeyStoreType.values().length) {
                 throw new FrejaEidClientInternalException(
-                        String.format("Failed to initiate SSL context with supported keystore types %s.",
-                                      KeyStoreType.getAllKeyStoreTypes()));
+                        String.format("Failed to load keystore at path %s with supported keystore types %s.",
+                                      path, KeyStoreType.getAllKeyStoreTypes()), lastException);
             }
-            setServerUrl(frejaEnvironment);
+
+            return keyStore;
+
         }
 
         private void setServerUrl(FrejaEnvironment frejaEnvironment) {
@@ -134,27 +162,28 @@ public class BasicClient {
                 trustStore.setCertificateEntry("rootCA", caCert);
                 return trustStore;
             } catch (KeyStoreException | NoSuchAlgorithmException | IOException | CertificateException ex) {
-                throw new FrejaEidClientInternalException("Failed to create trust store with certificate. ", ex);
+                throw new FrejaEidClientInternalException(
+                        String.format("Failed to create trust store with certificate at path %s.", certificatePath),
+                        ex);
             }
         }
 
-        private void createSSLContext(KeyStore keyStore, String keystorePass, String certificatePath)
+        private void createSSLContext(KeyStore keyStore, String keystorePass, KeyStore trustStore)
                 throws FrejaEidClientInternalException {
             try {
                 KeyManagerFactory keyManagerFactory =
                         KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
                 keyManagerFactory.init(keyStore, keystorePass.toCharArray());
+
                 TrustManagerFactory tmf = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
-                if (certificatePath != null) {
-                    keyStore = createTrustStoreWithCertificate(certificatePath);
-                }
-                tmf.init(keyStore);
+                tmf.init(trustStore);
+
                 SSLContext sslContext = SSLContext.getInstance("SSL");
                 sslContext.init(keyManagerFactory.getKeyManagers(), tmf.getTrustManagers(), null);
                 LOG.debug("Successfully created SSL context.");
                 this.sslContext = sslContext;
             } catch (KeyManagementException | KeyStoreException
-                    | NoSuchAlgorithmException | UnrecoverableKeyException ex) {
+                     | NoSuchAlgorithmException | UnrecoverableKeyException ex) {
                 throw new FrejaEidClientInternalException("Failed to create SSL context. ", ex);
             }
         }
