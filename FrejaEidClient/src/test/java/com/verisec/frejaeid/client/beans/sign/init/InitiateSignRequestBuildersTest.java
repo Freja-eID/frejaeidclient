@@ -54,6 +54,8 @@ public class InitiateSignRequestBuildersTest {
         REQUESTED_ATTRIBUTES.add(attributeOf(AttributeToReturn.NETWORK_INFO));
         REQUESTED_ATTRIBUTES.add(attributeOf(AttributeToReturn.LOA_LEVEL));
         REQUESTED_ATTRIBUTES.add(attributeOf(AttributeToReturn.UNIQUE_PERSONAL_IDENTIFIER));
+        REQUESTED_ATTRIBUTES.add(attributeOf(AttributeToReturn.GENDER));
+        REQUESTED_ATTRIBUTES.add(attributeOf(AttributeToReturn.NFC_ID_PHOTO));
     }
 
     private static AttributeToReturnInfo attributeOf(AttributeToReturn attributeToReturn){
