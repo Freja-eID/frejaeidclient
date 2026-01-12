@@ -44,6 +44,8 @@ public class SignClientGetResultTest {
     private static final String SIGN_REFERENCE = "123456789123456789";
     private static final String SIGN_DETAILS = "This is sign transaction";
     private static final String RELYING_PARTY_USER_ID = "relyingPartyUserId";
+    private static final SsnUserInfo SSN = SsnUserInfo.create(Country.SWEDEN, "199207295578");
+    private static final BasicUserInfo BASIC_USER_INFO = new BasicUserInfo("John", "Fante");
     private static final String EMAIL_ADDRESS = "test@frejaeid.com";
     private static final String PHONE_NUMBER = "+46123456789";
     private static final String ORGANISATION_ID = "orgId";
@@ -54,14 +56,11 @@ public class SignClientGetResultTest {
                             AddressType.RESIDENTIAL, AddressSourceType.GOVERNMENT_REGISTRY));
     private static final List<Email> ALL_EMAIL_ADDRESSES = Arrays.asList(new Email(EMAIL_ADDRESS));
     private static final List<PhoneNumberInfo> ALL_PHONE_NUMBERS = Arrays.asList(new PhoneNumberInfo(PHONE_NUMBER));
+    private static final String DATE_OF_BIRTH = "1987-10-18";
     private static final Integer AGE = 35;
     private static final String PHOTO = "Base64EncodedAvatarPhoto";
     private static final DocumentInfo DOCUMENT_INFO =
             new DocumentInfo(DocumentType.PASSPORT, "123456789", Country.SWEDEN, "2050-01-01");
-    private static final DocumentInfoWithPdf DOCUMENT_WITH_PDF =
-            new DocumentInfoWithPdf(DocumentType.PASSPORT, "123456789", Country.SWEDEN, "2050-01-01", "Base64Pdf");
-    private static final DocumentInfoWithPdf CHILDREN_DOCUMENT_WITH_PDF =
-            new DocumentInfoWithPdf(DocumentType.PASSPORT, "987654321", Country.SWEDEN, "20240-01-01", "Base64Pdf");
     private static final String DOCUMENT_PHOTO = "Base64EncodedDocPhoto";
     protected static final CovidCertificates COVID_CERTIFICATES =
             new CovidCertificates(new Vaccines("covidCertificate"), null, null, true);
@@ -69,6 +68,14 @@ public class SignClientGetResultTest {
     private static final String FREJA_COOKIE = "frejaCookie";
     private static final String GENDER = "MALE";
     private static final String NFC_ID_PHOTO = "Base64EncodedNfcIdPhoto";
+    private static final String PDF = "Base64Pdf";
+    private static final DocumentInfoWithPdf DOCUMENT_WITH_PDF =
+            new DocumentInfoWithPdf(SSN, BASIC_USER_INFO, DATE_OF_BIRTH, GENDER, DocumentType.PASSPORT, "123456789",
+                    Country.SWEDEN, "2050-01-01", PDF, DOCUMENT_PHOTO, NFC_ID_PHOTO);
+    private static final DocumentInfoWithPdf CHILDREN_DOCUMENT_WITH_PDF =
+            new DocumentInfoWithPdf(SSN, BASIC_USER_INFO, DATE_OF_BIRTH, GENDER, DocumentType.PASSPORT, "987654321",
+                    Country.SWEDEN, "2024-01-01", PDF, DOCUMENT_PHOTO, NFC_ID_PHOTO);
+
     private static RequestedAttributes REQUESTED_ATTRIBUTES;
     private SignClientApi signClient;
 
