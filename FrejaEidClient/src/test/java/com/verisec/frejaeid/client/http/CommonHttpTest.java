@@ -56,10 +56,6 @@ public abstract class CommonHttpTest {
     private static final String PHOTO = "Base64EncodedAvatarPhoto";
     private static final DocumentInfo DOCUMENT_INFO =
             new DocumentInfo(DocumentType.PASSPORT, "123456789", Country.SWEDEN, "2050-01-01");
-    private static final DocumentInfoWithPdf DOCUMENT_WITH_PDF =
-            new DocumentInfoWithPdf(DocumentType.PASSPORT, "123456789", Country.SWEDEN, "2050-01-01", "Base64Pdf");
-    private static final DocumentInfoWithPdf CHILDREN_DOCUMENT_WITH_PDF =
-            new DocumentInfoWithPdf(DocumentType.PASSPORT, "987654321", Country.SWEDEN, "20240-01-01", "Base64Pdf");
     private static final CovidCertificates COVID_CERTIFICATES =
             new CovidCertificates(new Vaccines("covidCertificate"), null, null, true);
     private static final String DOCUMENT_PHOTO = "Base64EncodedDocPhoto";
@@ -69,6 +65,13 @@ public abstract class CommonHttpTest {
     private static final String UNIQUE_IDENTIFIER = "1234-567890-1234";
     private static final String GENDER = "MALE";
     private static final String NFC_ID_PHOTO = "Base64EncodedNfcIdPhoto";
+    private static final String PDF = "Base64Pdf";
+    private static final DocumentInfoWithPdf DOCUMENT_WITH_PDF =
+            new DocumentInfoWithPdf(SSN_USER_INFO, BASIC_USER_INFO, DATE_OF_BIRTH, GENDER, DocumentType.PASSPORT, "123456789",
+                    Country.SWEDEN, "2050-01-01", PDF, DOCUMENT_PHOTO, NFC_ID_PHOTO);
+    private static final DocumentInfoWithPdf CHILDREN_DOCUMENT_WITH_PDF =
+            new DocumentInfoWithPdf(SSN_USER_INFO, BASIC_USER_INFO, DATE_OF_BIRTH, GENDER, DocumentType.PASSPORT, "987654321",
+                    Country.SWEDEN, "2024-01-01", PDF, DOCUMENT_PHOTO, NFC_ID_PHOTO);
     protected static final RequestedAttributes REQUESTED_ATTRIBUTES =
             new RequestedAttributes(BASIC_USER_INFO, CUSTOM_IDENTIFIER, SSN_USER_INFO, null, DATE_OF_BIRTH,
                                     RELYING_PARTY_USER_ID, EMAIL_ADDRESS, ORGANISATION_ID, ADDRESSES,
