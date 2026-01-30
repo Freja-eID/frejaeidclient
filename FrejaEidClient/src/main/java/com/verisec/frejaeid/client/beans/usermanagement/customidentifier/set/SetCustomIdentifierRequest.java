@@ -53,6 +53,20 @@ public class SetCustomIdentifierRequest implements RelyingPartyRequest {
     }
 
     /**
+     * Returns instance of {@linkplain SetCustomIdentifierRequest} with
+     * {@linkplain UserInfoType} {@code UPI}.
+     *
+     * @param upi            will be used to identify the end user. It cannot be
+     *                         {@code null} or empty. Maximum length is 256 characters.
+     * @param customIdentifier will be set for user. Maximum length is 128
+     *                         characters. It cannot be {@code null} or empty.
+     * @return request
+     */
+    public static SetCustomIdentifierRequest createDefaultWithUpi(String upi, String customIdentifier) {
+        return new SetCustomIdentifierRequest(UserInfoType.UPI, upi, customIdentifier, null);
+    }
+
+    /**
      * Returns instance of builder that is used for creating
      * {@linkplain SetCustomIdentifierRequest} with custom request parameters.
      *

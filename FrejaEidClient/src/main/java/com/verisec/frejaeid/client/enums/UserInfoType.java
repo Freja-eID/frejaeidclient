@@ -7,6 +7,8 @@ package com.verisec.frejaeid.client.enums;
  * <br> - {@link #SSN}
  * <br> - {@link #PHONE}
  * <br> - {@link #INFERRED}
+ * <br> - {@link #ORG_ID}
+ * <br> - {@link #UPI}
  */
 public enum UserInfoType {
 
@@ -31,6 +33,10 @@ public enum UserInfoType {
      * UserInfoType org_id for initiating transaction with organisation id of
      * user.
      */
-    ORG_ID;
-
+    ORG_ID,
+    /**
+     * UserInfoType upi for initiating transaction with unique personal identifier of
+     * user.
+     */
+    UPI;
 }
