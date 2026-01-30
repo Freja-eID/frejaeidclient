@@ -56,6 +56,20 @@ public class SetCustomIdentifierRequestBuilder {
             return new SetOptionalParamsBuilder(UserInfoType.PHONE, phoneNumber, customIdentifier);
         }
 
+        /**
+         * Sets upi as userInfo and {@link UserInfoType#UPI} as
+         * {@linkplain UserInfoType} for initiating transaction.
+         *
+         * @param upi      user's unique personal indentifier that will be used to identify
+         *                         the end user.
+         * @param customIdentifier will be set for user. Maximum length is 128
+         *                         characters. It cannot be {@code null} or empty.
+         * @return request builder
+         */
+        public SetOptionalParamsBuilder setUpiAndCustomIdentifier(String upi, String customIdentifier) {
+            return new SetOptionalParamsBuilder(UserInfoType.UPI, upi, customIdentifier);
+        }
+
     }
 
     public static class SetOptionalParamsBuilder {
