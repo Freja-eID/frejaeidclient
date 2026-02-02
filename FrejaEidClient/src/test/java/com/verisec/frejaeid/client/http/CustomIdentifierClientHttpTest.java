@@ -53,6 +53,11 @@ public class CustomIdentifierClientHttpTest extends CommonHttpTest {
                 SetCustomIdentifierRequest.createDefaultWithSsn(SsnUserInfo.create(Country.NORWAY, SSN),
                                                                 CUSTOM_IDENTIFIER);
         sendSetCustomIdentifierRequestAndAssertResponse(customIdentifierRequestDefaultSsn);
+
+        SetCustomIdentifierRequest customIdentifierRequestDefaultUpi =
+                SetCustomIdentifierRequest.createDefaultWithUpi(UPI, CUSTOM_IDENTIFIER);
+        sendSetCustomIdentifierRequestAndAssertResponse(customIdentifierRequestDefaultUpi);
+
         SetCustomIdentifierRequest customIdentifierRequestEmail =
                 SetCustomIdentifierRequest.createCustom().setEmailAndCustomIdentifier(EMAIL, CUSTOM_IDENTIFIER).build();
         sendSetCustomIdentifierRequestAndAssertResponse(customIdentifierRequestEmail);
@@ -60,6 +65,11 @@ public class CustomIdentifierClientHttpTest extends CommonHttpTest {
                 SetCustomIdentifierRequest.createCustom()
                         .setSsnAndCustomIdentifier(SsnUserInfo.create(Country.NORWAY, SSN), CUSTOM_IDENTIFIER).build();
         sendSetCustomIdentifierRequestAndAssertResponse(customIdentifierRequestSsn);
+
+        SetCustomIdentifierRequest customIdentifierRequestUpi =
+                SetCustomIdentifierRequest.createCustom().setUpiAndCustomIdentifier(UPI, CUSTOM_IDENTIFIER).build();
+        sendSetCustomIdentifierRequestAndAssertResponse(customIdentifierRequestUpi);
+
         SetCustomIdentifierRequest customIdentifierRequestPhoneNum =
                 SetCustomIdentifierRequest.createCustom()
                         .setPhoneNumberAndCustomIdentifier(EMAIL, CUSTOM_IDENTIFIER).build();

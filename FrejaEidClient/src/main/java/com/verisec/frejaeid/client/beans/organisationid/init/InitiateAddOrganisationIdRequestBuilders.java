@@ -71,6 +71,20 @@ public class InitiateAddOrganisationIdRequestBuilders {
             return new SetOptionalParamsBuilder(UserInfoType.INFERRED, "N/A", organisationId);
         }
 
+        /**
+         * Sets unique personal identifier as userInfo and {@link UserInfoType#UPI} as
+         * {@linkplain UserInfoType} for initiating transaction.
+         *
+         * @param upi    user's unique personal identifier that will be used to identify
+         *                       the end user in format 1234-123456-1234.
+         * @param organisationId instance of {@linkplain OrganisationId} that
+         *                       contains information regarding organisation id.
+         * @return request builder
+         */
+        public SetOptionalParamsBuilder setUpiAndOrganisationId(String upi, OrganisationId organisationId) {
+            return new SetOptionalParamsBuilder(UserInfoType.UPI, upi, organisationId);
+        }
+
     }
 
     public static class SetOptionalParamsBuilder {

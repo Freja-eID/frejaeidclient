@@ -140,6 +140,24 @@ public class AuthenticationClientHttpTest extends CommonHttpTest {
                                                                initAuthenticationRequestWithRegistrationStateAndRelyingPartyId,
                                                                initAuthResponseString);
 
+
+
+        InitiateAuthenticationRequest initAuthenticationRequestWithUpi =
+                InitiateAuthenticationRequest.createCustom()
+                        .setUpi(UPI)
+                        .setMinRegistrationLevel(MinRegistrationLevel.EXTENDED)
+                        .setRelyingPartyId(RELYING_PARTY_ID)
+                        .build();
+        InitiateAuthenticationRequest expectedInitAuthenticationRequestWithUpi =
+                InitiateAuthenticationRequest.createCustom()
+                        .setUpi(UPI)
+                        .setMinRegistrationLevel(MinRegistrationLevel.EXTENDED)
+                        .build();
+
+        sendInitiateAuthenticationV1_1RequestAndAssertResponse(expectedInitAuthenticationRequestWithUpi,
+                                                               initAuthenticationRequestWithUpi,
+                                                               initAuthResponseString);
+
     }
 
     @Test
@@ -202,6 +220,22 @@ public class AuthenticationClientHttpTest extends CommonHttpTest {
         sendInitiateAuthenticationRequestAndAssertResponse(expectedInitAuthenticationRequestWithRegistrationStateAndRelyingPartyId,
                                                                initAuthenticationRequestWithRegistrationStateAndRelyingPartyId,
                                                                initAuthResponseString);
+
+        InitiateAuthenticationRequest initAuthenticationRequestWithUpi =
+                InitiateAuthenticationRequest.createCustom()
+                        .setUpi(UPI)
+                        .setMinRegistrationLevel(MinRegistrationLevel.EXTENDED)
+                        .setRelyingPartyId(RELYING_PARTY_ID)
+                        .build();
+        InitiateAuthenticationRequest expectedInitAuthenticationRequestWithUpi =
+                InitiateAuthenticationRequest.createCustom()
+                        .setUpi(UPI)
+                        .setMinRegistrationLevel(MinRegistrationLevel.EXTENDED)
+                        .build();
+
+        sendInitiateAuthenticationRequestAndAssertResponse(expectedInitAuthenticationRequestWithUpi,
+                                                           initAuthenticationRequestWithUpi,
+                                                           initAuthResponseString);
     }
 
     @Test
