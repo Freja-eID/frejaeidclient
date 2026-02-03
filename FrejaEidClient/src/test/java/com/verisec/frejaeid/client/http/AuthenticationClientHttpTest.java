@@ -92,6 +92,10 @@ public class AuthenticationClientHttpTest extends CommonHttpTest {
                 InitiateAuthenticationRequest.createDefaultWithSsn(SsnUserInfo.create(Country.NORWAY, SSN));
         sendInitiateAuthenticationV1_1RequestAndAssertResponse(initiateAuthenticationRequestDefaultWithSsn, initAuthResponseString);
 
+        InitiateAuthenticationRequest initiateAuthenticationRequestDefaultWithUpi =
+                InitiateAuthenticationRequest.createDefaultWithUpi(UPI);
+        sendInitiateAuthenticationV1_1RequestAndAssertResponse(initiateAuthenticationRequestDefaultWithUpi, initAuthResponseString);
+
         InitiateAuthenticationRequest initAuthenticationRequestWithRequestedAttributesUserInfoEmail =
                 InitiateAuthenticationRequest.createCustom()
                         .setEmail(EMAIL)
@@ -172,6 +176,10 @@ public class AuthenticationClientHttpTest extends CommonHttpTest {
         InitiateAuthenticationRequest initiateAuthenticationRequestDefaultWithSsn =
                 InitiateAuthenticationRequest.createDefaultWithSsn(SsnUserInfo.create(Country.NORWAY, SSN));
         sendInitiateAuthenticationRequestAndAssertResponse(initiateAuthenticationRequestDefaultWithSsn, initAuthResponseString);
+
+        InitiateAuthenticationRequest initiateAuthenticationRequestDefaultWithUpi =
+                InitiateAuthenticationRequest.createDefaultWithUpi(UPI);
+        sendInitiateAuthenticationRequestAndAssertResponse(initiateAuthenticationRequestDefaultWithUpi, initAuthResponseString);
 
         InitiateAuthenticationRequest initAuthenticationRequestWithRequestedAttributesUserInfoEmail =
                 InitiateAuthenticationRequest.createCustom()
