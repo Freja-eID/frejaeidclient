@@ -15,6 +15,7 @@ public class SetCustomIdentifierRequestBuilderTest {
     private static final String PHONE_NUMBER = "123123123";
     private static final String IDENTIFIER = "identifier";
     private static final String RELYING_PARTY_ID = "relyingPartyId";
+    private static final String UPI = "5633-823597-7862";
 
     @Test
     public void createDefaultEmailRequest() {
@@ -32,6 +33,15 @@ public class SetCustomIdentifierRequestBuilderTest {
                                                IDENTIFIER, null);
         SetCustomIdentifierRequest setCustomIdentifierRequest =
                 SetCustomIdentifierRequest.createDefaultWithSsn(SSN_USER_INFO, IDENTIFIER);
+        Assert.assertEquals(expectedSetCustomIdentifierRequest, setCustomIdentifierRequest);
+    }
+
+    @Test
+    public void createDefaultUpiRequest() {
+        SetCustomIdentifierRequest expectedSetCustomIdentifierRequest =
+                new SetCustomIdentifierRequest(UserInfoType.UPI, UPI, IDENTIFIER, null);
+        SetCustomIdentifierRequest setCustomIdentifierRequest =
+                SetCustomIdentifierRequest.createDefaultWithUpi(UPI, IDENTIFIER);
         Assert.assertEquals(expectedSetCustomIdentifierRequest, setCustomIdentifierRequest);
     }
 

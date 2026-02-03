@@ -59,6 +59,21 @@ public class InitiateAddOrganisationIdRequest implements RelyingPartyRequest {
     }
 
     /**
+     * Returns instance of {@linkplain InitiateAddOrganisationIdRequest} with
+     * {@linkplain UserInfoType} {@code UPI}.
+     *
+     * @param upi          user's unique personal identifier for which transaction will be initiated. It
+     *                       cannot be {@code null} or empty. Maximum length is 256 characters.
+     * @param organisationId instance of {@linkplain OrganisationId} that
+     *                       contains information regarding organisation id.
+     * @return request
+     */
+    public static InitiateAddOrganisationIdRequest createDefaultWithUpi(String upi, OrganisationId organisationId) {
+        return new InitiateAddOrganisationIdRequest(UserInfoType.UPI, upi, organisationId,
+                                                    MinRegistrationLevel.EXTENDED, null, null);
+    }
+
+    /**
      * Returns instance of builder that is used for creating
      * {@linkplain InitiateAddOrganisationIdRequest} with custom request
      * parameters.

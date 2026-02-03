@@ -35,6 +35,7 @@ public class AuthenticationClientInitAuthenticationTest {
     private static final Country COUNTRY = Country.SWEDEN;
     private static final AttributeToReturn[] ATTRIBUTES_TO_RETURN = AttributeToReturn.values();
     private static final String QR_CODE_GENERATION_URL_PREFIX = "https://resources.test.frejaeid.com/qrcode/generate";
+    protected static final String UPI = "5633-823597-7862";
 
     @Test
     public void initiateAuthenticationV1_1_userInfoTypeEmail_success() throws FrejaEidClientInternalException, FrejaEidException {
@@ -43,6 +44,12 @@ public class AuthenticationClientInitAuthenticationTest {
         initiateAuthenticationV1_1_relyingPartyNull_success(initiateAuthenticationRequest);
     }
 
+    @Test
+    public void initiateAuthenticationV1_1_userInfoTypeUpi_success() throws FrejaEidClientInternalException, FrejaEidException {
+        InitiateAuthenticationRequest initiateAuthenticationRequest =
+                InitiateAuthenticationRequest.createDefaultWithUpi(UPI);
+        initiateAuthenticationV1_1_relyingPartyNull_success(initiateAuthenticationRequest);
+    }
 
     @Test
     public void generateQRCode_expectSuccess() throws FrejaEidClientInternalException, FrejaEidException, IOException {

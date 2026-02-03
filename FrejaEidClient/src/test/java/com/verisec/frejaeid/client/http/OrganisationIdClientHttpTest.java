@@ -86,6 +86,11 @@ public class OrganisationIdClientHttpTest extends CommonHttpTest {
                         OrganisationId.create(ORGANISATION_ID_TITLE, IDENTIFIER_NAME, IDENTIFIER));
         sendInitiateAddOrganisationIdRequestAndAssertResponse(initiateAddOrganisationIdRequestDefaultSsn);
 
+        InitiateAddOrganisationIdRequest initiateAddOrganisationIdRequestDefaultUpi =
+                InitiateAddOrganisationIdRequest.createDefaultWithUpi(
+                        UPI, OrganisationId.create(ORGANISATION_ID_TITLE, IDENTIFIER_NAME, IDENTIFIER));
+        sendInitiateAddOrganisationIdRequestAndAssertResponse(initiateAddOrganisationIdRequestDefaultUpi);
+
         InitiateAddOrganisationIdRequest initAddOrganisationIdRequestCustomEmail =
                 InitiateAddOrganisationIdRequest.createCustom()
                         .setEmailAndOrganisationId(EMAIL, OrganisationId.create(ORGANISATION_ID_TITLE,
