@@ -140,6 +140,18 @@ public class SignClientHttpTest extends CommonHttpTest {
                 .build();
         sendInitiateV11SignRequestAndAssertResponse(initSignCustomRequestWithAdvancedSignatureType);
 
+
+        InitiateSignRequest initSignCustomRequestWithUpi = InitiateSignRequest.createCustom()
+                .setUpi(UPI)
+                .setDataToSign(DataToSign.create(dataToSignText, binaryData))
+                .setRelyingPartyId(RELYING_PARTY_ID)
+                .build();
+        InitiateSignRequest expectedInitSignCustomRequestWithUpi = InitiateSignRequest.createCustom()
+                .setUpi(UPI)
+                .setDataToSign(DataToSign.create(dataToSignText, binaryData))
+                .build();
+        sendInitiateV11SignRequestAndAssertResponse(expectedInitSignCustomRequestWithUpi,
+                                                    initSignCustomRequestWithUpi);
     }
 
     @Test
@@ -246,6 +258,14 @@ public class SignClientHttpTest extends CommonHttpTest {
                 .setAttributesToReturn(ATTRIBUTES_TO_RETURN)
                 .build();
         sendInitiateSignRequestAndAssertResponse(initSignCustomRequestWithAdvancedSignatureType);
+
+        InitiateSignRequest initSignCustomRequestWithUpi = InitiateSignRequest.createCustom()
+                .setUpi(UPI)
+                .setDataToSign(DataToSign.create(dataToSignText), SignatureType.XML_MINAMEDDELANDEN)
+                .setMinRegistrationLevel(MinRegistrationLevel.PLUS)
+                .setAttributesToReturn(ATTRIBUTES_TO_RETURN)
+                .build();
+        sendInitiateSignRequestAndAssertResponse(initSignCustomRequestWithUpi);
 
     }
 

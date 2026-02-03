@@ -35,6 +35,7 @@ public abstract class CommonHttpTest {
     protected static final String QR_CODE_SECRET = "qrCodeSecret";
     protected static final String EMAIL = "eid.demo.verisec@gmail.com";
     protected static final String SSN = "123455697887";
+    protected static final String UPI = "5633-823597-7862";
     protected static final String RELYING_PARTY_ID = "relying_party_id";
     protected static final SsnUserInfo SSN_USER_INFO = SsnUserInfo.create(Country.SWEDEN, SSN);
     protected static final BasicUserInfo BASIC_USER_INFO = new BasicUserInfo("John", "Fante");

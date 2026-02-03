@@ -69,6 +69,17 @@ public class InitiateAuthenticationRequestBuilders {
             return new SetOptionalParamsBuilder(UserInfoType.ORG_ID, identifier);
         }
 
+        /**
+         * Sets unique personal identifier as userInfo and {@link UserInfoType#UPI} as {@linkplain UserInfoType} for initiating
+         * transaction.
+         *
+         * @param upi user's unique personal identifier that was previously set by Freja
+         * @return request builder
+         */
+        public SetOptionalParamsBuilder setUpi(String upi) {
+            return new SetOptionalParamsBuilder(UserInfoType.UPI, upi);
+        }
+
     }
 
     public static class SetOptionalParamsBuilder {

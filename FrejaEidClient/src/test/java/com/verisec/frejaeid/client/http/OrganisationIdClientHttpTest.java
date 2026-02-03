@@ -115,6 +115,15 @@ public class OrganisationIdClientHttpTest extends CommonHttpTest {
                         .build();
         sendInitiateAddOrganisationIdRequestAndAssertResponse(initAddOrganisationIdRequestCustomPhoneNum);
 
+        InitiateAddOrganisationIdRequest initAddOrganisationIdRequestUpi =
+                InitiateAddOrganisationIdRequest.createCustom()
+                        .setUpiAndOrganisationId(UPI, OrganisationId.create(ORGANISATION_ID_TITLE,
+                                                                            IDENTIFIER_NAME, IDENTIFIER))
+                        .setExpiry(Long.MAX_VALUE)
+                        .setMinRegistrationLevel(MinRegistrationLevel.BASIC)
+                        .build();
+        sendInitiateAddOrganisationIdRequestAndAssertResponse(initAddOrganisationIdRequestUpi);
+
         InitiateAddOrganisationIdRequest initAddOrganisationIdRequestWithRelyingPartyId =
                 InitiateAddOrganisationIdRequest.createCustom()
                         .setEmailAndOrganisationId(EMAIL, OrganisationId.create(ORGANISATION_ID_TITLE,
@@ -149,6 +158,22 @@ public class OrganisationIdClientHttpTest extends CommonHttpTest {
                         .build();
         sendInitiateAddOrganisationIdRequestAndAssertResponse(expectedInitAddOrganisationIdRequestWithDefaultValues,
                                                               initAddOrganisationIdRequestWithDefaultValues);
+
+        InitiateAddOrganisationIdRequest initAddOrganisationIdRequestWithUpi =
+                InitiateAddOrganisationIdRequest.createCustom()
+                        .setUpiAndOrganisationId(UPI,
+                                                 OrganisationId.create(ORGANISATION_ID_TITLE, IDENTIFIER_NAME,
+                                                                       IDENTIFIER))
+                        .setRelyingPartyId(RELYING_PARTY_ID)
+                        .build();
+        InitiateAddOrganisationIdRequest expectedInitAddOrganisationIdRequestWithUpi =
+                InitiateAddOrganisationIdRequest.createCustom()
+                        .setUpiAndOrganisationId(UPI,
+                                                 OrganisationId.create(ORGANISATION_ID_TITLE, IDENTIFIER_NAME,
+                                                                       IDENTIFIER))
+                        .build();
+        sendInitiateAddOrganisationIdRequestAndAssertResponse(expectedInitAddOrganisationIdRequestWithUpi,
+                                                              initAddOrganisationIdRequestWithUpi);
     }
 
     @Test
