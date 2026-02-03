@@ -80,6 +80,27 @@ public class InitiateSignRequest implements RelyingPartyRequest {
     }
 
     /**
+     * Returns instance of {@linkplain InitiateSignRequest} with:
+     * <br> {@linkplain UserInfoType} {@code UPI},
+     * {@link MinRegistrationLevel} {@code PLUS}, default push notification,
+     * default expiry time of two minutes and without binary data to sign and
+     * {@link AttributeToReturnInfo}.
+     *
+     * @param upi user's unique personal identifier for which transaction will be initiated. It
+     *              cannot be {@code null} or empty.
+     * @param title this is transaction title that will be shown to user through
+     *              Freja eID mobile application.
+     * @param text  data that user will sign by approving this transaction, also
+     *              will be shown through Freja eID mobile application.
+     * @return request
+     */
+    public static InitiateSignRequest createDefaultWithUpi(String upi, String title, String text) {
+        return new InitiateSignRequest(UserInfoType.UPI, upi, MinRegistrationLevel.PLUS, title, null, null,
+                                       DataToSignType.SIMPLE_UTF8_TEXT, DataToSign.create(text), SignatureType.SIMPLE,
+                                       null, null, null, null, null, false);
+    }
+
+    /**
      * Returns instance of builder that is used for creating
      * {@linkplain InitiateSignRequest} with custom request parameters.
      *
