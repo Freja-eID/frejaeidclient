@@ -33,6 +33,7 @@ public class OrganisationIdClientInitAddOrganisationIdTest {
     private static final String ORGANISATION_ID_TITLE = "OrgananisationId title";
     private static final String IDENTIFIER_NAME = "Identifier name";
     private static final String IDENTIFIER = "identifier";
+    private static final String UPI = "5633-823597-7862";
 
     private final MinRegistrationLevel minRegistrationLevel = MinRegistrationLevel.EXTENDED;
     private final Long expiry = TimeUnit.MINUTES.toMillis(6);
@@ -61,6 +62,9 @@ public class OrganisationIdClientInitAddOrganisationIdTest {
                 InitiateAddOrganisationIdRequest.createDefaultWithSsn(
                         SsnUserInfo.create(Country.SWEDEN, SSN),
                         OrganisationId.create(ORGANISATION_ID_TITLE, IDENTIFIER_NAME, IDENTIFIER));
+        InitiateAddOrganisationIdRequest initiateAddOrganisationIdDefaultUpiRequest =
+                InitiateAddOrganisationIdRequest.createDefaultWithUpi(
+                        UPI, OrganisationId.create(ORGANISATION_ID_TITLE, IDENTIFIER_NAME, IDENTIFIER));
 
         String reference = organisationIdClient.initiateAdd(initiateAddOrganisationIdDefaultEmailRequest);
         Mockito.verify(httpServiceMock)
@@ -73,6 +77,13 @@ public class OrganisationIdClientInitAddOrganisationIdTest {
         Mockito.verify(httpServiceMock)
                 .send(FrejaEnvironment.TEST.getServiceUrl() + MethodUrl.ORGANISATION_ID_INIT_ADD,
                       RequestTemplate.INIT_ADD_ORGANISATION_ID_TEMPLATE, initiateAddOrganisationIdDefaultSsnRequest,
+                      InitiateAddOrganisationIdResponse.class, null);
+        Assert.assertEquals(REFERENCE, reference);
+
+        reference = organisationIdClient.initiateAdd(initiateAddOrganisationIdDefaultUpiRequest);
+        Mockito.verify(httpServiceMock)
+                .send(FrejaEnvironment.TEST.getServiceUrl() + MethodUrl.ORGANISATION_ID_INIT_ADD,
+                      RequestTemplate.INIT_ADD_ORGANISATION_ID_TEMPLATE, initiateAddOrganisationIdDefaultUpiRequest,
                       InitiateAddOrganisationIdResponse.class, null);
         Assert.assertEquals(REFERENCE, reference);
     }

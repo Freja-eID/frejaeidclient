@@ -30,6 +30,7 @@ public class SignClientInitSignTest {
     private static final String SIGN_REFERENCE = "123456789123456789";
     private static final String QR_CODE_SECRET = "qrCodeSecret";
     private static final String RELYING_PARTY_ID = "verisec_integrator";
+    private static final String UPI = "5633-823597-7862";
 
     private MinRegistrationLevel minRegistrationLevel;
     private String title;
@@ -69,6 +70,8 @@ public class SignClientInitSignTest {
                 InitiateSignRequest.createDefaultWithEmail(EMAIL, title, text);
         InitiateSignRequest initiateSignDefaultSsnRequest =
                 InitiateSignRequest.createDefaultWithSsn(SsnUserInfo.create(Country.SWEDEN, SSN), title, text);
+        InitiateSignRequest initiateSignDefaultUpiRequest =
+                InitiateSignRequest.createDefaultWithUpi(UPI, title, text);
 
         InitiateSignResponse response = signClient.initiateV1_1(initiateSignDefaultEmailRequest);
         Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getServiceUrl() + MethodUrl.SIGN_INIT,
@@ -79,6 +82,12 @@ public class SignClientInitSignTest {
         response = signClient.initiateV1_1(initiateSignDefaultSsnRequest);
         Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getServiceUrl() + MethodUrl.SIGN_INIT,
                                              RequestTemplate.INIT_SIGN_TEMPLATE, initiateSignDefaultSsnRequest,
+                                             InitiateSignResponse.class, null);
+        Assert.assertEquals(expectedResponse, response);
+
+        response = signClient.initiateV1_1(initiateSignDefaultUpiRequest);
+        Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getServiceUrl() + MethodUrl.SIGN_INIT,
+                                             RequestTemplate.INIT_SIGN_TEMPLATE, initiateSignDefaultUpiRequest,
                                              InitiateSignResponse.class, null);
         Assert.assertEquals(expectedResponse, response);
     }
@@ -99,6 +108,8 @@ public class SignClientInitSignTest {
                 InitiateSignRequest.createDefaultWithEmail(EMAIL, title, text);
         InitiateSignRequest initiateSignDefaultSsnRequest =
                 InitiateSignRequest.createDefaultWithSsn(SsnUserInfo.create(Country.SWEDEN, SSN), title, text);
+        InitiateSignRequest initiateSignDefaultUpiRequest =
+                InitiateSignRequest.createDefaultWithUpi(UPI, title, text);
 
         InitiateSignResponse response = signClient.initiateV1_1(initiateSignDefaultEmailRequest);
         Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getServiceUrl() + MethodUrl.ORGANISATION_SIGN_INIT,
@@ -109,6 +120,12 @@ public class SignClientInitSignTest {
         response = signClient.initiateV1_1(initiateSignDefaultSsnRequest);
         Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getServiceUrl() + MethodUrl.ORGANISATION_SIGN_INIT,
                                              RequestTemplate.INIT_SIGN_TEMPLATE, initiateSignDefaultSsnRequest,
+                                             InitiateSignResponse.class, null);
+        Assert.assertEquals(expectedResponse, response);
+
+        response = signClient.initiateV1_1(initiateSignDefaultUpiRequest);
+        Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getServiceUrl() + MethodUrl.ORGANISATION_SIGN_INIT,
+                                             RequestTemplate.INIT_SIGN_TEMPLATE, initiateSignDefaultUpiRequest,
                                              InitiateSignResponse.class, null);
         Assert.assertEquals(expectedResponse, response);
     }
@@ -264,6 +281,8 @@ public class SignClientInitSignTest {
                 InitiateSignRequest.createDefaultWithEmail(EMAIL, title, text);
         InitiateSignRequest initiateSignDefaultSsnRequest =
                 InitiateSignRequest.createDefaultWithSsn(SsnUserInfo.create(Country.SWEDEN, SSN), title, text);
+        InitiateSignRequest initiateSignDefaultUpiRequest =
+                InitiateSignRequest.createDefaultWithUpi(UPI, title, text);
 
         String response = signClient.initiate(initiateSignDefaultEmailRequest);
         Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getServiceUrl() + MethodUrl.SIGN_INIT,
@@ -274,6 +293,12 @@ public class SignClientInitSignTest {
         response = signClient.initiate(initiateSignDefaultSsnRequest);
         Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getServiceUrl() + MethodUrl.SIGN_INIT,
                                              RequestTemplate.INIT_SIGN_TEMPLATE, initiateSignDefaultSsnRequest,
+                                             InitiateSignResponse.class, null);
+        Assert.assertEquals(expectedResponse.getSignRef(), response);
+
+        response = signClient.initiate(initiateSignDefaultUpiRequest);
+        Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getServiceUrl() + MethodUrl.SIGN_INIT,
+                                             RequestTemplate.INIT_SIGN_TEMPLATE, initiateSignDefaultUpiRequest,
                                              InitiateSignResponse.class, null);
         Assert.assertEquals(expectedResponse.getSignRef(), response);
     }
@@ -294,6 +319,8 @@ public class SignClientInitSignTest {
                 InitiateSignRequest.createDefaultWithEmail(EMAIL, title, text);
         InitiateSignRequest initiateSignDefaultSsnRequest =
                 InitiateSignRequest.createDefaultWithSsn(SsnUserInfo.create(Country.SWEDEN, SSN), title, text);
+        InitiateSignRequest initiateSignDefaultUpiRequest =
+                InitiateSignRequest.createDefaultWithUpi(UPI, title, text);
 
         String response = signClient.initiate(initiateSignDefaultEmailRequest);
         Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getServiceUrl() + MethodUrl.ORGANISATION_SIGN_INIT,
@@ -304,6 +331,12 @@ public class SignClientInitSignTest {
         response = signClient.initiate(initiateSignDefaultSsnRequest);
         Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getServiceUrl() + MethodUrl.ORGANISATION_SIGN_INIT,
                                              RequestTemplate.INIT_SIGN_TEMPLATE, initiateSignDefaultSsnRequest,
+                                             InitiateSignResponse.class, null);
+        Assert.assertEquals(expectedResponse.getSignRef(), response);
+
+        response = signClient.initiate(initiateSignDefaultUpiRequest);
+        Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getServiceUrl() + MethodUrl.ORGANISATION_SIGN_INIT,
+                                             RequestTemplate.INIT_SIGN_TEMPLATE, initiateSignDefaultUpiRequest,
                                              InitiateSignResponse.class, null);
         Assert.assertEquals(expectedResponse.getSignRef(), response);
     }

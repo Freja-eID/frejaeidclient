@@ -91,6 +91,10 @@ public class SignClientHttpTest extends CommonHttpTest {
                 InitiateSignRequest.createDefaultWithSsn(SsnUserInfo.create(
                         Country.FINLAND, SSN), title, dataToSignText);
         sendInitiateV11SignRequestAndAssertResponse(initiateSignRequestDefaultSsn);
+        InitiateSignRequest initiateSignRequestDefaultUpi =
+                InitiateSignRequest.createDefaultWithUpi(UPI, title, dataToSignText);
+        sendInitiateV11SignRequestAndAssertResponse(initiateSignRequestDefaultUpi);
+
         InitiateSignRequest initSignCustomRequestWithRequestedAttributes = InitiateSignRequest.createCustom()
                 .setEmail(EMAIL)
                 .setDataToSign(dataToSign)
@@ -210,6 +214,10 @@ public class SignClientHttpTest extends CommonHttpTest {
                 InitiateSignRequest.createDefaultWithSsn(SsnUserInfo.create(
                         Country.FINLAND, SSN), title, dataToSignText);
         sendInitiateSignRequestAndAssertResponse(initiateSignRequestDefaultSsn);
+        InitiateSignRequest initiateSignRequestDefaultUpi =
+                InitiateSignRequest.createDefaultWithUpi(UPI, title, dataToSignText);
+        sendInitiateSignRequestAndAssertResponse(initiateSignRequestDefaultUpi);
+
         InitiateSignRequest initSignCustomRequestWithRequestedAttributes = InitiateSignRequest.createCustom()
                 .setEmail(EMAIL)
                 .setDataToSign(dataToSign)

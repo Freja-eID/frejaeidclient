@@ -28,6 +28,7 @@ public class InitiateSignRequestBuildersTest {
     private static final PushNotification PUSH_NOTIFICATION = PushNotification.create(TITLE, TEXT);
     private static final OriginDeviceDetails ORIGIN_DEVICE_DETAILS = OriginDeviceDetails.create("frejaCookie");
     private static final Set<AttributeToReturnInfo> REQUESTED_ATTRIBUTES = new HashSet<>();
+    private static final String UPI = "5633-823597-7862";
 
     @BeforeClass
     public static void createRequestedAttributes() {
@@ -79,6 +80,16 @@ public class InitiateSignRequestBuildersTest {
                                         MinRegistrationLevel.PLUS, TITLE, null, null, DataToSignType.SIMPLE_UTF8_TEXT,
                                         DataToSign.create(TEXT), SignatureType.SIMPLE, null, null, null, null, null, false);
         InitiateSignRequest initiateSignRequest = InitiateSignRequest.createDefaultWithSsn(SSN_USER_INFO, TITLE, TEXT);
+        Assert.assertEquals(expectedInitiateSignRequest, initiateSignRequest);
+    }
+
+    @Test
+    public void createDefaultUpiRequest() {
+        InitiateSignRequest expectedInitiateSignRequest =
+                new InitiateSignRequest(UserInfoType.UPI, UPI, MinRegistrationLevel.PLUS, TITLE, null, null,
+                                        DataToSignType.SIMPLE_UTF8_TEXT, DataToSign.create(TEXT),
+                                        SignatureType.SIMPLE, null, null, null, null, null, false);
+        InitiateSignRequest initiateSignRequest = InitiateSignRequest.createDefaultWithUpi(UPI, TITLE, TEXT);
         Assert.assertEquals(expectedInitiateSignRequest, initiateSignRequest);
     }
 

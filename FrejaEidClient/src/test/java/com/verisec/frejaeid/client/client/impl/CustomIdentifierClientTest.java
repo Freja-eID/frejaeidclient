@@ -31,6 +31,7 @@ public class CustomIdentifierClientTest {
     private static final String SSN = "199207295578";
     private static final String CUSTOM_IDENTIFIER = "vealmar";
     private static final String RELYING_PARTY_ID = "verisec_integrator";
+    protected static final String UPI = "5633-823597-7862";
     private static CustomIdentifierClientApi customIdentifierClient;
 
     @Before
@@ -59,6 +60,13 @@ public class CustomIdentifierClientTest {
         Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getServiceUrl() + MethodUrl.CUSTOM_IDENTIFIER_SET,
                                              RequestTemplate.SET_CUSTOM_IDENTIFIER_TEMPLATE,
                                              setCustomIdentifierRequestDefaultSsn, EmptyFrejaResponse.class, null);
+
+        SetCustomIdentifierRequest setCustomIdentifierRequestDefaultUpi =
+                SetCustomIdentifierRequest.createDefaultWithUpi(UPI, CUSTOM_IDENTIFIER);
+        customIdentifierClient.set(setCustomIdentifierRequestDefaultUpi);
+        Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getServiceUrl() + MethodUrl.CUSTOM_IDENTIFIER_SET,
+                                             RequestTemplate.SET_CUSTOM_IDENTIFIER_TEMPLATE,
+                                             setCustomIdentifierRequestDefaultUpi, EmptyFrejaResponse.class, null);
     }
 
     @Test
