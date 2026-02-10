@@ -21,6 +21,7 @@ public class InitiateAddOrganisationIdRequest implements RelyingPartyRequest {
     private final OrganisationId organisationId;
     private final MinRegistrationLevel minRegistrationLevel;
     private final Long expiry;
+    private final String text;
     private final String relyingPartyId;
 
     /**
@@ -35,7 +36,7 @@ public class InitiateAddOrganisationIdRequest implements RelyingPartyRequest {
      */
     public static InitiateAddOrganisationIdRequest createDefaultWithEmail(String email, OrganisationId organisationId) {
         return new InitiateAddOrganisationIdRequest(UserInfoType.EMAIL, email, organisationId,
-                                                    MinRegistrationLevel.EXTENDED, null, null);
+                MinRegistrationLevel.EXTENDED, null, null);
     }
 
     /**
@@ -55,7 +56,7 @@ public class InitiateAddOrganisationIdRequest implements RelyingPartyRequest {
                                                                         OrganisationId organisationId)
             throws FrejaEidClientInternalException {
         return new InitiateAddOrganisationIdRequest(UserInfoType.SSN, UserInfoUtil.convertSsnUserInfo(ssnUserInfo),
-                                                    organisationId, MinRegistrationLevel.EXTENDED, null, null);
+                organisationId, MinRegistrationLevel.EXTENDED, null, null);
     }
 
     /**
@@ -75,18 +76,20 @@ public class InitiateAddOrganisationIdRequest implements RelyingPartyRequest {
             @JsonProperty(value = "userInfo") String userInfo,
             @JsonProperty(value = "organisationId") OrganisationId organisationId,
             @JsonProperty(value = "minRegistrationLevel") MinRegistrationLevel minRegistrationLevel,
-            @JsonProperty(value = "expiry") Long expiry) {
-        this(userInfoType, userInfo, organisationId, minRegistrationLevel, expiry, null);
+            @JsonProperty(value = "expiry") Long expiry,
+            @JsonProperty(value = "text") String text) {
+        this(userInfoType, userInfo, organisationId, minRegistrationLevel, expiry, text, null);
     }
 
     InitiateAddOrganisationIdRequest(UserInfoType userInfoType, String userInfo,
                                      OrganisationId organisationId, MinRegistrationLevel minRegistrationLevel,
-                                     Long expiry, String relyingPartyId) {
+                                     Long expiry, String text, String relyingPartyId) {
         this.userInfoType = userInfoType;
         this.userInfo = userInfo;
         this.organisationId = organisationId;
         this.minRegistrationLevel = minRegistrationLevel;
         this.expiry = expiry;
+        this.text = text;
         this.relyingPartyId = relyingPartyId;
     }
 
@@ -110,6 +113,10 @@ public class InitiateAddOrganisationIdRequest implements RelyingPartyRequest {
         return expiry;
     }
 
+    public String getText() {
+        return text;
+    }
+
     @JsonIgnore
     public String getRelyingPartyId() {
         return relyingPartyId;
@@ -117,7 +124,8 @@ public class InitiateAddOrganisationIdRequest implements RelyingPartyRequest {
 
     @Override
     public int hashCode() {
-        return Objects.hash(userInfoType, userInfo, organisationId, minRegistrationLevel, expiry, relyingPartyId);
+        return Objects.hash(userInfoType, userInfo, organisationId, minRegistrationLevel,
+                expiry, text, relyingPartyId);
     }
 
     @Override
@@ -130,6 +138,7 @@ public class InitiateAddOrganisationIdRequest implements RelyingPartyRequest {
                 Objects.equals(organisationId, that.organisationId) &&
                 minRegistrationLevel == that.minRegistrationLevel &&
                 Objects.equals(expiry, that.expiry) &&
+                Objects.equals(text, that.text) &&
                 Objects.equals(relyingPartyId, that.relyingPartyId);
     }
 
@@ -141,6 +150,7 @@ public class InitiateAddOrganisationIdRequest implements RelyingPartyRequest {
                 ", organisationId=" + organisationId +
                 ", minRegistrationLevel=" + minRegistrationLevel +
                 ", expiry=" + expiry +
+                ", text=" + text +
                 ", relyingPartyId='" + relyingPartyId + '\'' +
                 '}';
     }
