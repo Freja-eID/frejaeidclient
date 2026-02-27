@@ -25,6 +25,7 @@ public class InitiateAuthenticationRequestBuildersTest {
     private static final String ORG_ID_ISSUER = "orgIdIssuer";
     private static final OriginDeviceDetails ORIGIN_DEVICE_DETAILS = OriginDeviceDetails.create("frejaCookie");
     private static final Set<AttributeToReturnInfo> REQUESTED_ATTRIBUTES = new HashSet<>();
+    private static final String UPI = "5633-823597-7862";
 
     @BeforeClass
     public static void createRequestedAttributes() {
@@ -76,6 +77,16 @@ public class InitiateAuthenticationRequestBuildersTest {
                                                   MinRegistrationLevel.BASIC, null, null, null, null, null, false);
         InitiateAuthenticationRequest initiateAuthenticationRequest =
                 InitiateAuthenticationRequest.createDefaultWithSsn(SSN_USER_INFO);
+        Assert.assertEquals(expectedInitiateAuthenticationRequest, initiateAuthenticationRequest);
+    }
+
+    @Test
+    public void createDefaultUpiRequest() {
+        InitiateAuthenticationRequest expectedInitiateAuthenticationRequest =
+                new InitiateAuthenticationRequest(
+                        UserInfoType.UPI, UPI, MinRegistrationLevel.BASIC, null, null, null, null, null, false);
+        InitiateAuthenticationRequest initiateAuthenticationRequest =
+                InitiateAuthenticationRequest.createDefaultWithUpi(UPI);
         Assert.assertEquals(expectedInitiateAuthenticationRequest, initiateAuthenticationRequest);
     }
 

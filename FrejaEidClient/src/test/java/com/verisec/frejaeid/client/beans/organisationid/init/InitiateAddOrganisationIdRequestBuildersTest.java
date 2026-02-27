@@ -25,6 +25,7 @@ public class InitiateAddOrganisationIdRequestBuildersTest {
     private static final String INFERRED_USER_INFO = "N/A";
     private static final OrganisationId ORGANISATION_ID =
             OrganisationId.create(ORGANISATION_ID_TITLE, IDENTIFIER_NAME, IDENTIFIER);
+    private static final String UPI = "5633-823597-7862";
 
     @Test
     public void createDefaultEmailRequest() {
@@ -43,6 +44,16 @@ public class InitiateAddOrganisationIdRequestBuildersTest {
                                                      ORGANISATION_ID, MinRegistrationLevel.EXTENDED, null, null, null);
         InitiateAddOrganisationIdRequest initiateAddOrganisationIdRequest =
                 InitiateAddOrganisationIdRequest.createDefaultWithSsn(SSN_USER_INFO, ORGANISATION_ID);
+        Assert.assertEquals(expectedInitiateAddOrganisationIdRequest, initiateAddOrganisationIdRequest);
+    }
+
+    @Test
+    public void createDefaultUpiRequest() {
+        InitiateAddOrganisationIdRequest expectedInitiateAddOrganisationIdRequest =
+                new InitiateAddOrganisationIdRequest(UserInfoType.UPI, UPI, ORGANISATION_ID,
+                                                     MinRegistrationLevel.EXTENDED, null, null);
+        InitiateAddOrganisationIdRequest initiateAddOrganisationIdRequest =
+                InitiateAddOrganisationIdRequest.createDefaultWithUpi(UPI, ORGANISATION_ID);
         Assert.assertEquals(expectedInitiateAddOrganisationIdRequest, initiateAddOrganisationIdRequest);
     }
 

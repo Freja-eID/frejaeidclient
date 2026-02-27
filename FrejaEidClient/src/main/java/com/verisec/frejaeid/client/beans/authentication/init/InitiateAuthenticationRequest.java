@@ -60,6 +60,20 @@ public class InitiateAuthenticationRequest implements RelyingPartyRequest {
     }
 
     /**
+     * Returns instance of {@linkplain InitiateAuthenticationRequest} with:
+     * <br> {@linkplain UserInfoType} {@code UPI}, {@link MinRegistrationLevel} {@code BASIC} and without
+     * {@link AttributeToReturnInfo}.
+     *
+     * @param upi user's unique personal identifier for which transaction will be initiated. It cannot be {@code null} or empty. Maximum
+     *              length is 256 characters.
+     * @return request
+     */
+    public static InitiateAuthenticationRequest createDefaultWithUpi(String upi) {
+        return new InitiateAuthenticationRequest(
+                UserInfoType.UPI, upi, MinRegistrationLevel.BASIC, null, null, null, null, false);
+    }
+
+    /**
      * Returns instance of builder that is used for creating {@linkplain InitiateAuthenticationRequest} with custom
      * request parameters.
      *
