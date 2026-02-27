@@ -51,7 +51,7 @@ public class InitiateAddOrganisationIdRequestBuildersTest {
     public void createDefaultUpiRequest() {
         InitiateAddOrganisationIdRequest expectedInitiateAddOrganisationIdRequest =
                 new InitiateAddOrganisationIdRequest(UserInfoType.UPI, UPI, ORGANISATION_ID,
-                                                     MinRegistrationLevel.EXTENDED, null, null);
+                                                     MinRegistrationLevel.EXTENDED, null, null, null);
         InitiateAddOrganisationIdRequest initiateAddOrganisationIdRequest =
                 InitiateAddOrganisationIdRequest.createDefaultWithUpi(UPI, ORGANISATION_ID);
         Assert.assertEquals(expectedInitiateAddOrganisationIdRequest, initiateAddOrganisationIdRequest);
