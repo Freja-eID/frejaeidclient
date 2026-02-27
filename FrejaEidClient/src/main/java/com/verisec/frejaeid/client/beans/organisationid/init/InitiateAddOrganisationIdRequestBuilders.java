@@ -41,7 +41,7 @@ public class InitiateAddOrganisationIdRequestBuilders {
         public SetOptionalParamsBuilder setSsnAndOrganisationId(SsnUserInfo ssnUserInfo, OrganisationId organisationId)
                 throws FrejaEidClientInternalException {
             return new SetOptionalParamsBuilder(UserInfoType.SSN, UserInfoUtil.convertSsnUserInfo(ssnUserInfo),
-                                                organisationId);
+                    organisationId);
         }
 
         /**
@@ -75,7 +75,7 @@ public class InitiateAddOrganisationIdRequestBuilders {
          * Sets unique personal identifier as userInfo and {@link UserInfoType#UPI} as
          * {@linkplain UserInfoType} for initiating transaction.
          *
-         * @param upi    user's unique personal identifier that will be used to identify
+         * @param upi            user's unique personal identifier that will be used to identify
          *                       the end user in format 1234-123456-1234.
          * @param organisationId instance of {@linkplain OrganisationId} that
          *                       contains information regarding organisation id.
@@ -94,6 +94,7 @@ public class InitiateAddOrganisationIdRequestBuilders {
         private final OrganisationId organisationId;
         private MinRegistrationLevel minRegistrationLevel = MinRegistrationLevel.EXTENDED;
         private Long expiry = null;
+        private String text = null;
         private String relyingPartyId = null;
 
         private SetOptionalParamsBuilder(UserInfoType userInfoType, String userInfo, OrganisationId organisationId) {
@@ -135,6 +136,17 @@ public class InitiateAddOrganisationIdRequestBuilders {
         }
 
         /**
+         * Text which will be displayed to the user when adding organisation id
+         *
+         * @param text optional parameter.
+         * @return request builder
+         */
+        public SetOptionalParamsBuilder setText(String text) {
+            this.text = text;
+            return this;
+        }
+
+        /**
          * <b>Only relying parties that are integrators should use this
          * method.</b>
          *
@@ -148,8 +160,9 @@ public class InitiateAddOrganisationIdRequestBuilders {
         }
 
         public InitiateAddOrganisationIdRequest build() {
-            return new InitiateAddOrganisationIdRequest(userInfoType, userInfo, organisationId, minRegistrationLevel,
-                                                        expiry, relyingPartyId);
+            return new InitiateAddOrganisationIdRequest(
+                    userInfoType, userInfo, organisationId, minRegistrationLevel,
+                    expiry, text, relyingPartyId);
         }
 
     }
