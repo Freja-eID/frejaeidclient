@@ -7,8 +7,8 @@ import com.verisec.frejaeid.client.enums.MinRegistrationLevel;
 import com.verisec.frejaeid.client.enums.UserInfoType;
 import com.verisec.frejaeid.client.exceptions.FrejaEidClientInternalException;
 import com.verisec.frejaeid.client.util.UserInfoUtil;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 public class InitiateAddOrganisationIdRequestBuildersTest {
 
@@ -34,7 +34,7 @@ public class InitiateAddOrganisationIdRequestBuildersTest {
                                                      MinRegistrationLevel.EXTENDED, null, null, null);
         InitiateAddOrganisationIdRequest initiateAddOrganisationIdRequest =
                 InitiateAddOrganisationIdRequest.createDefaultWithEmail(EMAIL, ORGANISATION_ID);
-        Assert.assertEquals(expectedInitiateAddOrganisationIdRequest, initiateAddOrganisationIdRequest);
+        Assertions.assertEquals(expectedInitiateAddOrganisationIdRequest, initiateAddOrganisationIdRequest);
     }
 
     @Test
@@ -44,7 +44,7 @@ public class InitiateAddOrganisationIdRequestBuildersTest {
                                                      ORGANISATION_ID, MinRegistrationLevel.EXTENDED, null, null, null);
         InitiateAddOrganisationIdRequest initiateAddOrganisationIdRequest =
                 InitiateAddOrganisationIdRequest.createDefaultWithSsn(SSN_USER_INFO, ORGANISATION_ID);
-        Assert.assertEquals(expectedInitiateAddOrganisationIdRequest, initiateAddOrganisationIdRequest);
+        Assertions.assertEquals(expectedInitiateAddOrganisationIdRequest, initiateAddOrganisationIdRequest);
     }
 
     @Test
@@ -54,7 +54,7 @@ public class InitiateAddOrganisationIdRequestBuildersTest {
                                                      MinRegistrationLevel.EXTENDED, null, null, null);
         InitiateAddOrganisationIdRequest initiateAddOrganisationIdRequest =
                 InitiateAddOrganisationIdRequest.createDefaultWithUpi(UPI, ORGANISATION_ID);
-        Assert.assertEquals(expectedInitiateAddOrganisationIdRequest, initiateAddOrganisationIdRequest);
+        Assertions.assertEquals(expectedInitiateAddOrganisationIdRequest, initiateAddOrganisationIdRequest);
     }
 
     @Test
@@ -70,7 +70,7 @@ public class InitiateAddOrganisationIdRequestBuildersTest {
                         .setRelyingPartyId(RELYING_PARTY_ID)
                         .setText(TEXT)
                         .build();
-        Assert.assertEquals(expectedInitiateAddOrganisationIdRequest, initiateAddOrganisationIdRequest);
+        Assertions.assertEquals(expectedInitiateAddOrganisationIdRequest, initiateAddOrganisationIdRequest);
     }
 
     @Test
@@ -83,7 +83,7 @@ public class InitiateAddOrganisationIdRequestBuildersTest {
                         .setEmailAndOrganisationId(EMAIL, ORGANISATION_ID)
                         .setRelyingPartyId(RELYING_PARTY_ID)
                         .build();
-        Assert.assertEquals(expectedInitiateAddOrganisationIdRequest, initiateAddOrganisationIdRequest);
+        Assertions.assertEquals(expectedInitiateAddOrganisationIdRequest, initiateAddOrganisationIdRequest);
     }
 
     @Test
@@ -97,7 +97,7 @@ public class InitiateAddOrganisationIdRequestBuildersTest {
                         .setSsnAndOrganisationId(SSN_USER_INFO, ORGANISATION_ID)
                         .setRelyingPartyId(RELYING_PARTY_ID)
                         .build();
-        Assert.assertEquals(expectedInitiateAddOrganisationIdRequest, initiateAddOrganisationIdRequest);
+        Assertions.assertEquals(expectedInitiateAddOrganisationIdRequest, initiateAddOrganisationIdRequest);
     }
 
     @Test
@@ -110,7 +110,7 @@ public class InitiateAddOrganisationIdRequestBuildersTest {
                         .setPhoneNumberAndOrganisationId(PHONE_NUMBER, ORGANISATION_ID)
                         .setExpiry(EXPIRY)
                         .build();
-        Assert.assertEquals(expectedInitiateAddOrganisationIdRequest, initiateAddOrganisationIdRequest);
+        Assertions.assertEquals(expectedInitiateAddOrganisationIdRequest, initiateAddOrganisationIdRequest);
     }
 
     @Test
@@ -124,7 +124,7 @@ public class InitiateAddOrganisationIdRequestBuildersTest {
                         .setExpiry(EXPIRY)
                         .setText(TEXT)
                         .build();
-        Assert.assertEquals(expectedInitiateAuthenticationRequest, initiateAuthenticationRequest);
+        Assertions.assertEquals(expectedInitiateAuthenticationRequest, initiateAuthenticationRequest);
     }
 
     @Test
@@ -139,6 +139,6 @@ public class InitiateAddOrganisationIdRequestBuildersTest {
                         .setMinRegistrationLevel(null)
                         .setRelyingPartyId(null)
                         .build();
-        Assert.assertEquals(expectedInitiateAddOrganisationIdRequest, initiateAddOrganisationIdRequest);
+        Assertions.assertEquals(expectedInitiateAddOrganisationIdRequest, initiateAddOrganisationIdRequest);
     }
 }

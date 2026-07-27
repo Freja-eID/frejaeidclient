@@ -12,9 +12,9 @@ import com.verisec.frejaeid.client.exceptions.FrejaEidException;
 import com.verisec.frejaeid.client.http.HttpServiceApi;
 import com.verisec.frejaeid.client.util.MethodUrl;
 import com.verisec.frejaeid.client.util.RequestTemplate;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 public class OrganisationIdClientDeleteOrganisationIdTest {
@@ -24,7 +24,7 @@ public class OrganisationIdClientDeleteOrganisationIdTest {
     private static final String RELYING_PARTY_ID = "verisec_integrator";
     private OrganisationIdClientApi organisationIdClient;
 
-    @Before
+    @BeforeEach
     public void initialiseClient() throws FrejaEidClientInternalException {
         organisationIdClient = OrganisationIdClient.create(TestUtil.getDefaultSslSettings(), FrejaEnvironment.TEST)
                 .setHttpService(httpServiceMock)
@@ -72,13 +72,13 @@ public class OrganisationIdClientDeleteOrganisationIdTest {
                                               Mockito.eq(EmptyFrejaResponse.class), (String) Mockito.isNull()))
                     .thenThrow(frejaEidException);
             organisationIdClient.delete(deleteOrganisationIdRequest);
-            Assert.fail("Test should throw exception!");
+            Assertions.fail("Test should throw exception!");
         } catch (FrejaEidException rpEx) {
             Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getServiceUrl() + MethodUrl.ORGANISATION_ID_DELETE,
                                                  RequestTemplate.DELETE_ORGANISATION_ID_TEMPLATE,
                                                  deleteOrganisationIdRequest, EmptyFrejaResponse.class, null);
-            Assert.assertEquals(5001, rpEx.getErrorCode());
-            Assert.assertEquals("There is no user for given custom identifier.", rpEx.getLocalizedMessage());
+            Assertions.assertEquals(5001, rpEx.getErrorCode());
+            Assertions.assertEquals("There is no user for given custom identifier.", rpEx.getLocalizedMessage());
         }
     }
 }

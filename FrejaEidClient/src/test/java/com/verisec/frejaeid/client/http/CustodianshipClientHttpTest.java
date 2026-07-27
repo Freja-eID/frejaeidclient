@@ -10,9 +10,9 @@ import com.verisec.frejaeid.client.enums.UserCustodianshipStatusResult;
 import com.verisec.frejaeid.client.exceptions.FrejaEidClientInternalException;
 import com.verisec.frejaeid.client.exceptions.FrejaEidException;
 import com.verisec.frejaeid.client.util.JsonService;
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 
@@ -21,7 +21,7 @@ public class CustodianshipClientHttpTest extends CommonHttpTest {
     private static GetUserCustodianshipStatusResponse getUserCustodianshipStatusResponse;
     private static CustodianshipClient custodianshipClient;
 
-    @BeforeClass
+    @BeforeAll
     public static void init() throws FrejaEidClientInternalException {
         jsonService = new JsonService();
         custodianshipClient = CustodianshipClient.create(TestUtil.getDefaultSslSettings(), FrejaEnvironment.TEST)
@@ -43,7 +43,7 @@ public class CustodianshipClientHttpTest extends CommonHttpTest {
         startMockServer(expectedRequest, HttpStatusCode.OK.getCode(), getCustodianshipStatusResponseString);
         String result = custodianshipClient.getUserCustodianshipStatus(validRequest);
         stopServer();
-        Assert.assertEquals(UserCustodianshipStatusResult.USER_HAS_CUSTODIAN.getStatus(), result);
+        Assertions.assertEquals(UserCustodianshipStatusResult.USER_HAS_CUSTODIAN.getStatus(), result);
     }
 
     @Test

@@ -19,9 +19,9 @@ import com.verisec.frejaeid.client.exceptions.FrejaEidClientInternalException;
 import com.verisec.frejaeid.client.exceptions.FrejaEidException;
 import com.verisec.frejaeid.client.util.JsonService;
 import org.apache.commons.codec.binary.Base64;
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -43,7 +43,7 @@ public class SignClientHttpTest extends CommonHttpTest {
     private static SignClientApi signClient;
     private static final AttributeToReturn[] ATTRIBUTES_TO_RETURN = AttributeToReturn.values();
 
-    @BeforeClass
+    @BeforeAll
     public static void init() throws FrejaEidClientInternalException {
         jsonService = new JsonService();
         title = "Sign transaction";
@@ -76,7 +76,7 @@ public class SignClientHttpTest extends CommonHttpTest {
         startMockServer(expectedRequest, HttpStatusCode.OK.getCode(), initSignResponseString);
         InitiateSignResponse response = signClient.initiateV1_1(validRequest);
         stopServer();
-        Assert.assertEquals(initiateSignResponse, response);
+        Assertions.assertEquals(initiateSignResponse, response);
     }
 
     @Test
@@ -184,7 +184,7 @@ public class SignClientHttpTest extends CommonHttpTest {
 
         InitiateSignResponse response = signClient.initiateV1_1(initSignCustomRequestWithRequestedAttributes);
         stopServer();
-        Assert.assertEquals(initiateSignResponse, response);
+        Assertions.assertEquals(initiateSignResponse, response);
     }
 
     private void sendInitiateSignRequestAndAssertResponse(InitiateSignRequest validRequest)
@@ -199,7 +199,7 @@ public class SignClientHttpTest extends CommonHttpTest {
         startMockServer(expectedRequest, HttpStatusCode.OK.getCode(), initSignResponseString);
         String reference = signClient.initiate(validRequest);
         stopServer();
-        Assert.assertEquals(REFERENCE, reference);
+        Assertions.assertEquals(REFERENCE, reference);
     }
 
     @Test
@@ -303,7 +303,7 @@ public class SignClientHttpTest extends CommonHttpTest {
 
         String reference = signClient.initiate(initSignCustomRequestWithRequestedAttributes);
         stopServer();
-        Assert.assertEquals(REFERENCE, reference);
+        Assertions.assertEquals(REFERENCE, reference);
     }
 
     @Test
@@ -315,7 +315,7 @@ public class SignClientHttpTest extends CommonHttpTest {
         startMockServer(expectedGetOneSignResultRequest, HttpStatusCode.OK.getCode(), getOneResultResponseString);
 
         SignResult response = signClient.getResult(getOneSignResultRequest);
-        Assert.assertEquals(REFERENCE, response.getSignRef());
+        Assertions.assertEquals(REFERENCE, response.getSignRef());
     }
 
     @Test
@@ -327,7 +327,7 @@ public class SignClientHttpTest extends CommonHttpTest {
         startMockServer(expectedGetOneSignResultRequest, HttpStatusCode.OK.getCode(), getOneResultResponseString);
 
         SignResult response = signClient.getResult(getOneSignResultRequest);
-        Assert.assertEquals(REFERENCE, response.getSignRef());
+        Assertions.assertEquals(REFERENCE, response.getSignRef());
     }
 
     @Test
@@ -339,7 +339,7 @@ public class SignClientHttpTest extends CommonHttpTest {
         startMockServer(getOneSignResultRequest, HttpStatusCode.OK.getCode(), getOneResultResponseString);
 
         SignResult response = signClient.getResult(getOneSignResultRequest);
-        Assert.assertEquals(REFERENCE, response.getSignRef());
+        Assertions.assertEquals(REFERENCE, response.getSignRef());
     }
 
     @Test
@@ -350,7 +350,7 @@ public class SignClientHttpTest extends CommonHttpTest {
         startMockServer(getResultsRequest, HttpStatusCode.OK.getCode(), getResultsResponseString);
 
         List<SignResult> response = signClient.getResults(getResultsRequest);
-        Assert.assertEquals(REFERENCE, response.get(0).getSignRef());
+        Assertions.assertEquals(REFERENCE, response.get(0).getSignRef());
     }
 
     @Test
@@ -362,7 +362,7 @@ public class SignClientHttpTest extends CommonHttpTest {
         startMockServer(expectedGetResultsRequest, HttpStatusCode.OK.getCode(), getResultsResponseString);
 
         List<SignResult> response = signClient.getResults(getResultsRequest);
-        Assert.assertEquals(REFERENCE, response.get(0).getSignRef());
+        Assertions.assertEquals(REFERENCE, response.get(0).getSignRef());
     }
 
     @Test

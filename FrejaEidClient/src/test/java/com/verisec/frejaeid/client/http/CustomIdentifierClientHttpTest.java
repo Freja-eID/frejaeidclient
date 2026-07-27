@@ -12,8 +12,8 @@ import com.verisec.frejaeid.client.enums.HttpStatusCode;
 import com.verisec.frejaeid.client.exceptions.FrejaEidClientInternalException;
 import com.verisec.frejaeid.client.exceptions.FrejaEidException;
 import com.verisec.frejaeid.client.util.JsonService;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 
@@ -21,7 +21,7 @@ public class CustomIdentifierClientHttpTest extends CommonHttpTest {
 
     private static CustomIdentifierClient customIdentifierClient;
 
-    @BeforeClass
+    @BeforeAll
     public static void init() throws FrejaEidClientInternalException {
         jsonService = new JsonService();
         customIdentifierClient = CustomIdentifierClient.create(TestUtil.getDefaultSslSettings(), FrejaEnvironment.TEST)

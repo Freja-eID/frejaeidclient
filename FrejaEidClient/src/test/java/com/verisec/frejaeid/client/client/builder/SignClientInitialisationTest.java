@@ -8,11 +8,11 @@ import com.verisec.frejaeid.client.enums.FrejaEnvironment;
 import com.verisec.frejaeid.client.enums.KeyStoreType;
 import com.verisec.frejaeid.client.enums.TransactionContext;
 import com.verisec.frejaeid.client.exceptions.FrejaEidClientInternalException;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 
 public class SignClientInitialisationTest {
 
@@ -81,7 +81,7 @@ public class SignClientInitialisationTest {
                     .build();
             fail("Test should throw exception!");
         } catch (FrejaEidClientInternalException ex) {
-            Assert.assertEquals("Polling timeout must be between 1 and 60 seconds.", ex.getLocalizedMessage());
+            Assertions.assertEquals("Polling timeout must be between 1 and 60 seconds.", ex.getLocalizedMessage());
         }
     }
 
@@ -94,7 +94,7 @@ public class SignClientInitialisationTest {
                     .build();
             fail("Test should throw exception!");
         } catch (FrejaEidClientInternalException ex) {
-            Assert.assertEquals("KeyStore Path, keyStore password or server certificate path cannot be null or empty.",
+            Assertions.assertEquals("KeyStore Path, keyStore password or server certificate path cannot be null or empty.",
                                 ex.getLocalizedMessage());
         }
     }
@@ -108,7 +108,7 @@ public class SignClientInitialisationTest {
                     .build();
             fail("Test should throw exception!");
         } catch (FrejaEidClientInternalException ex) {
-            Assert.assertEquals("KeyStore Path, keyStore password or server certificate path cannot be null or empty.",
+            Assertions.assertEquals("KeyStore Path, keyStore password or server certificate path cannot be null or empty.",
                                 ex.getLocalizedMessage());
         }
     }

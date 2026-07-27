@@ -14,10 +14,10 @@ import com.verisec.frejaeid.client.exceptions.FrejaEidException;
 import com.verisec.frejaeid.client.http.HttpServiceApi;
 import com.verisec.frejaeid.client.util.MethodUrl;
 import com.verisec.frejaeid.client.util.RequestTemplate;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
-import org.junit.Before;
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 public class OrganisationIdClientGetResultTest {
@@ -29,7 +29,7 @@ public class OrganisationIdClientGetResultTest {
     private static final String FREJA_COOKIE = "frejaCookie";
     private OrganisationIdClientApi organisationIdClient;
 
-    @Before
+    @BeforeEach
     public void initialiseClient() throws FrejaEidClientInternalException {
         organisationIdClient = OrganisationIdClient.create(TestUtil.getDefaultSslSettings(), FrejaEnvironment.TEST)
                 .setHttpService(httpServiceMock)

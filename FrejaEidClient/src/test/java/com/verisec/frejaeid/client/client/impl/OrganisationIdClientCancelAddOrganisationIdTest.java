@@ -12,9 +12,9 @@ import com.verisec.frejaeid.client.exceptions.FrejaEidException;
 import com.verisec.frejaeid.client.http.HttpServiceApi;
 import com.verisec.frejaeid.client.util.MethodUrl;
 import com.verisec.frejaeid.client.util.RequestTemplate;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 public class OrganisationIdClientCancelAddOrganisationIdTest {
@@ -24,7 +24,7 @@ public class OrganisationIdClientCancelAddOrganisationIdTest {
     private static final String RELYING_PARTY_ID = "relyingPartyId";
     private OrganisationIdClientApi organisationIdClient;
 
-    @Before
+    @BeforeEach
     public void initialiseClient() throws FrejaEidClientInternalException {
         organisationIdClient = OrganisationIdClient.create(TestUtil.getDefaultSslSettings(), FrejaEnvironment.TEST)
                 .setHttpService(httpServiceMock)
@@ -72,14 +72,14 @@ public class OrganisationIdClientCancelAddOrganisationIdTest {
                     .thenThrow(new FrejaEidException(FrejaEidErrorCode.INVALID_REFERENCE.getMessage(),
                                                      FrejaEidErrorCode.INVALID_REFERENCE.getCode()));
             organisationIdClient.cancelAdd(cancelAddOrganisationIdRequest);
-            Assert.fail("Test should throw exception!");
+            Assertions.fail("Test should throw exception!");
         } catch (FrejaEidException rpEx) {
             Mockito.verify(httpServiceMock)
                     .send(FrejaEnvironment.TEST.getServiceUrl() + MethodUrl.ORGANISATION_ID_CANCEL_ADD,
                           RequestTemplate.CANCEL_ADD_ORGANISATION_ID_TEMPLATE, cancelAddOrganisationIdRequest,
                           EmptyFrejaResponse.class, RELYING_PARTY_ID);
-            Assert.assertEquals(1100, rpEx.getErrorCode());
-            Assert.assertEquals("Invalid reference (for example, nonexistent or expired).", rpEx.getLocalizedMessage());
+            Assertions.assertEquals(1100, rpEx.getErrorCode());
+            Assertions.assertEquals("Invalid reference (for example, nonexistent or expired).", rpEx.getLocalizedMessage());
         }
     }
 }

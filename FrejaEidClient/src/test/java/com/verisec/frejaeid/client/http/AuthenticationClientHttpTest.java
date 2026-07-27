@@ -16,9 +16,9 @@ import com.verisec.frejaeid.client.enums.*;
 import com.verisec.frejaeid.client.exceptions.FrejaEidClientInternalException;
 import com.verisec.frejaeid.client.exceptions.FrejaEidException;
 import com.verisec.frejaeid.client.util.JsonService;
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -33,7 +33,7 @@ public class AuthenticationClientHttpTest extends CommonHttpTest {
     private static AuthenticationClientApi authenticationClient;
     private static final AttributeToReturn[] ATTRIBUTES_TO_RETURN = AttributeToReturn.values();
 
-    @BeforeClass
+    @BeforeAll
     public static void init() throws FrejaEidClientInternalException {
         jsonService = new JsonService();
         initiateAuthenticationResponse = new InitiateAuthenticationResponse(REFERENCE, QR_CODE_SECRET);
@@ -60,7 +60,7 @@ public class AuthenticationClientHttpTest extends CommonHttpTest {
         startMockServer(expectedRequest, HttpStatusCode.OK.getCode(), initAuthResponseString);
         InitiateAuthenticationResponse response = authenticationClient.initiateV1_1(validRequest);
         stopServer();
-        Assert.assertEquals(initiateAuthenticationResponse, response);
+        Assertions.assertEquals(initiateAuthenticationResponse, response);
     }
 
     private void sendInitiateAuthenticationRequestAndAssertResponse(InitiateAuthenticationRequest validRequest,
@@ -76,7 +76,7 @@ public class AuthenticationClientHttpTest extends CommonHttpTest {
         startMockServer(expectedRequest, HttpStatusCode.OK.getCode(), initAuthResponseString);
         String response = authenticationClient.initiate(validRequest);
         stopServer();
-        Assert.assertEquals(REFERENCE, response);
+        Assertions.assertEquals(REFERENCE, response);
     }
 
     @Test
@@ -265,7 +265,7 @@ public class AuthenticationClientHttpTest extends CommonHttpTest {
         String response =
                 authenticationClient.initiate(initAuthenticationRequestWithRequestedAttributesUserInfoOrganisationId);
         stopServer();
-        Assert.assertEquals(REFERENCE, response);
+        Assertions.assertEquals(REFERENCE, response);
     }
 
     @Test
@@ -287,7 +287,7 @@ public class AuthenticationClientHttpTest extends CommonHttpTest {
         InitiateAuthenticationResponse response =
                 authenticationClient.initiateV1_1(initAuthenticationRequestWithRequestedAttributesUserInfoOrganisationId);
         stopServer();
-        Assert.assertEquals(initiateAuthenticationResponse, response);
+        Assertions.assertEquals(initiateAuthenticationResponse, response);
     }
 
     @Test
@@ -299,7 +299,7 @@ public class AuthenticationClientHttpTest extends CommonHttpTest {
         startMockServer(authenticationResultRequest, HttpStatusCode.OK.getCode(), authenticationResultResponseString);
 
         AuthenticationResult response = authenticationClient.getResult(authenticationResultRequest);
-        Assert.assertEquals(REFERENCE, response.getAuthRef());
+        Assertions.assertEquals(REFERENCE, response.getAuthRef());
     }
 
     @Test
@@ -313,7 +313,7 @@ public class AuthenticationClientHttpTest extends CommonHttpTest {
                         authenticationResultResponseString);
 
         AuthenticationResult response = authenticationClient.getResult(authenticationResultRequest);
-        Assert.assertEquals(REFERENCE, response.getAuthRef());
+        Assertions.assertEquals(REFERENCE, response.getAuthRef());
     }
 
     @Test
@@ -328,7 +328,7 @@ public class AuthenticationClientHttpTest extends CommonHttpTest {
                         authenticationResultResponseString);
 
         AuthenticationResult response = authenticationClient.getResult(authenticationResultRequest);
-        Assert.assertEquals(REFERENCE, response.getAuthRef());
+        Assertions.assertEquals(REFERENCE, response.getAuthRef());
     }
 
     @Test
@@ -340,7 +340,7 @@ public class AuthenticationClientHttpTest extends CommonHttpTest {
         startMockServer(authenticationResultsRequest, HttpStatusCode.OK.getCode(), authenticationResultsResponseString);
 
         List<AuthenticationResult> response = authenticationClient.getResults(authenticationResultsRequest);
-        Assert.assertEquals(REFERENCE, response.get(0).getAuthRef());
+        Assertions.assertEquals(REFERENCE, response.get(0).getAuthRef());
     }
 
     @Test
@@ -354,7 +354,7 @@ public class AuthenticationClientHttpTest extends CommonHttpTest {
                         authenticationResultsResponseString);
 
         List<AuthenticationResult> response = authenticationClient.getResults(authenticationResultsRequest);
-        Assert.assertEquals(REFERENCE, response.get(0).getAuthRef());
+        Assertions.assertEquals(REFERENCE, response.get(0).getAuthRef());
     }
 
     @Test
