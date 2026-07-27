@@ -19,9 +19,9 @@ import com.verisec.frejaeid.client.enums.*;
 import com.verisec.frejaeid.client.exceptions.FrejaEidClientInternalException;
 import com.verisec.frejaeid.client.exceptions.FrejaEidException;
 import com.verisec.frejaeid.client.util.JsonService;
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -41,7 +41,7 @@ public class OrganisationIdClientHttpTest extends CommonHttpTest {
             Arrays.asList(OrganisationIdAttribute.create("key", "friendly name", "value"),
                           OrganisationIdAttribute.create("attribute_id", "attribute name", "attribute value"));
 
-    @BeforeClass
+    @BeforeAll
     public static void init() throws FrejaEidClientInternalException {
         jsonService = new JsonService();
         initiateAddOrganisationIdResponse = new InitiateAddOrganisationIdResponse(REFERENCE);
@@ -69,7 +69,7 @@ public class OrganisationIdClientHttpTest extends CommonHttpTest {
         startMockServer(expectedRequest, HttpStatusCode.OK.getCode(), initAddOrganisationIdResponseString);
         String reference = organisationIdClient.initiateAdd(validRequest);
         stopServer();
-        Assert.assertEquals(REFERENCE, reference);
+        Assertions.assertEquals(REFERENCE, reference);
     }
 
     @Test
@@ -193,7 +193,7 @@ public class OrganisationIdClientHttpTest extends CommonHttpTest {
                         organisationIdResultString);
 
         OrganisationIdResult response = organisationIdClient.getResult(getOneOrganisationIdResultRequest);
-        Assert.assertEquals(REFERENCE, response.getOrgIdRef());
+        Assertions.assertEquals(REFERENCE, response.getOrgIdRef());
     }
 
     @Test
@@ -205,7 +205,7 @@ public class OrganisationIdClientHttpTest extends CommonHttpTest {
         startMockServer(getOneOrganisationIdResultRequest, HttpStatusCode.OK.getCode(), organisationIdResultString);
 
         OrganisationIdResult response = organisationIdClient.getResult(getOneOrganisationIdResultRequest);
-        Assert.assertEquals(REFERENCE, response.getOrgIdRef());
+        Assertions.assertEquals(REFERENCE, response.getOrgIdRef());
     }
 
     @Test
@@ -265,7 +265,7 @@ public class OrganisationIdClientHttpTest extends CommonHttpTest {
 
         List<OrganisationIdUserInfo> actualListOfOrganisationIdUserInfos =
                 organisationIdClient.getAllUsers(getAllOrganisationIdUsersRequest);
-        Assert.assertEquals(getAllOrganisationIdUsersResponse.getUserInfos(), actualListOfOrganisationIdUserInfos);
+        Assertions.assertEquals(getAllOrganisationIdUsersResponse.getUserInfos(), actualListOfOrganisationIdUserInfos);
     }
 
     @Test
@@ -278,7 +278,7 @@ public class OrganisationIdClientHttpTest extends CommonHttpTest {
 
         List<OrganisationIdUserInfo> actualListOfOrganisationIdUserInfos =
                 organisationIdClient.getAllUsers(getAllOrganisationIdUsersRequest);
-        Assert.assertEquals(getAllOrganisationIdUsersResponse.getUserInfos(), actualListOfOrganisationIdUserInfos);
+        Assertions.assertEquals(getAllOrganisationIdUsersResponse.getUserInfos(), actualListOfOrganisationIdUserInfos);
     }
 
     @Test
@@ -291,7 +291,7 @@ public class OrganisationIdClientHttpTest extends CommonHttpTest {
 
         List<OrganisationIdUserInfo> actualListOfOrganisationIdUserInfos =
                 organisationIdClient.getAllUsersV1_1(getAllOrganisationIdUsersRequest);
-        Assert.assertEquals(getAllOrganisationIdUsersResponse.getUserInfos(), actualListOfOrganisationIdUserInfos);
+        Assertions.assertEquals(getAllOrganisationIdUsersResponse.getUserInfos(), actualListOfOrganisationIdUserInfos);
     }
 
     @Test
@@ -304,7 +304,7 @@ public class OrganisationIdClientHttpTest extends CommonHttpTest {
 
         List<OrganisationIdUserInfo> actualListOfOrganisationIdUserInfos =
                 organisationIdClient.getAllUsersV1_1(getAllOrganisationIdUsersRequest);
-        Assert.assertEquals(getAllOrganisationIdUsersResponse.getUserInfos(), actualListOfOrganisationIdUserInfos);
+        Assertions.assertEquals(getAllOrganisationIdUsersResponse.getUserInfos(), actualListOfOrganisationIdUserInfos);
     }
 
     @Test
@@ -316,7 +316,7 @@ public class OrganisationIdClientHttpTest extends CommonHttpTest {
         String responseString = jsonService.serializeToJson(expectedResponse);
         startMockServer(updateOrganisationIdRequest, HttpStatusCode.OK.getCode(), responseString);
         UpdateOrganisationIdResponse receivedResponse = organisationIdClient.update(updateOrganisationIdRequest);
-        Assert.assertEquals(expectedResponse, receivedResponse);
+        Assertions.assertEquals(expectedResponse, receivedResponse);
     }
 
     @Test
@@ -328,6 +328,6 @@ public class OrganisationIdClientHttpTest extends CommonHttpTest {
         String responseString = jsonService.serializeToJson(expectedResponse);
         startMockServer(updateOrganisationIdRequest, HttpStatusCode.OK.getCode(), responseString);
         UpdateOrganisationIdResponse receivedResponse = organisationIdClient.update(updateOrganisationIdRequest);
-        Assert.assertEquals(expectedResponse, receivedResponse);
+        Assertions.assertEquals(expectedResponse, receivedResponse);
     }
 }

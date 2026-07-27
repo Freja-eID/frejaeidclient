@@ -24,14 +24,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;
@@ -80,7 +80,7 @@ public class AuthenticationClientGetResultTest {
             new DocumentInfoWithPdf(SSN, BASIC_USER_INFO, DATE_OF_BIRTH, GENDER, DocumentType.PASSPORT, "987654321",
                     Country.SWEDEN, "2024-01-01", PDF, DOCUMENT_PHOTO, NFC_ID_PHOTO);
 
-    @BeforeClass
+    @BeforeAll
     public static void initTestData() {
         Map<String, String> organisationIdIssuerNames = new HashMap<>();
         organisationIdIssuerNames.put("EN", "Org ID issuer");
@@ -102,7 +102,7 @@ public class AuthenticationClientGetResultTest {
                                         NETWORK_INFO, null, null, GENDER, NFC_ID_PHOTO);
     }
 
-    @Before
+    @BeforeEach
     public void initialiseClient() throws FrejaEidClientInternalException {
         authenticationClient = AuthenticationClient.create(TestUtil.getDefaultSslSettings(), FrejaEnvironment.TEST)
                 .setHttpService(httpServiceMock)

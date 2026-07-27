@@ -5,8 +5,8 @@ import com.verisec.frejaeid.client.enums.Country;
 import com.verisec.frejaeid.client.enums.UserInfoType;
 import com.verisec.frejaeid.client.exceptions.FrejaEidClientInternalException;
 import com.verisec.frejaeid.client.util.UserInfoUtil;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 public class SetCustomIdentifierRequestBuilderTest {
 
@@ -23,7 +23,7 @@ public class SetCustomIdentifierRequestBuilderTest {
                 new SetCustomIdentifierRequest(UserInfoType.EMAIL, EMAIL, IDENTIFIER, null);
         SetCustomIdentifierRequest setCustomIdentifierRequest =
                 SetCustomIdentifierRequest.createDefaultWithEmail(EMAIL, IDENTIFIER);
-        Assert.assertEquals(expectedSetCustomIdentifierRequest, setCustomIdentifierRequest);
+        Assertions.assertEquals(expectedSetCustomIdentifierRequest, setCustomIdentifierRequest);
     }
 
     @Test
@@ -33,7 +33,7 @@ public class SetCustomIdentifierRequestBuilderTest {
                                                IDENTIFIER, null);
         SetCustomIdentifierRequest setCustomIdentifierRequest =
                 SetCustomIdentifierRequest.createDefaultWithSsn(SSN_USER_INFO, IDENTIFIER);
-        Assert.assertEquals(expectedSetCustomIdentifierRequest, setCustomIdentifierRequest);
+        Assertions.assertEquals(expectedSetCustomIdentifierRequest, setCustomIdentifierRequest);
     }
 
     @Test
@@ -42,7 +42,7 @@ public class SetCustomIdentifierRequestBuilderTest {
                 new SetCustomIdentifierRequest(UserInfoType.UPI, UPI, IDENTIFIER, null);
         SetCustomIdentifierRequest setCustomIdentifierRequest =
                 SetCustomIdentifierRequest.createDefaultWithUpi(UPI, IDENTIFIER);
-        Assert.assertEquals(expectedSetCustomIdentifierRequest, setCustomIdentifierRequest);
+        Assertions.assertEquals(expectedSetCustomIdentifierRequest, setCustomIdentifierRequest);
     }
 
     @Test
@@ -53,7 +53,7 @@ public class SetCustomIdentifierRequestBuilderTest {
                 .setEmailAndCustomIdentifier(EMAIL, IDENTIFIER)
                 .setRelyingPartyId(RELYING_PARTY_ID)
                 .build();
-        Assert.assertEquals(expectedSetCustomIdentifierRequest, setCustomIdentifierRequest);
+        Assertions.assertEquals(expectedSetCustomIdentifierRequest, setCustomIdentifierRequest);
     }
 
     @Test
@@ -65,7 +65,7 @@ public class SetCustomIdentifierRequestBuilderTest {
                 .setSsnAndCustomIdentifier(SSN_USER_INFO, IDENTIFIER)
                 .setRelyingPartyId(RELYING_PARTY_ID)
                 .build();
-        Assert.assertEquals(expectedSetCustomIdentifierRequest, setCustomIdentifierRequest);
+        Assertions.assertEquals(expectedSetCustomIdentifierRequest, setCustomIdentifierRequest);
     }
 
     @Test
@@ -76,7 +76,7 @@ public class SetCustomIdentifierRequestBuilderTest {
                 .setPhoneNumberAndCustomIdentifier(PHONE_NUMBER, IDENTIFIER)
                 .setRelyingPartyId(RELYING_PARTY_ID)
                 .build();
-        Assert.assertEquals(expectedSetCustomIdentifierRequest, setCustomIdentifierRequest);
+        Assertions.assertEquals(expectedSetCustomIdentifierRequest, setCustomIdentifierRequest);
     }
 
     @Test
@@ -87,6 +87,6 @@ public class SetCustomIdentifierRequestBuilderTest {
                 .setPhoneNumberAndCustomIdentifier(PHONE_NUMBER, IDENTIFIER)
                 .setRelyingPartyId(null)
                 .build();
-        Assert.assertEquals(expectedSetCustomIdentifierRequest, setCustomIdentifierRequest);
+        Assertions.assertEquals(expectedSetCustomIdentifierRequest, setCustomIdentifierRequest);
     }
 }

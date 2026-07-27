@@ -6,9 +6,9 @@ import com.verisec.frejaeid.client.beans.general.SsnUserInfo;
 import com.verisec.frejaeid.client.enums.*;
 import com.verisec.frejaeid.client.exceptions.FrejaEidClientInternalException;
 import com.verisec.frejaeid.client.util.UserInfoUtil;
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -27,7 +27,7 @@ public class InitiateAuthenticationRequestBuildersTest {
     private static final Set<AttributeToReturnInfo> REQUESTED_ATTRIBUTES = new HashSet<>();
     private static final String UPI = "5633-823597-7862";
 
-    @BeforeClass
+    @BeforeAll
     public static void createRequestedAttributes() {
         REQUESTED_ATTRIBUTES.add(attributeOf(AttributeToReturn.SSN));
         REQUESTED_ATTRIBUTES.add(attributeOf(AttributeToReturn.BASIC_USER_INFO));
@@ -67,7 +67,7 @@ public class InitiateAuthenticationRequestBuildersTest {
                         UserInfoType.EMAIL, EMAIL, MinRegistrationLevel.BASIC, null, null, null, null, null, false);
         InitiateAuthenticationRequest initiateAuthenticationRequest =
                 InitiateAuthenticationRequest.createDefaultWithEmail(EMAIL);
-        Assert.assertEquals(expectedInitiateAuthenticationRequest, initiateAuthenticationRequest);
+        Assertions.assertEquals(expectedInitiateAuthenticationRequest, initiateAuthenticationRequest);
     }
 
     @Test
@@ -77,7 +77,7 @@ public class InitiateAuthenticationRequestBuildersTest {
                                                   MinRegistrationLevel.BASIC, null, null, null, null, null, false);
         InitiateAuthenticationRequest initiateAuthenticationRequest =
                 InitiateAuthenticationRequest.createDefaultWithSsn(SSN_USER_INFO);
-        Assert.assertEquals(expectedInitiateAuthenticationRequest, initiateAuthenticationRequest);
+        Assertions.assertEquals(expectedInitiateAuthenticationRequest, initiateAuthenticationRequest);
     }
 
     @Test
@@ -87,7 +87,7 @@ public class InitiateAuthenticationRequestBuildersTest {
                         UserInfoType.UPI, UPI, MinRegistrationLevel.BASIC, null, null, null, null, null, false);
         InitiateAuthenticationRequest initiateAuthenticationRequest =
                 InitiateAuthenticationRequest.createDefaultWithUpi(UPI);
-        Assert.assertEquals(expectedInitiateAuthenticationRequest, initiateAuthenticationRequest);
+        Assertions.assertEquals(expectedInitiateAuthenticationRequest, initiateAuthenticationRequest);
     }
 
     @Test
@@ -102,7 +102,7 @@ public class InitiateAuthenticationRequestBuildersTest {
                 .setRelyingPartyId(RELYING_PARTY_ID)
                 .setOrgIdIssuer(ORG_ID_ISSUER)
                 .build();
-        Assert.assertEquals(expectedInitiateAuthenticationRequest, initiateAuthenticationRequest);
+        Assertions.assertEquals(expectedInitiateAuthenticationRequest, initiateAuthenticationRequest);
     }
 
     @Test
@@ -116,7 +116,7 @@ public class InitiateAuthenticationRequestBuildersTest {
                 .setRelyingPartyId(RELYING_PARTY_ID)
                 .setOrgIdIssuer(ORG_ID_ISSUER)
                 .build();
-        Assert.assertEquals(expectedInitiateAuthenticationRequest, initiateAuthenticationRequest);
+        Assertions.assertEquals(expectedInitiateAuthenticationRequest, initiateAuthenticationRequest);
     }
 
     @Test
@@ -132,7 +132,7 @@ public class InitiateAuthenticationRequestBuildersTest {
                 .setRelyingPartyId(RELYING_PARTY_ID)
                 .setOrgIdIssuer(ORG_ID_ISSUER)
                 .build();
-        Assert.assertEquals(expectedInitiateAuthenticationRequest, initiateAuthenticationRequest);
+        Assertions.assertEquals(expectedInitiateAuthenticationRequest, initiateAuthenticationRequest);
     }
 
     @Test
@@ -147,7 +147,7 @@ public class InitiateAuthenticationRequestBuildersTest {
                 .setRelyingPartyId(RELYING_PARTY_ID)
                 .setOrgIdIssuer(ORG_ID_ISSUER)
                 .build();
-        Assert.assertEquals(expectedInitiateAuthenticationRequest, initiateAuthenticationRequest);
+        Assertions.assertEquals(expectedInitiateAuthenticationRequest, initiateAuthenticationRequest);
     }
 
     @Test
@@ -165,7 +165,7 @@ public class InitiateAuthenticationRequestBuildersTest {
                 .setUserConfirmationMethod(UserConfirmationMethod.DEFAULT)
                 .setOriginDeviceDetails(ORIGIN_DEVICE_DETAILS)
                 .build();
-        Assert.assertEquals(expectedInitiateAuthenticationRequest, initiateAuthenticationRequest);
+        Assertions.assertEquals(expectedInitiateAuthenticationRequest, initiateAuthenticationRequest);
     }
 
     @Test
@@ -181,7 +181,7 @@ public class InitiateAuthenticationRequestBuildersTest {
                 .setRelyingPartyId(null)
                 .setOrgIdIssuer(ORG_ID_ISSUER)
                 .build();
-        Assert.assertEquals(expectedInitiateAuthenticationRequest, initiateAuthenticationRequest);
+        Assertions.assertEquals(expectedInitiateAuthenticationRequest, initiateAuthenticationRequest);
     }
 
     @Test
@@ -196,7 +196,7 @@ public class InitiateAuthenticationRequestBuildersTest {
                 .setRelyingPartyId(RELYING_PARTY_ID)
                 .setOrgIdIssuer(ORG_ID_ISSUER)
                 .build();
-        Assert.assertEquals(expectedInitiateAuthenticationRequest, initiateAuthenticationRequest);
+        Assertions.assertEquals(expectedInitiateAuthenticationRequest, initiateAuthenticationRequest);
     }
 
     @Test
@@ -212,7 +212,7 @@ public class InitiateAuthenticationRequestBuildersTest {
                 .setRelyingPartyId(null)
                 .setOrgIdIssuer(null)
                 .build();
-        Assert.assertEquals(expectedInitiateAuthenticationRequest, initiateAuthenticationRequest);
+        Assertions.assertEquals(expectedInitiateAuthenticationRequest, initiateAuthenticationRequest);
     }
 
     @Test
@@ -230,7 +230,7 @@ public class InitiateAuthenticationRequestBuildersTest {
                 .setUserConfirmationMethod(UserConfirmationMethod.DEFAULT_AND_FACE)
                 .setOriginDeviceDetails(ORIGIN_DEVICE_DETAILS)
                 .build();
-        Assert.assertEquals(expectedInitiateAuthenticationRequest, initiateAuthenticationRequest);
+        Assertions.assertEquals(expectedInitiateAuthenticationRequest, initiateAuthenticationRequest);
     }
 
     @Test
@@ -245,7 +245,7 @@ public class InitiateAuthenticationRequestBuildersTest {
                 .setAttributesToReturn(AttributeToReturn.values())
                 .setOriginDeviceDetails(ORIGIN_DEVICE_DETAILS)
                 .build();
-        Assert.assertEquals(expectedInitiateAuthenticationRequest, initiateAuthenticationRequest);
+        Assertions.assertEquals(expectedInitiateAuthenticationRequest, initiateAuthenticationRequest);
     }
 
     @Test
@@ -264,6 +264,6 @@ public class InitiateAuthenticationRequestBuildersTest {
                 .setOriginDeviceDetails(ORIGIN_DEVICE_DETAILS)
                 .setUseDynamicQrCode(true)
                 .build();
-        Assert.assertEquals(expectedInitiateAuthenticationRequest, initiateAuthenticationRequest);
+        Assertions.assertEquals(expectedInitiateAuthenticationRequest, initiateAuthenticationRequest);
     }
 }

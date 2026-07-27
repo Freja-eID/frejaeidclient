@@ -6,9 +6,9 @@ import com.verisec.frejaeid.client.beans.general.SsnUserInfo;
 import com.verisec.frejaeid.client.enums.*;
 import com.verisec.frejaeid.client.exceptions.FrejaEidClientInternalException;
 import com.verisec.frejaeid.client.util.UserInfoUtil;
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -30,7 +30,7 @@ public class InitiateSignRequestBuildersTest {
     private static final Set<AttributeToReturnInfo> REQUESTED_ATTRIBUTES = new HashSet<>();
     private static final String UPI = "5633-823597-7862";
 
-    @BeforeClass
+    @BeforeAll
     public static void createRequestedAttributes() {
         REQUESTED_ATTRIBUTES.add(attributeOf(AttributeToReturn.SSN));
         REQUESTED_ATTRIBUTES.add(attributeOf(AttributeToReturn.BASIC_USER_INFO));
@@ -70,7 +70,7 @@ public class InitiateSignRequestBuildersTest {
                                         DataToSignType.SIMPLE_UTF8_TEXT, DataToSign.create(TEXT),
                                         SignatureType.SIMPLE, null, null, null, null, null, false);
         InitiateSignRequest initiateSignRequest = InitiateSignRequest.createDefaultWithEmail(EMAIL, TITLE, TEXT);
-        Assert.assertEquals(expectedInitiateSignRequest, initiateSignRequest);
+        Assertions.assertEquals(expectedInitiateSignRequest, initiateSignRequest);
     }
 
     @Test
@@ -80,7 +80,7 @@ public class InitiateSignRequestBuildersTest {
                                         MinRegistrationLevel.PLUS, TITLE, null, null, DataToSignType.SIMPLE_UTF8_TEXT,
                                         DataToSign.create(TEXT), SignatureType.SIMPLE, null, null, null, null, null, false);
         InitiateSignRequest initiateSignRequest = InitiateSignRequest.createDefaultWithSsn(SSN_USER_INFO, TITLE, TEXT);
-        Assert.assertEquals(expectedInitiateSignRequest, initiateSignRequest);
+        Assertions.assertEquals(expectedInitiateSignRequest, initiateSignRequest);
     }
 
     @Test
@@ -90,7 +90,7 @@ public class InitiateSignRequestBuildersTest {
                                         DataToSignType.SIMPLE_UTF8_TEXT, DataToSign.create(TEXT),
                                         SignatureType.SIMPLE, null, null, null, null, null, false);
         InitiateSignRequest initiateSignRequest = InitiateSignRequest.createDefaultWithUpi(UPI, TITLE, TEXT);
-        Assert.assertEquals(expectedInitiateSignRequest, initiateSignRequest);
+        Assertions.assertEquals(expectedInitiateSignRequest, initiateSignRequest);
     }
 
     @Test
@@ -113,7 +113,7 @@ public class InitiateSignRequestBuildersTest {
                 .setUserConfirmationMethod(UserConfirmationMethod.DEFAULT)
                 .setOriginDeviceDetails(ORIGIN_DEVICE_DETAILS)
                 .build();
-        Assert.assertEquals(expectedInitiateSignRequest, initiateSignRequest);
+        Assertions.assertEquals(expectedInitiateSignRequest, initiateSignRequest);
     }
 
     @Test
@@ -132,7 +132,7 @@ public class InitiateSignRequestBuildersTest {
                 .setRelyingPartyId(RELYING_PARTY_ID)
                 .setOrgIdIssuer(ORG_ID_ISSUER)
                 .build();
-        Assert.assertEquals(expectedInitiateSignRequest, initiateSignRequest);
+        Assertions.assertEquals(expectedInitiateSignRequest, initiateSignRequest);
     }
 
     @Test
@@ -154,7 +154,7 @@ public class InitiateSignRequestBuildersTest {
                 .setRelyingPartyId(RELYING_PARTY_ID)
                 .setOrgIdIssuer(ORG_ID_ISSUER)
                 .build();
-        Assert.assertEquals(expectedInitiateSignRequest, initiateSignRequest);
+        Assertions.assertEquals(expectedInitiateSignRequest, initiateSignRequest);
     }
 
     @Test
@@ -171,7 +171,7 @@ public class InitiateSignRequestBuildersTest {
                 .setExpiry(null)
                 .setRelyingPartyId(null)
                 .build();
-        Assert.assertEquals(expectedInitiateSignRequest, initiateSignRequest);
+        Assertions.assertEquals(expectedInitiateSignRequest, initiateSignRequest);
     }
 
     /**
@@ -196,7 +196,7 @@ public class InitiateSignRequestBuildersTest {
                 .setRelyingPartyId(RELYING_PARTY_ID)
                 .setOrgIdIssuer(ORG_ID_ISSUER)
                 .build();
-        Assert.assertEquals(expectedInitiateSignRequest, initiateSignRequest);
+        Assertions.assertEquals(expectedInitiateSignRequest, initiateSignRequest);
     }
 
     @Test
@@ -218,7 +218,7 @@ public class InitiateSignRequestBuildersTest {
                 .setRelyingPartyId(RELYING_PARTY_ID)
                 .setOrgIdIssuer(ORG_ID_ISSUER)
                 .build();
-        Assert.assertEquals(expectedInitiateSignRequest, initiateSignRequest);
+        Assertions.assertEquals(expectedInitiateSignRequest, initiateSignRequest);
     }
 
     @Test
@@ -240,7 +240,7 @@ public class InitiateSignRequestBuildersTest {
                 .setRelyingPartyId(RELYING_PARTY_ID)
                 .setOrgIdIssuer(ORG_ID_ISSUER)
                 .build();
-        Assert.assertEquals(expectedInitiateSignRequest, initiateSignRequest);
+        Assertions.assertEquals(expectedInitiateSignRequest, initiateSignRequest);
     }
 
     @Test
@@ -262,7 +262,7 @@ public class InitiateSignRequestBuildersTest {
                 .setRelyingPartyId(null)
                 .setOrgIdIssuer(ORG_ID_ISSUER)
                 .build();
-        Assert.assertEquals(expectedInitiateSignRequest, initiateSignRequest);
+        Assertions.assertEquals(expectedInitiateSignRequest, initiateSignRequest);
     }
 
     @Test
@@ -284,7 +284,7 @@ public class InitiateSignRequestBuildersTest {
                 .setRelyingPartyId(RELYING_PARTY_ID)
                 .setOrgIdIssuer(ORG_ID_ISSUER)
                 .build();
-        Assert.assertEquals(expectedInitiateSignRequest, initiateSignRequest);
+        Assertions.assertEquals(expectedInitiateSignRequest, initiateSignRequest);
     }
 
     @Test
@@ -305,7 +305,7 @@ public class InitiateSignRequestBuildersTest {
                 .setExpiry(EXPIRY)
                 .setRelyingPartyId(RELYING_PARTY_ID)
                 .build();
-        Assert.assertEquals(expectedInitiateSignRequest, initiateSignRequest);
+        Assertions.assertEquals(expectedInitiateSignRequest, initiateSignRequest);
     }
 
     @Test
@@ -327,7 +327,7 @@ public class InitiateSignRequestBuildersTest {
                 .setRelyingPartyId(RELYING_PARTY_ID)
                 .setOrgIdIssuer(ORG_ID_ISSUER)
                 .build();
-        Assert.assertEquals(expectedInitiateSignRequest, initiateSignRequest);
+        Assertions.assertEquals(expectedInitiateSignRequest, initiateSignRequest);
     }
 
     @Test
@@ -349,7 +349,7 @@ public class InitiateSignRequestBuildersTest {
                 .setOrgIdIssuer(ORG_ID_ISSUER)
                 .setUserConfirmationMethod(UserConfirmationMethod.DEFAULT_AND_FACE)
                 .build();
-        Assert.assertEquals(expectedInitiateSignRequest, initiateSignRequest);
+        Assertions.assertEquals(expectedInitiateSignRequest, initiateSignRequest);
     }
     
         @Test
@@ -369,7 +369,7 @@ public class InitiateSignRequestBuildersTest {
                 .setPushNotification(PUSH_NOTIFICATION)
                 .setOriginDeviceDetails(ORIGIN_DEVICE_DETAILS)
                 .build();
-        Assert.assertEquals(expectedInitiateSignRequest, initiateSignRequest);
+        Assertions.assertEquals(expectedInitiateSignRequest, initiateSignRequest);
     }
 
     @Test
@@ -392,6 +392,6 @@ public class InitiateSignRequestBuildersTest {
                 .setUserConfirmationMethod(UserConfirmationMethod.DEFAULT_AND_FACE)
                 .setUseDynamicQrCode(true)
                 .build();
-        Assert.assertEquals(expectedInitiateSignRequest, initiateSignRequest);
+        Assertions.assertEquals(expectedInitiateSignRequest, initiateSignRequest);
     }
 }
