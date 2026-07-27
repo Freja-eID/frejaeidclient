@@ -15,9 +15,9 @@ import com.verisec.frejaeid.client.exceptions.FrejaEidException;
 import com.verisec.frejaeid.client.http.HttpServiceApi;
 import com.verisec.frejaeid.client.util.MethodUrl;
 import com.verisec.frejaeid.client.util.RequestTemplate;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import java.util.Arrays;
@@ -38,7 +38,7 @@ public class OrganisationIdClientGetAllUsersTest {
             new GetAllOrganisationIdUsersResponse(Arrays.asList(organisationIdUserInfo));
     private OrganisationIdClientApi organisationIdClient;
 
-    @Before
+    @BeforeEach
     public void initialiseClient() throws FrejaEidClientInternalException {
         organisationIdClient = OrganisationIdClient.create(TestUtil.getDefaultSslSettings(), FrejaEnvironment.TEST)
                 .setHttpService(httpServiceMock)
@@ -56,7 +56,7 @@ public class OrganisationIdClientGetAllUsersTest {
         List<OrganisationIdUserInfo> actualListOfOrganisationIdUserInfos = organisationIdClient.getAllUsers(request);
         Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getServiceUrl() + MethodUrl.ORGANISATION_ID_GET_ALL_USERS,
                                              null, request, GetAllOrganisationIdUsersResponse.class, null);
-        Assert.assertEquals(expectedResponse.getUserInfos(), actualListOfOrganisationIdUserInfos);
+        Assertions.assertEquals(expectedResponse.getUserInfos(), actualListOfOrganisationIdUserInfos);
     }
 
     @Test
@@ -70,7 +70,7 @@ public class OrganisationIdClientGetAllUsersTest {
         List<OrganisationIdUserInfo> actualListOfOrgansiationIdUserInfos = organisationIdClient.getAllUsers(request);
         Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getServiceUrl() + MethodUrl.ORGANISATION_ID_GET_ALL_USERS,
                                              null, request, GetAllOrganisationIdUsersResponse.class, RELYING_PARTY_ID);
-        Assert.assertEquals(expectedResponse.getUserInfos(), actualListOfOrgansiationIdUserInfos);
+        Assertions.assertEquals(expectedResponse.getUserInfos(), actualListOfOrgansiationIdUserInfos);
     }
 
     @Test
@@ -84,7 +84,7 @@ public class OrganisationIdClientGetAllUsersTest {
         List<OrganisationIdUserInfo> actualListOfOrganisationIdUserInfos = organisationIdClient.getAllUsersV1_1(request);
         Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getServiceUrl() + MethodUrl.ORGANISATION_ID_GET_ALL_USERS_V1_1,
                                              null, request, GetAllOrganisationIdUsersResponse.class, null);
-        Assert.assertEquals(expectedResponse.getUserInfos(), actualListOfOrganisationIdUserInfos);
+        Assertions.assertEquals(expectedResponse.getUserInfos(), actualListOfOrganisationIdUserInfos);
     }
 
     @Test
@@ -98,6 +98,6 @@ public class OrganisationIdClientGetAllUsersTest {
         List<OrganisationIdUserInfo> actualListOfOrgansiationIdUserInfos = organisationIdClient.getAllUsersV1_1(request);
         Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getServiceUrl() + MethodUrl.ORGANISATION_ID_GET_ALL_USERS_V1_1,
                                              null, request, GetAllOrganisationIdUsersResponse.class, RELYING_PARTY_ID);
-        Assert.assertEquals(expectedResponse.getUserInfos(), actualListOfOrgansiationIdUserInfos);
+        Assertions.assertEquals(expectedResponse.getUserInfos(), actualListOfOrgansiationIdUserInfos);
     }
 }

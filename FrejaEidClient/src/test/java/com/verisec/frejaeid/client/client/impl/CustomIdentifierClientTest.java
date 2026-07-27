@@ -15,9 +15,9 @@ import com.verisec.frejaeid.client.exceptions.FrejaEidException;
 import com.verisec.frejaeid.client.http.HttpServiceApi;
 import com.verisec.frejaeid.client.util.MethodUrl;
 import com.verisec.frejaeid.client.util.RequestTemplate;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import java.util.Arrays;
@@ -34,7 +34,7 @@ public class CustomIdentifierClientTest {
     protected static final String UPI = "5633-823597-7862";
     private static CustomIdentifierClientApi customIdentifierClient;
 
-    @Before
+    @BeforeEach
     public void initialiseClient() throws FrejaEidClientInternalException {
         customIdentifierClient = CustomIdentifierClient.create(TestUtil.getDefaultSslSettings(), FrejaEnvironment.TEST)
                 .setHttpService(httpServiceMock)
@@ -112,14 +112,14 @@ public class CustomIdentifierClientTest {
                                               Mockito.eq(EmptyFrejaResponse.class), (String) Mockito.isNull()))
                     .thenThrow(frejaEidException);
             customIdentifierClient.set(setCustomIdentifierRequest);
-            Assert.fail("Test should throw exception!");
+            Assertions.fail("Test should throw exception!");
         } catch (FrejaEidException rpEx) {
             Mockito.verify(httpServiceMock)
                     .send(FrejaEnvironment.TEST.getServiceUrl() + MethodUrl.CUSTOM_IDENTIFIER_SET,
                           RequestTemplate.SET_CUSTOM_IDENTIFIER_TEMPLATE, setCustomIdentifierRequest,
                           EmptyFrejaResponse.class, null);
-            Assert.assertEquals(5002, rpEx.getErrorCode());
-            Assert.assertEquals("You have already used this custom identifier.", rpEx.getLocalizedMessage());
+            Assertions.assertEquals(5002, rpEx.getErrorCode());
+            Assertions.assertEquals("You have already used this custom identifier.", rpEx.getLocalizedMessage());
         }
     }
 
@@ -166,14 +166,14 @@ public class CustomIdentifierClientTest {
                                               Mockito.eq(EmptyFrejaResponse.class), (String) Mockito.isNull()))
                     .thenThrow(frejaEidException);
             customIdentifierClient.delete(deleteCustomIdentifierRequest);
-            Assert.fail("Test should throw exception!");
+            Assertions.fail("Test should throw exception!");
         } catch (FrejaEidException rpEx) {
             Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getServiceUrl() + MethodUrl.CUSTOM_IDENTIFIER_DELETE,
                                                  RequestTemplate.DELETE_CUSTOM_IDENTIFIER_TEMPLATE,
                                                  deleteCustomIdentifierRequest, EmptyFrejaResponse.class, null);
-            Assert.assertEquals("Invalid error", 5001, rpEx.getErrorCode());
-            Assert.assertEquals("Invalid error", "There is no user for given custom identifier.",
-                                rpEx.getLocalizedMessage());
+            Assertions.assertEquals(5001, rpEx.getErrorCode(), "Invalid error");
+            Assertions.assertEquals("There is no user for given custom identifier.",
+                                    rpEx.getLocalizedMessage(), "Invalid error");
         }
     }
 

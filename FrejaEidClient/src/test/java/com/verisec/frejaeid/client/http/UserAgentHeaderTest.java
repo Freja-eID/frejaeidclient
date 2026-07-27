@@ -1,7 +1,7 @@
 package com.verisec.frejaeid.client.http;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 public class UserAgentHeaderTest {
 
@@ -9,9 +9,9 @@ public class UserAgentHeaderTest {
     public void makeUserAgentHeaderTest() {
         HttpService httpService = new HttpService(null, 0, 0);
         String userAgentHeader = httpService.makeUserAgentHeader();
-        Assert.assertTrue(userAgentHeader.contains("FrejaEidClient/"));
-        Assert.assertTrue(userAgentHeader.contains("Java/"));
-        Assert.assertFalse(userAgentHeader.contains("%version%"));
+        Assertions.assertTrue(userAgentHeader.contains("FrejaEidClient/"));
+        Assertions.assertTrue(userAgentHeader.contains("Java/"));
+        Assertions.assertFalse(userAgentHeader.contains("%version%"));
     }
 
 }

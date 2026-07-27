@@ -14,9 +14,9 @@ import com.verisec.frejaeid.client.exceptions.FrejaEidException;
 import com.verisec.frejaeid.client.http.HttpServiceApi;
 import com.verisec.frejaeid.client.util.MethodUrl;
 import com.verisec.frejaeid.client.util.RequestTemplate;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import java.util.concurrent.TimeUnit;
@@ -43,7 +43,7 @@ public class SignClientInitSignTest {
     private final DataToSign dataToSign = DataToSign.create("SGVsbG8=");
     private SignClientApi signClient;
 
-    @Before
+    @BeforeEach
     public void initDefaultRequest() throws FrejaEidClientInternalException {
         minRegistrationLevel = MinRegistrationLevel.BASIC;
         title = "Sign transaction title";
@@ -77,19 +77,19 @@ public class SignClientInitSignTest {
         Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getServiceUrl() + MethodUrl.SIGN_INIT,
                                              RequestTemplate.INIT_SIGN_TEMPLATE, initiateSignDefaultEmailRequest,
                                              InitiateSignResponse.class, null);
-        Assert.assertEquals(expectedResponse, response);
+        Assertions.assertEquals(expectedResponse, response);
 
         response = signClient.initiateV1_1(initiateSignDefaultSsnRequest);
         Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getServiceUrl() + MethodUrl.SIGN_INIT,
                                              RequestTemplate.INIT_SIGN_TEMPLATE, initiateSignDefaultSsnRequest,
                                              InitiateSignResponse.class, null);
-        Assert.assertEquals(expectedResponse, response);
+        Assertions.assertEquals(expectedResponse, response);
 
         response = signClient.initiateV1_1(initiateSignDefaultUpiRequest);
         Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getServiceUrl() + MethodUrl.SIGN_INIT,
                                              RequestTemplate.INIT_SIGN_TEMPLATE, initiateSignDefaultUpiRequest,
                                              InitiateSignResponse.class, null);
-        Assert.assertEquals(expectedResponse, response);
+        Assertions.assertEquals(expectedResponse, response);
     }
 
     @Test
@@ -115,19 +115,19 @@ public class SignClientInitSignTest {
         Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getServiceUrl() + MethodUrl.ORGANISATION_SIGN_INIT,
                                              RequestTemplate.INIT_SIGN_TEMPLATE, initiateSignDefaultEmailRequest,
                                              InitiateSignResponse.class, null);
-        Assert.assertEquals(expectedResponse, response);
+        Assertions.assertEquals(expectedResponse, response);
 
         response = signClient.initiateV1_1(initiateSignDefaultSsnRequest);
         Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getServiceUrl() + MethodUrl.ORGANISATION_SIGN_INIT,
                                              RequestTemplate.INIT_SIGN_TEMPLATE, initiateSignDefaultSsnRequest,
                                              InitiateSignResponse.class, null);
-        Assert.assertEquals(expectedResponse, response);
+        Assertions.assertEquals(expectedResponse, response);
 
         response = signClient.initiateV1_1(initiateSignDefaultUpiRequest);
         Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getServiceUrl() + MethodUrl.ORGANISATION_SIGN_INIT,
                                              RequestTemplate.INIT_SIGN_TEMPLATE, initiateSignDefaultUpiRequest,
                                              InitiateSignResponse.class, null);
-        Assert.assertEquals(expectedResponse, response);
+        Assertions.assertEquals(expectedResponse, response);
     }
 
     @Test
@@ -153,7 +153,7 @@ public class SignClientInitSignTest {
         Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getServiceUrl() + MethodUrl.SIGN_INIT,
                                              RequestTemplate.INIT_SIGN_TEMPLATE, initiateSignRequest,
                                              InitiateSignResponse.class, RELYING_PARTY_ID);
-        Assert.assertEquals(expectedResponse, response);
+        Assertions.assertEquals(expectedResponse, response);
     }
 
     @Test
@@ -180,7 +180,7 @@ public class SignClientInitSignTest {
         Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getServiceUrl() + MethodUrl.ORGANISATION_SIGN_INIT,
                                              RequestTemplate.INIT_SIGN_TEMPLATE, initiateSignRequest,
                                              InitiateSignResponse.class, RELYING_PARTY_ID);
-        Assert.assertEquals(expectedResponse, response);
+        Assertions.assertEquals(expectedResponse, response);
     }
 
     @Test
@@ -204,13 +204,13 @@ public class SignClientInitSignTest {
                     .thenThrow(frejaEidException);
 
             signClient.initiateV1_1(initiateSignRequest);
-            Assert.fail("Test should throw exception!");
+            Assertions.fail("Test should throw exception!");
         } catch (FrejaEidException rpEx) {
             Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getServiceUrl() + MethodUrl.SIGN_INIT,
                                                  RequestTemplate.INIT_SIGN_TEMPLATE, initiateSignRequest,
                                                  InitiateSignResponse.class, RELYING_PARTY_ID);
-            Assert.assertEquals(1002, rpEx.getErrorCode());
-            Assert.assertEquals("Invalid or missing userInfo.", rpEx.getLocalizedMessage());
+            Assertions.assertEquals(1002, rpEx.getErrorCode());
+            Assertions.assertEquals("Invalid or missing userInfo.", rpEx.getLocalizedMessage());
         }
     }
 
@@ -237,7 +237,7 @@ public class SignClientInitSignTest {
         Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getServiceUrl() + MethodUrl.SIGN_INIT,
                                              RequestTemplate.INIT_SIGN_TEMPLATE, initiateSignRequest,
                                              InitiateSignResponse.class, RELYING_PARTY_ID);
-        Assert.assertEquals(expectedResponse, response);
+        Assertions.assertEquals(expectedResponse, response);
     }
 
     @Test
@@ -264,7 +264,7 @@ public class SignClientInitSignTest {
         Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getServiceUrl() + MethodUrl.SIGN_INIT,
                                              RequestTemplate.INIT_SIGN_TEMPLATE, initiateSignRequest,
                                              InitiateSignResponse.class, RELYING_PARTY_ID);
-        Assert.assertEquals(expectedResponse, response);
+        Assertions.assertEquals(expectedResponse, response);
 
     }
 
@@ -288,19 +288,19 @@ public class SignClientInitSignTest {
         Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getServiceUrl() + MethodUrl.SIGN_INIT,
                                              RequestTemplate.INIT_SIGN_TEMPLATE, initiateSignDefaultEmailRequest,
                                              InitiateSignResponse.class, null);
-        Assert.assertEquals(expectedResponse.getSignRef(), response);
+        Assertions.assertEquals(expectedResponse.getSignRef(), response);
 
         response = signClient.initiate(initiateSignDefaultSsnRequest);
         Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getServiceUrl() + MethodUrl.SIGN_INIT,
                                              RequestTemplate.INIT_SIGN_TEMPLATE, initiateSignDefaultSsnRequest,
                                              InitiateSignResponse.class, null);
-        Assert.assertEquals(expectedResponse.getSignRef(), response);
+        Assertions.assertEquals(expectedResponse.getSignRef(), response);
 
         response = signClient.initiate(initiateSignDefaultUpiRequest);
         Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getServiceUrl() + MethodUrl.SIGN_INIT,
                                              RequestTemplate.INIT_SIGN_TEMPLATE, initiateSignDefaultUpiRequest,
                                              InitiateSignResponse.class, null);
-        Assert.assertEquals(expectedResponse.getSignRef(), response);
+        Assertions.assertEquals(expectedResponse.getSignRef(), response);
     }
 
     @Test
@@ -326,19 +326,19 @@ public class SignClientInitSignTest {
         Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getServiceUrl() + MethodUrl.ORGANISATION_SIGN_INIT,
                                              RequestTemplate.INIT_SIGN_TEMPLATE, initiateSignDefaultEmailRequest,
                                              InitiateSignResponse.class, null);
-        Assert.assertEquals(expectedResponse.getSignRef(), response);
+        Assertions.assertEquals(expectedResponse.getSignRef(), response);
 
         response = signClient.initiate(initiateSignDefaultSsnRequest);
         Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getServiceUrl() + MethodUrl.ORGANISATION_SIGN_INIT,
                                              RequestTemplate.INIT_SIGN_TEMPLATE, initiateSignDefaultSsnRequest,
                                              InitiateSignResponse.class, null);
-        Assert.assertEquals(expectedResponse.getSignRef(), response);
+        Assertions.assertEquals(expectedResponse.getSignRef(), response);
 
         response = signClient.initiate(initiateSignDefaultUpiRequest);
         Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getServiceUrl() + MethodUrl.ORGANISATION_SIGN_INIT,
                                              RequestTemplate.INIT_SIGN_TEMPLATE, initiateSignDefaultUpiRequest,
                                              InitiateSignResponse.class, null);
-        Assert.assertEquals(expectedResponse.getSignRef(), response);
+        Assertions.assertEquals(expectedResponse.getSignRef(), response);
     }
 
     @Test
@@ -364,7 +364,7 @@ public class SignClientInitSignTest {
         Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getServiceUrl() + MethodUrl.SIGN_INIT,
                                              RequestTemplate.INIT_SIGN_TEMPLATE, initiateSignRequest,
                                              InitiateSignResponse.class, RELYING_PARTY_ID);
-        Assert.assertEquals(expectedResponse.getSignRef(), response);
+        Assertions.assertEquals(expectedResponse.getSignRef(), response);
     }
 
     @Test
@@ -391,7 +391,7 @@ public class SignClientInitSignTest {
         Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getServiceUrl() + MethodUrl.ORGANISATION_SIGN_INIT,
                                              RequestTemplate.INIT_SIGN_TEMPLATE, initiateSignRequest,
                                              InitiateSignResponse.class, RELYING_PARTY_ID);
-        Assert.assertEquals(expectedResponse.getSignRef(), response);
+        Assertions.assertEquals(expectedResponse.getSignRef(), response);
     }
 
     @Test
@@ -415,13 +415,13 @@ public class SignClientInitSignTest {
                     .thenThrow(frejaEidException);
 
             signClient.initiate(initiateSignRequest);
-            Assert.fail("Test should throw exception!");
+            Assertions.fail("Test should throw exception!");
         } catch (FrejaEidException rpEx) {
             Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getServiceUrl() + MethodUrl.SIGN_INIT,
                                                  RequestTemplate.INIT_SIGN_TEMPLATE, initiateSignRequest,
                                                  InitiateSignResponse.class, RELYING_PARTY_ID);
-            Assert.assertEquals(1002, rpEx.getErrorCode());
-            Assert.assertEquals("Invalid or missing userInfo.", rpEx.getLocalizedMessage());
+            Assertions.assertEquals(1002, rpEx.getErrorCode());
+            Assertions.assertEquals("Invalid or missing userInfo.", rpEx.getLocalizedMessage());
         }
     }
 
@@ -448,7 +448,7 @@ public class SignClientInitSignTest {
         Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getServiceUrl() + MethodUrl.SIGN_INIT,
                                              RequestTemplate.INIT_SIGN_TEMPLATE, initiateSignRequest,
                                              InitiateSignResponse.class, RELYING_PARTY_ID);
-        Assert.assertEquals(expectedResponse.getSignRef(), response);
+        Assertions.assertEquals(expectedResponse.getSignRef(), response);
     }
 
     @Test
@@ -475,7 +475,7 @@ public class SignClientInitSignTest {
         Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getServiceUrl() + MethodUrl.SIGN_INIT,
                                              RequestTemplate.INIT_SIGN_TEMPLATE, initiateSignRequest,
                                              InitiateSignResponse.class, RELYING_PARTY_ID);
-        Assert.assertEquals(expectedResponse.getSignRef(), response);
+        Assertions.assertEquals(expectedResponse.getSignRef(), response);
     }
 
 }

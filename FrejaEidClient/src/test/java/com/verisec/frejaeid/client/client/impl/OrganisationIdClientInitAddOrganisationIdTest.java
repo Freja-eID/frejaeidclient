@@ -14,9 +14,9 @@ import com.verisec.frejaeid.client.exceptions.FrejaEidException;
 import com.verisec.frejaeid.client.http.HttpServiceApi;
 import com.verisec.frejaeid.client.util.MethodUrl;
 import com.verisec.frejaeid.client.util.RequestTemplate;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import java.util.Arrays;
@@ -39,7 +39,7 @@ public class OrganisationIdClientInitAddOrganisationIdTest {
     private final Long expiry = TimeUnit.MINUTES.toMillis(6);
     private OrganisationIdClientApi organisationIdClient;
 
-    @Before
+    @BeforeEach
     public void initialiseClient() throws FrejaEidClientInternalException {
         organisationIdClient = OrganisationIdClient.create(TestUtil.getDefaultSslSettings(), FrejaEnvironment.TEST)
                 .setHttpService(httpServiceMock)
@@ -71,21 +71,21 @@ public class OrganisationIdClientInitAddOrganisationIdTest {
                 .send(FrejaEnvironment.TEST.getServiceUrl() + MethodUrl.ORGANISATION_ID_INIT_ADD,
                       RequestTemplate.INIT_ADD_ORGANISATION_ID_TEMPLATE, initiateAddOrganisationIdDefaultEmailRequest,
                       InitiateAddOrganisationIdResponse.class, null);
-        Assert.assertEquals(REFERENCE, reference);
+        Assertions.assertEquals(REFERENCE, reference);
 
         reference = organisationIdClient.initiateAdd(initiateAddOrganisationIdDefaultSsnRequest);
         Mockito.verify(httpServiceMock)
                 .send(FrejaEnvironment.TEST.getServiceUrl() + MethodUrl.ORGANISATION_ID_INIT_ADD,
                       RequestTemplate.INIT_ADD_ORGANISATION_ID_TEMPLATE, initiateAddOrganisationIdDefaultSsnRequest,
                       InitiateAddOrganisationIdResponse.class, null);
-        Assert.assertEquals(REFERENCE, reference);
+        Assertions.assertEquals(REFERENCE, reference);
 
         reference = organisationIdClient.initiateAdd(initiateAddOrganisationIdDefaultUpiRequest);
         Mockito.verify(httpServiceMock)
                 .send(FrejaEnvironment.TEST.getServiceUrl() + MethodUrl.ORGANISATION_ID_INIT_ADD,
                       RequestTemplate.INIT_ADD_ORGANISATION_ID_TEMPLATE, initiateAddOrganisationIdDefaultUpiRequest,
                       InitiateAddOrganisationIdResponse.class, null);
-        Assert.assertEquals(REFERENCE, reference);
+        Assertions.assertEquals(REFERENCE, reference);
     }
 
     @Test
@@ -111,7 +111,7 @@ public class OrganisationIdClientInitAddOrganisationIdTest {
                                              RequestTemplate.INIT_ADD_ORGANISATION_ID_TEMPLATE,
                                              initiateAddOrganisationIdRequest,
                                              InitiateAddOrganisationIdResponse.class, RELYING_PARTY_ID);
-        Assert.assertEquals(REFERENCE, reference);
+        Assertions.assertEquals(REFERENCE, reference);
     }
 
     @Test
@@ -142,7 +142,7 @@ public class OrganisationIdClientInitAddOrganisationIdTest {
                                              RequestTemplate.INIT_ADD_ORGANISATION_ID_TEMPLATE,
                                              initiateAddOrganisationIdRequest,
                                              InitiateAddOrganisationIdResponse.class, RELYING_PARTY_ID);
-        Assert.assertEquals(REFERENCE, reference);
+        Assertions.assertEquals(REFERENCE, reference);
     }
 
     @Test
@@ -166,14 +166,14 @@ public class OrganisationIdClientInitAddOrganisationIdTest {
                     .thenThrow(frejaEidException);
 
             organisationIdClient.initiateAdd(initiateAddOrganisationIdRequest);
-            Assert.fail("Test should throw exception!");
+            Assertions.fail("Test should throw exception!");
         } catch (FrejaEidException rpEx) {
             Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getServiceUrl() + MethodUrl.ORGANISATION_ID_INIT_ADD,
                                                  RequestTemplate.INIT_ADD_ORGANISATION_ID_TEMPLATE,
                                                  initiateAddOrganisationIdRequest,
                                                  InitiateAddOrganisationIdResponse.class, RELYING_PARTY_ID);
-            Assert.assertEquals(1002, rpEx.getErrorCode());
-            Assert.assertEquals("Invalid or missing userInfo.", rpEx.getLocalizedMessage());
+            Assertions.assertEquals(1002, rpEx.getErrorCode());
+            Assertions.assertEquals("Invalid or missing userInfo.", rpEx.getLocalizedMessage());
         }
     }
 

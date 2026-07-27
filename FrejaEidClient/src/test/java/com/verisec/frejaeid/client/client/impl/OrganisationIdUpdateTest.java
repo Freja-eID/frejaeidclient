@@ -14,9 +14,9 @@ import com.verisec.frejaeid.client.exceptions.FrejaEidException;
 import com.verisec.frejaeid.client.http.HttpServiceApi;
 import com.verisec.frejaeid.client.util.MethodUrl;
 import com.verisec.frejaeid.client.util.RequestTemplate;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import java.util.Arrays;
@@ -33,7 +33,7 @@ public class OrganisationIdUpdateTest {
     private final HttpServiceApi httpServiceMock = Mockito.mock(HttpServiceApi.class);
     private OrganisationIdClientApi organisationIdClient;
 
-    @Before
+    @BeforeEach
     public void initialiseClient() throws FrejaEidClientInternalException {
         organisationIdClient = OrganisationIdClient.create(TestUtil.getDefaultSslSettings(), FrejaEnvironment.TEST)
                 .setHttpService(httpServiceMock)
@@ -53,7 +53,7 @@ public class OrganisationIdUpdateTest {
         Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getServiceUrl() + MethodUrl.ORGANISATION_ID_UPDATE,
                                              RequestTemplate.UPDATE_ORGANISATION_ID_TEMPLATE,
                                              updateOrganisationIdRequest, UpdateOrganisationIdResponse.class, null);
-        Assert.assertEquals(expectedResponse, receivedResponse);
+        Assertions.assertEquals(expectedResponse, receivedResponse);
     }
 
     @Test
@@ -69,7 +69,7 @@ public class OrganisationIdUpdateTest {
         Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getServiceUrl() + MethodUrl.ORGANISATION_ID_UPDATE,
                                              RequestTemplate.UPDATE_ORGANISATION_ID_TEMPLATE, updateOrganisationIdRequest,
                                              UpdateOrganisationIdResponse.class, RELYING_PARTY_ID);
-        Assert.assertEquals(expectedResponse, receivedResponse);
+        Assertions.assertEquals(expectedResponse, receivedResponse);
     }
 
     @Test
@@ -85,12 +85,12 @@ public class OrganisationIdUpdateTest {
                 .thenThrow(expectedException);
         try {
             organisationIdClient.update(updateOrganisationIdRequest);
-            Assert.fail("Test unexpectedly passed.");
+            Assertions.fail("Test unexpectedly passed.");
         } catch (FrejaEidException fex) {
             Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getServiceUrl() + MethodUrl.ORGANISATION_ID_UPDATE,
                                                  RequestTemplate.UPDATE_ORGANISATION_ID_TEMPLATE, updateOrganisationIdRequest,
                                                  UpdateOrganisationIdResponse.class, null);
-            Assert.assertEquals(expectedException, fex);
+            Assertions.assertEquals(expectedException, fex);
         }
     }
 }

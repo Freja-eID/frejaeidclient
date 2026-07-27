@@ -13,8 +13,8 @@ import com.verisec.frejaeid.client.http.HttpServiceApi;
 import com.verisec.frejaeid.client.util.MethodUrl;
 import com.verisec.frejaeid.client.util.RequestTemplate;
 import org.apache.http.HttpEntity;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import java.io.ByteArrayInputStream;
@@ -68,7 +68,7 @@ public class AuthenticationClientInitAuthenticationTest {
                     .thenReturn(expectedBytesResult);
 
             byteArray = authenticationClient.generateQRCodeForAuthentication(REFERENCE);
-            Assert.assertEquals(Arrays.toString(byteArray), Arrays.toString(expectedBytesResult));
+            Assertions.assertEquals(Arrays.toString(byteArray), Arrays.toString(expectedBytesResult));
         }
     }
 
@@ -88,13 +88,13 @@ public class AuthenticationClientInitAuthenticationTest {
                     .thenThrow(new FrejaEidException(FrejaEidErrorCode.INVALID_USER_INFO.getMessage(),
                                                      FrejaEidErrorCode.INVALID_USER_INFO.getCode()));
             authenticationClient.initiateV1_1(initiateAuthenticationRequest);
-            Assert.fail("Test should throw exception!");
+            Assertions.fail("Test should throw exception!");
         } catch (FrejaEidException rpEx) {
             Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getServiceUrl() + MethodUrl.AUTHENTICATION_INIT,
                                                  RequestTemplate.INIT_AUTHENTICATION, initiateAuthenticationRequest,
                                                  InitiateAuthenticationResponse.class, RELYING_PARTY_ID);
-            Assert.assertEquals("Invalid error", 1002, rpEx.getErrorCode());
-            Assert.assertEquals("Invalid error", "Invalid or missing userInfo.", rpEx.getLocalizedMessage());
+            Assertions.assertEquals(1002, rpEx.getErrorCode(), "Invalid error");
+            Assertions.assertEquals("Invalid or missing userInfo.", rpEx.getLocalizedMessage(), "Invalid error");
         }
     }
 
@@ -189,13 +189,13 @@ public class AuthenticationClientInitAuthenticationTest {
                     .thenThrow(new FrejaEidException(FrejaEidErrorCode.INVALID_USER_INFO.getMessage(),
                                                      FrejaEidErrorCode.INVALID_USER_INFO.getCode()));
             authenticationClient.initiateV1_1(initiateAuthenticationRequest);
-            Assert.fail("Test should throw exception!");
+            Assertions.fail("Test should throw exception!");
         } catch (FrejaEidException rpEx) {
             Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getServiceUrl() + MethodUrl.AUTHENTICATION_INIT,
                                                  RequestTemplate.INIT_AUTHENTICATION, initiateAuthenticationRequest,
                                                  InitiateAuthenticationResponse.class, RELYING_PARTY_ID);
-            Assert.assertEquals("Invalid error", 1002, rpEx.getErrorCode());
-            Assert.assertEquals("Invalid error", "Invalid or missing userInfo.", rpEx.getLocalizedMessage());
+            Assertions.assertEquals(1002, rpEx.getErrorCode(), "Invalid error");
+            Assertions.assertEquals("Invalid or missing userInfo.", rpEx.getLocalizedMessage(), "Invalid error");
         }
     }
 
@@ -282,7 +282,7 @@ public class AuthenticationClientInitAuthenticationTest {
         Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getServiceUrl() + MethodUrl.AUTHENTICATION_INIT,
                                              RequestTemplate.INIT_AUTHENTICATION, initiateAuthenticationRequest,
                                              InitiateAuthenticationResponse.class, null);
-        Assert.assertEquals(expectedResponse, response);
+        Assertions.assertEquals(expectedResponse, response);
     }
 
     private void initiateAuthenticationV1_1_personalContext_relyingPartyNotNull_success(
@@ -315,7 +315,7 @@ public class AuthenticationClientInitAuthenticationTest {
                           InitiateAuthenticationResponse.class, RELYING_PARTY_ID);
         }
 
-        Assert.assertEquals(expectedResponse, response);
+        Assertions.assertEquals(expectedResponse, response);
     }
 
 
@@ -334,7 +334,7 @@ public class AuthenticationClientInitAuthenticationTest {
         Mockito.verify(httpServiceMock).send(FrejaEnvironment.TEST.getServiceUrl() + MethodUrl.AUTHENTICATION_INIT,
                                              RequestTemplate.INIT_AUTHENTICATION, initiateAuthenticationRequest,
                                              InitiateAuthenticationResponse.class, null);
-        Assert.assertEquals(REFERENCE, reference);
+        Assertions.assertEquals(REFERENCE, reference);
     }
 
     private void initiateAuthentication_personalContext_relyingPartyNotNull_success(
@@ -367,7 +367,7 @@ public class AuthenticationClientInitAuthenticationTest {
                           InitiateAuthenticationResponse.class, RELYING_PARTY_ID);
         }
 
-        Assert.assertEquals(REFERENCE, reference);
+        Assertions.assertEquals(REFERENCE, reference);
     }
 
     private static byte[] readAllBytes(InputStream inputStream) throws FrejaEidClientInternalException {

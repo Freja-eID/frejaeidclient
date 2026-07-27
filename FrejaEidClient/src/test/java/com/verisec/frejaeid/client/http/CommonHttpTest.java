@@ -23,11 +23,11 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.codec.binary.Base64;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.BeforeClass;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public abstract class CommonHttpTest {
 
@@ -87,7 +87,7 @@ public abstract class CommonHttpTest {
     private HttpServer server;
     protected static JsonService jsonService;
 
-    @BeforeClass
+    @BeforeAll
     public static void initTestData() {
         Map<String, String> organisationIdIssuerNames = new HashMap<>();
         organisationIdIssuerNames.put("EN", "Org ID issuer");
@@ -143,9 +143,10 @@ public abstract class CommonHttpTest {
 
                                  }
                              } catch (Exception ex) {
-                                 Assert.fail(ex.getMessage());
+                                 Assertions.fail(ex.getMessage());
                              }
 
+                             t.getResponseHeaders().set("Connection", "close");
                              t.sendResponseHeaders(statusCodeToReturn, responseToReturn.length());
                              try (OutputStream os = t.getResponseBody()) {
                                  os.write(responseToReturn.getBytes());
@@ -156,15 +157,15 @@ public abstract class CommonHttpTest {
         server.start();
     }
 
-    @After
-    public void stopServer() throws InterruptedException {
+    @AfterEach
+    public void stopServer() {
         stopMockServer();
-        Thread.sleep(1000);
     }
 
     private void stopMockServer() {
         if (server != null) {
-            server.stop(1);
+            server.stop(0);
+            server = null;
         }
     }
 
