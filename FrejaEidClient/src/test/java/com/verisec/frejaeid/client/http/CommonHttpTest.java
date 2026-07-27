@@ -146,6 +146,7 @@ public abstract class CommonHttpTest {
                                  Assert.fail(ex.getMessage());
                              }
 
+                             t.getResponseHeaders().set("Connection", "close");
                              t.sendResponseHeaders(statusCodeToReturn, responseToReturn.length());
                              try (OutputStream os = t.getResponseBody()) {
                                  os.write(responseToReturn.getBytes());
@@ -157,14 +158,14 @@ public abstract class CommonHttpTest {
     }
 
     @After
-    public void stopServer() throws InterruptedException {
+    public void stopServer() {
         stopMockServer();
-        Thread.sleep(1000);
     }
 
     private void stopMockServer() {
         if (server != null) {
-            server.stop(1);
+            server.stop(0);
+            server = null;
         }
     }
 
